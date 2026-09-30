@@ -7,15 +7,15 @@
 <title>Tarun Inala — Business Analyst</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 /* ---------- THEME TOKENS ---------- */
 :root{
   --bg:#F3F4F7; --s1:#FFFFFF; --s2:#ECEEF3; --s3:#E2E5EC;
   --line:#D9DCE4; --line2:#C6CAD5;
-  --tx:#0E1015; --mu:#575C6C; --dim:#9AA0AE;
+  --tx:#0E1015; --mu:#475569; --dim:#7A8194;
   --acc:#00E08F; --acc-on:#04130C; --acc-t:#007A52; --acc-tint:rgba(0,168,110,.10); --acc-line:rgba(0,140,92,.35);
-  --lime-t:#6B7A00; --lime-tint:rgba(150,170,0,.13); --lime-line:rgba(120,140,0,.35);
+  --lime-t:#586500; --lime-tint:rgba(150,170,0,.13); --lime-line:rgba(120,140,0,.35);
   --hdr:rgba(243,244,247,.82); --shine:rgba(255,255,255,.9); --shadow:0 24px 48px -24px rgba(20,25,40,.25);
   --glow:rgba(0,224,143,.16); --g1:rgba(0,224,143,.34); --g2:rgba(90,255,190,.26); --g3:rgba(150,190,0,.16);
   box-sizing:border-box;
@@ -25,7 +25,7 @@
   :root:not([data-theme="light"]){
     --bg:#08090C; --s1:#0E1015; --s2:#16181F; --s3:#1B1E26;
     --line:#252833; --line2:#343847;
-    --tx:#F5F6FA; --mu:#8A8F9E; --dim:#4C5061;
+    --tx:#F5F6FA; --mu:#A3A8B8; --dim:#6B7080;
     --acc:#00F5A0; --acc-on:#08090C; --acc-t:#00F5A0; --acc-tint:rgba(0,245,160,.10); --acc-line:rgba(0,245,160,.30);
     --lime-t:#E8FF59; --lime-tint:rgba(232,255,89,.10); --lime-line:rgba(232,255,89,.30);
     --hdr:rgba(8,9,12,.78); --shine:rgba(255,255,255,.06); --shadow:0 24px 48px -12px rgba(0,0,0,.85);
@@ -35,7 +35,7 @@
 :root[data-theme="dark"]{
   --bg:#08090C; --s1:#0E1015; --s2:#16181F; --s3:#1B1E26;
   --line:#252833; --line2:#343847;
-  --tx:#F5F6FA; --mu:#8A8F9E; --dim:#4C5061;
+  --tx:#F5F6FA; --mu:#A3A8B8; --dim:#6B7080;
   --acc:#00F5A0; --acc-on:#08090C; --acc-t:#00F5A0; --acc-tint:rgba(0,245,160,.10); --acc-line:rgba(0,245,160,.30);
   --lime-t:#E8FF59; --lime-tint:rgba(232,255,89,.10); --lime-line:rgba(232,255,89,.30);
   --hdr:rgba(8,9,12,.78); --shine:rgba(255,255,255,.06); --shadow:0 24px 48px -12px rgba(0,0,0,.85);
@@ -45,29 +45,29 @@
 /* ---------- BASE ---------- */
 *,*::before,*::after{box-sizing:inherit}
 html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 90px);-webkit-text-size-adjust:100%}
-body{margin:0;background:var(--bg);color:var(--tx);font:400 14px/22px "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;-webkit-font-smoothing:antialiased;transition:background .25s,color .25s;min-height:100vh}
+body{margin:0;background:var(--bg);color:var(--tx);font:400 15px/24px "Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased;transition:background .25s,color .25s;min-height:100vh}
 a{color:inherit;text-decoration:none}
 button{font:inherit;color:inherit;cursor:pointer}
 h1,h2,h3,.head{font-family:"Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;margin:0}
 ::selection{background:var(--acc);color:var(--acc-on)}
 .wrap{max-width:1200px;margin:0 auto;padding:0 24px}
-.lbl{font-size:10px;line-height:14px;letter-spacing:.08em;text-transform:uppercase;color:var(--mu);font-weight:500}
+.lbl{font-size:11px;line-height:16px;letter-spacing:.07em;text-transform:uppercase;color:var(--mu);font-weight:600}
 .lbl.acc{color:var(--acc-t)} .lbl.lime{color:var(--lime-t)}
 .display{font-size:clamp(38px,7vw,64px);line-height:1.06;letter-spacing:-.03em;font-weight:800;text-wrap:balance}
 .display em{font-style:normal;color:var(--acc-t)}
 .h2{font-size:clamp(26px,4vw,36px);line-height:1.2;letter-spacing:-.02em;font-weight:700}
-.lede{color:var(--mu);font-size:15px;line-height:26px;max-width:640px;margin:20px 0 0}
-.mono-cap{font-size:12px;color:var(--mu)}
+.lede{color:var(--mu);font-size:17px;line-height:28px;max-width:640px;margin:20px 0 0}
+.mono-cap{font-size:13px;line-height:20px;color:var(--mu)}
 
 /* ---------- COMPONENTS ---------- */
 .card{background:var(--s1);border:1px solid var(--line);border-radius:16px;box-shadow:inset 0 1px 0 0 var(--shine);transition:border-color .2s,transform .2s,background .25s}
 .card.hov:hover{border-color:var(--line2);transform:translateY(-2px)}
-.chip{display:inline-flex;align-items:center;gap:6px;height:26px;padding:0 12px;border-radius:999px;font-size:10px;letter-spacing:.08em;text-transform:uppercase;font-weight:500;background:var(--s2);border:1px solid var(--line);color:var(--mu);white-space:nowrap}
+.chip{display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 12px;border-radius:999px;font-size:11px;letter-spacing:.05em;text-transform:uppercase;font-weight:600;background:var(--s2);border:1px solid var(--line);color:var(--mu);white-space:nowrap}
 .chip.g{background:var(--acc-tint);border-color:var(--acc-line);color:var(--acc-t)}
 .chip.l{background:var(--lime-tint);border-color:var(--lime-line);color:var(--lime-t)}
 .dot{width:5px;height:5px;border-radius:50%;background:currentColor;animation:pulse 2s infinite}
 @keyframes pulse{50%{opacity:.35}}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:44px;padding:0 22px;border-radius:999px;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;border:1px solid var(--line);background:var(--s1);box-shadow:inset 0 1px 0 0 var(--shine);transition:box-shadow .2s,border-color .2s,transform .15s}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:44px;padding:0 22px;border-radius:999px;font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;border:1px solid var(--line);background:var(--s1);box-shadow:inset 0 1px 0 0 var(--shine);transition:box-shadow .2s,border-color .2s,transform .15s}
 .btn:hover{border-color:var(--line2)}
 .btn:active{transform:scale(.98)}
 .btn.p{background:var(--acc);color:var(--acc-on);border-color:transparent;font-weight:700}
@@ -77,7 +77,7 @@ h1,h2,h3,.head{font-family:"Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI
 .iconbtn:hover{border-color:var(--acc-line)}
 svg.i{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
 .filters{display:flex;gap:8px;flex-wrap:wrap}
-.fbtn{height:32px;padding:0 14px;border-radius:999px;border:1px solid var(--line);background:var(--s2);color:var(--mu);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-weight:500;transition:all .2s}
+.fbtn{height:32px;padding:0 14px;border-radius:999px;border:1px solid var(--line);background:var(--s2);color:var(--mu);font-size:11px;letter-spacing:.05em;text-transform:uppercase;font-weight:600;transition:all .2s}
 .fbtn:hover{color:var(--tx)}
 .fbtn.on{background:var(--acc);border-color:transparent;color:var(--acc-on);font-weight:700}
 :focus-visible{outline:2px solid var(--acc-t);outline-offset:2px}
@@ -89,7 +89,7 @@ svg.i{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.8;stro
 .mark{width:32px;height:32px;border-radius:9px;background:var(--s2);border:1px solid var(--line2);display:grid;place-items:center;font-family:"Plus Jakarta Sans",sans-serif;font-weight:800;font-size:16px;color:var(--acc-t);box-shadow:inset 0 1px 0 0 var(--shine)}
 .brand b{font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:600}
 nav.pill{display:flex;gap:4px;padding:4px;border-radius:999px;background:var(--s2);border:1px solid var(--line)}
-nav.pill a{padding:6px 16px;border-radius:999px;font-size:12px;letter-spacing:.04em;color:var(--mu);font-weight:500;transition:color .2s}
+nav.pill a{padding:6px 16px;border-radius:999px;font-size:13px;letter-spacing:.02em;color:var(--mu);font-weight:600;transition:color .2s}
 nav.pill a:hover{color:var(--tx)}
 nav.pill a.on{background:var(--s1);color:var(--tx);box-shadow:inset 0 1px 0 0 var(--shine),0 0 0 1px var(--line2)}
 .hdr-r{display:flex;align-items:center;gap:12px}
@@ -121,7 +121,7 @@ main{display:block;min-height:70vh;position:relative}
 @keyframes gl4{from{transform:translate(-15vw,-8vh) scale(.9)}to{transform:translate(18vw,14vh) scale(1.2)}}
 @keyframes shim{from{transform:translateX(-28%)}to{transform:translateX(28%)}}
 .mode{display:flex;padding:3px;border-radius:999px;background:var(--s2);border:1px solid var(--line)}
-.mode button{border:0;background:transparent;padding:6px 14px;border-radius:999px;font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-weight:600;color:var(--mu);transition:all .2s}
+.mode button{border:0;background:transparent;padding:6px 14px;border-radius:999px;font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-weight:700;color:var(--mu);transition:all .2s}
 .mode button.on{background:var(--acc);color:var(--acc-on)}
 @media (max-width:1100px){.hide-l{display:none}}
 @media (max-width:520px){.brand b{display:none}.mode button{padding:6px 11px}}
@@ -134,16 +134,16 @@ main>*:nth-child(2){animation-delay:.06s} main>*:nth-child(3){animation-delay:.1
 .sec{padding-top:56px}
 .sec-h{margin-bottom:28px;display:flex;flex-direction:column;gap:8px}
 .sec-h.row{flex-direction:row;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:16px}
-.banner{background:var(--lime-tint);border-bottom:1px solid var(--lime-line);color:var(--lime-t);font-size:11px;letter-spacing:.04em}
+.banner{background:var(--lime-tint);border-bottom:1px solid var(--lime-line);color:var(--lime-t);font-size:12px;letter-spacing:.04em}
 .banner .in{max-width:1200px;margin:0 auto;padding:8px 24px;display:flex;justify-content:space-between;align-items:center;gap:12px}
 .banner button{background:none;border:0;color:inherit;text-decoration:underline;padding:0;font-size:11px}
 
 /* ---------- WORK ---------- */
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:40px}
 .stat{padding:22px 24px 20px;display:flex;flex-direction:column;gap:20px}
-.metric{font-size:44px;line-height:52px;letter-spacing:-.03em;font-weight:500;color:var(--acc-t)}
+.metric{font-size:44px;line-height:52px;letter-spacing:-.03em;font-weight:700;color:var(--acc-t)}
 .metric small{font-size:14px;color:var(--tx);margin-left:6px;letter-spacing:0}
-.cap{font-size:11px;color:var(--mu);text-transform:uppercase;letter-spacing:.06em}
+.cap{font-size:12px;font-weight:600;color:var(--mu);text-transform:uppercase;letter-spacing:.05em}
 .feat{display:grid;grid-template-columns:1.05fr 1fr;gap:0;overflow:hidden}
 .feat .txt{padding:36px;display:flex;flex-direction:column;gap:18px;justify-content:center}
 .feat .vis{min-height:340px;position:relative;border-left:1px solid var(--line)}
@@ -151,7 +151,7 @@ main>*:nth-child(2){animation-delay:.06s} main>*:nth-child(3){animation-delay:.1
 .feat p,.pj p{margin:0;color:var(--mu)}
 .mets{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden}
 .mets div{background:var(--s2);padding:14px 16px}
-.mets b{display:block;font-size:20px;font-weight:500;color:var(--acc-t);margin-top:4px}
+.mets b{display:block;font-size:20px;font-weight:700;color:var(--acc-t);margin-top:4px}
 .tags{display:flex;gap:8px;flex-wrap:wrap}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
 .pj{padding:28px;display:flex;flex-direction:column;gap:14px}
@@ -178,6 +178,26 @@ main>*:nth-child(2){animation-delay:.06s} main>*:nth-child(3){animation-delay:.1
 .cta{margin-top:64px;padding:36px;display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap;background:linear-gradient(120deg,var(--acc-tint),transparent 60%),var(--s1)}
 .cta h3{font-size:clamp(22px,3vw,30px);font-weight:700;letter-spacing:-.02em;max-width:520px}
 
+/* ---------- FLAGSHIP PIPELINE ---------- */
+.feat{border-color:var(--acc-line)}
+.flow{grid-column:1/-1;border-top:1px solid var(--line);padding:24px 36px 30px;background:var(--s2);display:flex;flex-direction:column;gap:14px}
+.flow ol{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.flow li{position:relative;display:flex;flex-direction:column;gap:4px;padding:16px 18px;border-radius:12px;background:var(--s1);border:1px solid var(--line)}
+.flow li .n{font-size:11px;font-weight:700;letter-spacing:.08em;color:var(--acc-t)}
+.flow li b{font-family:"Plus Jakarta Sans",sans-serif;font-size:17px;font-weight:700;letter-spacing:-.01em}
+.flow li .d{color:var(--mu);font-size:13px;line-height:20px}
+.flow li:not(:last-child)::after{content:"\2192";position:absolute;right:-20px;top:50%;transform:translateY(-50%);width:20px;text-align:center;color:var(--acc-t);font-weight:700}
+
+/* ---------- CASE STUDY SHEET ---------- */
+.case{display:flex;flex-direction:column;gap:22px;margin-top:28px}
+.cs{display:grid;grid-template-columns:44px 1fr;gap:14px;align-items:start;padding-top:22px;border-top:1px solid var(--line)}
+.cs .n{font-size:13px;font-weight:700;color:var(--acc-t);letter-spacing:.06em;padding-top:1px}
+.cs p{margin:6px 0 0;font-size:16px;line-height:26px;color:var(--tx)}
+
+/* ---------- SKILL GROUPS ---------- */
+.sgroups{display:flex;flex-direction:column;gap:20px}
+.sg{display:flex;flex-direction:column;gap:10px}
+
 /* ---------- POETRY ---------- */
 .pfeat{padding:44px;display:grid;grid-template-columns:1.1fr 1fr;gap:40px;align-items:center;background:linear-gradient(135deg,var(--acc-tint),transparent 55%),var(--s1)}
 .pfeat .q{font-family:"Plus Jakarta Sans",sans-serif;font-size:clamp(22px,3vw,30px);line-height:1.4;font-weight:600;letter-spacing:-.015em}
@@ -188,7 +208,7 @@ main>*:nth-child(2){animation-delay:.06s} main>*:nth-child(3){animation-delay:.1
 .poem h3{font-size:22px;line-height:30px;letter-spacing:-.015em;font-weight:600}
 .poem .ex{color:var(--mu);white-space:pre-line;flex:1}
 .poem .ft{display:flex;justify-content:space-between;align-items:center;color:var(--mu)}
-.poem .ft b{color:var(--tx);font-weight:500;display:inline-flex;gap:6px;align-items:center}
+.poem .ft b{color:var(--tx);font-weight:600;display:inline-flex;gap:6px;align-items:center}
 
 /* ---------- PHOTOGRAPHY ---------- */
 .pg{display:grid;grid-template-columns:repeat(6,1fr);gap:16px}
@@ -201,13 +221,13 @@ main>*:nth-child(2){animation-delay:.06s} main>*:nth-child(3){animation-delay:.1
 .ph .cap2{position:absolute;left:0;right:0;bottom:0;padding:44px 18px 16px;background:linear-gradient(to top,rgba(0,0,0,.72),transparent);color:#fff;z-index:2}
 .ph .cap2 .lbl{color:rgba(255,255,255,.75)}
 .ph .cap2 b{display:block;font-family:"Plus Jakarta Sans",sans-serif;font-size:20px;font-weight:600;letter-spacing:-.01em}
-.ph .meta{display:flex;justify-content:space-between;gap:10px;padding:12px 18px;font-size:11px;color:var(--mu);border-top:1px solid var(--line);background:var(--s1);flex-wrap:wrap}
+.ph .meta{display:flex;justify-content:space-between;gap:10px;padding:12px 18px;font-size:12px;color:var(--mu);border-top:1px solid var(--line);background:var(--s1);flex-wrap:wrap}
 .ph .meta em{font-style:normal;color:var(--lime-t)}
 .s-a{grid-column:span 4}.s-b{grid-column:span 2}.s-c{grid-column:span 2}.s-d{grid-column:span 3}
 .ph.tall .img{min-height:420px}
 .ribbon{display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap;padding:12px 18px;border-radius:12px;background:var(--s1);border:1px solid var(--line);margin-bottom:20px;font-size:11px;color:var(--mu)}
 .ribbon span.sep{color:var(--dim)}
-.hint{position:absolute;right:14px;top:14px;z-index:2;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.7);background:rgba(0,0,0,.35);padding:3px 8px;border-radius:999px}
+.hint{position:absolute;right:14px;top:14px;z-index:2;font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.7);background:rgba(0,0,0,.35);padding:3px 8px;border-radius:999px}
 
 /* ---------- CONTACT ---------- */
 .cgrid{display:grid;grid-template-columns:1fr 1.25fr;gap:20px;align-items:start}
@@ -215,7 +235,7 @@ main>*:nth-child(2){animation-delay:.06s} main>*:nth-child(3){animation-delay:.1
 .box{padding:24px}
 .email{font-size:20px;margin-top:10px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
 .links{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-top:14px}
-.links a{height:56px;border-radius:10px;background:var(--s2);border:1px solid var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--mu);transition:all .2s}
+.links a{height:56px;border-radius:10px;background:var(--s2);border:1px solid var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--mu);transition:all .2s}
 .links a:hover{color:var(--acc-t);border-color:var(--acc-line)}
 .form{padding:30px;display:flex;flex-direction:column;gap:22px}
 .f2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
@@ -232,7 +252,7 @@ footer{position:relative;z-index:1;margin-top:80px;border-top:1px solid var(--li
 footer .g{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:32px;padding:44px 0 28px}
 footer ul{list-style:none;margin:10px 0 0;padding:0;display:flex;flex-direction:column;gap:8px;color:var(--mu)}
 footer ul a:hover{color:var(--acc-t)}
-footer .bt{border-top:1px solid var(--line);padding:18px 0 28px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--mu)}
+footer .bt{border-top:1px solid var(--line);padding:18px 0 28px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--mu)}
 
 /* ---------- OVERLAY ---------- */
 #ov{position:fixed;inset:0;z-index:100;display:none;background:rgba(4,5,8,.72);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);padding:calc(env(safe-area-inset-top,0px) + 20px) 16px calc(env(safe-area-inset-bottom,0px) + 20px);overflow-y:auto}
@@ -251,7 +271,7 @@ footer .bt{border-top:1px solid var(--line);padding:18px 0 28px;display:flex;jus
 .lb .info{padding:28px;display:flex;flex-direction:column;gap:18px}
 .kv{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden}
 .kv div{background:var(--s1);padding:12px 14px}
-.kv b{display:block;font-weight:500;margin-top:2px}
+.kv b{display:block;font-weight:600;margin-top:2px}
 
 @media (max-width:900px){
   .stats,.mgrid{grid-template-columns:1fr}
@@ -266,7 +286,10 @@ footer .bt{border-top:1px solid var(--line);padding:18px 0 28px;display:flex;jus
   footer .g{grid-template-columns:1fr}
   .sh-b{padding:26px 22px 30px}
   .lb .art{min-height:320px}
-  .mets .l{font-size:9px}
+  .mets .l{font-size:10px}
+  .flow{padding:22px 22px 26px}
+  .flow ol{grid-template-columns:1fr;gap:26px}
+  .flow li:not(:last-child)::after{content:"\2193";right:auto;left:50%;top:auto;bottom:-24px;transform:translateX(-50%)}
 }
 @media (min-width:901px) and (max-width:1100px){.pgrid,.mgrid{grid-template-columns:1fr 1fr}}
 </style>
@@ -301,7 +324,7 @@ footer .bt{border-top:1px solid var(--line);padding:18px 0 28px;display:flex;jus
       <div><div class="lbl">Pages</div><ul id="f-nav"></ul></div>
       <div><div class="lbl">Elsewhere</div><ul id="f-links"></ul></div>
     </div>
-    <div class="bt"><span id="copy"></span><span style="color:var(--acc-t)">Built with Obsidian Kinetic</span></div>
+    <div class="bt"><span id="copy"></span><span style="color:var(--acc-t)">Designed &amp; built with Claude · Hosted on GitHub Pages</span></div>
   </div>
 </footer>
 
@@ -322,15 +345,27 @@ var SITE = {
     headline: "Turning <em>business needs</em> into products that <em>deliver real value</em>.",
     lede: "Senior Business Analyst and Functional Lead with 5+ years owning the path from problem to shipped product — discovery, prioritisation, stakeholder alignment and delivery — across Generative AI tools, payments platforms and large-scale ERP migrations.",
     stats: [
-      {k:"Experience", v:"5", u:"+ yrs", d:"Business analysis & functional leadership"},
+      {k:"Experience", v:"5+", u:"years", d:"Business analysis & functional leadership"},
       {k:"Budget entry cycle time", v:"−60", u:"%", d:"Via GenAI contract extraction"},
       {k:"Payouts unlocked", v:"$1.5M", u:"", d:"In the first month of a 12-year-old feature"}
     ],
     featured: [
-      {tag:"Featured · Generative AI", title:"Generative AI engine for clinical-trial contract extraction", desc:"Led end-to-end development of an engine that reads complex Clinical Trial Agreement budget terms from unstructured PDFs and maps them into APECS — with a “Single Pane of Glass” UI to review, validate and commit every AI-extracted mapping, and automated checks that protect timely site reimbursements.",
-       mets:[["Daily manual effort","−40%"],["Entry cycle time","−60%"],["Entry errors","Eliminated"]], chips:["Generative AI","Clinical Trials","SLA","UX Design"], ill:"extract"},
-      {tag:"Achievement 02 · Financial controls", title:"Payment Term Validation: closing a leak since day one", desc:"Designed, specified and tested validation that aligns 100% of outgoing payments with contractual costs — ending systemic overpayments that had persisted since the application launched, including edge cases like calendar boundaries and amendment tracking.", chips:["Validation","Compliance","Testing"], ill:"validate", link:"Discuss this work"},
-      {tag:"Achievement 03 · Payments", title:"Shipped a feature that had been pending for 12 years", desc:"Launched a critical clinical-trial payments capability that enabled $1.5M in payouts within its first month — and streamlined invoice processing from 2 hours of manual validation to 1 minute.", chips:["Payments","Automation","Delivery"], ill:"payout", link:"Discuss this work"}
+      {tag:"Flagship case study · Generative AI", title:"Generative AI engine for clinical-trial contract extraction", desc:"Led end-to-end development of an engine that reads complex Clinical Trial Agreement budget terms from unstructured PDFs and maps them into APECS — with a “Single Pane of Glass” UI to review, validate and commit every AI-extracted mapping, and automated checks that protect timely site reimbursements.",
+       mets:[["Daily manual effort","−40%"],["Entry cycle time","−60%"],["Entry errors","Eliminated"]], chips:["Generative AI","Clinical Trials","SLA","UX Design"], ill:"extract",
+       steps:[["Ingest","Unstructured Clinical Trial Agreement budget PDFs"],["Extract & validate","Generative AI reads the terms; automated checks catch errors"],["Review & commit","Single Pane of Glass in APECS to validate, then commit"]],
+       case:[["The problem","Budget terms in Clinical Trial Agreements arrived as unstructured PDFs and were keyed into APECS by hand. Entry was slow and error-prone, backlogs built up, and delays put site reimbursements and SLAs at risk."],
+             ["My role","Led the engine end to end as Senior Business Analyst: shaped the requirements, defined how extracted terms map into APECS, and designed the “Single Pane of Glass” screen where every AI-extracted mapping is reviewed, validated and committed."],
+             ["Safeguards built in","Automated validation checks run inside the AI workflow, so problems are caught before anything is committed and site reimbursements stay accurate and on time."],
+             ["The result","Daily manual effort down 40%, budget-entry cycle time down 60%, manual entry errors eliminated, and backlogs cleared with SLAs met."]]},
+      {tag:"Achievement 02 · Financial controls", title:"Payment Term Validation: closing a leak since day one", desc:"Designed, specified and tested validation that aligns 100% of outgoing payments with contractual costs — ending systemic overpayments that had persisted since the application launched, including edge cases like calendar boundaries and amendment tracking.", chips:["Validation","Compliance","Testing"], ill:"validate", link:"Read the case study",
+       case:[["The problem","Outgoing payments could drift from what the contracts allowed. Overpayments and financial leakage had persisted since the application first went live."],
+             ["My role","Led design, requirement gathering and testing end to end for a validation solution that checks payments against contractual costs."],
+             ["Edge cases solved","Built robust validation logic for the awkward scenarios: calendar boundaries and amendment tracking, so complex clinical-trial structures stay compliant."],
+             ["The result","100% alignment between outgoing payments and contractual costs, and an end to the systemic overpayments."]]},
+      {tag:"Achievement 03 · Payments", title:"Unlocked $1.5M in clinical-trial payouts in month one", desc:"Launched a critical payments capability the platform had been missing for 12 years, enabling $1.5M in payouts within its first month — and cut invoice processing from 2 hours of manual validation to 1 minute.", chips:["Payments","Automation","Delivery"], ill:"payout", link:"Read the case study",
+       case:[["The problem","A critical capability in the clinical-trial payment system had been pending for 12 years, and invoice processing relied on about two hours of manual validation."],
+             ["My role","Delivered the launch and streamlined the invoice-processing workflow. Also led a team of Business Analysts on requirement documentation, lifting UAT solution quality by 20%."],
+             ["The result","$1.5M in payouts enabled within the first month, and invoice validation cut from 2 hours to 1 minute."]]}
     ],
     more: [
       {k:"Payments Portal", t:"Payee transparency, self-service", d:"Functional Lead for the payment portal — the liaison between payees, the Payment Processing Group and tech teams. Defined data mapping and reconciliation logic across Oracle EBS and APECS.", m:"−50% support inquiries", ill:"portal"},
@@ -353,7 +388,11 @@ var SITE = {
       {t:"Above and Beyond Award", s:"FinancialForce engagement", y:"2022–23"},
       {t:"Award-winning client demonstration", s:"FinancialForce test automation", y:"2022–23"}
     ],
-    skills: ["Requirement elicitation","Stakeholder management","Process modelling","BRD / FSD","User stories & use cases","Gap analysis","Agile","UAT & test planning","SQL","JIRA","Visio / Draw.io","FinancialForce","Generative AI"]
+    skills: {
+      "Domain & functional": ["Clinical trial payments","Financial ERP","Contract data extraction","Payment validation","Financial reconciliation"],
+      "Tools & platforms": ["APECS","Oracle EBS","Oracle Fusion","Incorta","FinancialForce","JIRA","Visio / Draw.io","SQL"],
+      "Methods & techniques": ["Generative AI","Requirement elicitation","BRD / FSD","User stories & use cases","Gap analysis","Process modelling","Agile","UAT & test planning","Stakeholder management"]
+    }
   },
   poems: [
     {id:"small-hours", title:"Small Hours", date:"Sep 2026", theme:"Reflection",
@@ -374,6 +413,7 @@ var SITE = {
     {id:"p6", title:"Window Light",        cat:"Portrait",     place:"Location, Home",  cam:"Your Camera", lens:"85mm", f:"f/1.8", s:"1/200s", iso:"400",  type:"portrait",pal:["#3a2a1e","#0d0a08","#f3c98b"], span:"s-a"}
   ]
 };
+var BUILTIN = JSON.parse(JSON.stringify(SITE));
 /* =====================================================================
    To use your own photo: add   src:"images/your-photo.jpg"   to a photo
    above (works once the site is hosted with the image files alongside).
@@ -453,99 +493,107 @@ function pic(p,w,h){return p.src? '<img src="'+p.src+'" alt="'+p.title+'" loadin
 
 /* ---------- THEMED ILLUSTRATIONS FOR WORK CARDS ---------- */
 function illo(t){
-  var o='',i,j,y,x,ff="font-family:'JetBrains Mono',ui-monospace,monospace";
+  var o='',i,j,y,x,ff="font-family:'Plus Jakarta Sans',system-ui,-apple-system,'Segoe UI',sans-serif";
   var AC='var(--acc-t)',LM='var(--lime-t)',MU='var(--mu)',DM='var(--dim)',LN='var(--line2)',S1='var(--s1)',TX='var(--tx)',ON='var(--acc-on)';
   function R(x,y,w,h,rx,f,s,sw){return '<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" rx="'+rx+'" style="fill:'+f+';stroke:'+(s||'none')+';stroke-width:'+(sw||1.5)+'"/>'}
   function L(x1,y1,x2,y2,c,w,d){return '<line x1="'+x1+'" y1="'+y1+'" x2="'+x2+'" y2="'+y2+'" style="stroke:'+c+';stroke-width:'+(w||2)+';stroke-linecap:round'+(d?';stroke-dasharray:'+d:'')+'"/>'}
   function C(x,y,r,f,s,sw){return '<circle cx="'+x+'" cy="'+y+'" r="'+r+'" style="fill:'+f+';stroke:'+(s||'none')+';stroke-width:'+(sw||1.5)+'"/>'}
-  function T(x,y,s,c,z,a,wt){return '<text x="'+x+'" y="'+y+'" text-anchor="'+(a||'start')+'" style="'+ff+';fill:'+c+';font-size:'+(z||11)+'px;font-weight:'+(wt||500)+';letter-spacing:.06em">'+s+'</text>'}
+  function T(x,y,s,c,z,a,wt){z=Math.max(z||14,14);return '<text x="'+x+'" y="'+y+'" text-anchor="'+(a||'start')+'" style="'+ff+';fill:'+c+';font-size:'+z+'px;font-weight:'+(wt||600)+';letter-spacing:.03em">'+s+'</text>'}
   function K(x,y,c,s){s=s||1;return '<path d="M'+(x-6*s)+' '+y+'l'+(4.5*s)+' '+(5*s)+' '+(8.5*s)+' '+(-10*s)+'" style="fill:none;stroke:'+c+';stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round"/>'}
   function A(x1,y,x2,c){return L(x1,y,x2,y,c,2)+'<path d="M'+(x2-7)+' '+(y-6)+'L'+x2+' '+y+'L'+(x2-7)+' '+(y+6)+'" style="fill:none;stroke:'+c+';stroke-width:2;stroke-linecap:round;stroke-linejoin:round"/>'}
   o+=R(0,0,520,360,0,'var(--s2)')+C(420,50,150,'var(--acc-tint)');
 
   if(t==='extract'){
-    o+=R(40,52,150,220,10,S1,LN);
-    o+=R(54,143,122,16,4,'var(--lime-tint)','var(--lime-line)',1)+R(54,183,122,16,4,'var(--lime-tint)','var(--lime-line)',1);
-    for(i=0;i<9;i++) o+=L(60,84+i*20,60+(i%3===1?90:110),84+i*20,DM,3);
-    o+=T(40,296,'CTA_BUDGET.PDF',MU,10);
+    var terms=['Start-up fee','Screening','Milestone 1','Pass-through','Close-out'];
+    o+=R(40,52,150,232,10,S1,LN)+T(54,78,'CTA BUDGET',MU,14,'start',700);
+    for(i=0;i<5;i++){y=94+i*34;var hl=(i===1||i===3);
+      o+=R(50,y,130,28,6,hl?'var(--lime-tint)':'none',hl?'var(--lime-line)':'none',1)+T(60,y+19,terms[i],hl?TX:MU,14,'start',600)}
+    o+=T(40,308,'CTA_BUDGET.PDF',MU,14,'start',600);
     o+=A(205,162,300,AC);
-    o+='<path d="M252 112l4 10 10 4-10 4-4 10-4-10-10-4 10-4z" style="fill:'+AC+'"/>'+T(252,196,'GEN AI',AC,10,'middle',700);
-    o+=R(314,52,170,220,12,S1,LN)+T(330,78,'TERM',MU,9)+T(468,78,'MAPPED',MU,9,'end');
-    for(i=0;i<5;i++){y=104+i*30;o+=L(330,y,330+50+((i*37)%40),y,TX,3)+C(456,y,9,'var(--acc-tint)',AC)+K(456,y,AC,.75)}
-    o+=R(330,246,138,20,10,'var(--acc)')+T(399,260,'COMMIT',ON,10,'middle',700);
-    o+=T(399,298,'SINGLE PANE OF GLASS',MU,10,'middle');
+    o+='<path d="M252 112l4 10 10 4-10 4-4 10-4-10-10-4 10-4z" style="fill:'+AC+'"/>'+T(252,196,'GEN AI',AC,14,'middle',700);
+    o+=R(314,52,170,232,12,S1,LN)+T(330,78,'TERM',MU,14,'start',700)+T(468,78,'STATUS',MU,14,'end',700);
+    var tt=['Start-up','Screening','Milestone 1','Pass-through','Close-out'];
+    for(i=0;i<5;i++){y=108+i*28;o+=T(330,y+5,tt[i],TX,14,'start',600)+C(464,y,9,'var(--acc-tint)',AC)+K(464,y,AC,.75)}
+    o+=R(330,252,138,24,12,'var(--acc)')+T(399,269,'COMMIT',ON,14,'middle',700);
+    o+=T(399,308,'SINGLE PANE OF GLASS',MU,14,'middle',600);
   }
   else if(t==='validate'){
-    o+=T(260,38,'PAYMENT TERM VALIDATION',MU,10,'middle')+T(140,72,'CONTRACT',MU,9,'middle')+T(380,72,'PAID',MU,9,'middle');
-    var wd=[90,70,110,60,80];
-    for(i=0;i<5;i++){y=86+i*38;var bad=(i===2);
-      o+=R(40,y,200,30,8,S1,LN)+R(280,y,200,30,8,bad?'var(--lime-tint)':S1,bad?'var(--lime-line)':LN);
-      o+=L(56,y+15,56+wd[i],y+15,DM,4)+L(296,y+15,296+wd[i]+(bad?44:0),y+15,bad?LM:DM,4);
-      o+=bad? C(260,y+15,10,'var(--lime-tint)',LM)+T(260,y+19,'!',LM,12,'middle',700) : C(260,y+15,10,'var(--acc-tint)',AC)+K(260,y+15,AC,.75);
+    var nm=['Start-up','Screening','Milestone 1','Visit fee','Close-out'], ca=['$2,000','$450','$1,200','$800','$600'], pa=['$2,000','$450','$1,440','$800','$600'];
+    o+=T(260,34,'PAYMENT TERM VALIDATION',MU,14,'middle',700)+T(140,66,'CONTRACT',MU,14,'middle',700)+T(380,66,'PAID',MU,14,'middle',700);
+    for(i=0;i<5;i++){y=78+i*38;var bad=(i===2);
+      o+=R(40,y,200,32,8,S1,LN)+R(280,y,200,32,8,bad?'var(--lime-tint)':S1,bad?'var(--lime-line)':LN);
+      o+=T(52,y+21,nm[i],MU,14,'start',600)+T(228,y+21,ca[i],TX,14,'end',700);
+      o+=T(292,y+21,bad?'Overpaid':'Matches',bad?LM:AC,14,'start',700)+T(468,y+21,pa[i],bad?LM:TX,14,'end',700);
+      o+=bad? C(260,y+16,10,'var(--lime-tint)',LM)+T(260,y+21,'!',LM,14,'middle',700) : C(260,y+16,10,'var(--acc-tint)',AC)+K(260,y+16,AC,.75);
     }
-    o+=R(140,290,240,30,15,'var(--acc)')+T(260,309,'100% ALIGNED',ON,11,'middle',700);
+    o+=R(130,286,260,34,17,'var(--acc)')+T(260,308,'100% ALIGNED',ON,14,'middle',700);
   }
   else if(t==='payout'){
-    o+=R(36,52,110,120,10,S1,LN);for(i=0;i<5;i++)o+=L(52,76+i*18,52+(i%2?50:74),76+i*18,DM,3);
-    o+=A(154,112,196,AC);
+    var it=['Visits','Start-up','Close-out'];
+    o+=R(30,50,118,132,10,S1,LN)+T(42,74,'INV-1042',MU,14,'start',700);
+    for(i=0;i<3;i++)o+=R(40,86+i*30,98,24,5,'var(--s2)')+T(48,103+i*30,it[i],TX,14,'start',600);
+    o+=A(156,112,196,AC);
     o+='<path d="M260 74l36 12v28c0 22-16 34-36 42-20-8-36-20-36-42V86z" style="fill:var(--acc-tint);stroke:'+AC+';stroke-width:2"/>'+K(260,116,AC,1.3);
     o+=A(304,112,346,AC);
     o+=C(420,112,42,'var(--acc-tint)',AC,2)+T(420,124,'$',AC,34,'middle',700);
-    o+=T(91,196,'INVOICE',MU,10,'middle')+T(260,196,'VALIDATE',MU,10,'middle')+T(420,196,'PAYOUT',MU,10,'middle')+T(260,214,'2 HRS → 1 MIN',LM,10,'middle',700);
+    o+=T(89,204,'INVOICE',MU,14,'middle',700)+T(260,204,'VALIDATE',MU,14,'middle',700)+T(420,204,'PAYOUT',MU,14,'middle',700)+T(260,226,'2 HRS → 1 MIN',LM,14,'middle',700);
     var hh=[16,26,38,50,64,80];
-    for(i=0;i<6;i++){x=40+i*78;o+=R(x,330-hh[i],52,hh[i],6,i===5?'var(--acc)':'var(--acc-tint)',i===5?'none':'var(--acc-line)',1.2)}
-    o+=T(40,244,'FIRST-MONTH PAYOUTS',MU,9)+T(480,244,'$1.5M',AC,13,'end',700);
+    for(i=0;i<6;i++){x=40+i*78;o+=R(x,336-hh[i],52,hh[i],6,i===5?'var(--acc)':'var(--acc-tint)',i===5?'none':'var(--acc-line)',1.2)}
+    o+=T(40,246,'FIRST-MONTH PAYOUTS',MU,14,'start',700)+T(480,246,'$1.5M',AC,14,'end',700);
   }
   else if(t==='portal'){
-    o+=R(30,70,120,60,10,S1,LN)+T(90,105,'ORACLE EBS',TX,11,'middle',600);
-    o+=R(30,170,120,60,10,S1,LN)+T(90,205,'APECS',TX,11,'middle',600);
+    var ids=['#1042','#1043','#1044'], st=['Paid','Approved','In review'], sc=[AC,AC,LM];
+    o+=R(30,70,120,60,10,S1,LN)+T(90,105,'ORACLE EBS',TX,14,'middle',700);
+    o+=R(30,170,120,60,10,S1,LN)+T(90,205,'APECS',TX,14,'middle',700);
     o+=L(150,100,200,146,AC,2)+L(150,200,200,154,AC,2);
-    o+=C(226,150,26,'var(--acc-tint)',AC,2)+T(226,154,'MAP',AC,10,'middle',700);
+    o+=C(226,150,26,'var(--acc-tint)',AC,2)+T(226,155,'MAP',AC,14,'middle',700);
     o+=A(254,150,298,AC);
-    o+=R(304,50,190,230,12,S1,LN)+C(322,68,4,DM)+C(336,68,4,DM)+C(350,68,4,DM)+L(304,84,494,84,LN,1);
-    o+=T(320,110,'PAYEE PORTAL',MU,9);
-    for(i=0;i<4;i++){x=330+i*46;if(i<3)o+=L(x,142,x+46,142,i<2?AC:LN,2);}
-    for(i=0;i<4;i++){x=330+i*46;o+=C(x,142,7,i<3?'var(--acc)':S1,i<3?'none':LN,2)}
-    for(i=0;i<3;i++)o+=R(320,172+i*30,160,22,6,'var(--s2)')+L(330,183+i*30,330+60+i*20,183+i*30,DM,3);
-    o+=T(260,318,'REAL-TIME PAYMENT STATUS',MU,10,'middle');
+    o+=R(304,44,190,246,12,S1,LN)+C(322,62,4,DM)+C(336,62,4,DM)+C(350,62,4,DM)+L(304,78,494,78,LN,1);
+    o+=T(320,104,'PAYEE PORTAL',MU,14,'start',700);
+    for(i=0;i<4;i++){x=330+i*46;if(i<3)o+=L(x,132,x+46,132,i<2?AC:LN,2);}
+    for(i=0;i<4;i++){x=330+i*46;o+=C(x,132,7,i<3?'var(--acc)':S1,i<3?'none':LN,2)}
+    for(i=0;i<3;i++){y=158+i*40;o+=R(318,y,162,32,6,'var(--s2)')+T(328,y+21,ids[i],TX,14,'start',600)+T(470,y+21,st[i],sc[i],14,'end',700)}
+    o+=T(260,326,'REAL-TIME PAYMENT STATUS',MU,14,'middle',600);
   }
   else if(t==='testing'){
     var envs=['DEV','QA','UAT','PROD'];
-    for(i=0;i<4;i++){y=70+i*52;o+=T(40,y+17,envs[i],MU,11,'start',600);
+    for(i=0;i<4;i++){y=64+i*52;o+=T(40,y+18,envs[i],MU,14,'start',700);
       for(j=0;j<8;j++){var w=(i===2&&j===5);o+=R(100+j*30,y,24,26,6,w?'var(--lime-tint)':'var(--acc-tint)',w?LM:'var(--acc-line)',1.2)}}
-    o+=C(432,150,50,'none',LN,9)+'<circle cx="432" cy="150" r="50" transform="rotate(-90 432 150)" style="fill:none;stroke:'+AC+';stroke-width:9;stroke-linecap:round;stroke-dasharray:280 314"/>';
-    o+=T(432,155,'HEALTHY',AC,11,'middle',700)+T(432,230,'ENVIRONMENT HEALTH',MU,9,'middle');
-    o+=T(40,300,'REGRESSION + SANITY',MU,9)+R(40,310,294,8,4,'var(--s3)')+R(40,310,250,8,4,'var(--acc)');
+    o+=C(432,140,50,'none',LN,9)+'<circle cx="432" cy="140" r="50" transform="rotate(-90 432 140)" style="fill:none;stroke:'+AC+';stroke-width:9;stroke-linecap:round;stroke-dasharray:280 314"/>';
+    o+=T(432,145,'HEALTHY',AC,14,'middle',700)+T(432,222,'ENV. HEALTH',MU,14,'middle',700);
+    o+=T(40,300,'REGRESSION + SANITY',MU,14,'start',700)+R(40,312,294,8,4,'var(--s3)')+R(40,312,250,8,4,'var(--acc)');
   }
   else if(t==='migrate'){
     var hs=[50,84,62,104,72];
-    o+=R(40,56,180,206,12,S1,LN)+T(130,84,'JASPER · LEGACY',MU,10,'middle');
-    o+=R(300,56,180,206,12,S1,AC,2)+T(390,84,'INCORTA',AC,10,'middle',700);
-    for(i=0;i<5;i++){o+=R(62+i*30,236-hs[i],20,hs[i],4,'var(--s3)',LN,1)+R(322+i*30,236-hs[i],20,hs[i],4,'var(--acc-tint)',AC,1.5)}
-    o+=A(228,150,292,AC)+T(260,138,'PARITY',AC,9,'middle',700);
-    o+=T(260,302,'DATA INTEGRITY · PERFORMANCE PARITY',MU,10,'middle');
+    o+=R(40,56,180,216,12,S1,LN)+T(130,86,'JASPER · LEGACY',MU,14,'middle',700);
+    o+=R(300,56,180,216,12,S1,AC,2)+T(390,86,'INCORTA',AC,14,'middle',700);
+    for(i=0;i<5;i++){o+=R(62+i*30,232-hs[i],20,hs[i],4,'var(--s3)',LN,1)+R(322+i*30,232-hs[i],20,hs[i],4,'var(--acc-tint)',AC,1.5)}
+    o+=T(130,258,'BASELINE',MU,14,'middle',600)+T(390,258,'VALIDATED',AC,14,'middle',700);
+    o+=A(228,160,292,AC)+T(260,144,'MIGRATE',AC,14,'middle',700);
+    o+=T(260,312,'DATA INTEGRITY · PERFORMANCE PARITY',MU,14,'middle',600);
   }
   else if(t==='merge'){
-    o+=R(40,68,130,60,10,S1,LN)+T(105,103,'ENTITY A',MU,11,'middle');
-    o+=R(40,172,130,60,10,S1,LN)+T(105,207,'ENTITY B',MU,11,'middle');
+    o+=R(40,68,130,60,10,S1,LN)+T(105,103,'ENTITY A',MU,14,'middle',700);
+    o+=R(40,172,130,60,10,S1,LN)+T(105,207,'ENTITY B',MU,14,'middle',700);
     o+=L(170,98,276,150,AC,2)+L(170,202,276,150,AC,2);
-    o+=R(280,88,200,124,14,S1,AC,2)+T(380,146,'FINANCIALFORCE',TX,12,'middle',700)+T(380,168,'ONE LEDGER',MU,10,'middle');
+    o+=R(280,88,200,124,14,S1,AC,2)+T(380,146,'FINANCIALFORCE',TX,14,'middle',700)+T(380,170,'ONE LEDGER',MU,14,'middle',600);
     o+=C(468,88,17,'var(--acc)')+K(468,88,ON,1);
-    o+=R(120,272,280,30,15,'var(--acc-tint)',AC)+T(260,291,'0 CRITICAL POST-GO-LIVE ISSUES',AC,10,'middle',700);
+    o+=R(70,272,380,34,17,'var(--acc-tint)',AC)+T(260,294,'0 CRITICAL POST-GO-LIVE ISSUES',AC,14,'middle',700);
   }
   else if(t==='form'){
-    o+=R(60,46,400,240,14,S1,LN)+T(84,80,'NEW CUSTOMER / SUPPLIER',MU,10);
-    for(i=0;i<3;i++)o+=R(84,98+i*42,352,30,8,'var(--bg)',LN)+L(98,113+i*42,98+90+i*34,113+i*42,DM,3);
-    o+=R(84,236,352,10,5,'var(--s3)')+R(84,236,300,10,5,'var(--acc)');
-    o+=T(84,268,'LEAD TIME',MU,9)+T(436,268,'−30%',AC,12,'end',700);
+    var fl=['Supplier name','Bank & tax details','Payment terms'];
+    o+=R(60,40,400,262,14,S1,LN)+T(84,76,'NEW CUSTOMER / SUPPLIER',MU,14,'start',700);
+    for(i=0;i<3;i++)o+=R(84,92+i*46,352,34,8,'var(--bg)',LN)+T(98,115+i*46,fl[i],MU,14,'start',600);
+    o+=R(84,246,352,10,5,'var(--s3)')+R(84,246,300,10,5,'var(--acc)');
+    o+=T(84,282,'LEAD TIME',MU,14,'start',700)+T(436,282,'−30%',AC,14,'end',700);
   }
   else if(t==='team'){
-    var pts=[[100,84],[420,84],[100,262],[420,262]];
+    var pts=[[100,84],[420,84],[100,262],[420,262]], dl=['BRD','FSD','UAT','LIVE'];
     for(i=0;i<4;i++)o+=L(pts[i][0],pts[i][1],260,172,LN,2,'5 5');
-    o+=R(216,116,88,112,10,S1,AC,2);for(i=0;i<4;i++)o+=L(232,146+i*18,232+(i%2?34:56),146+i*18,DM,3);
-    o+=C(304,116,13,'var(--acc)')+K(304,116,ON,.85);
+    o+=R(212,112,96,120,10,S1,AC,2);for(i=0;i<4;i++)o+=T(228,140+i*24,dl[i],i===3?AC:MU,14,'start',700);
+    o+=C(308,112,13,'var(--acc)')+K(308,112,ON,.85);
     for(i=0;i<4;i++){x=pts[i][0];y=pts[i][1];o+=C(x,y,26,'var(--acc-tint)',LN)+C(x,y-6,8,MU)+'<path d="M'+(x-15)+' '+(y+16)+'a15 15 0 0 1 30 0z" style="fill:'+MU+'"/>'}
-    o+=T(260,318,'REQUIREMENTS · WORKSHOPS · UAT',MU,10,'middle');
+    o+=T(260,326,'REQUIREMENTS · WORKSHOPS · UAT',MU,14,'middle',700);
   }
   return '<svg viewBox="0 0 520 360" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Illustration: '+t+'">'+o+'</svg>';
 }
@@ -559,19 +607,25 @@ function pageWork(){
   h+='<section class="wrap hero"><div class="chips">'+chipsRow(w.chips)+'</div>'+
      '<h1 class="display">'+w.headline+'</h1><p class="lede">'+w.lede+'</p>'+
      '<div class="stats">'+w.stats.map(function(s){return '<div class="card stat"><div class="lbl">'+s.k+'</div><div class="metric">'+s.v+(s.u?'<small>'+s.u+'</small>':'')+'</div><div class="cap">'+s.d+'</div></div>'}).join('')+'</div></section>';
-  h+='<section class="wrap sec"><div class="sec-h"><span class="lbl acc">// Highlights</span><h2 class="h2">Signature achievements</h2></div>';
+  h+='<section class="wrap sec"><div class="sec-h"><span class="lbl acc">Highlights</span><h2 class="h2">Signature achievements</h2></div>';
   h+='<article class="card feat"><div class="txt"><span class="lbl lime">'+f[0].tag+'</span><h3>'+f[0].title+'</h3><p>'+f[0].desc+'</p>'+
-     '<div class="mets">'+f[0].mets.map(function(m){return '<div><span class="lbl">'+m[0]+'</span><b>'+m[1]+'</b></div>'}).join('')+'</div>'+tags(f[0].chips)+'</div>'+
-     '<div class="vis">'+vis(f[0])+'</div></article>';
-  h+='<div class="two">'+[f[1],f[2]].map(function(x){return '<article class="card pj hov"><span class="lbl lime">'+x.tag+'</span><h3>'+x.title+'</h3><p>'+x.desc+'</p><div class="vis">'+vis(x)+'</div><div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">'+tags(x.chips)+'<a class="lbl acc" href="#/contact" style="display:inline-flex;gap:6px;align-items:center">'+x.link+' '+ic('right')+'</a></div></article>'}).join('')+'</div></section>';
-  h+='<section class="wrap sec"><div class="sec-h"><span class="lbl acc">// Also delivered</span><h2 class="h2">More of the work</h2></div><div class="mgrid">'+w.more.map(function(x){return '<article class="card mc hov"><div class="mvis">'+illo(x.ill)+'</div><span class="lbl lime">'+x.k+'</span><h3>'+x.t+'</h3><p>'+x.d+'</p><span class="chip g" style="align-self:flex-start;margin-top:auto">'+x.m+'</span></article>'}).join('')+'</div></section>';
-  h+='<section class="wrap sec"><div class="cols"><div><div class="sec-h"><span class="lbl acc">// Career</span><h2 class="h2">Experience</h2></div>'+
+     '<div class="mets">'+f[0].mets.map(function(m){return '<div><span class="lbl">'+m[0]+'</span><b>'+m[1]+'</b></div>'}).join('')+'</div>'+tags(f[0].chips)+(f[0].case?'<div><button class="btn p sm" data-a="case" data-i="0">Read the case study '+ic('right')+'</button></div>':'')+'</div>'+
+     '<div class="vis">'+vis(f[0])+'</div>'+
+     (f[0].steps?'<div class="flow"><span class="lbl lime">How it works</span><ol>'+f[0].steps.map(function(t,k){return '<li><span class="n">STEP 0'+(k+1)+'</span><b>'+t[0]+'</b><span class="d">'+t[1]+'</span></li>'}).join('')+'</ol></div>':'')+'</article>';
+  h+='<div class="two">'+[f[1],f[2]].map(function(x,k){return '<article class="card pj hov"><span class="lbl lime">'+x.tag+'</span><h3>'+x.title+'</h3><p>'+x.desc+'</p><div class="vis">'+vis(x)+'</div><div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">'+tags(x.chips)+(x.case?'<button class="btn sm" data-a="case" data-i="'+(k+1)+'">'+(x.link||'Read the case study')+' '+ic('right')+'</button>':'<a class="btn sm" href="#/contact">'+(x.link||'Discuss this work')+' '+ic('right')+'</a>')+'</div></article>'}).join('')+'</div></section>';
+  h+='<section class="wrap sec"><div class="sec-h"><span class="lbl acc">Also delivered</span><h2 class="h2">More of the work</h2></div><div class="mgrid">'+w.more.map(function(x){return '<article class="card mc hov"><div class="mvis">'+illo(x.ill)+'</div><span class="lbl lime">'+x.k+'</span><h3>'+x.t+'</h3><p>'+x.d+'</p><span class="chip g" style="align-self:flex-start;margin-top:auto">'+x.m+'</span></article>'}).join('')+'</div></section>';
+  h+='<section class="wrap sec"><div class="cols"><div><div class="sec-h"><span class="lbl acc">Career</span><h2 class="h2">Experience</h2></div>'+
      w.roles.map(function(r){return '<div class="card role"><div class="top"><h3>'+r.t+(r.tag?' <span class="chip g" style="margin-left:6px">'+r.tag+'</span>':'')+'</h3><span class="lbl lime">'+r.yrs+'</span></div><span class="lbl">'+r.org+'</span><p>'+r.d+'</p></div>'}).join('')+'</div>'+
-     '<div><div class="sec-h"><span class="lbl acc">// Recognition</span><h2 class="h2">Awards &amp; certifications</h2></div><div class="card" style="padding:18px">'+
+     '<div><div class="sec-h"><span class="lbl acc">Recognition</span><h2 class="h2">Awards &amp; certifications</h2></div><div class="card" style="padding:18px">'+
      w.honours.map(function(x){return '<div class="hon"><span class="ico">'+ic('award')+'</span><div class="t"><b>'+x.t+'</b><span class="mono-cap">'+x.s+'</span></div><span class="lbl lime">'+x.y+'</span></div>'}).join('')+'</div>'+
-     '<div class="sec-h" style="margin-top:32px"><span class="lbl acc">// Toolkit</span><h2 class="h2">Skills</h2></div>'+tags(w.skills)+'</div></div>';
+     '<div class="sec-h" style="margin-top:32px"><span class="lbl acc">Toolkit</span><h2 class="h2">Skills</h2></div>'+skillsHTML(w.skills)+'</div></div>';
   h+='<div class="card cta"><h3>Have a process worth fixing? Let&rsquo;s talk.</h3><div style="display:flex;gap:12px;flex-wrap:wrap"><a class="btn p" href="#/contact">Get in touch '+ic('right')+'</a><a class="btn" href="'+SITE.links[0].u+'" target="_blank" rel="noopener">LinkedIn '+ic('arrow')+'</a></div></div></section>';
   return h;
+}
+
+function skillsHTML(sk){
+  if(Array.isArray(sk)) return tags(sk);
+  return '<div class="sgroups">'+Object.keys(sk).map(function(g){return '<div class="sg"><span class="lbl acc">'+g+'</span>'+tags(sk[g])+'</div>'}).join('')+'</div>';
 }
 
 var poemFilter='All';
@@ -633,7 +687,7 @@ function pageContact(mode){
 function formHTML(){
   if(sentMsg) return '<div class="ok"><div class="head" style="font-size:22px;font-weight:700;display:flex;gap:10px;align-items:center">'+ic('check')+' Almost there</div><p style="margin:10px 0 16px;color:var(--mu)">Your message is ready. Open it in your email app to send it.</p><a class="btn p" href="'+sentMsg+'">Open in email '+ic('arrow')+'</a> <button class="btn" data-a="again" style="margin-left:6px">Write another</button></div>';
   var topics=contactMode==='work'?['Business analysis','Product ownership','Collaboration','Just saying hi']:['Poetry','Photography','Collaboration','Just saying hi'];
-  return '<div class="lbl acc">// Message</div>'+
+  return '<div class="lbl acc">Message</div>'+
     '<div class="f2"><div class="fld"><label class="lbl" for="fn">Your name</label><input id="fn" placeholder="Your name" autocomplete="name"></div><div class="fld"><label class="lbl" for="fe">Your email</label><input id="fe" type="email" placeholder="you@example.com" autocomplete="email"></div></div>'+
     '<div class="fld"><span class="lbl">What is it about?</span><div class="filters" id="topics">'+topics.map(function(t,i){return '<button type="button" class="fbtn'+(i===0?' on':'')+'" data-a="topic" data-v="'+t+'">'+t+'</button>'}).join('')+'</div></div>'+
     '<div class="fld"><label class="lbl" for="fm">Message</label><textarea id="fm" placeholder="Tell me a little about what you have in mind…"></textarea><div class="err" id="ferr" role="alert"></div></div>'+
@@ -689,6 +743,15 @@ function openPhoto(id){
     '<div class="sh-f"><button class="btn sm" data-a="prev">'+ic('left')+' Previous</button><button class="btn sm" data-a="next">Next '+ic('right')+'</button></div></div>';
   showOv();
 }
+function openCase(i){
+  var x=SITE.work.featured[i]; if(!x||!x.case) return;
+  cur={t:'case',i:i};
+  $('#ov').innerHTML='<div class="sheet"><div class="sh-h"><span class="lbl acc">Case study</span><button class="iconbtn" data-a="close" aria-label="Close">'+ic('x')+'</button></div>'+
+    '<div class="sh-b"><span class="lbl lime">'+x.tag+'</span><h2 class="display" style="font-size:clamp(26px,4.4vw,38px);margin-top:12px">'+x.title+'</h2>'+
+    '<div class="case">'+x.case.map(function(c,k){return '<div class="cs"><span class="n">0'+(k+1)+'</span><div><span class="lbl acc">'+c[0]+'</span><p>'+c[1]+'</p></div></div>'}).join('')+'</div></div>'+
+    '<div class="sh-f"><button class="btn sm" data-a="close">Close</button><button class="btn p sm" data-a="discuss">Discuss this work '+ic('right')+'</button></div></div>';
+  showOv();
+}
 var lastFocus=null;
 function showOv(){lastFocus=document.activeElement;var o=$('#ov');o.classList.add('on');o.scrollTop=0;document.body.style.overflow='hidden';var c=$('#ov [data-a="close"]');if(c)c.focus()}
 function closeOv(){var o=$('#ov');if(!o.classList.contains('on'))return;o.classList.remove('on');o.innerHTML='';document.body.style.overflow='';cur={t:null,i:0};if(lastFocus&&lastFocus.focus)try{lastFocus.focus()}catch(e){}}
@@ -705,6 +768,8 @@ document.addEventListener('click',function(e){
   if(a==='mode'){location.hash='#/'+MODES[v][0]}
   else if(a==='poem'){openPoem(el.dataset.id)}
   else if(a==='photo'){openPhoto(el.dataset.id)}
+  else if(a==='case'){openCase(+el.dataset.i)}
+  else if(a==='discuss'){closeOv();location.hash='#/contact'}
   else if(a==='close'){closeOv()}
   else if(a==='prev'){step(-1)}
   else if(a==='next'){step(1)}
@@ -738,12 +803,16 @@ $('#copy').textContent='© '+new Date().getFullYear()+' Tarun Inala. All rights 
 paintToggle();
 route();
 }
+function fillDefaults(d){
+  var D=BUILTIN.work.featured, F=d.work.featured||[];
+  D.forEach(function(x,i){ if(F[i]) ['steps','case'].forEach(function(k){ if(!F[i][k]&&x[k]) F[i][k]=x[k]; }); });
+}
 /* Load content.json (edit that file, or sync it from Notion). If it can't be loaded, the built-in copy above is used. */
 (function(){
   var done=false; function go(){ if(done) return; done=true; boot(); }
   try{
     fetch('content.json',{cache:'no-store'}).then(function(r){return r.ok?r.json():Promise.reject()})
-      .then(function(d){ if(d&&d.work&&d.poems&&d.photos){ SITE=d; } }).catch(function(){}).then(go);
+      .then(function(d){ if(d&&d.work&&d.poems&&d.photos){ SITE=d; fillDefaults(SITE); } }).catch(function(){}).then(go);
     setTimeout(go,2500);
   }catch(e){ go(); }
 })();

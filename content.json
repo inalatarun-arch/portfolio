@@ -17,8 +17,8 @@
     "stats": [
       {
         "k": "Experience",
-        "v": "5",
-        "u": "+ yrs",
+        "v": "5+",
+        "u": "years",
         "d": "Business analysis & functional leadership"
       },
       {
@@ -36,7 +36,7 @@
     ],
     "featured": [
       {
-        "tag": "Featured · Generative AI",
+        "tag": "Flagship case study · Generative AI",
         "title": "Generative AI engine for clinical-trial contract extraction",
         "desc": "Led end-to-end development of an engine that reads complex Clinical Trial Agreement budget terms from unstructured PDFs and maps them into APECS — with a “Single Pane of Glass” UI to review, validate and commit every AI-extracted mapping, and automated checks that protect timely site reimbursements.",
         "mets": [
@@ -59,7 +59,39 @@
           "SLA",
           "UX Design"
         ],
-        "ill": "extract"
+        "ill": "extract",
+        "steps": [
+          [
+            "Ingest",
+            "Unstructured Clinical Trial Agreement budget PDFs"
+          ],
+          [
+            "Extract & validate",
+            "Generative AI reads the terms; automated checks catch errors"
+          ],
+          [
+            "Review & commit",
+            "Single Pane of Glass in APECS to validate, then commit"
+          ]
+        ],
+        "case": [
+          [
+            "The problem",
+            "Budget terms in Clinical Trial Agreements arrived as unstructured PDFs and were keyed into APECS by hand. Entry was slow and error-prone, backlogs built up, and delays put site reimbursements and SLAs at risk."
+          ],
+          [
+            "My role",
+            "Led the engine end to end as Senior Business Analyst: shaped the requirements, defined how extracted terms map into APECS, and designed the “Single Pane of Glass” screen where every AI-extracted mapping is reviewed, validated and committed."
+          ],
+          [
+            "Safeguards built in",
+            "Automated validation checks run inside the AI workflow, so problems are caught before anything is committed and site reimbursements stay accurate and on time."
+          ],
+          [
+            "The result",
+            "Daily manual effort down 40%, budget-entry cycle time down 60%, manual entry errors eliminated, and backlogs cleared with SLAs met."
+          ]
+        ]
       },
       {
         "tag": "Achievement 02 · Financial controls",
@@ -71,19 +103,51 @@
           "Testing"
         ],
         "ill": "validate",
-        "link": "Discuss this work"
+        "link": "Read the case study",
+        "case": [
+          [
+            "The problem",
+            "Outgoing payments could drift from what the contracts allowed. Overpayments and financial leakage had persisted since the application first went live."
+          ],
+          [
+            "My role",
+            "Led design, requirement gathering and testing end to end for a validation solution that checks payments against contractual costs."
+          ],
+          [
+            "Edge cases solved",
+            "Built robust validation logic for the awkward scenarios: calendar boundaries and amendment tracking, so complex clinical-trial structures stay compliant."
+          ],
+          [
+            "The result",
+            "100% alignment between outgoing payments and contractual costs, and an end to the systemic overpayments."
+          ]
+        ]
       },
       {
         "tag": "Achievement 03 · Payments",
-        "title": "Shipped a feature that had been pending for 12 years",
-        "desc": "Launched a critical clinical-trial payments capability that enabled $1.5M in payouts within its first month — and streamlined invoice processing from 2 hours of manual validation to 1 minute.",
+        "title": "Unlocked $1.5M in clinical-trial payouts in month one",
+        "desc": "Launched a critical payments capability the platform had been missing for 12 years, enabling $1.5M in payouts within its first month — and cut invoice processing from 2 hours of manual validation to 1 minute.",
         "chips": [
           "Payments",
           "Automation",
           "Delivery"
         ],
         "ill": "payout",
-        "link": "Discuss this work"
+        "link": "Read the case study",
+        "case": [
+          [
+            "The problem",
+            "A critical capability in the clinical-trial payment system had been pending for 12 years, and invoice processing relied on about two hours of manual validation."
+          ],
+          [
+            "My role",
+            "Delivered the launch and streamlined the invoice-processing workflow. Also led a team of Business Analysts on requirement documentation, lifting UAT solution quality by 20%."
+          ],
+          [
+            "The result",
+            "$1.5M in payouts enabled within the first month, and invoice validation cut from 2 hours to 1 minute."
+          ]
+        ]
       }
     ],
     "more": [
@@ -185,21 +249,36 @@
         "y": "2022–23"
       }
     ],
-    "skills": [
-      "Requirement elicitation",
-      "Stakeholder management",
-      "Process modelling",
-      "BRD / FSD",
-      "User stories & use cases",
-      "Gap analysis",
-      "Agile",
-      "UAT & test planning",
-      "SQL",
-      "JIRA",
-      "Visio / Draw.io",
-      "FinancialForce",
-      "Generative AI"
-    ]
+    "skills": {
+      "Domain & functional": [
+        "Clinical trial payments",
+        "Financial ERP",
+        "Contract data extraction",
+        "Payment validation",
+        "Financial reconciliation"
+      ],
+      "Tools & platforms": [
+        "APECS",
+        "Oracle EBS",
+        "Oracle Fusion",
+        "Incorta",
+        "FinancialForce",
+        "JIRA",
+        "Visio / Draw.io",
+        "SQL"
+      ],
+      "Methods & techniques": [
+        "Generative AI",
+        "Requirement elicitation",
+        "BRD / FSD",
+        "User stories & use cases",
+        "Gap analysis",
+        "Process modelling",
+        "Agile",
+        "UAT & test planning",
+        "Stakeholder management"
+      ]
+    }
   },
   "poems": [
     {
