@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="light dark">
-<title>Tarun Inala — Business Analyst, Poet &amp; Photographer</title>
+<title>Tarun Inala — Business Analyst</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
@@ -17,7 +17,7 @@
   --acc:#00E08F; --acc-on:#04130C; --acc-t:#007A52; --acc-tint:rgba(0,168,110,.10); --acc-line:rgba(0,140,92,.35);
   --lime-t:#6B7A00; --lime-tint:rgba(150,170,0,.13); --lime-line:rgba(120,140,0,.35);
   --hdr:rgba(243,244,247,.82); --shine:rgba(255,255,255,.9); --shadow:0 24px 48px -24px rgba(20,25,40,.25);
-  --glow:rgba(0,224,143,.16);
+  --glow:rgba(0,224,143,.16); --g1:rgba(0,224,143,.34); --g2:rgba(90,255,190,.26); --g3:rgba(150,190,0,.16);
   box-sizing:border-box;
   padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
 }
@@ -29,7 +29,7 @@
     --acc:#00F5A0; --acc-on:#08090C; --acc-t:#00F5A0; --acc-tint:rgba(0,245,160,.10); --acc-line:rgba(0,245,160,.30);
     --lime-t:#E8FF59; --lime-tint:rgba(232,255,89,.10); --lime-line:rgba(232,255,89,.30);
     --hdr:rgba(8,9,12,.78); --shine:rgba(255,255,255,.06); --shadow:0 24px 48px -12px rgba(0,0,0,.85);
-    --glow:rgba(0,245,160,.10);
+    --glow:rgba(0,245,160,.10); --g1:rgba(0,245,160,.30); --g2:rgba(0,245,160,.14); --g3:rgba(232,255,89,.10);
   }
 }
 :root[data-theme="dark"]{
@@ -39,7 +39,7 @@
   --acc:#00F5A0; --acc-on:#08090C; --acc-t:#00F5A0; --acc-tint:rgba(0,245,160,.10); --acc-line:rgba(0,245,160,.30);
   --lime-t:#E8FF59; --lime-tint:rgba(232,255,89,.10); --lime-line:rgba(232,255,89,.30);
   --hdr:rgba(8,9,12,.78); --shine:rgba(255,255,255,.06); --shadow:0 24px 48px -12px rgba(0,0,0,.85);
-  --glow:rgba(0,245,160,.10);
+  --glow:rgba(0,245,160,.10); --g1:rgba(0,245,160,.30); --g2:rgba(0,245,160,.14); --g3:rgba(232,255,89,.10);
 }
 
 /* ---------- BASE ---------- */
@@ -108,11 +108,27 @@ nav.pill a.on{background:var(--s1);color:var(--tx);box-shadow:inset 0 1px 0 0 va
 
 /* ---------- LAYOUT ---------- */
 main{display:block;min-height:70vh;position:relative}
-main::before{content:"";position:absolute;inset:0 0 auto 0;height:520px;background:radial-gradient(60% 100% at 30% 0%,var(--glow),transparent 70%);pointer-events:none;z-index:0}
+.bg-glow{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+.bg-glow i{position:absolute;border-radius:50%;filter:blur(60px);will-change:transform}
+.bg-glow i:nth-child(1){width:70vmax;height:70vmax;left:-25vmax;top:-30vmax;background:radial-gradient(circle,var(--g1),transparent 68%);animation:gl1 32s ease-in-out infinite alternate}
+.bg-glow i:nth-child(2){width:60vmax;height:60vmax;right:-25vmax;top:10vh;background:radial-gradient(circle,var(--g2),transparent 68%);animation:gl2 40s ease-in-out infinite alternate}
+.bg-glow i:nth-child(3){width:55vmax;height:55vmax;left:15vw;bottom:-35vmax;background:radial-gradient(circle,var(--g1),transparent 68%);animation:gl3 36s ease-in-out infinite alternate}
+.bg-glow i:nth-child(4){width:40vmax;height:40vmax;left:40vw;top:20vh;background:radial-gradient(circle,var(--g3),transparent 65%);animation:gl4 28s ease-in-out infinite alternate}
+.bg-glow::after{content:"";position:absolute;inset:-50%;background:linear-gradient(115deg,transparent 42%,var(--g2) 50%,transparent 58%);opacity:.55;animation:shim 24s ease-in-out infinite alternate}
+@keyframes gl1{to{transform:translate(28vw,22vh) scale(1.2)}}
+@keyframes gl2{to{transform:translate(-30vw,20vh) scale(1.15)}}
+@keyframes gl3{to{transform:translate(30vw,-18vh) scale(1.25)}}
+@keyframes gl4{from{transform:translate(-15vw,-8vh) scale(.9)}to{transform:translate(18vw,14vh) scale(1.2)}}
+@keyframes shim{from{transform:translateX(-28%)}to{transform:translateX(28%)}}
+.mode{display:flex;padding:3px;border-radius:999px;background:var(--s2);border:1px solid var(--line)}
+.mode button{border:0;background:transparent;padding:6px 14px;border-radius:999px;font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-weight:600;color:var(--mu);transition:all .2s}
+.mode button.on{background:var(--acc);color:var(--acc-on)}
+@media (max-width:1100px){.hide-l{display:none}}
+@media (max-width:520px){.brand b{display:none}.mode button{padding:6px 11px}}
 main>*{position:relative;z-index:1;animation:up .5s ease both}
 main>*:nth-child(2){animation-delay:.06s} main>*:nth-child(3){animation-delay:.12s} main>*:nth-child(4){animation-delay:.18s}
 @keyframes up{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
-@media (prefers-reduced-motion:reduce){main>*,.dot{animation:none}*{transition:none!important}}
+@media (prefers-reduced-motion:reduce){main>*,.dot,.bg-glow i,.bg-glow::after{animation:none}*{transition:none!important}}
 .hero{padding-top:56px;padding-bottom:40px}
 .chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px}
 .sec{padding-top:56px}
@@ -212,7 +228,7 @@ textarea{min-height:140px;resize:vertical}
 .ok{padding:22px;border-radius:12px;background:var(--acc-tint);border:1px solid var(--acc-line);color:var(--tx)}
 
 /* ---------- FOOTER ---------- */
-footer{margin-top:80px;border-top:1px solid var(--line);background:var(--s1);transition:background .25s}
+footer{position:relative;z-index:1;margin-top:80px;border-top:1px solid var(--line);background:var(--s1);transition:background .25s}
 footer .g{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:32px;padding:44px 0 28px}
 footer ul{list-style:none;margin:10px 0 0;padding:0;display:flex;flex-direction:column;gap:8px;color:var(--mu)}
 footer ul a:hover{color:var(--acc-t)}
@@ -257,14 +273,15 @@ footer .bt{border-top:1px solid var(--line);padding:18px 0 28px;display:flex;jus
 </head>
 <body>
 
-<div class="banner" id="banner"><div class="in"><span>Work section is filled from your resume. Poems and photos are still SAMPLES — swap them in the SITE object at the top of the script.</span><button data-a="hide-banner">Dismiss</button></div></div>
+<div class="bg-glow" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
 
 <header class="hdr">
   <div class="in">
-    <a class="brand" href="#/work" aria-label="Home"><span class="mark">T</span><b>Tarun Inala</b></a>
+    <a class="brand" id="brand" href="#/work" aria-label="Home"><span class="mark">T</span><b>Tarun Inala</b></a>
     <nav class="pill d" id="nav-d" aria-label="Primary"></nav>
     <div class="hdr-r">
-      <span class="chip g hide-m"><i class="dot"></i>Open to collaborations</span>
+      <span class="chip g hide-m hide-l"><i class="dot"></i>Open to collaborations</span>
+      <div class="mode" id="mode" role="group" aria-label="Choose section"><button data-a="mode" data-v="work">Work</button><button data-a="mode" data-v="personal">Personal</button></div>
       <button class="iconbtn" id="theme" aria-label="Switch colour theme" title="Switch light / dark"></button>
     </div>
   </div>
@@ -279,7 +296,7 @@ footer .bt{border-top:1px solid var(--line);padding:18px 0 28px;display:flex;jus
       <div>
         <div class="lbl">Personal archive</div>
         <div class="head" style="font-size:22px;font-weight:700;margin-top:8px;letter-spacing:-.02em">Tarun Inala</div>
-        <p class="mono-cap" style="margin:8px 0 0;max-width:300px">Business analysis, poetry and photography — kept in one quiet place.</p>
+        <p class="mono-cap" id="f-tag" style="margin:8px 0 0;max-width:300px"></p>
       </div>
       <div><div class="lbl">Pages</div><ul id="f-nav"></ul></div>
       <div><div class="lbl">Elsewhere</div><ul id="f-links"></ul></div>
@@ -302,8 +319,8 @@ var SITE = {
   ],
   work: {
     chips: ["Senior Business Analyst", "Generative AI", "Hyderabad, India"],
-    headline: "Turning complex <em>clinical-trial finance</em> into systems that <em>just work</em>.",
-    lede: "Senior Business Analyst and Functional Lead with 5+ years driving end-to-end SDLC, stakeholder engagement and process optimisation — from Generative AI extraction engines to large-scale ERP migrations that cut costs and keep SLAs on track.",
+    headline: "Turning <em>business needs</em> into products that <em>deliver real value</em>.",
+    lede: "Senior Business Analyst and Functional Lead with 5+ years owning the path from problem to shipped product — discovery, prioritisation, stakeholder alignment and delivery — across Generative AI tools, payments platforms and large-scale ERP migrations.",
     stats: [
       {k:"Experience", v:"5", u:"+ yrs", d:"Business analysis & functional leadership"},
       {k:"Budget entry cycle time", v:"−60", u:"%", d:"Via GenAI contract extraction"},
@@ -329,8 +346,11 @@ var SITE = {
       {t:"Junior Software Tester", org:"Infionic Inc. · Cloud ERP", yrs:"Aug 2018 — Apr 2019", d:"Tested the Finance module (AR & AP) and shaped a Windows-based ERP through competitive analysis of Tally and SAP.", tag:""}
     ],
     honours: [
+      {t:"Client Focus Award", s:"Clinical trial payments project · dedication to clients", y:"2025–26"},
+      {t:"Client Focus Award", s:"Clinical trial payments project · dedication to clients", y:"2024–25"},
       {t:"Certified Generative AI Professional", s:"Oracle Cloud Infrastructure 2025", y:"2025"},
       {t:"Career Essentials in Business Analysis", s:"Microsoft & LinkedIn", y:"2024"},
+      {t:"Above and Beyond Award", s:"FinancialForce engagement", y:"2022–23"},
       {t:"Award-winning client demonstration", s:"FinancialForce test automation", y:"2022–23"}
     ],
     skills: ["Requirement elicitation","Stakeholder management","Process modelling","BRD / FSD","User stories & use cases","Gap analysis","Agile","UAT & test planning","SQL","JIRA","Visio / Draw.io","FinancialForce","Generative AI"]
@@ -547,10 +567,10 @@ function pageWork(){
   h+='<section class="wrap sec"><div class="sec-h"><span class="lbl acc">// Also delivered</span><h2 class="h2">More of the work</h2></div><div class="mgrid">'+w.more.map(function(x){return '<article class="card mc hov"><div class="mvis">'+illo(x.ill)+'</div><span class="lbl lime">'+x.k+'</span><h3>'+x.t+'</h3><p>'+x.d+'</p><span class="chip g" style="align-self:flex-start;margin-top:auto">'+x.m+'</span></article>'}).join('')+'</div></section>';
   h+='<section class="wrap sec"><div class="cols"><div><div class="sec-h"><span class="lbl acc">// Career</span><h2 class="h2">Experience</h2></div>'+
      w.roles.map(function(r){return '<div class="card role"><div class="top"><h3>'+r.t+(r.tag?' <span class="chip g" style="margin-left:6px">'+r.tag+'</span>':'')+'</h3><span class="lbl lime">'+r.yrs+'</span></div><span class="lbl">'+r.org+'</span><p>'+r.d+'</p></div>'}).join('')+'</div>'+
-     '<div><div class="sec-h"><span class="lbl acc">// Recognition</span><h2 class="h2">Certifications &amp; recognition</h2></div><div class="card" style="padding:18px">'+
+     '<div><div class="sec-h"><span class="lbl acc">// Recognition</span><h2 class="h2">Awards &amp; certifications</h2></div><div class="card" style="padding:18px">'+
      w.honours.map(function(x){return '<div class="hon"><span class="ico">'+ic('award')+'</span><div class="t"><b>'+x.t+'</b><span class="mono-cap">'+x.s+'</span></div><span class="lbl lime">'+x.y+'</span></div>'}).join('')+'</div>'+
      '<div class="sec-h" style="margin-top:32px"><span class="lbl acc">// Toolkit</span><h2 class="h2">Skills</h2></div>'+tags(w.skills)+'</div></div>';
-  h+='<div class="card cta"><h3>Have a process worth fixing? Let&rsquo;s talk.</h3><div style="display:flex;gap:12px;flex-wrap:wrap"><a class="btn p" href="#/contact">Get in touch '+ic('right')+'</a><a class="btn" href="#/poetry">Read the poetry</a></div></div></section>';
+  h+='<div class="card cta"><h3>Have a process worth fixing? Let&rsquo;s talk.</h3><div style="display:flex;gap:12px;flex-wrap:wrap"><a class="btn p" href="#/contact">Get in touch '+ic('right')+'</a><a class="btn" href="'+SITE.links[0].u+'" target="_blank" rel="noopener">LinkedIn '+ic('arrow')+'</a></div></div></section>';
   return h;
 }
 
@@ -597,10 +617,13 @@ function pagePhotos(){
 }
 
 var sentMsg=null;
-function pageContact(){
+var contactMode='work';
+function pageContact(mode){
+  contactMode=mode||'work';
+  var lede=contactMode==='work'?'For product, business-analysis and consulting conversations, collaborations, or a quick question about my work. I read everything.':'For a thought about a poem or a photograph, or simply to say hello. I read everything.';
   var links=SITE.links.map(function(l){return '<a href="'+l.u+'"><span>'+l.k.slice(0,2)+'</span><span style="opacity:.7">'+l.k+'</span></a>'}).join('');
   return '<section class="wrap hero"><div class="chips"><span class="chip g"><i class="dot"></i>Say hello</span></div>'+
-    '<h1 class="display">Start a <em>conversation</em>.</h1><p class="lede">For business analysis and consulting conversations, collaborations, photography, or simply to share a thought about a poem. I read everything.</p></section>'+
+    '<h1 class="display">Start a <em>conversation</em>.</h1><p class="lede">'+lede+'</p></section>'+
     '<section class="wrap"><div class="cgrid"><div class="stack">'+
     '<div class="card box"><span class="lbl">Direct email</span><div class="email"><span>'+SITE.email+'</span><button class="btn sm" data-a="copy-email">'+ic('copy')+' <span id="cplbl">Copy</span></button></div></div>'+
     '<div class="card box"><span class="lbl">Elsewhere</span><div class="links">'+links+'</div></div>'+
@@ -609,7 +632,7 @@ function pageContact(){
 }
 function formHTML(){
   if(sentMsg) return '<div class="ok"><div class="head" style="font-size:22px;font-weight:700;display:flex;gap:10px;align-items:center">'+ic('check')+' Almost there</div><p style="margin:10px 0 16px;color:var(--mu)">Your message is ready. Open it in your email app to send it.</p><a class="btn p" href="'+sentMsg+'">Open in email '+ic('arrow')+'</a> <button class="btn" data-a="again" style="margin-left:6px">Write another</button></div>';
-  var topics=['Business analysis','Collaboration','Photography','Poetry','Just saying hi'];
+  var topics=contactMode==='work'?['Business analysis','Product ownership','Collaboration','Just saying hi']:['Poetry','Photography','Collaboration','Just saying hi'];
   return '<div class="lbl acc">// Message</div>'+
     '<div class="f2"><div class="fld"><label class="lbl" for="fn">Your name</label><input id="fn" placeholder="Your name" autocomplete="name"></div><div class="fld"><label class="lbl" for="fe">Your email</label><input id="fe" type="email" placeholder="you@example.com" autocomplete="email"></div></div>'+
     '<div class="fld"><span class="lbl">What is it about?</span><div class="filters" id="topics">'+topics.map(function(t,i){return '<button type="button" class="fbtn'+(i===0?' on':'')+'" data-a="topic" data-v="'+t+'">'+t+'</button>'}).join('')+'</div></div>'+
@@ -618,14 +641,29 @@ function formHTML(){
 }
 
 /* ---------- ROUTER ---------- */
-var ROUTES={work:['Work',pageWork],poetry:['Poetry',pagePoetry],photography:['Photography',pagePhotos],contact:['Contact',pageContact]};
+var ROUTES={
+  work:{l:'Work',m:'work',f:pageWork},
+  contact:{l:'Contact',m:'work',f:function(){return pageContact('work')}},
+  poetry:{l:'Poetry',m:'personal',f:pagePoetry},
+  photography:{l:'Photography',m:'personal',f:pagePhotos},
+  hello:{l:'Say hello',m:'personal',f:function(){return pageContact('personal')}}
+};
+var MODES={work:['work','contact'],personal:['poetry','photography','hello']};
+var FOOT={work:'Business analysis and product delivery — clear requirements, shipped outcomes.',personal:'Poems and photographs — kept in one quiet place.'};
+function savedMode(){try{var m=localStorage.getItem('inala-mode');if(m==='work'||m==='personal')return m}catch(e){}return 'work'}
 function route(){
-  var k=(location.hash.replace(/^#\/?/,'')||'work').split('/')[0];
-  if(!ROUTES[k]) k='work';
-  var nav=Object.keys(ROUTES).map(function(r){return '<a href="#/'+r+'" class="'+(r===k?'on':'')+'"'+(r===k?' aria-current="page"':'')+'>'+ROUTES[r][0]+'</a>'}).join('');
+  var k=location.hash.replace(/^#\/?/,'').split('/')[0];
+  if(!ROUTES[k]) k=MODES[savedMode()][0];
+  var mode=ROUTES[k].m;
+  try{localStorage.setItem('inala-mode',mode)}catch(e){}
+  var nav=MODES[mode].map(function(r){return '<a href="#/'+r+'" class="'+(r===k?'on':'')+'"'+(r===k?' aria-current="page"':'')+'>'+ROUTES[r].l+'</a>'}).join('');
   $('#nav-d').innerHTML=nav; $('#nav-m').innerHTML=nav;
-  $('#main').innerHTML=ROUTES[k][1]();
-  document.title=ROUTES[k][0]+' — Tarun Inala';
+  document.querySelectorAll('#mode button').forEach(function(b){var on=b.dataset.v===mode;b.classList.toggle('on',on);b.setAttribute('aria-pressed',on)});
+  $('#brand').setAttribute('href','#/'+MODES[mode][0]);
+  $('#f-tag').textContent=FOOT[mode];
+  $('#f-nav').innerHTML=MODES[mode].map(function(r){return '<li><a href="#/'+r+'">'+ROUTES[r].l+'</a></li>'}).join('');
+  $('#main').innerHTML=ROUTES[k].f();
+  document.title=ROUTES[k].l+' — Tarun Inala';
   closeOv(); window.scrollTo(0,0);
 }
 window.addEventListener('hashchange',route);
@@ -664,7 +702,7 @@ document.addEventListener('click',function(e){
   if(e.target===$('#ov')){closeOv();return}
   var el=e.target.closest('[data-a]'); if(!el)return;
   var a=el.dataset.a, v=el.dataset.v;
-  if(a==='hide-banner'){$('#banner').style.display='none'}
+  if(a==='mode'){location.hash='#/'+MODES[v][0]}
   else if(a==='poem'){openPoem(el.dataset.id)}
   else if(a==='photo'){openPhoto(el.dataset.id)}
   else if(a==='close'){closeOv()}
@@ -695,7 +733,6 @@ document.addEventListener('keydown',function(e){
 
 /* ---------- FOOTER + INIT ---------- */
 function boot(){
-$('#f-nav').innerHTML=Object.keys(ROUTES).map(function(r){return '<li><a href="#/'+r+'">'+ROUTES[r][0]+'</a></li>'}).join('');
 $('#f-links').innerHTML=SITE.links.map(function(l){return '<li><a href="'+l.u+'">'+l.k+'</a></li>'}).join('')+'<li><a href="mailto:'+SITE.email+'">Email</a></li>';
 $('#copy').textContent='© '+new Date().getFullYear()+' Tarun Inala. All rights reserved.';
 paintToggle();
