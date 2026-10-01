@@ -1,0 +1,1329 @@
+{
+ "email": "taruntks97@gmail.com",
+ "links": [
+  {
+   "k": "LinkedIn",
+   "u": "https://www.linkedin.com/in/tarunksai/"
+  }
+ ],
+ "work": {
+  "chips": [
+   "Senior Business Analyst",
+   "Generative AI",
+   "Hyderabad, India"
+  ],
+  "headline": "Turning <em>business needs</em> into products that <em>deliver real value</em>.",
+  "lede": "Senior Business Analyst and Functional Lead with 5+ years owning the path from problem to shipped product — discovery, prioritisation, stakeholder alignment and delivery — across Generative AI tools, payments platforms and large-scale ERP migrations.",
+  "stats": [
+   {
+    "k": "Experience",
+    "v": "5+",
+    "u": "years",
+    "d": "Business analysis & functional leadership"
+   },
+   {
+    "k": "Budget entry cycle time",
+    "v": "−60",
+    "u": "%",
+    "d": "Via GenAI contract extraction"
+   },
+   {
+    "k": "Payouts unlocked",
+    "v": "$1.5M",
+    "u": "",
+    "d": "In the first month of a 12-year-old feature"
+   }
+  ],
+  "featured": [
+   {
+    "tag": "Flagship case study · Generative AI",
+    "title": "Generative AI engine for clinical-trial contract extraction",
+    "desc": "Led end-to-end development of an engine that reads complex Clinical Trial Agreement budget terms from unstructured PDFs and maps them into APECS — with a “Single Pane of Glass” UI to review, validate and commit every AI-extracted mapping, and automated checks that protect timely site reimbursements.",
+    "mets": [
+     [
+      "Daily manual effort",
+      "−40%"
+     ],
+     [
+      "Entry cycle time",
+      "−60%"
+     ],
+     [
+      "Entry errors",
+      "Eliminated"
+     ]
+    ],
+    "chips": [
+     "Generative AI",
+     "Clinical Trials",
+     "SLA",
+     "UX Design"
+    ],
+    "ill": "extract",
+    "steps": [
+     [
+      "Ingest",
+      "Unstructured Clinical Trial Agreement budget PDFs"
+     ],
+     [
+      "Extract & validate",
+      "Generative AI reads the terms; automated checks catch errors"
+     ],
+     [
+      "Review & commit",
+      "Single Pane of Glass in APECS to validate, then commit"
+     ]
+    ],
+    "case": [
+     [
+      "The problem",
+      "Budget terms in Clinical Trial Agreements arrived as unstructured PDFs and were keyed into APECS by hand. Entry was slow and error-prone, backlogs built up, and delays put site reimbursements and SLAs at risk."
+     ],
+     [
+      "My role",
+      "Led the engine end to end as Senior Business Analyst: shaped the requirements, defined how extracted terms map into APECS, and designed the “Single Pane of Glass” screen where every AI-extracted mapping is reviewed, validated and committed."
+     ],
+     [
+      "Safeguards built in",
+      "Automated validation checks run inside the AI workflow, so problems are caught before anything is committed and site reimbursements stay accurate and on time."
+     ],
+     [
+      "The result",
+      "Daily manual effort down 40%, budget-entry cycle time down 60%, manual entry errors eliminated, and backlogs cleared with SLAs met."
+     ]
+    ]
+   },
+   {
+    "tag": "Achievement 02 · Financial controls",
+    "title": "Payment Term Validation: closing a leak since day one",
+    "desc": "Designed, specified and tested validation that aligns 100% of outgoing payments with contractual costs — ending systemic overpayments that had persisted since the application launched, including edge cases like calendar boundaries and amendment tracking.",
+    "chips": [
+     "Validation",
+     "Compliance",
+     "Testing"
+    ],
+    "ill": "validate",
+    "link": "Read the case study",
+    "case": [
+     [
+      "The problem",
+      "Outgoing payments could drift from what the contracts allowed. Overpayments and financial leakage had persisted since the application first went live."
+     ],
+     [
+      "My role",
+      "Led design, requirement gathering and testing end to end for a validation solution that checks payments against contractual costs."
+     ],
+     [
+      "Edge cases solved",
+      "Built robust validation logic for the awkward scenarios: calendar boundaries and amendment tracking, so complex clinical-trial structures stay compliant."
+     ],
+     [
+      "The result",
+      "100% alignment between outgoing payments and contractual costs, and an end to the systemic overpayments."
+     ]
+    ]
+   },
+   {
+    "tag": "Achievement 03 · Payments",
+    "title": "Unlocked $1.5M in clinical-trial payouts in month one",
+    "desc": "Launched a critical payments capability the platform had been missing for 12 years, enabling $1.5M in payouts within its first month — and cut invoice processing from 2 hours of manual validation to 1 minute.",
+    "chips": [
+     "Payments",
+     "Automation",
+     "Delivery"
+    ],
+    "ill": "payout",
+    "link": "Read the case study",
+    "case": [
+     [
+      "The problem",
+      "A critical capability in the clinical-trial payment system had been pending for 12 years, and invoice processing relied on about two hours of manual validation."
+     ],
+     [
+      "My role",
+      "Delivered the launch and streamlined the invoice-processing workflow. Also led a team of Business Analysts on requirement documentation, lifting UAT solution quality by 20%."
+     ],
+     [
+      "The result",
+      "$1.5M in payouts enabled within the first month, and invoice validation cut from 2 hours to 1 minute."
+     ]
+    ]
+   }
+  ],
+  "more": [
+   {
+    "k": "Payments Portal",
+    "t": "Payee transparency, self-service",
+    "d": "Functional Lead for the payment portal — the liaison between payees, the Payment Processing Group and tech teams. Defined data mapping and reconciliation logic across Oracle EBS and APECS.",
+    "m": "−50% support inquiries",
+    "ill": "portal"
+   },
+   {
+    "k": "Automated Testing Tool",
+    "t": "End-to-end regression & sanity checks",
+    "d": "Architected a custom automated testing tool across multiple environments, with real-time environment-health reporting and a faster Deployment Validation Process.",
+    "m": "Faster post-deployment checks",
+    "ill": "testing"
+   },
+   {
+    "k": "Jasper → Incorta",
+    "t": "Reporting migration",
+    "d": "Led requirements, documentation and testing to migrate legacy reports to Incorta, validating accuracy and performance parity with the old platform.",
+    "m": "Data integrity & parity",
+    "ill": "migrate"
+   },
+   {
+    "k": "FinancialForce",
+    "t": "Two acquired entities, one clean go-live",
+    "d": "Drove stakeholder alignment and UAT for customisations across multiple legal entities, and integrated two acquired entities with zero critical post-go-live issues.",
+    "m": "0 critical issues",
+    "ill": "merge"
+   },
+   {
+    "k": "Oracle Fusion",
+    "t": "Faster customer & supplier setup",
+    "d": "Streamlined the customer and supplier creation process to lift procurement efficiency.",
+    "m": "−30% lead time",
+    "ill": "form"
+   },
+   {
+    "k": "Team leadership",
+    "t": "Better requirements, better UAT",
+    "d": "Led a team of Business Analysts on requirement documentation and ran cross-functional workshops to align stakeholders.",
+    "m": "+20% UAT solution quality",
+    "ill": "team"
+   }
+  ],
+  "roles": [
+   {
+    "t": "Senior Business Analyst",
+    "org": "Winfo Solutions · APECS",
+    "yrs": "Mar 2023 — Present",
+    "d": "Functional Lead for a clinical-trial payments and contracts platform: Generative AI extraction, payment validation, the payee portal, automated testing and reporting migration.",
+    "tag": "Current"
+   },
+   {
+    "t": "Business Analyst",
+    "org": "Winfo Solutions · FinancialForce, Oracle Fusion, RPA",
+    "yrs": "Jun 2021 — Mar 2023",
+    "d": "Owned UAT, requirements and test automation across ERP and RPA engagements — including an award-winning FinancialForce automation demo.",
+    "tag": ""
+   },
+   {
+    "t": "Junior Software Tester",
+    "org": "Infionic Inc. · Cloud ERP",
+    "yrs": "Aug 2018 — Apr 2019",
+    "d": "Tested the Finance module (AR & AP) and shaped a Windows-based ERP through competitive analysis of Tally and SAP.",
+    "tag": ""
+   }
+  ],
+  "honours": [
+   {
+    "t": "Client Focus Award",
+    "s": "Clinical trial payments project · dedication to clients",
+    "y": "2025–26"
+   },
+   {
+    "t": "Client Focus Award",
+    "s": "Clinical trial payments project · dedication to clients",
+    "y": "2024–25"
+   },
+   {
+    "t": "Certified Generative AI Professional",
+    "s": "Oracle Cloud Infrastructure 2025",
+    "y": "2025"
+   },
+   {
+    "t": "Career Essentials in Business Analysis",
+    "s": "Microsoft & LinkedIn",
+    "y": "2024"
+   },
+   {
+    "t": "Above and Beyond Award",
+    "s": "FinancialForce engagement",
+    "y": "2022–23"
+   },
+   {
+    "t": "Award-winning client demonstration",
+    "s": "FinancialForce test automation",
+    "y": "2022–23"
+   }
+  ],
+  "skills": {
+   "Domain & functional": [
+    "Clinical trial payments",
+    "Financial ERP",
+    "Contract data extraction",
+    "Payment validation",
+    "Financial reconciliation"
+   ],
+   "Tools & platforms": [
+    "APECS",
+    "Oracle EBS",
+    "Oracle Fusion",
+    "Incorta",
+    "FinancialForce",
+    "JIRA",
+    "Visio / Draw.io",
+    "SQL"
+   ],
+   "Methods & techniques": [
+    "Generative AI",
+    "Requirement elicitation",
+    "BRD / FSD",
+    "User stories & use cases",
+    "Gap analysis",
+    "Process modelling",
+    "Agile",
+    "UAT & test planning",
+    "Stakeholder management"
+   ]
+  }
+ },
+ "writings": [
+  {
+   "id": "w1",
+   "title": "Faults and us",
+   "lang": "English",
+   "lines": [
+    "I've always believed that as humans, we all are faulty in some way or another. Also said that we, as humans need to use our intellect and thinking capabilities to make ourselves better. And I will always stand by the statement.",
+    "",
+    "I also believe that for us humans, it's difficult to accept the fact that we're not perfect and we're flawed. And we only tend to accept this when we realise that our inner defects. The problems writing us that we are scared to acknowledge. I've done that. I didn't want to accept that I was a lazy, selfish and \"dont-leave-the-comfort-zone guy\". Maybe because I didn't want to see that side of myself. I wanted to see myself as a perfect human being. But there was always this voice inside me that said I wasn't. But when I finally accept it and see myself for what I am, I feel much lighter and better. Not because I am that person but because I know that I'm at least not lying to myself.",
+    "",
+    "I've come to believe that when we accept the flaws in us, we feel a lot lighter and guilt free because we at least know that we're not lying to ourselves. And when we accept this, we stop asking \"What is wrong with me?\" and start asking \"What can I do about it?\". Simply put, we have one less thing to worry about. We only have to worry about bettering ourselves.",
+    "",
+    "I never tell people to \"Be positive ALWAYS\" because I think there's something called \"TOXIC POSITIVITY\"  and it affects is. It makes us set false hopes for ourselves and makes us get hurt when we are unable to to reach them. Instead, if we stop 'being positive' with ourselves for a moment and be brutally honest, we will see ourselves for what we truly are.",
+    "",
+    "Remember, change in anything can only be bought when you acknowledge the flaws/shortcomings in it. Because that's when you start working on the result."
+   ]
+  },
+  {
+   "id": "w2",
+   "title": "THE DROP",
+   "lang": "English",
+   "lines": [
+    "You look sad today. What's the matter?",
+    "Asked the sun as he looked at the droplet.",
+    "From what he knew of her,",
+    "She was always Happy.",
+    "The one that cheered up every drop in the pond.",
+    "The one that wasn't necessarily the class clown,",
+    "But knew how to get rid of someone's frown,",
+    "With a personality for which she was known.",
+    "It was very unusual of her to be sad.",
+    "",
+    "\"I'm afraid.",
+    "I'm afraid I will live forever in this pond.",
+    "I'm afraid I can't be what I want to be.",
+    "I'm afraid all my fellow drops would one day reach the sky,",
+    "And be the raindrop I always dreamt of being.",
+    "I'm afraid I'll be where I am now forever.",
+    "I'm afraid I won't live upto the expectations of the drops that I love  and the drops that love me back.",
+    "",
+    "I'm afraid I won't even be a dew drop like my friend.",
+    "He says, I deserve more than  being just a dew drop. I want to believe in him. I want to think I deserve better and that's what I'm waiting for.",
+    "But I only want to. I can't.",
+    "I'm afraid all my fellow droplets will become rain drops, the drinking water that humans use,  beautiful dew drops on the flowers that humans admire.",
+    "While I sulk in this pond, soaking in mud forever and being someone who I am not.",
+    "",
+    "Some of them even join the sea. I waited for that too.",
+    "But it feels like the nature, she wants me to sit here forever,",
+    "In the middle of nowhere,",
+    "Where I don't have any path to tread on.",
+    "",
+    "Is it that I don't deserve to be like them?",
+    "Am I not capable of being like them?",
+    "Why can't I get what I want?",
+    "Why does everyone else get what they desire and I don't?",
+    "Don't I deserve even the least of all things?",
+    "",
+    "I want to be a lot of things Mr.Sun.",
+    "But I don't want to die as a nothing.",
+    "I want to be what I want to be. \"",
+    "",
+    "The sun stared at her",
+    "While he waited her to speak up.",
+    "He didn't hear a word of what she said.",
+    "For it was all in her head.",
+    "It wanted to shout all these words out loud so the nature could hear it too.",
+    "But for the kind of droplet that she was,",
+    "It would be unusual for her to be sad.",
+    "For she, was a happy lad.",
+    "",
+    "The drop smiled and said,",
+    "\"Nothing. Was just thinking about my fanta-sea with the sea and thought it would be better if I drop-ped them. \"",
+    "The sun laughed out loud for the terrible pun.",
+    "",
+    "The sun set,",
+    "The smile on the drop, dropped,",
+    "Another day passed by."
+   ]
+  },
+  {
+   "id": "w3",
+   "title": "Never Enough",
+   "lang": "English",
+   "lines": [
+    "You could give everything to someone and still not be enough. And you could give nothing to someone else and still be enough."
+   ],
+   "kind": "thoughts"
+  },
+  {
+   "id": "w4",
+   "title": "COVID AND QUARANTINE",
+   "lang": "English",
+   "lines": [
+    "And there she sat,",
+    "In the garden,",
+    "overlooking the hills,",
+    "where she had everything in her sight.",
+    "Everything under the limitless sky,",
+    "From things so intricate that couldn't be seen with a human eye.",
+    "To the beautiful valleys,",
+    "that were as deep as her heart that contained no malice.",
+    "",
+    "She rested there in the garden,",
+    "where she could feel the winds gently kissing her cheeks",
+    "as if she was something carefully sculpted.",
+    "The dew drops on her face,",
+    "Were a sight to be amazed at every morning.",
+    "The sunlight so bright,",
+    "it filled her soul with so much light,",
+    "everyone's sight could see it in her",
+    "gleaming smile.",
+    "The fog wrapped her",
+    "in it's arms  every morning.",
+    "And made sure she wasn't feeling trapped",
+    "for her petals, pieces of art,",
+    "were as fragile as her heart.",
+    "",
+    "She dwelled there in a place so beautiful,",
+    "Yet she felt wasn't very fanciful.",
+    "",
+    "News spread that there was a storm coming,",
+    "The gardener dreaded that she would be destroyed.",
+    "He thought she was so florid,",
+    "That It'd be horrid to lose her.",
+    "A thought so horrific,",
+    "He thought was a dream meant to be morbid.",
+    "",
+    "He carefully placed her in a pot,",
+    "and put her in the window bay",
+    "Near his cot.",
+    "She was furious and uncomfortable.",
+    "For she missed her habitat,",
+    "where she usually 'enjoyed' resting at.",
+    "",
+    "Only she could hear her squalls,",
+    "As she cursed him for putting her",
+    "between the four walls.",
+    "",
+    "She sat there in the room,",
+    "looking at the storm which could have been her doom,",
+    "from the window for two days,",
+    "dazed, as all her friends",
+    "ceased to exist one by one.",
+    "She saw all the neighbor trees",
+    "being scarred and succumbing to the storm with ease.",
+    "She was scared and paranoid,",
+    "and felt like everything was being sucked into the void.",
+    "She just wished the storm finished soon,",
+    "so she could live a few more days under the moon.",
+    "",
+    "The storms passed by.",
+    "The sun shined again.",
+    "She was back to her usual place.",
+    "A place where the beauty hadn't been debased,",
+    "Despite the storm that took place.",
+    "She thanked the gardener for what he had done.",
+    "and despised herself",
+    "remembering how she spited him before.",
+    "",
+    "She looked at her surrounding with utmost care this time.",
+    "Everything seemed way more beautiful than it ever looked to her eyes.",
+    "She could feel her lips rise,",
+    "She smiled,",
+    "felt grateful for what she had,",
+    "and sat there ever after,",
+    "treasuring every moment of her life,",
+    "with smiles and laughter."
+   ]
+  },
+  {
+   "id": "w5",
+   "title": "Good?",
+   "lang": "English",
+   "lines": [
+    "These days, I wonder",
+    "What does it mean to be good?",
+    "",
+    "The inability to do bad,",
+    "or the ability to do bad and choosing not to?",
+    "",
+    "If I make the choice to not be bad,",
+    "Why do I still hurt someone?",
+    "Why do I end up being the antagonist in someone's life?",
+    "",
+    "And if I end up being bad even when I don't intend to,",
+    "Am I good for choosing not to be bad or am I bad for hurting them?"
+   ]
+  },
+  {
+   "id": "w6",
+   "title": "నీవుంటే",
+   "lang": "Telugu",
+   "lines": [
+    "నీవుంటే",
+    "నావెంటే",
+    "వెన్నంటే",
+    "వున్నట్టే,",
+    "వెన్నెల్లే.",
+    "",
+    "నీవల్లే నవ్వులే,",
+    "నీ నవ్వే వెన్నెలే.",
+    "",
+    "నీవు అల్లే ఈ నవ్వుల వల్లే,",
+    "నావ అల్లే, నాలో కలలే.",
+    "",
+    "నీవు అల్లే, వన్నెల వల్లే,",
+    "నా ఈ నవ్వులే"
+   ],
+   "kind": "poetry"
+  },
+  {
+   "id": "w7",
+   "title": "Pyaar mein log bahut Kuch karte hai",
+   "lang": "Hindi",
+   "lines": [
+    "Pyaar mein log bahut Kuch karte hai.",
+    "",
+    "Pyaar mein kho jaathe hain,",
+    "Khud ko kho bhi dethe Hain.",
+    "",
+    "Bhul jaathe hain,",
+    "Khud ko bhula bhi dethe Hain.",
+    "",
+    "Haseen bann jaathe hain,",
+    "Hasee bhool bhi jaathe hai.",
+    "",
+    "Pyaar mein kisikeliye khwaaish karte Hain,",
+    "Kisika khwaaish bhi ban jaathe hain.",
+    "",
+    "Agar yahi mohabbat hain,",
+    "Toh humein yoohi rehne dijiye.",
+    "Iss pyaar mein humein fanaa honey dijiye."
+   ]
+  },
+  {
+   "id": "w8",
+   "title": "Musaafir",
+   "lang": "Hindi",
+   "lines": [
+    "Shaam ke 6 baj raha thha",
+    "Dhalthe hue sooraj ko dekhte,",
+    "Nadi ke kinaare baitha thha mein",
+    "",
+    "Ithne mein aaya woh.",
+    "Ek musaafir.",
+    "Naa jaana uska naam",
+    "Naa poocha uska patha.",
+    "",
+    "Paas aake baitha,",
+    "Aur kehne laga ki,",
+    "Uske naukri se behadd pyaar toh karta hai",
+    "Par aaj Kal mann nahi lagtha.",
+    "Thakaan toh bahut mehsoos karta hai",
+    "Par raath ko neend nahi aathi.",
+    "Hasna aur muskuraana chahtha hai.",
+    "Par hasthe hasthe ro Letha Hain.",
+    "",
+    "Kaha, ki usey ab andhere se hi nahi,",
+    "Roshni se bhi darr lagne laga.",
+    "Bola ki koi uss se baat tak nahi karta.",
+    "Kisi ko parvah nahi ki woh sahi salamat hai ya nahi.",
+    "Baatein karte bhi hai toh log sirf uske baatein sunthe hai.",
+    "Par uska khaamoshi koi nahi samajhta hai.",
+    "",
+    "Unke aankhon se aasoo behne lagi",
+    "Mein khaamosh baitha raha",
+    "Uska haath thaama, aur gale lagaya.",
+    "Ro pada aur kaha,",
+    "\"Shukra guzaar hai ki aap milein aur hamara dil ki baat samjhe",
+    "Par afsoos to yeh hain ki,",
+    "Aapka milne mein thodi der ho gayi\"",
+    "",
+    "Aur faristhe ki tarah,",
+    "Hawaa mein gaayab ho gaya."
+   ],
+   "note": "Forgive for any grammar mistakes. I'm not that good at Hindi grammar. Please comment if there are any mistakes."
+  },
+  {
+   "id": "w9",
+   "title": "WAQT",
+   "lang": "Hindi",
+   "lines": [
+    "Chaahe tum aaj kitna bhi betein hue Kal mein waqt guzaaro,",
+    "Kal jab  waqt aaye,",
+    "Aur tumhe guzar jaane ka mann kare",
+    "Bus itni Guzaarish hai,",
+    "hamare saath thhoda waqt guzaar le"
+   ]
+  },
+  {
+   "id": "w10",
+   "title": "Mental Health",
+   "lang": "English",
+   "lines": [
+    "As children, we were always taught that \"Be happy\" or \"Keep smiling\".",
+    "Maybe that's the issue.",
+    "We're taught to be happy always and be smiling but not to listen to people who are in pain. We often forget that not every smile is real. Not everyone who makes others laugh is actually happy inside. We're not taught to be there for people no matter what. We're not told that it's okay to be sad. We're not taught about depression. We're not told how important mental health is.",
+    "",
+    "It's easy to ignore a call.",
+    "It's easy to leave someone on read.",
+    "It's easy to act as if someone doesn't exist.",
+    "",
+    "But It's hard to sit there in a room alone, look at those blue ticks and cry yourself to sleep.",
+    "It's hard to stare into the void,  talk to yourself and slowly feel yourself fall apart.",
+    "It's harder to live knowing that you weren't there for someone in their last days when they needed you the most and live with that guilt.",
+    "",
+    "Do you know what's easier than that?",
+    "It's way easier if you just pick up that call and listen to them.",
+    "It's easier to say a few kind words and talk to them about their pain.",
+    "It's easier to ask \"Are you okay?\" and listen to how they're feeling.",
+    "",
+    "For us, these are celebrities.",
+    "They are 'stars'.",
+    "They are idols.",
+    "But for someone out there,",
+    "They are sons, loved ones, brothers and friends just like us.",
+    "",
+    "Depression can happen to anyone.",
+    "God forbid, but it can happen to anyone of those persons around you.",
+    "You never know what someone's facing.",
+    "For smiles are masks that we were taught to wear all the time.",
+    "And that's what people do.",
+    "They smile no matter what their mental state is and that's what makes it difficult to know what they're going through.",
+    "",
+    "The least we can do is talk and listen to people what they feel.",
+    "Be there no matter what and talk to them.",
+    "Life's too short to ignore someone and not listen to them.",
+    "",
+    "Not everyone has someone to talk to.",
+    "The one's who do, succeed it.",
+    "The one's who don't succumb to it.",
+    "",
+    "\"All it takes is one bad day.\""
+   ],
+   "kind": "journal"
+  },
+  {
+   "id": "w12",
+   "title": "HUMANS",
+   "lang": "English",
+   "lines": [
+    "We've lost our right to be called humans anymore.",
+    "",
+    "We feed animals.",
+    "But we fill the food with crackers 'just for fun'.",
+    "Psychotic.",
+    "",
+    "We do riots against oppression against innocent lives.",
+    "But vandalize properties of innocent people as a part of it.?",
+    "Cunning.",
+    "",
+    "We organize campaigns about global 'warming' and how wildlife is suffering Because of it.",
+    "But turn 'cold' while disposing plastic into oceans.",
+    "Cold.",
+    "",
+    "We parade for equal rights",
+    "But act blind when we hear about false accusations.",
+    "Conniving",
+    "",
+    "We say we love our country and act in movies about the nation.",
+    "But when the need comes to be a real life hero, the reel villain takes the throne.",
+    "Pretentious.",
+    "",
+    "There was a time when human character was distinguished into Black, White or Grey.",
+    "But we HUmans are now just men with  different HUES of black characters.",
+    "",
+    "We aren't humans anymore I guess.",
+    "Not the ones we were taught to be.",
+    "Neither are we demons.",
+    "Because from what we're doing right now, we're worse than them.",
+    "We humans, are worse than demons.",
+    "And maybe, from now on when a demon does something terrible, they'd be called a human."
+   ],
+   "kind": "thoughts"
+  },
+  {
+   "id": "w14",
+   "title": "నీవు",
+   "lang": "Telugu",
+   "lines": [
+    "\"ఎలా ఉన్నావ్?\" అన్న నీ ప్రశ్నకీ,",
+    "\"నీవు లేకుండా నేను ఎందుకు ఉన్నా\" అన్న నా ప్రశ్న కి,",
+    "సమాధానం వేరు అయినా,",
+    "రెండిటికీ కారణం ఒక్కటే."
+   ],
+   "kind": "poetry"
+  },
+  {
+   "id": "w15",
+   "title": "Love story",
+   "lang": "English",
+   "lines": [
+    "You know the best love story I know?",
+    "The one between sun and the moon.",
+    "",
+    "He rises for the moon every morning,",
+    "Thinking he will finally express his love for her that day.",
+    "But the moon - she never sees him.",
+    "For the sun silently stands there and admires her beauty no matter how she looks that day. Full, Half, crescent.",
+    "He looks at her as if it was his first time looking at her.",
+    "The more he looks at her, the brighter he gets.",
+    "She, brings out the best in him.",
+    "Her presence,",
+    "Her beauty,",
+    "Her Aura.",
+    "",
+    "Like everyday, she leaves without noticing him.",
+    "He searches for her all day.",
+    "Throughout the sky,",
+    "Grows tired and leaves just before she comes.",
+    "And comes for her again the next day.",
+    "",
+    "And the most beautiful part?",
+    "That moment, when he finally expresses his love for her",
+    "And they both come together and become one.",
+    "The eclipse.",
+    "That, is the most beautiful moment.",
+    "It makes it all worth it.",
+    "His longing to meet her,",
+    "His endless love towards her,",
+    "His admiration for her.",
+    "His efforts to express his love.",
+    "His search for her everyday.",
+    "",
+    "That, my friend, is the most beautiful love story I know.",
+    "Love needs patience. For when it pays off, all the wait and efforts will be worth it."
+   ],
+   "kind": "poetry"
+  },
+  {
+   "id": "w16",
+   "title": "Locked-Down",
+   "lang": "English",
+   "lines": [
+    "Life was no more a rat race anymore.",
+    "Everything came to halt.",
+    "A simple, peaceful life never looked this beautiful.",
+    "Being locked up in their homes,",
+    "People unlocked all the unlearnt lessons that they ignored while life happened.",
+    "People spent more time with their families.",
+    "They dug their closets to find happiness in old albums.",
+    "Relations started to redefine themselves.",
+    "While the father and son spoke to each other peacefully in years,",
+    "the daughter cooked with her mother while they happily sang their favorite songs together.",
+    "The kid spent more time with his grandparents,",
+    "The couple, for the first time since marriage, sat in their balcony and talked about everything apart from work and future.",
+    "Everyone realised life wasn't just about being one in the world.",
+    "It was being the only one for someone's world.",
+    "",
+    "People took nothing for granted anymore.",
+    "They knew the value of the simplest of things.",
+    "They realized the value of a short walk.",
+    "They realized the value of being able to meet friends.",
+    "They realized the value of talking to their families.",
+    "They realized how important their forgotten hobbies were.",
+    "They realized the privilege they have as humans.",
+    "They realized how animals felt in the zoo.",
+    "They realized the value of not just taking care of oneself. But also the nature and the fellow creatures."
+   ],
+   "kind": "journal"
+  },
+  {
+   "id": "w17",
+   "title": "తాను నేను",
+   "lang": "Telugu",
+   "lines": [
+    "నిశి రాత్రి లో చీకటి నేనైతే,",
+    "ఆ చీకటికి వెలుగు తెచ్చిన మిణుగురు తాను."
+   ],
+   "kind": "poetry"
+  },
+  {
+   "id": "w18",
+   "title": "తాను నేను.",
+   "lang": "Telugu",
+   "lines": [
+    "నేనంటే ఇష్టం అని చెప్పలేక తాను,",
+    "తానంటే ఎంత ఇష్టమో చెప్పలేక నేను.",
+    "",
+    "నేనంటే ఎందుకు ఇష్టమో తెలియక తాను,",
+    "తానంటే ఎందుకు అంత ఇష్టమో తెలుపలేక నేను.",
+    "",
+    "నేను ఉంటే సంతోషం అనే తాను.",
+    "తాను ఉంటేనే సంతోషం అని నేను.",
+    "",
+    "నేను ఉంటే లోకం అని తాను",
+    "తాను ఉన్నదే లోకం అనే నేను.",
+    "",
+    "నాకై కలలు కనే తాను",
+    "తానే కల అనుకునే నేను",
+    "",
+    "నా చూపులో ప్రేమని వెతుక్కునే తాను",
+    "తన చూపే ప్రేమ అనుకునే నేను",
+    "",
+    "ప్రేమ చూపలేక తాను.",
+    "ప్రేమ చూపించటానికి ధైర్యం లేని నేను.",
+    "",
+    "గమ్యం తెలియని మా ప్రయాణం.",
+    "ప్రయాణంలో",
+    "తానైన నేను.",
+    "నేనైన తాను.",
+    "",
+    "తాను నేను."
+   ],
+   "kind": "poetry"
+  },
+  {
+   "id": "w20",
+   "title": "విలువ",
+   "lang": "Telugu",
+   "lines": [
+    "ఒకళ్ళ ప్రేమకి విలువ ఇవ్వటానికి,",
+    "విలువ కట్టడానికి,",
+    "చాలా తేడా ఉంది."
+   ],
+   "kind": "poetry"
+  },
+  {
+   "id": "w22",
+   "title": "Burning bridges",
+   "lang": "English",
+   "lines": [
+    "Watching the bridges burn,",
+    "I still stand here,",
+    "On the bridge,",
+    "While you walk away",
+    "And ignite everything between us,",
+    "Slowly reducing every memory we made together to ashes",
+    "Destroying everything that we had between us.",
+    "Wrecking all the castles we built",
+    "Ruining every part of me that loved you.",
+    "But still keeping the love alive.",
+    "All I can do is love you",
+    "Everytime I see you",
+    "Though it hurts me",
+    "As these scars burn",
+    "Everything you've given me feels bitter sweet."
+   ]
+  },
+  {
+   "id": "w23",
+   "title": "If it's true",
+   "lang": "English",
+   "lines": [
+    "If it's true.",
+    "If it's true that we won't remember each other",
+    "When we meet in the afterlife,",
+    "I might not recognize you.",
+    "But maybe",
+    "I'd still remember our memories",
+    "I'd still feel the love you gave me",
+    "I'd still want you as much as I do now",
+    "I'd still look at you like a miracle.",
+    "I'd still think you're the best thing I've known.",
+    "I'd still you hold you tight in my arms as if it was the last time.",
+    "I'd still tell you how much I love you just with my eyes."
+   ]
+  },
+  {
+   "id": "w25",
+   "title": "Difference",
+   "lang": "English",
+   "lines": [
+    "You know the difference between your love and mine?",
+    "",
+    "While you stripped her naked,",
+    "touched her everywhere,",
+    "kissed her neck,",
+    "and made love to her body,",
+    "I stripped her soul naked,",
+    "touched the darkest corners of her heart,",
+    "kissed her insecurities",
+    "and made love to her soul.",
+    "",
+    "You loved her flesh.",
+    "While I loved her soul."
+   ]
+  },
+  {
+   "id": "w26",
+   "title": "Feeling",
+   "lang": "English",
+   "lines": [
+    "Flying in the sky,",
+    "Alone,",
+    "All she wanted was to know how it used to feel having someone",
+    "All she wanted was to know how it used to feel being loved.",
+    "All she wanted was to remember how it felt when she was cared.",
+    "All she wanted was to recollect how she used to feel feelings.",
+    "For the world was so cold, her heart is now stone cold.",
+    "And she forgot how things feel anymore."
+   ]
+  },
+  {
+   "id": "w27",
+   "title": "I'll be gone",
+   "lang": "English",
+   "lines": [
+    "One day, I'll be gone.",
+    "I'll be gone from the lives of every person that I've known.",
+    "I'll be gone leaving all these papers I write poems on, empty.",
+    "I'll be gone with all these songs unheard.",
+    "I'll be gone leaving all my poems unfelt.",
+    "I'll be gone with all of these feelings still buried inside myself.",
+    "I'll be gone with all my tears still unseen.",
+    "I'll be gone with all my pain unknown.",
+    "I'll be gone knowing they never mattered.",
+    "I'll be gone still wondering if 'I' ever did.",
+    "",
+    "And even after I go I'll still wonder if you even cared about me."
+   ]
+  },
+  {
+   "id": "w28",
+   "title": "Flower",
+   "lang": "English",
+   "lines": [
+    "And there it lived",
+    "In the beautiful garden",
+    "Alone in a corner",
+    "Like an odd one out",
+    "While it's petals dried and fell one by one",
+    "Longing for the touch of love",
+    "Waiting for someone to make it feel special",
+    "Yearning for someone to call it beautiful.",
+    "Yen-ning for someone to tell it that's it's worth all the pain of the thorns.",
+    "Wishing someone would pick it up and give it the care if deserved.",
+    "",
+    "But there it still lived",
+    "Waiting for someone who'd never come.",
+    "While it was breaking a little everyday.",
+    "Falling a bit more than it was the day before.",
+    "",
+    "Finally There it perished",
+    "Still waiting for the love.",
+    "While all it's petals fell down",
+    "And lost all of it's beauty.",
+    "",
+    "It was forgotten.",
+    "Just like every broken flower that ever lived in the garden."
+   ]
+  },
+  {
+   "id": "w30",
+   "title": "Falling/Failing in love",
+   "lang": "English",
+   "lines": [
+    "Why do we do this Clark ?",
+    "Why do we love someone we know would never love us back?",
+    "",
+    "Why do we spend nights dreaming about them while they spend the night in someone's arms m",
+    "",
+    "Why do we sing songs for someone when we know they would never get to listen to them?",
+    "",
+    "Why do we cry for someone when we can't express our love towards them?",
+    "",
+    "Why do we fall for people we don't deserve?",
+    "",
+    "Why do we do this to ourself?",
+    "",
+    "What have I done to myself?"
+   ]
+  },
+  {
+   "id": "w31",
+   "title": "I've given up",
+   "lang": "English",
+   "lines": [
+    "I've given up.",
+    "I've given up on thinking about you.",
+    "I've given up on asking you for forgiveness.",
+    "I've given up on remembering you every night.",
+    "I've given up on the thought that one day you'd come back",
+    "I've given up on regretting my decisions that made me lose you.",
+    "I've given up on every single memory of you that makes me smile.",
+    "I've given up on all these messages I send you hoping you'd one day see them.",
+    "I've given up on you.",
+    "I've given up on wanting you."
+   ],
+   "kind": "thoughts",
+   "note": "It's hard when people just don't forgive you."
+  },
+  {
+   "id": "w32",
+   "title": "దేవుడు",
+   "lang": "Telugu",
+   "lines": [
+    "మనుషులు దేవుడిని నమ్ముతారు కాబట్టి గుడికి వెళ్ళటంలేదు",
+    "మనుషులు దేవుడికి భయపడుతున్నారు కాబట్టి గుడికి వెళ్తున్నారు.",
+    "గుడికి వెళ్లకపోతే మంచి జరగదేమో అన్న భయానికి వెళ్తున్నారు",
+    "దేవుడికి దండం పెట్టకపోతే ఏం జరుగుతుందో అన్న భయంతో వెళ్తున్నారు.",
+    "",
+    "నేను నాస్తికుడిని కాను.",
+    "దేవుడిని నమ్ముతా.",
+    "దేవుడు అనేవాడు ఖచ్చితంగా ఉన్నాడు.",
+    "",
+    "దేవుడికి మనిషి భయపడి ప్రార్థన చెయ్యకూడదు.",
+    "ఇష్టపడి చెయ్యాలి.",
+    "మనసారా చెయ్యాలి.",
+    "ప్రార్థన చెయ్యడానికి గుడికి వెళ్లాల్సిన అవసరం లేదని నా నమ్మకం.",
+    "ఎందుకంటే",
+    "దేవుడు ఫోటోలలో లేదా విగ్రహాలలో ఉడడు",
+    "మనిషిలో ఉంటాడు",
+    "మనిషి పుట్టుక లో ఉంటాడు",
+    "మనిషి జన్మలో ఉంటాడు",
+    "మనిషి మనిషిలో ఉంటాడు",
+    "",
+    "అందుకే ఎవరన్నా మనకి సహాయం చేస్తే \"నువ్వు దేవుడివిరా అంటాం\"",
+    "చిన్నప్పుడు మన తల్లితండ్రులు చెప్పేవారు మనందరిలో దేవుడు ఉంటాడు ఆయన ఎప్పుడూ మనతోనే ఉంటాడు అని",
+    "బహుశా అందుకే ఏమో మనకి ఎలాంటి బాధ కలిగినా దేవుడితో కాకుండా మనకి బాగా దగ్గరైన మనిషితో ఆ బాధిని పంచుకుంటాం.",
+    "",
+    "మనం రోజూ గుడిలో పూజించే దేవుడికి మనకి ఎప్పుడు ఎక్కడ ఎలాంటి ఆపద వచ్చినా",
+    "వెంటనే దేవుడా దేవుడా అనుకుంటూ ఉంటాం. ఆయనని కోరికలు కోరుకుంటాం.",
+    "అంతా బాగుండాలి అని అనుకుంటాం",
+    "యే?",
+    "గుడికి వెళ్లచ్చుగా?",
+    "ఎందుకంటే ఆయన వింటాడు అన్న నమ్మకం.",
+    "ఆయన మనచుట్టూ ఉన్నాడు అన్న నమ్మకం."
+   ]
+  },
+  {
+   "id": "w34",
+   "title": "War",
+   "lang": "English",
+   "lines": [
+    "We're all at war.",
+    "No.",
+    "Not the war filled with blood.",
+    "Not necessarily with our enemies.",
+    "But we ARE at war.",
+    "",
+    "We aren't at war for power.",
+    "We're at war for peace.",
+    "For the peace we wish we had inside us.",
+    "",
+    "We aren't at war for authority.",
+    "We are at war for justice.",
+    "For the justice we wish we could do to ourself.",
+    "",
+    "We aren't at war to prove to the world that we're greater than others.",
+    "We are at war to prove ourself that we're greater than we think we are.",
+    "For the greatness in us we should've known years ago.",
+    "",
+    "We are at war.",
+    "Not with any enemies.",
+    "With ourselves.",
+    "A war where there's little to no blood but plenty of tears.",
+    "A war where we're our own enemy.",
+    "A war that will never end."
+   ]
+  },
+  {
+   "id": "w35",
+   "title": "I fail everyday",
+   "lang": "English",
+   "lines": [
+    "I fail everyday.",
+    "I fail everyday to be a better person.",
+    "Just hoping I could be better tomorrow.",
+    "And tomorrow I might be a better person than I was today.",
+    "But I'll still fail.",
+    "I will fail from being the better person I could be day after.",
+    "I will fail by being one step farther from being a perfect person I could be.",
+    "",
+    "I fail everyday.",
+    "I fail everyday to be a better writer.",
+    "Just hoping I could write something better tomorrow.",
+    "And tomorrow I might write something fascinating than I ever did.",
+    "But I will still fail.",
+    "I'll fail from being the better writer I could be the day after.",
+    "I'll fail by being one step farther from being the best writer I could be.",
+    "",
+    "And that's what makes me better everyday.",
+    "The constant thriving and push to be better than I was yesterday.",
+    "The constant push to be my best self."
+   ]
+  },
+  {
+   "id": "w36",
+   "title": "న్యాయం/ధర్మం",
+   "lang": "Telugu",
+   "lines": [
+    "నిజం తెలియటం, న్యాయం.",
+    "నిజం చెప్పటం, ధర్మం."
+   ]
+  },
+  {
+   "id": "w40",
+   "title": "అనాధ?",
+   "lang": "Telugu",
+   "lines": [
+    "అనాధ?",
+    "ఎవరు అనాధ?",
+    "",
+    "ఎంత ఒంటరిగా ఉన్నా చిరునవ్వుతో ఉండేవాడు అనాధా",
+    "లేక ఎంతమంది నీకోసం ఉన్నా బాధలో ఉండే నువ్వు అనాధవా ?",
+    "",
+    "చనిపోయాక నా అన్నవారు లేకపోయినా తను లేదు అని బాధ పాడే వారు ఉన్న తను అనాధ?",
+    "లేక చితిని వెలిగించడానికి మనిషి తప్ప ఎడవటానికి ఎవ్వరూ లేని నువ్వు అనాధవా?",
+    "",
+    "జీవితంలో ఇబ్బంది వస్తే ఒకళ్ళతో చెప్పుకొనే తను అనాధ",
+    "లేక ఎంతమంది నీ జీవితంలో ఉన్నా నీ బాధని పంచుకోటానికి ఎవ్వరూ లేని నువ్వు అనాధ?",
+    "",
+    "ఎవరు అనాధ?"
+   ]
+  },
+  {
+   "id": "w41",
+   "title": "తెలుగు",
+   "lang": "Telugu",
+   "lines": [
+    "రాసే ప్రతి మాట కవిత అవ్వదు,",
+    "పాడే ప్రతి గానం పాట అవ్వదు",
+    "నడిచే ప్రతి దారి బాట అవ్వదు",
+    "చెక్కే ప్రత్రి రాయి సిల అవ్వదు",
+    "చేరే ప్రతి ఒడ్డు తీరం అవ్వదు",
+    "వలచిన ప్రతి మనసు ప్రాణం అవ్వదు.",
+    "",
+    "నిన్ను ప్రేమించిన ప్రతీ క్షణం మాత్రం జ్ఞాపకం అయ్యింది."
+   ]
+  },
+  {
+   "id": "w42",
+   "title": "Her",
+   "lang": "English",
+   "lines": [
+    "She sat on the footpath with her baby in her hands.",
+    "She Cried in pain.",
+    "Screamed for help.",
+    "People looked at her with disgust.",
+    "The way she looked and smelt.",
+    "They covered their noses, turned away from her.",
+    "The baby started crying louder.",
+    "After all, having no food for about a week would make anyone hungry.",
+    "",
+    "Her wounds became worse.",
+    "She started bleeding more.",
+    "She had no strength left in her to walk anymore.",
+    "She lied there on the footpath, hoping someone would feed her.",
+    "She stayed there all night.",
+    "The night became colder as it rained.",
+    "She shivered. So did the baby.",
+    "She covered him with her body.",
+    "Hunger kept the baby awake all night.",
+    "He shouted as louder as he could.",
+    "Hoping his mom would get something for him.",
+    "",
+    "The night went by,",
+    "both the mom and the son fell asleep.",
+    "",
+    "But they never woke up again.",
+    "The next day again, people walked by them covering their noses and eyes.",
+    "No one cared about them.",
+    "They didn't bat an eye.",
+    "Not even after they died.",
+    "They were busy liking dog videos online,",
+    "ignoring these poor stray dogs."
+   ]
+  },
+  {
+   "id": "w49",
+   "title": "To the one who let her go,",
+   "lang": "English",
+   "lines": [
+    "To the one who let her go,",
+    "",
+    "She finds it hard to fall asleep these days.",
+    "She stares at the roof for hours hoping she'd fall asleep",
+    "Never did she tell me what's she thinking about or looking at.",
+    "Is she remembering you and your memories?",
+    "Or is she looking deep into the darkness you pushed her into?",
+    "She never tells me and neither do I want to force her.",
+    "",
+    "She falls asleep late in the night hoping your nightmares won't haunt her.",
+    "But there she goes, waking up again and weeping.",
+    "Your memories haunt her in her nightmares.",
+    "What was it that scared her so much?",
+    "The fact that you'd never come back? The feeling that you never cared?",
+    "What did the your thought feel like?",
+    "",
+    "I take her to the beach hoping she'd get better.",
+    "But all she does is sit and look at the sky.",
+    "I see her eyes get wet slowly.",
+    "I wonder what was it this time?",
+    "Was it about the time you spent with her on the beach that she remembered?",
+    "Or the tides taking away everything lying on the shore that reminded of you?",
+    "",
+    "I ask her to write down her feelings hoping she'd feel better.",
+    "But she ends up tearing the sheet of paper into bits and pieces.",
+    "What was it this time?",
+    "Was that how she feels? Torn apart?",
+    "Or was it because she doesn't know what's going on with her?",
+    "",
+    "She's leaving me with too many questions.",
+    "Questions that I find difficult to answer.",
+    "But I'll find them.",
+    "I'll find them with my love and care.",
+    "",
+    "I don't know how she's going to get better.",
+    "How's she going to come back from the darkness you pushed her into.",
+    "How's she going to fight with the thought of you.",
+    "How's she going to smile again.",
+    "How's she going to sleep peacefully again.",
+    "",
+    "But I swear I'll try my best.",
+    "I'll pull her close to my chest when she doesn't fall asleep at night.",
+    "I'll kiss her forehead and tell her everything will be fine when she starts crying in the middle of the night.",
+    "I'll put her head on my lap and caress her when she feels lonely at the beach.",
+    "I'll do everything I'm doing right now.",
+    "But I'll not give up.",
+    "Because she deserves it.",
+    "She deserves the love you failed to give her.",
+    "She deserves the care you never minded giving her.",
+    "She deserves the feeling of specialness you never made her feel.",
+    "She deserves everything beautiful in this world.",
+    "She deserves everything you failed to give as a lover and a human.",
+    "For she, is a miracle.",
+    "And I'll make sure she's treated like one.",
+    "",
+    "Yours unlovingly,",
+    "The one who deserves her."
+   ]
+  },
+  {
+   "id": "w302",
+   "title": "Why it never worked",
+   "lang": "English",
+   "lines": [
+    "You know why it never worked?",
+    "Because I always made it about you.",
+    "And you made it all about yourself too."
+   ]
+  }
+ ],
+ "photos": [
+  {
+   "id": "p1",
+   "title": "Rain Alley",
+   "cat": "Street",
+   "place": "Location, City",
+   "cam": "Your Camera",
+   "lens": "35mm",
+   "f": "f/1.8",
+   "s": "1/60s",
+   "iso": "800",
+   "type": "city",
+   "pal": [
+    "#071a2b",
+    "#2a0f3a",
+    "#ff4fa3"
+   ],
+   "span": "s-a"
+  },
+  {
+   "id": "p2",
+   "title": "Concrete Horizon",
+   "cat": "Architecture",
+   "place": "Location, City",
+   "cam": "Your Camera",
+   "lens": "24mm",
+   "f": "f/8",
+   "s": "1/250s",
+   "iso": "100",
+   "type": "brutal",
+   "pal": [
+    "#d9dce2",
+    "#5a5f6b",
+    "#1a1c22"
+   ],
+   "span": "s-b",
+   "tall": 1
+  },
+  {
+   "id": "p3",
+   "title": "Golden Hour Shore",
+   "cat": "Landscape",
+   "place": "Location, Coast",
+   "cam": "Your Camera",
+   "lens": "50mm",
+   "f": "f/2.8",
+   "s": "1/500s",
+   "iso": "200",
+   "type": "sun",
+   "pal": [
+    "#ff9a4d",
+    "#2b1b3a",
+    "#ffe2a8"
+   ],
+   "span": "s-c"
+  },
+  {
+   "id": "p4",
+   "title": "Corridor Echoes",
+   "cat": "Architecture",
+   "place": "Location, City",
+   "cam": "Your Camera",
+   "lens": "16mm",
+   "f": "f/4",
+   "s": "1/30s",
+   "iso": "1600",
+   "type": "tunnel",
+   "pal": [
+    "#0f2a2e",
+    "#050d10",
+    "#7ff0e0"
+   ],
+   "span": "s-c"
+  },
+  {
+   "id": "p5",
+   "title": "Dune Starlight",
+   "cat": "Landscape",
+   "place": "Location, Desert",
+   "cam": "Your Camera",
+   "lens": "20mm",
+   "f": "f/2.8",
+   "s": "20s",
+   "iso": "3200",
+   "type": "stars",
+   "pal": [
+    "#0a0f2c",
+    "#1a1030",
+    "#ffffff"
+   ],
+   "span": "s-c"
+  },
+  {
+   "id": "p6",
+   "title": "Window Light",
+   "cat": "Portrait",
+   "place": "Location, Home",
+   "cam": "Your Camera",
+   "lens": "85mm",
+   "f": "f/1.8",
+   "s": "1/200s",
+   "iso": "400",
+   "type": "portrait",
+   "pal": [
+    "#3a2a1e",
+    "#0d0a08",
+    "#f3c98b"
+   ],
+   "span": "s-a"
+  }
+ ],
+ "resume": "Tarun_Inala_Resume.pdf"
+}

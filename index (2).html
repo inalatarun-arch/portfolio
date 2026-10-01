@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<title>Tarun Inala — Business Analyst</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+Telugu:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ---------- THEME TOKENS ---------- */
+:root{
+  --bg:#F3F4F7; --s1:#FFFFFF; --s2:#ECEEF3; --s3:#E2E5EC;
+  --line:#D9DCE4; --line2:#C6CAD5;
+  --tx:#0E1015; --mu:#475569; --dim:#7A8194;
+  --acc:#00E08F; --acc-on:#04130C; --acc-t:#007A52; --acc-tint:rgba(0,168,110,.10); --acc-line:rgba(0,140,92,.35);
+  --lime-t:#586500; --lime-tint:rgba(150,170,0,.13); --lime-line:rgba(120,140,0,.35);
+  --hdr:rgba(243,244,247,.82); --shine:rgba(255,255,255,.9); --shadow:0 24px 48px -24px rgba(20,25,40,.25);
+  --glow:rgba(0,224,143,.16); --g1:rgba(0,224,143,.34); --g2:rgba(90,255,190,.26); --g3:rgba(150,190,0,.16);
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#08090C; --s1:#0E1015; --s2:#16181F; --s3:#1B1E26;
+    --line:#252833; --line2:#343847;
+    --tx:#F5F6FA; --mu:#A3A8B8; --dim:#6B7080;
+    --acc:#00F5A0; --acc-on:#08090C; --acc-t:#00F5A0; --acc-tint:rgba(0,245,160,.10); --acc-line:rgba(0,245,160,.30);
+    --lime-t:#E8FF59; --lime-tint:rgba(232,255,89,.10); --lime-line:rgba(232,255,89,.30);
+    --hdr:rgba(8,9,12,.78); --shine:rgba(255,255,255,.06); --shadow:0 24px 48px -12px rgba(0,0,0,.85);
+    --glow:rgba(0,245,160,.10); --g1:rgba(0,245,160,.30); --g2:rgba(0,245,160,.14); --g3:rgba(232,255,89,.10);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#08090C; --s1:#0E1015; --s2:#16181F; --s3:#1B1E26;
+  --line:#252833; --line2:#343847;
+  --tx:#F5F6FA; --mu:#A3A8B8; --dim:#6B7080;
+  --acc:#00F5A0; --acc-on:#08090C; --acc-t:#00F5A0; --acc-tint:rgba(0,245,160,.10); --acc-line:rgba(0,245,160,.30);
+  --lime-t:#E8FF59; --lime-tint:rgba(232,255,89,.10); --lime-line:rgba(232,255,89,.30);
+  --hdr:rgba(8,9,12,.78); --shine:rgba(255,255,255,.06); --shadow:0 24px 48px -12px rgba(0,0,0,.85);
+  --glow:rgba(0,245,160,.10); --g1:rgba(0,245,160,.30); --g2:rgba(0,245,160,.14); --g3:rgba(232,255,89,.10);
+}
+
+/* ---------- BASE ---------- */
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 90px);-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--tx);font:400 15px/24px "Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased;transition:background .25s,color .25s;min-height:100vh}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;cursor:pointer}
+h1,h2,h3,.head{font-family:"Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;margin:0}
+::selection{background:var(--acc);color:var(--acc-on)}
+.wrap{max-width:1200px;margin:0 auto;padding:0 24px}
+.lbl{font-size:11px;line-height:16px;letter-spacing:.07em;text-transform:uppercase;color:var(--mu);font-weight:600}
+.lbl.acc{color:var(--acc-t)} .lbl.lime{color:var(--lime-t)}
+.display{font-size:clamp(38px,7vw,64px);line-height:1.06;letter-spacing:-.03em;font-weight:800;text-wrap:balance}
+.display em{font-style:normal;color:var(--acc-t)}
+.h2{font-size:clamp(26px,4vw,36px);line-height:1.2;letter-spacing:-.02em;font-weight:700}
+.lede{color:var(--mu);font-size:17px;line-height:28px;max-width:640px;margin:20px 0 0}
+.mono-cap{font-size:13px;line-height:20px;color:var(--mu)}
+
+/* ---------- COMPONENTS ---------- */
+.card{background:var(--s1);border:1px solid var(--line);border-radius:16px;box-shadow:inset 0 1px 0 0 var(--shine);transition:border-color .2s,transform .2s,background .25s}
+.card.hov:hover{border-color:var(--line2);transform:translateY(-2px)}
+.chip{display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 12px;border-radius:999px;font-size:11px;letter-spacing:.05em;text-transform:uppercase;font-weight:600;background:var(--s2);border:1px solid var(--line);color:var(--mu);white-space:nowrap}
+.chip.g{background:var(--acc-tint);border-color:var(--acc-line);color:var(--acc-t)}
+.chip.l{background:var(--lime-tint);border-color:var(--lime-line);color:var(--lime-t)}
+.dot{width:5px;height:5px;border-radius:50%;background:currentColor;animation:pulse 2s infinite}
+@keyframes pulse{50%{opacity:.35}}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:44px;padding:0 22px;border-radius:999px;font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;border:1px solid var(--line);background:var(--s1);box-shadow:inset 0 1px 0 0 var(--shine);transition:box-shadow .2s,border-color .2s,transform .15s}
+.btn:hover{border-color:var(--line2)}
+.btn:active{transform:scale(.98)}
+.btn.p{background:var(--acc);color:var(--acc-on);border-color:transparent;font-weight:700}
+.btn.p:hover{box-shadow:0 0 24px -2px var(--acc)}
+.btn.sm{height:34px;padding:0 16px;font-size:11px}
+.iconbtn{width:40px;height:40px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:var(--s1);border:1px solid var(--line);box-shadow:inset 0 1px 0 0 var(--shine);transition:border-color .2s}
+.iconbtn:hover{border-color:var(--acc-line)}
+svg.i{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.filters{display:flex;gap:8px;flex-wrap:wrap}
+.fbtn{height:32px;padding:0 14px;border-radius:999px;border:1px solid var(--line);background:var(--s2);color:var(--mu);font-size:11px;letter-spacing:.05em;text-transform:uppercase;font-weight:600;transition:all .2s}
+.fbtn:hover{color:var(--tx)}
+.fbtn.on{background:var(--acc);border-color:transparent;color:var(--acc-on);font-weight:700}
+:focus-visible{outline:2px solid var(--acc-t);outline-offset:2px}
+
+/* ---------- HEADER ---------- */
+.hdr{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:var(--hdr);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-bottom:1px solid var(--line);transition:background .25s}
+.hdr .in{max-width:1200px;margin:0 auto;padding:0 24px;height:68px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.brand{display:flex;align-items:center;gap:12px}
+.mark{width:32px;height:32px;border-radius:9px;background:var(--s2);border:1px solid var(--line2);display:grid;place-items:center;font-family:"Plus Jakarta Sans",sans-serif;font-weight:800;font-size:16px;color:var(--acc-t);box-shadow:inset 0 1px 0 0 var(--shine)}
+.brand b{font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:600}
+nav.pill{display:flex;gap:4px;padding:4px;border-radius:999px;background:var(--s2);border:1px solid var(--line)}
+nav.pill a{padding:6px 16px;border-radius:999px;font-size:13px;letter-spacing:.02em;color:var(--mu);font-weight:600;transition:color .2s}
+nav.pill a:hover{color:var(--tx)}
+nav.pill a.on{background:var(--s1);color:var(--tx);box-shadow:inset 0 1px 0 0 var(--shine),0 0 0 1px var(--line2)}
+.hdr-r{display:flex;align-items:center;gap:12px}
+.mnav{display:none}
+@media (max-width:860px){
+  .hdr .in{height:60px;padding:0 16px}
+  nav.pill.d{display:none}
+  .hide-m{display:none}
+  .mnav{display:block;border-top:1px solid var(--line);overflow-x:auto;scrollbar-width:none}
+  .mnav::-webkit-scrollbar{display:none}
+  .mnav .row{display:flex;gap:6px;padding:8px 16px;width:max-content;min-width:100%}
+  .mnav a{padding:6px 16px;border-radius:999px;font-size:12px;color:var(--mu);border:1px solid transparent;font-weight:500}
+  .mnav a.on{background:var(--s1);color:var(--tx);border-color:var(--line2)}
+  .wrap{padding:0 16px}
+}
+
+/* ---------- LAYOUT ---------- */
+main{display:block;min-height:70vh;position:relative}
+.bg-glow{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+.bg-glow i{position:absolute;border-radius:50%;filter:blur(60px);will-change:transform}
+.bg-glow i:nth-child(1){width:70vmax;height:70vmax;left:-25vmax;top:-30vmax;background:radial-gradient(circle,var(--g1),transparent 68%);animation:gl1 32s ease-in-out infinite alternate}
+.bg-glow i:nth-child(2){width:60vmax;height:60vmax;right:-25vmax;top:10vh;background:radial-gradient(circle,var(--g2),transparent 68%);animation:gl2 40s ease-in-out infinite alternate}
+.bg-glow i:nth-child(3){width:55vmax;height:55vmax;left:15vw;bottom:-35vmax;background:radial-gradient(circle,var(--g1),transparent 68%);animation:gl3 36s ease-in-out infinite alternate}
+.bg-glow i:nth-child(4){width:40vmax;height:40vmax;left:40vw;top:20vh;background:radial-gradient(circle,var(--g3),transparent 65%);animation:gl4 28s ease-in-out infinite alternate}
+.bg-glow::after{content:"";position:absolute;inset:-50%;background:linear-gradient(115deg,transparent 42%,var(--g2) 50%,transparent 58%);opacity:.55;animation:shim 24s ease-in-out infinite alternate}
+@keyframes gl1{to{transform:translate(28vw,22vh) scale(1.2)}}
+@keyframes gl2{to{transform:translate(-30vw,20vh) scale(1.15)}}
+@keyframes gl3{to{transform:translate(30vw,-18vh) scale(1.25)}}
+@keyframes gl4{from{transform:translate(-15vw,-8vh) scale(.9)}to{transform:translate(18vw,14vh) scale(1.2)}}
+@keyframes shim{from{transform:translateX(-28%)}to{transform:translateX(28%)}}
+.mode{display:flex;padding:3px;border-radius:999px;background:var(--s2);border:1px solid var(--line)}
+.mode button{border:0;background:transparent;padding:6px 14px;border-radius:999px;font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-weight:700;color:var(--mu);transition:all .2s}
+.mode button.on{background:var(--acc);color:var(--acc-on)}
+@media (max-width:1100px){.hide-l{display:none}}
+@media (max-width:520px){.brand b{display:none}.mode button{padding:6px 11px}}
+main>*{position:relative;z-index:1;animation:up .5s ease both}
+main>*:nth-child(2){animation-delay:.06s} main>*:nth-child(3){animation-delay:.12s} main>*:nth-child(4){animation-delay:.18s}
+@keyframes up{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){main>*,.dot,.bg-glow i,.bg-glow::after{animation:none}*{transition:none!important}}
+.hero{padding-top:56px;padding-bottom:40px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px}
+.sec{padding-top:56px}
+.sec-h{margin-bottom:28px;display:flex;flex-direction:column;gap:8px}
+.sec-h.row{flex-direction:row;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:16px}
+.banner{background:var(--lime-tint);border-bottom:1px solid var(--lime-line);color:var(--lime-t);font-size:12px;letter-spacing:.04em}
+.banner .in{max-width:1200px;margin:0 auto;padding:8px 24px;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.banner button{background:none;border:0;color:inherit;text-decoration:underline;padding:0;font-size:11px}
+
+/* ---------- WORK ---------- */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:40px}
+.stat{padding:22px 24px 20px;display:flex;flex-direction:column;gap:20px}
+.metric{font-size:44px;line-height:52px;letter-spacing:-.03em;font-weight:700;color:var(--acc-t)}
+.metric small{font-size:14px;color:var(--tx);margin-left:6px;letter-spacing:0}
+.cap{font-size:12px;font-weight:600;color:var(--mu);text-transform:uppercase;letter-spacing:.05em}
+.feat{display:grid;grid-template-columns:1.05fr 1fr;gap:0;overflow:hidden}
+.feat .txt{padding:36px;display:flex;flex-direction:column;gap:18px;justify-content:center}
+.feat .vis{min-height:340px;position:relative;border-left:1px solid var(--line)}
+.feat h3{font-size:clamp(24px,3vw,32px);line-height:1.2;letter-spacing:-.02em;font-weight:700}
+.feat p,.pj p{margin:0;color:var(--mu)}
+.mets{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.mets div{background:var(--s2);padding:14px 16px}
+.mets b{display:block;font-size:20px;font-weight:700;color:var(--acc-t);margin-top:4px}
+.tags{display:flex;gap:8px;flex-wrap:wrap}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
+.pj{padding:28px;display:flex;flex-direction:column;gap:14px}
+.pj h3{font-size:22px;line-height:30px;letter-spacing:-.015em;font-weight:600}
+.pj .vis{aspect-ratio:520/360;border-radius:12px;overflow:hidden;border:1px solid var(--line);margin-top:6px;position:relative}
+.mgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.vis svg,.mvis svg{width:100%;height:100%;display:block}
+.mvis{aspect-ratio:520/360;border-radius:12px;overflow:hidden;border:1px solid var(--line);background:var(--s2)}
+.feat .vis{background:var(--s2)}
+.mc{padding:24px;display:flex;flex-direction:column;gap:12px}
+.mc h3{font-size:19px;line-height:26px;font-weight:600;letter-spacing:-.01em}
+.mc p{margin:0;color:var(--mu)}
+.cols{display:grid;grid-template-columns:1.5fr 1fr;gap:24px}
+.role{padding:24px 26px;display:flex;flex-direction:column;gap:8px}
+.role+.role{margin-top:14px}
+.role .top{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:baseline}
+.role h3{font-size:19px;font-weight:600;letter-spacing:-.01em}
+.role p{margin:0;color:var(--mu)}
+.hon{display:flex;align-items:center;gap:14px;padding:16px 18px;border-radius:12px;background:var(--s2);border:1px solid var(--line)}
+.hon+.hon{margin-top:12px}
+.hon .ico{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:var(--acc-tint);border:1px solid var(--acc-line);color:var(--acc-t);flex:none}
+.hon div.t{flex:1;min-width:0}
+.hon b{display:block;font-family:"Plus Jakarta Sans",sans-serif;font-weight:600;font-size:15px}
+.cta{margin-top:64px;padding:36px;display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap;background:linear-gradient(120deg,var(--acc-tint),transparent 60%),var(--s1)}
+.cta h3{font-size:clamp(22px,3vw,30px);font-weight:700;letter-spacing:-.02em;max-width:520px}
+
+/* ---------- FLAGSHIP PIPELINE ---------- */
+.feat{border-color:var(--acc-line)}
+.flow{grid-column:1/-1;border-top:1px solid var(--line);padding:24px 36px 30px;background:var(--s2);display:flex;flex-direction:column;gap:14px}
+.flow ol{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.flow li{position:relative;display:flex;flex-direction:column;gap:4px;padding:16px 18px;border-radius:12px;background:var(--s1);border:1px solid var(--line)}
+.flow li .n{font-size:11px;font-weight:700;letter-spacing:.08em;color:var(--acc-t)}
+.flow li b{font-family:"Plus Jakarta Sans",sans-serif;font-size:17px;font-weight:700;letter-spacing:-.01em}
+.flow li .d{color:var(--mu);font-size:13px;line-height:20px}
+.flow li:not(:last-child)::after{content:"\2192";position:absolute;right:-20px;top:50%;transform:translateY(-50%);width:20px;text-align:center;color:var(--acc-t);font-weight:700}
+
+/* ---------- CASE STUDY SHEET ---------- */
+.case{display:flex;flex-direction:column;gap:22px;margin-top:28px}
+.cs{display:grid;grid-template-columns:44px 1fr;gap:14px;align-items:start;padding-top:22px;border-top:1px solid var(--line)}
+.cs .n{font-size:13px;font-weight:700;color:var(--acc-t);letter-spacing:.06em;padding-top:1px}
+.cs p{margin:6px 0 0;font-size:16px;line-height:26px;color:var(--tx)}
+
+/* ---------- SKILL GROUPS ---------- */
+.sgroups{display:flex;flex-direction:column;gap:20px}
+.sg{display:flex;flex-direction:column;gap:10px}
+
+/* ---------- HERO ACTIONS + RESUME CARD ---------- */
+.hero-cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
+.resume{padding:24px;display:flex;flex-direction:column;gap:16px;margin-top:20px;background:linear-gradient(135deg,var(--acc-tint),transparent 65%),var(--s1);border-color:var(--acc-line)}
+.resume .rt{display:flex;gap:14px;align-items:center}
+.resume .rico{width:48px;height:48px;border-radius:12px;display:grid;place-items:center;background:var(--acc-tint);border:1px solid var(--acc-line);color:var(--acc-t);flex:none}
+.resume .rico svg{width:24px;height:24px}
+.resume h3{font-size:19px;font-weight:700;letter-spacing:-.01em}
+.resume p{margin:0;color:var(--mu);font-size:14px;line-height:22px}
+.resume .ra{display:flex;gap:10px;flex-wrap:wrap}
+
+/* ---------- LANDING ---------- */
+body.landing .mode,body.landing nav.pill,body.landing .mnav,body.landing .hdr-r .chip,body.landing footer{display:none}
+.land{min-height:calc(100vh - 150px);display:flex;flex-direction:column;justify-content:center;padding-top:48px;padding-bottom:56px}
+.land .display{max-width:860px}
+.choices{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:44px}
+.choice{padding:32px;display:flex;flex-direction:column;gap:14px;text-align:left;width:100%;min-height:290px}
+.choice .ico{width:52px;height:52px;border-radius:14px;display:grid;place-items:center;background:var(--acc-tint);border:1px solid var(--acc-line);color:var(--acc-t)}
+.choice .ico svg{width:26px;height:26px}
+.choice h2{font-size:clamp(26px,3.4vw,34px);line-height:1.15;letter-spacing:-.02em;font-weight:800;margin-top:6px}
+.choice p{margin:0;color:var(--mu);font-size:16px;line-height:26px;max-width:460px}
+.choice .go{margin-top:auto;padding-top:8px;display:inline-flex;gap:8px;align-items:center;font-weight:700;font-size:13px;letter-spacing:.05em;text-transform:uppercase;color:var(--acc-t)}
+.choice .go svg{transition:transform .2s}
+.choice:hover .go svg{transform:translateX(5px)}
+.choice.work:hover{border-color:var(--acc-line);box-shadow:0 0 32px -10px var(--acc)}
+.choice.alt .ico{background:var(--lime-tint);border-color:var(--lime-line);color:var(--lime-t)}
+.choice.alt .go{color:var(--lime-t)}
+.choice.alt:hover{border-color:var(--lime-line);box-shadow:0 0 32px -10px var(--lime-t)}
+.land .note{margin-top:28px;display:flex;gap:18px;flex-wrap:wrap;align-items:center;color:var(--mu);font-size:13px}
+.land .note a{color:var(--acc-t);font-weight:700;text-decoration:underline;text-underline-offset:3px}
+@media (max-width:900px){.choices{grid-template-columns:1fr}.choice{min-height:0;padding:26px}.land{min-height:0;padding-top:36px}}
+
+/* ---------- WRITINGS ---------- */
+.pfeat{padding:44px;display:grid;grid-template-columns:1.1fr 1fr;gap:40px;align-items:center;background:linear-gradient(135deg,var(--acc-tint),transparent 55%),var(--s1)}
+.pfeat .q{font-family:"Plus Jakarta Sans",sans-serif;font-size:clamp(22px,3vw,30px);line-height:1.4;font-weight:600;letter-spacing:-.015em}
+.pfeat .q span{display:block}
+.pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:16px}
+.poem{padding:26px;display:flex;flex-direction:column;gap:14px;text-align:left;width:100%;min-height:250px}
+.poem .top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.poem h3{font-size:22px;line-height:30px;letter-spacing:-.015em;font-weight:600}
+.poem .ex{color:var(--mu);white-space:pre-line;flex:1;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+.te{font-family:"Plus Jakarta Sans","Noto Sans Telugu",sans-serif;line-height:1.75}
+.pfeat .q.te,.poemtxt.te,.poem .ex.te,.poem h3.te{line-height:1.7}
+.pnote{margin-top:32px;padding-top:18px;border-top:1px solid var(--line);color:var(--mu);font-size:14px;line-height:1.6;font-weight:400}
+.pfeat .q span{overflow:hidden;text-overflow:ellipsis}
+.poem .ft{display:flex;justify-content:space-between;align-items:center;color:var(--mu)}
+.poem .ft b{color:var(--tx);font-weight:600;display:inline-flex;gap:6px;align-items:center}
+
+/* ---------- PHOTOGRAPHY ---------- */
+.pg{display:grid;grid-template-columns:repeat(6,1fr);gap:16px}
+.ph{overflow:hidden;padding:0;text-align:left;cursor:pointer;display:flex;flex-direction:column;width:100%}
+.ph .img{position:relative;flex:1;min-height:280px;overflow:hidden;background:var(--s2)}
+.ph .img svg,.ph .img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .6s}
+.ph:hover .img svg,.ph:hover .img img{transform:scale(1.04)}
+.ph .badge{position:absolute;top:14px;left:14px;display:flex;gap:6px;z-index:2}
+.ph .badge .chip{background:rgba(8,9,12,.62);border-color:rgba(255,255,255,.18);color:#fff;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.ph .cap2{position:absolute;left:0;right:0;bottom:0;padding:44px 18px 16px;background:linear-gradient(to top,rgba(0,0,0,.72),transparent);color:#fff;z-index:2}
+.ph .cap2 .lbl{color:rgba(255,255,255,.75)}
+.ph .cap2 b{display:block;font-family:"Plus Jakarta Sans",sans-serif;font-size:20px;font-weight:600;letter-spacing:-.01em}
+.ph .meta{display:flex;justify-content:space-between;gap:10px;padding:12px 18px;font-size:12px;color:var(--mu);border-top:1px solid var(--line);background:var(--s1);flex-wrap:wrap}
+.ph .meta em{font-style:normal;color:var(--lime-t)}
+.s-a{grid-column:span 4}.s-b{grid-column:span 2}.s-c{grid-column:span 2}.s-d{grid-column:span 3}
+.ph.tall .img{min-height:420px}
+.ribbon{display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap;padding:12px 18px;border-radius:12px;background:var(--s1);border:1px solid var(--line);margin-bottom:20px;font-size:11px;color:var(--mu)}
+.ribbon span.sep{color:var(--dim)}
+.hint{position:absolute;right:14px;top:14px;z-index:2;font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.7);background:rgba(0,0,0,.35);padding:3px 8px;border-radius:999px}
+
+/* ---------- CONTACT ---------- */
+.cgrid{display:grid;grid-template-columns:1fr 1.25fr;gap:20px;align-items:start}
+.stack{display:flex;flex-direction:column;gap:16px}
+.box{padding:24px}
+.email{font-size:20px;margin-top:10px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.links{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-top:14px}
+.links a{height:56px;border-radius:10px;background:var(--s2);border:1px solid var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--mu);transition:all .2s}
+.links a:hover{color:var(--acc-t);border-color:var(--acc-line)}
+.form{padding:30px;display:flex;flex-direction:column;gap:22px}
+.f2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.fld{display:flex;flex-direction:column;gap:8px}
+input,textarea{width:100%;background:var(--bg);color:var(--tx);border:1px solid var(--line);border-radius:8px;padding:12px 14px;font:inherit;box-shadow:inset 0 2px 4px rgba(0,0,0,.12);transition:border-color .2s,box-shadow .2s}
+input::placeholder,textarea::placeholder{color:var(--dim)}
+input:focus,textarea:focus{outline:none;border-color:var(--acc-t);box-shadow:0 0 12px var(--acc-tint)}
+textarea{min-height:140px;resize:vertical}
+.err{color:#e5484d;font-size:11px;min-height:16px}
+.ok{padding:22px;border-radius:12px;background:var(--acc-tint);border:1px solid var(--acc-line);color:var(--tx)}
+
+/* ---------- FOOTER ---------- */
+footer{position:relative;z-index:1;margin-top:80px;border-top:1px solid var(--line);background:var(--s1);transition:background .25s}
+footer .g{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:32px;padding:44px 0 28px}
+footer ul{list-style:none;margin:10px 0 0;padding:0;display:flex;flex-direction:column;gap:8px;color:var(--mu)}
+footer ul a:hover{color:var(--acc-t)}
+footer .bt{border-top:1px solid var(--line);padding:18px 0 28px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--mu)}
+
+/* ---------- OVERLAY ---------- */
+#ov{position:fixed;inset:0;z-index:100;display:none;background:rgba(4,5,8,.72);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);padding:calc(env(safe-area-inset-top,0px) + 20px) 16px calc(env(safe-area-inset-bottom,0px) + 20px);overflow-y:auto}
+#ov.on{display:block;animation:fade .2s}
+@keyframes fade{from{opacity:0}}
+.sheet{max-width:760px;margin:0 auto;background:var(--s2);border:1px solid var(--line2);border-radius:24px;box-shadow:var(--shadow);overflow:hidden}
+.sheet.wide{max-width:1000px}
+.sh-h{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-bottom:1px solid var(--line)}
+.sh-b{padding:36px 40px 40px}
+.sh-f{display:flex;justify-content:space-between;padding:14px 20px;border-top:1px solid var(--line);gap:10px}
+.poemtxt{font-family:"Plus Jakarta Sans",sans-serif;font-size:clamp(19px,2.6vw,24px);line-height:1.65;font-weight:500;margin-top:24px}
+.poemtxt p{margin:0;overflow-wrap:anywhere}
+.lb{display:grid;grid-template-columns:1.4fr 1fr}
+.lb .art{position:relative;min-height:440px;background:var(--s3)}
+.lb .art svg,.lb .art img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.lb .info{padding:28px;display:flex;flex-direction:column;gap:18px}
+.kv{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.kv div{background:var(--s1);padding:12px 14px}
+.kv b{display:block;font-weight:600;margin-top:2px}
+
+@media (max-width:900px){
+  .stats,.mgrid{grid-template-columns:1fr}
+  .feat,.two,.cols,.pfeat,.cgrid,.lb{grid-template-columns:1fr}
+  .feat .vis{border-left:0;border-top:1px solid var(--line);min-height:240px}
+  .feat .txt,.pfeat{padding:26px}
+  .pgrid{grid-template-columns:1fr}
+  .pg{grid-template-columns:1fr 1fr}
+  .s-a,.s-b,.s-c,.s-d{grid-column:span 2}
+  .ph .img,.ph.tall .img{min-height:300px}
+  .f2{grid-template-columns:1fr}
+  footer .g{grid-template-columns:1fr}
+  .sh-b{padding:26px 22px 30px}
+  .lb .art{min-height:320px}
+  .mets .l{font-size:10px}
+  .flow{padding:22px 22px 26px}
+  .flow ol{grid-template-columns:1fr;gap:26px}
+  .flow li:not(:last-child)::after{content:"\2193";right:auto;left:50%;top:auto;bottom:-24px;transform:translateX(-50%)}
+}
+@media (min-width:901px) and (max-width:1100px){.pgrid,.mgrid{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+
+<div class="bg-glow" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+
+<header class="hdr">
+  <div class="in">
+    <a class="brand" id="brand" href="#/" aria-label="Home"><span class="mark">T</span><b>Tarun Inala</b></a>
+    <nav class="pill d" id="nav-d" aria-label="Primary"></nav>
+    <div class="hdr-r">
+      <span class="chip g hide-m hide-l"><i class="dot"></i>Open to collaborations</span>
+      <div class="mode" id="mode" role="group" aria-label="Choose section"><button data-a="mode" data-v="work">Work</button><button data-a="mode" data-v="personal">Personal</button></div>
+      <button class="iconbtn" id="theme" aria-label="Switch colour theme" title="Switch light / dark"></button>
+    </div>
+  </div>
+  <div class="mnav"><div class="row" id="nav-m"></div></div>
+</header>
+
+<main id="main"></main>
+
+<footer>
+  <div class="wrap">
+    <div class="g">
+      <div>
+        <div class="lbl">Personal archive</div>
+        <div class="head" style="font-size:22px;font-weight:700;margin-top:8px;letter-spacing:-.02em">Tarun Inala</div>
+        <p class="mono-cap" id="f-tag" style="margin:8px 0 0;max-width:300px"></p>
+      </div>
+      <div><div class="lbl">Pages</div><ul id="f-nav"></ul></div>
+      <div><div class="lbl">Elsewhere</div><ul id="f-links"></ul></div>
+    </div>
+    <div class="bt"><span id="copy"></span><span style="color:var(--acc-t)">Designed &amp; built with Claude · Hosted on GitHub Pages</span></div>
+  </div>
+</footer>
+
+<div id="ov" role="dialog" aria-modal="true" aria-label="Viewer"></div>
+
+<script>
+/* =====================================================================
+   BUILT-IN COPY of the site content (fallback). The live site reads content.json
+   next to this file — edit that instead. Everything shown on the site lives here.
+   ===================================================================== */
+var SITE = {
+  email: "taruntks97@gmail.com",
+  resume: "Tarun_Inala_Resume.pdf",
+  links: [
+    {k:"LinkedIn", u:"https://www.linkedin.com/in/tarunksai/"}
+  ],
+  work: {
+    chips: ["Senior Business Analyst", "Generative AI", "Hyderabad, India"],
+    headline: "Turning <em>business needs</em> into products that <em>deliver real value</em>.",
+    lede: "Senior Business Analyst and Functional Lead with 5+ years owning the path from problem to shipped product — discovery, prioritisation, stakeholder alignment and delivery — across Generative AI tools, payments platforms and large-scale ERP migrations.",
+    stats: [
+      {k:"Experience", v:"5+", u:"years", d:"Business analysis & functional leadership"},
+      {k:"Budget entry cycle time", v:"−60", u:"%", d:"Via GenAI contract extraction"},
+      {k:"Payouts unlocked", v:"$1.5M", u:"", d:"In the first month of a 12-year-old feature"}
+    ],
+    featured: [
+      {tag:"Flagship case study · Generative AI", title:"Generative AI engine for clinical-trial contract extraction", desc:"Led end-to-end development of an engine that reads complex Clinical Trial Agreement budget terms from unstructured PDFs and maps them into APECS — with a “Single Pane of Glass” UI to review, validate and commit every AI-extracted mapping, and automated checks that protect timely site reimbursements.",
+       mets:[["Daily manual effort","−40%"],["Entry cycle time","−60%"],["Entry errors","Eliminated"]], chips:["Generative AI","Clinical Trials","SLA","UX Design"], ill:"extract",
+       steps:[["Ingest","Unstructured Clinical Trial Agreement budget PDFs"],["Extract & validate","Generative AI reads the terms; automated checks catch errors"],["Review & commit","Single Pane of Glass in APECS to validate, then commit"]],
+       case:[["The problem","Budget terms in Clinical Trial Agreements arrived as unstructured PDFs and were keyed into APECS by hand. Entry was slow and error-prone, backlogs built up, and delays put site reimbursements and SLAs at risk."],
+             ["My role","Led the engine end to end as Senior Business Analyst: shaped the requirements, defined how extracted terms map into APECS, and designed the “Single Pane of Glass” screen where every AI-extracted mapping is reviewed, validated and committed."],
+             ["Safeguards built in","Automated validation checks run inside the AI workflow, so problems are caught before anything is committed and site reimbursements stay accurate and on time."],
+             ["The result","Daily manual effort down 40%, budget-entry cycle time down 60%, manual entry errors eliminated, and backlogs cleared with SLAs met."]]},
+      {tag:"Achievement 02 · Financial controls", title:"Payment Term Validation: closing a leak since day one", desc:"Designed, specified and tested validation that aligns 100% of outgoing payments with contractual costs — ending systemic overpayments that had persisted since the application launched, including edge cases like calendar boundaries and amendment tracking.", chips:["Validation","Compliance","Testing"], ill:"validate", link:"Read the case study",
+       case:[["The problem","Outgoing payments could drift from what the contracts allowed. Overpayments and financial leakage had persisted since the application first went live."],
+             ["My role","Led design, requirement gathering and testing end to end for a validation solution that checks payments against contractual costs."],
+             ["Edge cases solved","Built robust validation logic for the awkward scenarios: calendar boundaries and amendment tracking, so complex clinical-trial structures stay compliant."],
+             ["The result","100% alignment between outgoing payments and contractual costs, and an end to the systemic overpayments."]]},
+      {tag:"Achievement 03 · Payments", title:"Unlocked $1.5M in clinical-trial payouts in month one", desc:"Launched a critical payments capability the platform had been missing for 12 years, enabling $1.5M in payouts within its first month — and cut invoice processing from 2 hours of manual validation to 1 minute.", chips:["Payments","Automation","Delivery"], ill:"payout", link:"Read the case study",
+       case:[["The problem","A critical capability in the clinical-trial payment system had been pending for 12 years, and invoice processing relied on about two hours of manual validation."],
+             ["My role","Delivered the launch and streamlined the invoice-processing workflow. Also led a team of Business Analysts on requirement documentation, lifting UAT solution quality by 20%."],
+             ["The result","$1.5M in payouts enabled within the first month, and invoice validation cut from 2 hours to 1 minute."]]}
+    ],
+    more: [
+      {k:"Payments Portal", t:"Payee transparency, self-service", d:"Functional Lead for the payment portal — the liaison between payees, the Payment Processing Group and tech teams. Defined data mapping and reconciliation logic across Oracle EBS and APECS.", m:"−50% support inquiries", ill:"portal"},
+      {k:"Automated Testing Tool", t:"End-to-end regression & sanity checks", d:"Architected a custom automated testing tool across multiple environments, with real-time environment-health reporting and a faster Deployment Validation Process.", m:"Faster post-deployment checks", ill:"testing"},
+      {k:"Jasper → Incorta", t:"Reporting migration", d:"Led requirements, documentation and testing to migrate legacy reports to Incorta, validating accuracy and performance parity with the old platform.", m:"Data integrity & parity", ill:"migrate"},
+      {k:"FinancialForce", t:"Two acquired entities, one clean go-live", d:"Drove stakeholder alignment and UAT for customisations across multiple legal entities, and integrated two acquired entities with zero critical post-go-live issues.", m:"0 critical issues", ill:"merge"},
+      {k:"Oracle Fusion", t:"Faster customer & supplier setup", d:"Streamlined the customer and supplier creation process to lift procurement efficiency.", m:"−30% lead time", ill:"form"},
+      {k:"Team leadership", t:"Better requirements, better UAT", d:"Led a team of Business Analysts on requirement documentation and ran cross-functional workshops to align stakeholders.", m:"+20% UAT solution quality", ill:"team"}
+    ],
+    roles: [
+      {t:"Senior Business Analyst", org:"Winfo Solutions · APECS", yrs:"Mar 2023 — Present", d:"Functional Lead for a clinical-trial payments and contracts platform: Generative AI extraction, payment validation, the payee portal, automated testing and reporting migration.", tag:"Current"},
+      {t:"Business Analyst", org:"Winfo Solutions · FinancialForce, Oracle Fusion, RPA", yrs:"Jun 2021 — Mar 2023", d:"Owned UAT, requirements and test automation across ERP and RPA engagements — including an award-winning FinancialForce automation demo.", tag:""},
+      {t:"Junior Software Tester", org:"Infionic Inc. · Cloud ERP", yrs:"Aug 2018 — Apr 2019", d:"Tested the Finance module (AR & AP) and shaped a Windows-based ERP through competitive analysis of Tally and SAP.", tag:""}
+    ],
+    honours: [
+      {t:"Client Focus Award", s:"Clinical trial payments project · dedication to clients", y:"2025–26"},
+      {t:"Client Focus Award", s:"Clinical trial payments project · dedication to clients", y:"2024–25"},
+      {t:"Certified Generative AI Professional", s:"Oracle Cloud Infrastructure 2025", y:"2025"},
+      {t:"Career Essentials in Business Analysis", s:"Microsoft & LinkedIn", y:"2024"},
+      {t:"Above and Beyond Award", s:"FinancialForce engagement", y:"2022–23"},
+      {t:"Award-winning client demonstration", s:"FinancialForce test automation", y:"2022–23"}
+    ],
+    skills: {
+      "Domain & functional": ["Clinical trial payments","Financial ERP","Contract data extraction","Payment validation","Financial reconciliation"],
+      "Tools & platforms": ["APECS","Oracle EBS","Oracle Fusion","Incorta","FinancialForce","JIRA","Visio / Draw.io","SQL"],
+      "Methods & techniques": ["Generative AI","Requirement elicitation","BRD / FSD","User stories & use cases","Gap analysis","Process modelling","Agile","UAT & test planning","Stakeholder management"]
+    }
+  },
+  writings: [{"id":"w1","title":"Faults and us","lang":"English","lines":["I've always believed that as humans, we all are faulty in some way or another. Also said that we, as humans need to use our intellect and thinking capabilities to make ourselves better. And I will always stand by the statement.","","I also believe that for us humans, it's difficult to accept the fact that we're not perfect and we're flawed. And we only tend to accept this when we realise that our inner defects. The problems writing us that we are scared to acknowledge. I've done that. I didn't want to accept that I was a lazy, selfish and \"dont-leave-the-comfort-zone guy\". Maybe because I didn't want to see that side of myself. I wanted to see myself as a perfect human being. But there was always this voice inside me that said I wasn't. But when I finally accept it and see myself for what I am, I feel much lighter and better. Not because I am that person but because I know that I'm at least not lying to myself.","","I've come to believe that when we accept the flaws in us, we feel a lot lighter and guilt free because we at least know that we're not lying to ourselves. And when we accept this, we stop asking \"What is wrong with me?\" and start asking \"What can I do about it?\". Simply put, we have one less thing to worry about. We only have to worry about bettering ourselves.","","I never tell people to \"Be positive ALWAYS\" because I think there's something called \"TOXIC POSITIVITY\"  and it affects is. It makes us set false hopes for ourselves and makes us get hurt when we are unable to to reach them. Instead, if we stop 'being positive' with ourselves for a moment and be brutally honest, we will see ourselves for what we truly are.","","Remember, change in anything can only be bought when you acknowledge the flaws/shortcomings in it. Because that's when you start working on the result."]},{"id":"w2","title":"THE DROP","lang":"English","lines":["You look sad today. What's the matter?","Asked the sun as he looked at the droplet.","From what he knew of her,","She was always Happy.","The one that cheered up every drop in the pond.","The one that wasn't necessarily the class clown,","But knew how to get rid of someone's frown,","With a personality for which she was known.","It was very unusual of her to be sad.","","\"I'm afraid.","I'm afraid I will live forever in this pond.","I'm afraid I can't be what I want to be.","I'm afraid all my fellow drops would one day reach the sky,","And be the raindrop I always dreamt of being.","I'm afraid I'll be where I am now forever.","I'm afraid I won't live upto the expectations of the drops that I love  and the drops that love me back.","","I'm afraid I won't even be a dew drop like my friend.","He says, I deserve more than  being just a dew drop. I want to believe in him. I want to think I deserve better and that's what I'm waiting for.","But I only want to. I can't.","I'm afraid all my fellow droplets will become rain drops, the drinking water that humans use,  beautiful dew drops on the flowers that humans admire.","While I sulk in this pond, soaking in mud forever and being someone who I am not.","","Some of them even join the sea. I waited for that too.","But it feels like the nature, she wants me to sit here forever,","In the middle of nowhere,","Where I don't have any path to tread on.","","Is it that I don't deserve to be like them?","Am I not capable of being like them?","Why can't I get what I want?","Why does everyone else get what they desire and I don't?","Don't I deserve even the least of all things?","","I want to be a lot of things Mr.Sun.","But I don't want to die as a nothing.","I want to be what I want to be. \"","","The sun stared at her","While he waited her to speak up.","He didn't hear a word of what she said.","For it was all in her head.","It wanted to shout all these words out loud so the nature could hear it too.","But for the kind of droplet that she was,","It would be unusual for her to be sad.","For she, was a happy lad.","","The drop smiled and said,","\"Nothing. Was just thinking about my fanta-sea with the sea and thought it would be better if I drop-ped them. \"","The sun laughed out loud for the terrible pun.","","The sun set,","The smile on the drop, dropped,","Another day passed by."]},{"id":"w3","title":"Never Enough","lang":"English","lines":["You could give everything to someone and still not be enough. And you could give nothing to someone else and still be enough."],"kind":"thoughts"},{"id":"w4","title":"COVID AND QUARANTINE","lang":"English","lines":["And there she sat,","In the garden,","overlooking the hills,","where she had everything in her sight.","Everything under the limitless sky,","From things so intricate that couldn't be seen with a human eye.","To the beautiful valleys,","that were as deep as her heart that contained no malice.","","She rested there in the garden,","where she could feel the winds gently kissing her cheeks","as if she was something carefully sculpted.","The dew drops on her face,","Were a sight to be amazed at every morning.","The sunlight so bright,","it filled her soul with so much light,","everyone's sight could see it in her","gleaming smile.","The fog wrapped her","in it's arms  every morning.","And made sure she wasn't feeling trapped","for her petals, pieces of art,","were as fragile as her heart.","","She dwelled there in a place so beautiful,","Yet she felt wasn't very fanciful.","","News spread that there was a storm coming,","The gardener dreaded that she would be destroyed.","He thought she was so florid,","That It'd be horrid to lose her.","A thought so horrific,","He thought was a dream meant to be morbid.","","He carefully placed her in a pot,","and put her in the window bay","Near his cot.","She was furious and uncomfortable.","For she missed her habitat,","where she usually 'enjoyed' resting at.","","Only she could hear her squalls,","As she cursed him for putting her","between the four walls.","","She sat there in the room,","looking at the storm which could have been her doom,","from the window for two days,","dazed, as all her friends","ceased to exist one by one.","She saw all the neighbor trees","being scarred and succumbing to the storm with ease.","She was scared and paranoid,","and felt like everything was being sucked into the void.","She just wished the storm finished soon,","so she could live a few more days under the moon.","","The storms passed by.","The sun shined again.","She was back to her usual place.","A place where the beauty hadn't been debased,","Despite the storm that took place.","She thanked the gardener for what he had done.","and despised herself","remembering how she spited him before.","","She looked at her surrounding with utmost care this time.","Everything seemed way more beautiful than it ever looked to her eyes.","She could feel her lips rise,","She smiled,","felt grateful for what she had,","and sat there ever after,","treasuring every moment of her life,","with smiles and laughter."]},{"id":"w5","title":"Good?","lang":"English","lines":["These days, I wonder","What does it mean to be good?","","The inability to do bad,","or the ability to do bad and choosing not to?","","If I make the choice to not be bad,","Why do I still hurt someone?","Why do I end up being the antagonist in someone's life?","","And if I end up being bad even when I don't intend to,","Am I good for choosing not to be bad or am I bad for hurting them?"]},{"id":"w6","title":"నీవుంటే","lang":"Telugu","lines":["నీవుంటే","నావెంటే","వెన్నంటే","వున్నట్టే,","వెన్నెల్లే.","","నీవల్లే నవ్వులే,","నీ నవ్వే వెన్నెలే.","","నీవు అల్లే ఈ నవ్వుల వల్లే,","నావ అల్లే, నాలో కలలే.","","నీవు అల్లే, వన్నెల వల్లే,","నా ఈ నవ్వులే"],"kind":"poetry"},{"id":"w7","title":"Pyaar mein log bahut Kuch karte hai","lang":"Hindi","lines":["Pyaar mein log bahut Kuch karte hai.","","Pyaar mein kho jaathe hain,","Khud ko kho bhi dethe Hain.","","Bhul jaathe hain,","Khud ko bhula bhi dethe Hain.","","Haseen bann jaathe hain,","Hasee bhool bhi jaathe hai.","","Pyaar mein kisikeliye khwaaish karte Hain,","Kisika khwaaish bhi ban jaathe hain.","","Agar yahi mohabbat hain,","Toh humein yoohi rehne dijiye.","Iss pyaar mein humein fanaa honey dijiye."]},{"id":"w8","title":"Musaafir","lang":"Hindi","lines":["Shaam ke 6 baj raha thha","Dhalthe hue sooraj ko dekhte,","Nadi ke kinaare baitha thha mein","","Ithne mein aaya woh.","Ek musaafir.","Naa jaana uska naam","Naa poocha uska patha.","","Paas aake baitha,","Aur kehne laga ki,","Uske naukri se behadd pyaar toh karta hai","Par aaj Kal mann nahi lagtha.","Thakaan toh bahut mehsoos karta hai","Par raath ko neend nahi aathi.","Hasna aur muskuraana chahtha hai.","Par hasthe hasthe ro Letha Hain.","","Kaha, ki usey ab andhere se hi nahi,","Roshni se bhi darr lagne laga.","Bola ki koi uss se baat tak nahi karta.","Kisi ko parvah nahi ki woh sahi salamat hai ya nahi.","Baatein karte bhi hai toh log sirf uske baatein sunthe hai.","Par uska khaamoshi koi nahi samajhta hai.","","Unke aankhon se aasoo behne lagi","Mein khaamosh baitha raha","Uska haath thaama, aur gale lagaya.","Ro pada aur kaha,","\"Shukra guzaar hai ki aap milein aur hamara dil ki baat samjhe","Par afsoos to yeh hain ki,","Aapka milne mein thodi der ho gayi\"","","Aur faristhe ki tarah,","Hawaa mein gaayab ho gaya."],"note":"Forgive for any grammar mistakes. I'm not that good at Hindi grammar. Please comment if there are any mistakes."},{"id":"w9","title":"WAQT","lang":"Hindi","lines":["Chaahe tum aaj kitna bhi betein hue Kal mein waqt guzaaro,","Kal jab  waqt aaye,","Aur tumhe guzar jaane ka mann kare","Bus itni Guzaarish hai,","hamare saath thhoda waqt guzaar le"]},{"id":"w10","title":"Mental Health","lang":"English","lines":["As children, we were always taught that \"Be happy\" or \"Keep smiling\".","Maybe that's the issue.","We're taught to be happy always and be smiling but not to listen to people who are in pain. We often forget that not every smile is real. Not everyone who makes others laugh is actually happy inside. We're not taught to be there for people no matter what. We're not told that it's okay to be sad. We're not taught about depression. We're not told how important mental health is.","","It's easy to ignore a call.","It's easy to leave someone on read.","It's easy to act as if someone doesn't exist.","","But It's hard to sit there in a room alone, look at those blue ticks and cry yourself to sleep.","It's hard to stare into the void,  talk to yourself and slowly feel yourself fall apart.","It's harder to live knowing that you weren't there for someone in their last days when they needed you the most and live with that guilt.","","Do you know what's easier than that?","It's way easier if you just pick up that call and listen to them.","It's easier to say a few kind words and talk to them about their pain.","It's easier to ask \"Are you okay?\" and listen to how they're feeling.","","For us, these are celebrities.","They are 'stars'.","They are idols.","But for someone out there,","They are sons, loved ones, brothers and friends just like us.","","Depression can happen to anyone.","God forbid, but it can happen to anyone of those persons around you.","You never know what someone's facing.","For smiles are masks that we were taught to wear all the time.","And that's what people do.","They smile no matter what their mental state is and that's what makes it difficult to know what they're going through.","","The least we can do is talk and listen to people what they feel.","Be there no matter what and talk to them.","Life's too short to ignore someone and not listen to them.","","Not everyone has someone to talk to.","The one's who do, succeed it.","The one's who don't succumb to it.","","\"All it takes is one bad day.\""],"kind":"journal"},{"id":"w12","title":"HUMANS","lang":"English","lines":["We've lost our right to be called humans anymore.","","We feed animals.","But we fill the food with crackers 'just for fun'.","Psychotic.","","We do riots against oppression against innocent lives.","But vandalize properties of innocent people as a part of it.?","Cunning.","","We organize campaigns about global 'warming' and how wildlife is suffering Because of it.","But turn 'cold' while disposing plastic into oceans.","Cold.","","We parade for equal rights","But act blind when we hear about false accusations.","Conniving","","We say we love our country and act in movies about the nation.","But when the need comes to be a real life hero, the reel villain takes the throne.","Pretentious.","","There was a time when human character was distinguished into Black, White or Grey.","But we HUmans are now just men with  different HUES of black characters.","","We aren't humans anymore I guess.","Not the ones we were taught to be.","Neither are we demons.","Because from what we're doing right now, we're worse than them.","We humans, are worse than demons.","And maybe, from now on when a demon does something terrible, they'd be called a human."],"kind":"thoughts"},{"id":"w14","title":"నీవు","lang":"Telugu","lines":["\"ఎలా ఉన్నావ్?\" అన్న నీ ప్రశ్నకీ,","\"నీవు లేకుండా నేను ఎందుకు ఉన్నా\" అన్న నా ప్రశ్న కి,","సమాధానం వేరు అయినా,","రెండిటికీ కారణం ఒక్కటే."],"kind":"poetry"},{"id":"w15","title":"Love story","lang":"English","lines":["You know the best love story I know?","The one between sun and the moon.","","He rises for the moon every morning,","Thinking he will finally express his love for her that day.","But the moon - she never sees him.","For the sun silently stands there and admires her beauty no matter how she looks that day. Full, Half, crescent.","He looks at her as if it was his first time looking at her.","The more he looks at her, the brighter he gets.","She, brings out the best in him.","Her presence,","Her beauty,","Her Aura.","","Like everyday, she leaves without noticing him.","He searches for her all day.","Throughout the sky,","Grows tired and leaves just before she comes.","And comes for her again the next day.","","And the most beautiful part?","That moment, when he finally expresses his love for her","And they both come together and become one.","The eclipse.","That, is the most beautiful moment.","It makes it all worth it.","His longing to meet her,","His endless love towards her,","His admiration for her.","His efforts to express his love.","His search for her everyday.","","That, my friend, is the most beautiful love story I know.","Love needs patience. For when it pays off, all the wait and efforts will be worth it."],"kind":"poetry"},{"id":"w16","title":"Locked-Down","lang":"English","lines":["Life was no more a rat race anymore.","Everything came to halt.","A simple, peaceful life never looked this beautiful.","Being locked up in their homes,","People unlocked all the unlearnt lessons that they ignored while life happened.","People spent more time with their families.","They dug their closets to find happiness in old albums.","Relations started to redefine themselves.","While the father and son spoke to each other peacefully in years,","the daughter cooked with her mother while they happily sang their favorite songs together.","The kid spent more time with his grandparents,","The couple, for the first time since marriage, sat in their balcony and talked about everything apart from work and future.","Everyone realised life wasn't just about being one in the world.","It was being the only one for someone's world.","","People took nothing for granted anymore.","They knew the value of the simplest of things.","They realized the value of a short walk.","They realized the value of being able to meet friends.","They realized the value of talking to their families.","They realized how important their forgotten hobbies were.","They realized the privilege they have as humans.","They realized how animals felt in the zoo.","They realized the value of not just taking care of oneself. But also the nature and the fellow creatures."],"kind":"journal"},{"id":"w17","title":"తాను నేను","lang":"Telugu","lines":["నిశి రాత్రి లో చీకటి నేనైతే,","ఆ చీకటికి వెలుగు తెచ్చిన మిణుగురు తాను."],"kind":"poetry"},{"id":"w18","title":"తాను నేను.","lang":"Telugu","lines":["నేనంటే ఇష్టం అని చెప్పలేక తాను,","తానంటే ఎంత ఇష్టమో చెప్పలేక నేను.","","నేనంటే ఎందుకు ఇష్టమో తెలియక తాను,","తానంటే ఎందుకు అంత ఇష్టమో తెలుపలేక నేను.","","నేను ఉంటే సంతోషం అనే తాను.","తాను ఉంటేనే సంతోషం అని నేను.","","నేను ఉంటే లోకం అని తాను","తాను ఉన్నదే లోకం అనే నేను.","","నాకై కలలు కనే తాను","తానే కల అనుకునే నేను","","నా చూపులో ప్రేమని వెతుక్కునే తాను","తన చూపే ప్రేమ అనుకునే నేను","","ప్రేమ చూపలేక తాను.","ప్రేమ చూపించటానికి ధైర్యం లేని నేను.","","గమ్యం తెలియని మా ప్రయాణం.","ప్రయాణంలో","తానైన నేను.","నేనైన తాను.","","తాను నేను."],"kind":"poetry"},{"id":"w20","title":"విలువ","lang":"Telugu","lines":["ఒకళ్ళ ప్రేమకి విలువ ఇవ్వటానికి,","విలువ కట్టడానికి,","చాలా తేడా ఉంది."],"kind":"poetry"},{"id":"w22","title":"Burning bridges","lang":"English","lines":["Watching the bridges burn,","I still stand here,","On the bridge,","While you walk away","And ignite everything between us,","Slowly reducing every memory we made together to ashes","Destroying everything that we had between us.","Wrecking all the castles we built","Ruining every part of me that loved you.","But still keeping the love alive.","All I can do is love you","Everytime I see you","Though it hurts me","As these scars burn","Everything you've given me feels bitter sweet."]},{"id":"w23","title":"If it's true","lang":"English","lines":["If it's true.","If it's true that we won't remember each other","When we meet in the afterlife,","I might not recognize you.","But maybe","I'd still remember our memories","I'd still feel the love you gave me","I'd still want you as much as I do now","I'd still look at you like a miracle.","I'd still think you're the best thing I've known.","I'd still you hold you tight in my arms as if it was the last time.","I'd still tell you how much I love you just with my eyes."]},{"id":"w25","title":"Difference","lang":"English","lines":["You know the difference between your love and mine?","","While you stripped her naked,","touched her everywhere,","kissed her neck,","and made love to her body,","I stripped her soul naked,","touched the darkest corners of her heart,","kissed her insecurities","and made love to her soul.","","You loved her flesh.","While I loved her soul."]},{"id":"w26","title":"Feeling","lang":"English","lines":["Flying in the sky,","Alone,","All she wanted was to know how it used to feel having someone","All she wanted was to know how it used to feel being loved.","All she wanted was to remember how it felt when she was cared.","All she wanted was to recollect how she used to feel feelings.","For the world was so cold, her heart is now stone cold.","And she forgot how things feel anymore."]},{"id":"w27","title":"I'll be gone","lang":"English","lines":["One day, I'll be gone.","I'll be gone from the lives of every person that I've known.","I'll be gone leaving all these papers I write poems on, empty.","I'll be gone with all these songs unheard.","I'll be gone leaving all my poems unfelt.","I'll be gone with all of these feelings still buried inside myself.","I'll be gone with all my tears still unseen.","I'll be gone with all my pain unknown.","I'll be gone knowing they never mattered.","I'll be gone still wondering if 'I' ever did.","","And even after I go I'll still wonder if you even cared about me."]},{"id":"w28","title":"Flower","lang":"English","lines":["And there it lived","In the beautiful garden","Alone in a corner","Like an odd one out","While it's petals dried and fell one by one","Longing for the touch of love","Waiting for someone to make it feel special","Yearning for someone to call it beautiful.","Yen-ning for someone to tell it that's it's worth all the pain of the thorns.","Wishing someone would pick it up and give it the care if deserved.","","But there it still lived","Waiting for someone who'd never come.","While it was breaking a little everyday.","Falling a bit more than it was the day before.","","Finally There it perished","Still waiting for the love.","While all it's petals fell down","And lost all of it's beauty.","","It was forgotten.","Just like every broken flower that ever lived in the garden."]},{"id":"w30","title":"Falling/Failing in love","lang":"English","lines":["Why do we do this Clark ?","Why do we love someone we know would never love us back?","","Why do we spend nights dreaming about them while they spend the night in someone's arms m","","Why do we sing songs for someone when we know they would never get to listen to them?","","Why do we cry for someone when we can't express our love towards them?","","Why do we fall for people we don't deserve?","","Why do we do this to ourself?","","What have I done to myself?"]},{"id":"w31","title":"I've given up","lang":"English","lines":["I've given up.","I've given up on thinking about you.","I've given up on asking you for forgiveness.","I've given up on remembering you every night.","I've given up on the thought that one day you'd come back","I've given up on regretting my decisions that made me lose you.","I've given up on every single memory of you that makes me smile.","I've given up on all these messages I send you hoping you'd one day see them.","I've given up on you.","I've given up on wanting you."],"kind":"thoughts","note":"It's hard when people just don't forgive you."},{"id":"w32","title":"దేవుడు","lang":"Telugu","lines":["మనుషులు దేవుడిని నమ్ముతారు కాబట్టి గుడికి వెళ్ళటంలేదు","మనుషులు దేవుడికి భయపడుతున్నారు కాబట్టి గుడికి వెళ్తున్నారు.","గుడికి వెళ్లకపోతే మంచి జరగదేమో అన్న భయానికి వెళ్తున్నారు","దేవుడికి దండం పెట్టకపోతే ఏం జరుగుతుందో అన్న భయంతో వెళ్తున్నారు.","","నేను నాస్తికుడిని కాను.","దేవుడిని నమ్ముతా.","దేవుడు అనేవాడు ఖచ్చితంగా ఉన్నాడు.","","దేవుడికి మనిషి భయపడి ప్రార్థన చెయ్యకూడదు.","ఇష్టపడి చెయ్యాలి.","మనసారా చెయ్యాలి.","ప్రార్థన చెయ్యడానికి గుడికి వెళ్లాల్సిన అవసరం లేదని నా నమ్మకం.","ఎందుకంటే","దేవుడు ఫోటోలలో లేదా విగ్రహాలలో ఉడడు","మనిషిలో ఉంటాడు","మనిషి పుట్టుక లో ఉంటాడు","మనిషి జన్మలో ఉంటాడు","మనిషి మనిషిలో ఉంటాడు","","అందుకే ఎవరన్నా మనకి సహాయం చేస్తే \"నువ్వు దేవుడివిరా అంటాం\"","చిన్నప్పుడు మన తల్లితండ్రులు చెప్పేవారు మనందరిలో దేవుడు ఉంటాడు ఆయన ఎప్పుడూ మనతోనే ఉంటాడు అని","బహుశా అందుకే ఏమో మనకి ఎలాంటి బాధ కలిగినా దేవుడితో కాకుండా మనకి బాగా దగ్గరైన మనిషితో ఆ బాధిని పంచుకుంటాం.","","మనం రోజూ గుడిలో పూజించే దేవుడికి మనకి ఎప్పుడు ఎక్కడ ఎలాంటి ఆపద వచ్చినా","వెంటనే దేవుడా దేవుడా అనుకుంటూ ఉంటాం. ఆయనని కోరికలు కోరుకుంటాం.","అంతా బాగుండాలి అని అనుకుంటాం","యే?","గుడికి వెళ్లచ్చుగా?","ఎందుకంటే ఆయన వింటాడు అన్న నమ్మకం.","ఆయన మనచుట్టూ ఉన్నాడు అన్న నమ్మకం."]},{"id":"w34","title":"War","lang":"English","lines":["We're all at war.","No.","Not the war filled with blood.","Not necessarily with our enemies.","But we ARE at war.","","We aren't at war for power.","We're at war for peace.","For the peace we wish we had inside us.","","We aren't at war for authority.","We are at war for justice.","For the justice we wish we could do to ourself.","","We aren't at war to prove to the world that we're greater than others.","We are at war to prove ourself that we're greater than we think we are.","For the greatness in us we should've known years ago.","","We are at war.","Not with any enemies.","With ourselves.","A war where there's little to no blood but plenty of tears.","A war where we're our own enemy.","A war that will never end."]},{"id":"w35","title":"I fail everyday","lang":"English","lines":["I fail everyday.","I fail everyday to be a better person.","Just hoping I could be better tomorrow.","And tomorrow I might be a better person than I was today.","But I'll still fail.","I will fail from being the better person I could be day after.","I will fail by being one step farther from being a perfect person I could be.","","I fail everyday.","I fail everyday to be a better writer.","Just hoping I could write something better tomorrow.","And tomorrow I might write something fascinating than I ever did.","But I will still fail.","I'll fail from being the better writer I could be the day after.","I'll fail by being one step farther from being the best writer I could be.","","And that's what makes me better everyday.","The constant thriving and push to be better than I was yesterday.","The constant push to be my best self."]},{"id":"w36","title":"న్యాయం/ధర్మం","lang":"Telugu","lines":["నిజం తెలియటం, న్యాయం.","నిజం చెప్పటం, ధర్మం."]},{"id":"w40","title":"అనాధ?","lang":"Telugu","lines":["అనాధ?","ఎవరు అనాధ?","","ఎంత ఒంటరిగా ఉన్నా చిరునవ్వుతో ఉండేవాడు అనాధా","లేక ఎంతమంది నీకోసం ఉన్నా బాధలో ఉండే నువ్వు అనాధవా ?","","చనిపోయాక నా అన్నవారు లేకపోయినా తను లేదు అని బాధ పాడే వారు ఉన్న తను అనాధ?","లేక చితిని వెలిగించడానికి మనిషి తప్ప ఎడవటానికి ఎవ్వరూ లేని నువ్వు అనాధవా?","","జీవితంలో ఇబ్బంది వస్తే ఒకళ్ళతో చెప్పుకొనే తను అనాధ","లేక ఎంతమంది నీ జీవితంలో ఉన్నా నీ బాధని పంచుకోటానికి ఎవ్వరూ లేని నువ్వు అనాధ?","","ఎవరు అనాధ?"]},{"id":"w41","title":"తెలుగు","lang":"Telugu","lines":["రాసే ప్రతి మాట కవిత అవ్వదు,","పాడే ప్రతి గానం పాట అవ్వదు","నడిచే ప్రతి దారి బాట అవ్వదు","చెక్కే ప్రత్రి రాయి సిల అవ్వదు","చేరే ప్రతి ఒడ్డు తీరం అవ్వదు","వలచిన ప్రతి మనసు ప్రాణం అవ్వదు.","","నిన్ను ప్రేమించిన ప్రతీ క్షణం మాత్రం జ్ఞాపకం అయ్యింది."]},{"id":"w42","title":"Her","lang":"English","lines":["She sat on the footpath with her baby in her hands.","She Cried in pain.","Screamed for help.","People looked at her with disgust.","The way she looked and smelt.","They covered their noses, turned away from her.","The baby started crying louder.","After all, having no food for about a week would make anyone hungry.","","Her wounds became worse.","She started bleeding more.","She had no strength left in her to walk anymore.","She lied there on the footpath, hoping someone would feed her.","She stayed there all night.","The night became colder as it rained.","She shivered. So did the baby.","She covered him with her body.","Hunger kept the baby awake all night.","He shouted as louder as he could.","Hoping his mom would get something for him.","","The night went by,","both the mom and the son fell asleep.","","But they never woke up again.","The next day again, people walked by them covering their noses and eyes.","No one cared about them.","They didn't bat an eye.","Not even after they died.","They were busy liking dog videos online,","ignoring these poor stray dogs."]},{"id":"w49","title":"To the one who let her go,","lang":"English","lines":["To the one who let her go,","","She finds it hard to fall asleep these days.","She stares at the roof for hours hoping she'd fall asleep","Never did she tell me what's she thinking about or looking at.","Is she remembering you and your memories?","Or is she looking deep into the darkness you pushed her into?","She never tells me and neither do I want to force her.","","She falls asleep late in the night hoping your nightmares won't haunt her.","But there she goes, waking up again and weeping.","Your memories haunt her in her nightmares.","What was it that scared her so much?","The fact that you'd never come back? The feeling that you never cared?","What did the your thought feel like?","","I take her to the beach hoping she'd get better.","But all she does is sit and look at the sky.","I see her eyes get wet slowly.","I wonder what was it this time?","Was it about the time you spent with her on the beach that she remembered?","Or the tides taking away everything lying on the shore that reminded of you?","","I ask her to write down her feelings hoping she'd feel better.","But she ends up tearing the sheet of paper into bits and pieces.","What was it this time?","Was that how she feels? Torn apart?","Or was it because she doesn't know what's going on with her?","","She's leaving me with too many questions.","Questions that I find difficult to answer.","But I'll find them.","I'll find them with my love and care.","","I don't know how she's going to get better.","How's she going to come back from the darkness you pushed her into.","How's she going to fight with the thought of you.","How's she going to smile again.","How's she going to sleep peacefully again.","","But I swear I'll try my best.","I'll pull her close to my chest when she doesn't fall asleep at night.","I'll kiss her forehead and tell her everything will be fine when she starts crying in the middle of the night.","I'll put her head on my lap and caress her when she feels lonely at the beach.","I'll do everything I'm doing right now.","But I'll not give up.","Because she deserves it.","She deserves the love you failed to give her.","She deserves the care you never minded giving her.","She deserves the feeling of specialness you never made her feel.","She deserves everything beautiful in this world.","She deserves everything you failed to give as a lover and a human.","For she, is a miracle.","And I'll make sure she's treated like one.","","Yours unlovingly,","The one who deserves her."]},{"id":"w302","title":"Why it never worked","lang":"English","lines":["You know why it never worked?","Because I always made it about you.","And you made it all about yourself too."]}],
+  photos: [
+    {id:"p1", title:"Rain Alley",          cat:"Street",       place:"Location, City",  cam:"Your Camera", lens:"35mm", f:"f/1.8", s:"1/60s",  iso:"800",  type:"city",   pal:["#071a2b","#2a0f3a","#ff4fa3"], span:"s-a"},
+    {id:"p2", title:"Concrete Horizon",    cat:"Architecture", place:"Location, City",  cam:"Your Camera", lens:"24mm", f:"f/8",   s:"1/250s", iso:"100",  type:"brutal", pal:["#d9dce2","#5a5f6b","#1a1c22"], span:"s-b", tall:1},
+    {id:"p3", title:"Golden Hour Shore",   cat:"Landscape",    place:"Location, Coast", cam:"Your Camera", lens:"50mm", f:"f/2.8", s:"1/500s", iso:"200",  type:"sun",    pal:["#ff9a4d","#2b1b3a","#ffe2a8"], span:"s-c"},
+    {id:"p4", title:"Corridor Echoes",     cat:"Architecture", place:"Location, City",  cam:"Your Camera", lens:"16mm", f:"f/4",   s:"1/30s",  iso:"1600", type:"tunnel", pal:["#0f2a2e","#050d10","#7ff0e0"], span:"s-c"},
+    {id:"p5", title:"Dune Starlight",      cat:"Landscape",    place:"Location, Desert",cam:"Your Camera", lens:"20mm", f:"f/2.8", s:"20s",    iso:"3200", type:"stars",  pal:["#0a0f2c","#1a1030","#ffffff"], span:"s-c"},
+    {id:"p6", title:"Window Light",        cat:"Portrait",     place:"Location, Home",  cam:"Your Camera", lens:"85mm", f:"f/1.8", s:"1/200s", iso:"400",  type:"portrait",pal:["#3a2a1e","#0d0a08","#f3c98b"], span:"s-a"}
+  ]
+};
+var BUILTIN = JSON.parse(JSON.stringify(SITE));
+/* =====================================================================
+   To use your own photo: add   src:"images/your-photo.jpg"   to a photo
+   above (works once the site is hosted with the image files alongside).
+   ===================================================================== */
+
+var $ = function(s,r){return (r||document).querySelector(s)};
+var ICON = {
+  sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
+  moon:'<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>',
+  arrow:'<path d="M7 17 17 7M8 7h9v9"/>',
+  right:'<path d="M5 12h14M13 6l6 6-6 6"/>',
+  left:'<path d="M19 12H5M11 6l-6 6 6 6"/>',
+  x:'<path d="M18 6 6 18M6 6l12 12"/>',
+  copy:'<rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/>',
+  award:'<circle cx="12" cy="9" r="6"/><path d="m8.5 14-1.5 8 5-3 5 3-1.5-8"/>',
+  expand:'<path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>',
+  check:'<path d="m5 12 5 5 9-10"/>',
+  download:'<path d="M12 3v12M7 10l5 5 5-5M4 21h16"/>',
+  file:'<path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8zM14 3v5h5M9 13h6M9 17h6"/>',
+  briefcase:'<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M3 13h18"/>',
+  book:'<path d="M2 5h6a4 4 0 0 1 4 4v11a3 3 0 0 0-3-3H2zM22 5h-6a4 4 0 0 0-4 4v11a3 3 0 0 1 3-3h7z"/>',
+  camera:'<path d="M4 8h3l2-3h6l2 3h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="4"/>'
+};
+function ic(n,c){return '<svg class="i '+(c||'')+'" viewBox="0 0 24 24" aria-hidden="true">'+ICON[n]+'</svg>'}
+
+/* ---------- THEME ---------- */
+function effTheme(){
+  var t=document.documentElement.getAttribute('data-theme');
+  if(t) return t;
+  return (window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';
+}
+function paintToggle(){
+  var t=effTheme(), b=$('#theme');
+  b.innerHTML = t==='dark'? ic('sun') : ic('moon');
+  b.setAttribute('aria-label', t==='dark'?'Switch to light mode':'Switch to dark mode');
+}
+try{var saved=localStorage.getItem('inala-theme'); if(saved==='light'||saved==='dark') document.documentElement.setAttribute('data-theme',saved);}catch(e){}
+$('#theme').addEventListener('click',function(){
+  var n=effTheme()==='dark'?'light':'dark';
+  document.documentElement.setAttribute('data-theme',n);
+  try{localStorage.setItem('inala-theme',n);}catch(e){}
+  paintToggle();
+});
+if(window.matchMedia){try{matchMedia('(prefers-color-scheme: dark)').addEventListener('change',paintToggle)}catch(e){}}
+
+/* ---------- GENERATIVE PHOTO PLACEHOLDERS ---------- */
+function rng(seed){var s=0;for(var i=0;i<seed.length;i++)s=(s*31+seed.charCodeAt(i))>>>0;return function(){s=(s*1664525+1013904223)>>>0;return s/4294967296}}
+function art(p,w,h){
+  w=w||400;h=h||500;var a=p.pal[0],b=p.pal[1],c=p.pal[2],r=rng(p.id||p.title),o='',i,x,y;
+  var id='g'+(p.id||'x');
+  o+='<defs><linearGradient id="'+id+'" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="'+a+'"/><stop offset="1" stop-color="'+b+'"/></linearGradient></defs><rect width="'+w+'" height="'+h+'" fill="url(#'+id+')"/>';
+  if(p.type==='city'){
+    o+='<ellipse cx="'+w*0.5+'" cy="'+h*0.72+'" rx="'+w*0.45+'" ry="'+h*0.16+'" fill="'+c+'" opacity=".16"/>';
+    for(i=0;i<9;i++){var bw=w/9,bh=h*(0.3+r()*0.45);x=i*bw;o+='<rect x="'+x+'" y="'+(h-bh)+'" width="'+(bw-3)+'" height="'+bh+'" fill="#05070c" opacity=".88"/>';
+      for(var k=0;k<7;k++){if(r()>.45)o+='<rect x="'+(x+6+(k%2)*12)+'" y="'+(h-bh+12+Math.floor(k/2)*26)+'" width="7" height="11" fill="'+(r()>.5?c:'#7ff0e0')+'" opacity=".85"/>'}}
+    o+='<rect y="'+h*0.86+'" width="'+w+'" height="'+h*0.14+'" fill="'+c+'" opacity=".12"/>';
+  } else if(p.type==='sun'){
+    o+='<circle cx="'+w*0.5+'" cy="'+h*0.56+'" r="'+w*0.17+'" fill="'+c+'"/><circle cx="'+w*0.5+'" cy="'+h*0.56+'" r="'+w*0.3+'" fill="'+c+'" opacity=".18"/>';
+    o+='<rect y="'+h*0.62+'" width="'+w+'" height="'+h*0.38+'" fill="'+b+'"/>';
+    for(i=0;i<9;i++){o+='<rect x="'+(w*0.5-(w*0.15-i*3))+'" y="'+(h*0.64+i*16)+'" width="'+(w*0.3-i*6)+'" height="3" fill="'+c+'" opacity="'+(0.6-i*0.06)+'"/>'}
+    o+='<path d="M0 '+h*0.75+'Q'+w*0.3+' '+h*0.7+' '+w*0.6+' '+h*0.78+'T'+w+' '+h*0.74+'V'+h+'H0Z" fill="#05070c" opacity=".5"/>';
+  } else if(p.type==='tunnel'){
+    for(i=0;i<12;i++){var m=i*15,q=1-i*0.07;o+='<rect x="'+(m+w*0.05)+'" y="'+(m*1.25+h*0.05)+'" width="'+(w*0.9-m*2)+'" height="'+(h*0.9-m*2.5)+'" rx="'+(8+i)+'" fill="none" stroke="'+c+'" stroke-width="'+(2.6-i*0.15)+'" opacity="'+(q*0.7)+'"/>'}
+    o+='<rect x="'+w*0.44+'" y="'+h*0.44+'" width="'+w*0.12+'" height="'+h*0.16+'" fill="'+c+'" opacity=".35"/>';
+  } else if(p.type==='stars'){
+    for(i=0;i<80;i++){o+='<circle cx="'+(r()*w)+'" cy="'+(r()*h*0.65)+'" r="'+(r()*1.3+0.3)+'" fill="#fff" opacity="'+(0.3+r()*0.7)+'"/>'}
+    o+='<ellipse cx="'+w*0.55+'" cy="'+h*0.25+'" rx="'+w*0.5+'" ry="'+h*0.05+'" fill="#b8a8ff" opacity=".18" transform="rotate(-24 '+w*0.55+' '+h*0.25+')"/>';
+    o+='<path d="M0 '+h*0.8+'Q'+w*0.25+' '+h*0.62+' '+w*0.55+' '+h*0.78+'T'+w+' '+h*0.7+'V'+h+'H0Z" fill="#05060f"/><path d="M0 '+h*0.9+'Q'+w*0.4+' '+h*0.78+' '+w+' '+h*0.88+'V'+h+'H0Z" fill="#000"/>';
+  } else if(p.type==='portrait'){
+    o+='<polygon points="'+w*0.62+',0 '+w+',0 '+w+','+h*0.6+'" fill="'+c+'" opacity=".22"/>';
+    o+='<circle cx="'+w*0.42+'" cy="'+h*0.4+'" r="'+w*0.13+'" fill="#0b0806"/><path d="M'+w*0.12+' '+h+'Q'+w*0.16+' '+h*0.6+' '+w*0.42+' '+h*0.56+'T'+w*0.78+' '+h+'Z" fill="#0b0806"/>';
+    o+='<path d="M'+w*0.52+' '+h*0.36+'Q'+w*0.56+' '+h*0.4+' '+w*0.53+' '+h*0.46+'" stroke="'+c+'" stroke-width="3" fill="none" opacity=".8"/>';
+  } else {
+    o+='<polygon points="0,'+h*0.15+' '+w*0.75+',0 '+w+',0 '+w+','+h*0.4+' '+w*0.3+','+h*0.55+' 0,'+h*0.5+'" fill="'+c+'" opacity=".85"/>';
+    o+='<polygon points="0,'+h*0.5+' '+w*0.3+','+h*0.55+' '+w+','+h*0.4+' '+w+','+h+' 0,'+h+'" fill="'+b+'" opacity=".9"/>';
+    o+='<polygon points="'+w*0.55+','+h*0.55+' '+w+','+h*0.45+' '+w+','+h+' '+w*0.62+','+h+'" fill="#20232b" opacity=".7"/>';
+  }
+  return '<svg viewBox="0 0 '+w+' '+h+'" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Placeholder artwork for '+p.title+'">'+o+'</svg>';
+}
+function vis(o){return illo(o.ill)}
+function pic(p,w,h){return p.src? '<img src="'+p.src+'" alt="'+p.title+'" loading="lazy">' : art(p,w,h)}
+
+/* ---------- THEMED ILLUSTRATIONS FOR WORK CARDS ---------- */
+function illo(t){
+  var o='',i,j,y,x,ff="font-family:'Plus Jakarta Sans',system-ui,-apple-system,'Segoe UI',sans-serif";
+  var AC='var(--acc-t)',LM='var(--lime-t)',MU='var(--mu)',DM='var(--dim)',LN='var(--line2)',S1='var(--s1)',TX='var(--tx)',ON='var(--acc-on)';
+  function R(x,y,w,h,rx,f,s,sw){return '<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" rx="'+rx+'" style="fill:'+f+';stroke:'+(s||'none')+';stroke-width:'+(sw||1.5)+'"/>'}
+  function L(x1,y1,x2,y2,c,w,d){return '<line x1="'+x1+'" y1="'+y1+'" x2="'+x2+'" y2="'+y2+'" style="stroke:'+c+';stroke-width:'+(w||2)+';stroke-linecap:round'+(d?';stroke-dasharray:'+d:'')+'"/>'}
+  function C(x,y,r,f,s,sw){return '<circle cx="'+x+'" cy="'+y+'" r="'+r+'" style="fill:'+f+';stroke:'+(s||'none')+';stroke-width:'+(sw||1.5)+'"/>'}
+  function T(x,y,s,c,z,a,wt){z=Math.max(z||14,14);return '<text x="'+x+'" y="'+y+'" text-anchor="'+(a||'start')+'" style="'+ff+';fill:'+c+';font-size:'+z+'px;font-weight:'+(wt||600)+';letter-spacing:.03em">'+s+'</text>'}
+  function K(x,y,c,s){s=s||1;return '<path d="M'+(x-6*s)+' '+y+'l'+(4.5*s)+' '+(5*s)+' '+(8.5*s)+' '+(-10*s)+'" style="fill:none;stroke:'+c+';stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round"/>'}
+  function A(x1,y,x2,c){return L(x1,y,x2,y,c,2)+'<path d="M'+(x2-7)+' '+(y-6)+'L'+x2+' '+y+'L'+(x2-7)+' '+(y+6)+'" style="fill:none;stroke:'+c+';stroke-width:2;stroke-linecap:round;stroke-linejoin:round"/>'}
+  o+=R(0,0,520,360,0,'var(--s2)')+C(420,50,150,'var(--acc-tint)');
+
+  if(t==='extract'){
+    var terms=['Start-up fee','Screening','Milestone 1','Pass-through','Close-out'];
+    o+=R(40,52,150,232,10,S1,LN)+T(54,78,'CTA BUDGET',MU,14,'start',700);
+    for(i=0;i<5;i++){y=94+i*34;var hl=(i===1||i===3);
+      o+=R(50,y,130,28,6,hl?'var(--lime-tint)':'none',hl?'var(--lime-line)':'none',1)+T(60,y+19,terms[i],hl?TX:MU,14,'start',600)}
+    o+=T(40,308,'CTA_BUDGET.PDF',MU,14,'start',600);
+    o+=A(205,162,300,AC);
+    o+='<path d="M252 112l4 10 10 4-10 4-4 10-4-10-10-4 10-4z" style="fill:'+AC+'"/>'+T(252,196,'GEN AI',AC,14,'middle',700);
+    o+=R(314,52,170,232,12,S1,LN)+T(330,78,'TERM',MU,14,'start',700)+T(468,78,'STATUS',MU,14,'end',700);
+    var tt=['Start-up','Screening','Milestone 1','Pass-through','Close-out'];
+    for(i=0;i<5;i++){y=108+i*28;o+=T(330,y+5,tt[i],TX,14,'start',600)+C(464,y,9,'var(--acc-tint)',AC)+K(464,y,AC,.75)}
+    o+=R(330,252,138,24,12,'var(--acc)')+T(399,269,'COMMIT',ON,14,'middle',700);
+    o+=T(399,308,'SINGLE PANE OF GLASS',MU,14,'middle',600);
+  }
+  else if(t==='validate'){
+    var nm=['Start-up','Screening','Milestone 1','Visit fee','Close-out'], ca=['$2,000','$450','$1,200','$800','$600'], pa=['$2,000','$450','$1,440','$800','$600'];
+    o+=T(260,34,'PAYMENT TERM VALIDATION',MU,14,'middle',700)+T(140,66,'CONTRACT',MU,14,'middle',700)+T(380,66,'PAID',MU,14,'middle',700);
+    for(i=0;i<5;i++){y=78+i*38;var bad=(i===2);
+      o+=R(40,y,200,32,8,S1,LN)+R(280,y,200,32,8,bad?'var(--lime-tint)':S1,bad?'var(--lime-line)':LN);
+      o+=T(52,y+21,nm[i],MU,14,'start',600)+T(228,y+21,ca[i],TX,14,'end',700);
+      o+=T(292,y+21,bad?'Overpaid':'Matches',bad?LM:AC,14,'start',700)+T(468,y+21,pa[i],bad?LM:TX,14,'end',700);
+      o+=bad? C(260,y+16,10,'var(--lime-tint)',LM)+T(260,y+21,'!',LM,14,'middle',700) : C(260,y+16,10,'var(--acc-tint)',AC)+K(260,y+16,AC,.75);
+    }
+    o+=R(130,286,260,34,17,'var(--acc)')+T(260,308,'100% ALIGNED',ON,14,'middle',700);
+  }
+  else if(t==='payout'){
+    var it=['Visits','Start-up','Close-out'];
+    o+=R(30,50,118,132,10,S1,LN)+T(42,74,'INV-1042',MU,14,'start',700);
+    for(i=0;i<3;i++)o+=R(40,86+i*30,98,24,5,'var(--s2)')+T(48,103+i*30,it[i],TX,14,'start',600);
+    o+=A(156,112,196,AC);
+    o+='<path d="M260 74l36 12v28c0 22-16 34-36 42-20-8-36-20-36-42V86z" style="fill:var(--acc-tint);stroke:'+AC+';stroke-width:2"/>'+K(260,116,AC,1.3);
+    o+=A(304,112,346,AC);
+    o+=C(420,112,42,'var(--acc-tint)',AC,2)+T(420,124,'$',AC,34,'middle',700);
+    o+=T(89,204,'INVOICE',MU,14,'middle',700)+T(260,204,'VALIDATE',MU,14,'middle',700)+T(420,204,'PAYOUT',MU,14,'middle',700)+T(260,226,'2 HRS → 1 MIN',LM,14,'middle',700);
+    var hh=[16,26,38,50,64,80];
+    for(i=0;i<6;i++){x=40+i*78;o+=R(x,336-hh[i],52,hh[i],6,i===5?'var(--acc)':'var(--acc-tint)',i===5?'none':'var(--acc-line)',1.2)}
+    o+=T(40,246,'FIRST-MONTH PAYOUTS',MU,14,'start',700)+T(480,246,'$1.5M',AC,14,'end',700);
+  }
+  else if(t==='portal'){
+    var ids=['#1042','#1043','#1044'], st=['Paid','Approved','In review'], sc=[AC,AC,LM];
+    o+=R(30,70,120,60,10,S1,LN)+T(90,105,'ORACLE EBS',TX,14,'middle',700);
+    o+=R(30,170,120,60,10,S1,LN)+T(90,205,'APECS',TX,14,'middle',700);
+    o+=L(150,100,200,146,AC,2)+L(150,200,200,154,AC,2);
+    o+=C(226,150,26,'var(--acc-tint)',AC,2)+T(226,155,'MAP',AC,14,'middle',700);
+    o+=A(254,150,298,AC);
+    o+=R(304,44,190,246,12,S1,LN)+C(322,62,4,DM)+C(336,62,4,DM)+C(350,62,4,DM)+L(304,78,494,78,LN,1);
+    o+=T(320,104,'PAYEE PORTAL',MU,14,'start',700);
+    for(i=0;i<4;i++){x=330+i*46;if(i<3)o+=L(x,132,x+46,132,i<2?AC:LN,2);}
+    for(i=0;i<4;i++){x=330+i*46;o+=C(x,132,7,i<3?'var(--acc)':S1,i<3?'none':LN,2)}
+    for(i=0;i<3;i++){y=158+i*40;o+=R(318,y,162,32,6,'var(--s2)')+T(328,y+21,ids[i],TX,14,'start',600)+T(470,y+21,st[i],sc[i],14,'end',700)}
+    o+=T(260,326,'REAL-TIME PAYMENT STATUS',MU,14,'middle',600);
+  }
+  else if(t==='testing'){
+    var envs=['DEV','QA','UAT','PROD'];
+    for(i=0;i<4;i++){y=64+i*52;o+=T(40,y+18,envs[i],MU,14,'start',700);
+      for(j=0;j<8;j++){var w=(i===2&&j===5);o+=R(100+j*30,y,24,26,6,w?'var(--lime-tint)':'var(--acc-tint)',w?LM:'var(--acc-line)',1.2)}}
+    o+=C(432,140,50,'none',LN,9)+'<circle cx="432" cy="140" r="50" transform="rotate(-90 432 140)" style="fill:none;stroke:'+AC+';stroke-width:9;stroke-linecap:round;stroke-dasharray:280 314"/>';
+    o+=T(432,145,'HEALTHY',AC,14,'middle',700)+T(432,222,'ENV. HEALTH',MU,14,'middle',700);
+    o+=T(40,300,'REGRESSION + SANITY',MU,14,'start',700)+R(40,312,294,8,4,'var(--s3)')+R(40,312,250,8,4,'var(--acc)');
+  }
+  else if(t==='migrate'){
+    var hs=[50,84,62,104,72];
+    o+=R(40,56,180,216,12,S1,LN)+T(130,86,'JASPER · LEGACY',MU,14,'middle',700);
+    o+=R(300,56,180,216,12,S1,AC,2)+T(390,86,'INCORTA',AC,14,'middle',700);
+    for(i=0;i<5;i++){o+=R(62+i*30,232-hs[i],20,hs[i],4,'var(--s3)',LN,1)+R(322+i*30,232-hs[i],20,hs[i],4,'var(--acc-tint)',AC,1.5)}
+    o+=T(130,258,'BASELINE',MU,14,'middle',600)+T(390,258,'VALIDATED',AC,14,'middle',700);
+    o+=A(228,160,292,AC)+T(260,144,'MIGRATE',AC,14,'middle',700);
+    o+=T(260,312,'DATA INTEGRITY · PERFORMANCE PARITY',MU,14,'middle',600);
+  }
+  else if(t==='merge'){
+    o+=R(40,68,130,60,10,S1,LN)+T(105,103,'ENTITY A',MU,14,'middle',700);
+    o+=R(40,172,130,60,10,S1,LN)+T(105,207,'ENTITY B',MU,14,'middle',700);
+    o+=L(170,98,276,150,AC,2)+L(170,202,276,150,AC,2);
+    o+=R(280,88,200,124,14,S1,AC,2)+T(380,146,'FINANCIALFORCE',TX,14,'middle',700)+T(380,170,'ONE LEDGER',MU,14,'middle',600);
+    o+=C(468,88,17,'var(--acc)')+K(468,88,ON,1);
+    o+=R(70,272,380,34,17,'var(--acc-tint)',AC)+T(260,294,'0 CRITICAL POST-GO-LIVE ISSUES',AC,14,'middle',700);
+  }
+  else if(t==='form'){
+    var fl=['Supplier name','Bank & tax details','Payment terms'];
+    o+=R(60,40,400,262,14,S1,LN)+T(84,76,'NEW CUSTOMER / SUPPLIER',MU,14,'start',700);
+    for(i=0;i<3;i++)o+=R(84,92+i*46,352,34,8,'var(--bg)',LN)+T(98,115+i*46,fl[i],MU,14,'start',600);
+    o+=R(84,246,352,10,5,'var(--s3)')+R(84,246,300,10,5,'var(--acc)');
+    o+=T(84,282,'LEAD TIME',MU,14,'start',700)+T(436,282,'−30%',AC,14,'end',700);
+  }
+  else if(t==='team'){
+    var pts=[[100,84],[420,84],[100,262],[420,262]], dl=['BRD','FSD','UAT','LIVE'];
+    for(i=0;i<4;i++)o+=L(pts[i][0],pts[i][1],260,172,LN,2,'5 5');
+    o+=R(212,112,96,120,10,S1,AC,2);for(i=0;i<4;i++)o+=T(228,140+i*24,dl[i],i===3?AC:MU,14,'start',700);
+    o+=C(308,112,13,'var(--acc)')+K(308,112,ON,.85);
+    for(i=0;i<4;i++){x=pts[i][0];y=pts[i][1];o+=C(x,y,26,'var(--acc-tint)',LN)+C(x,y-6,8,MU)+'<path d="M'+(x-15)+' '+(y+16)+'a15 15 0 0 1 30 0z" style="fill:'+MU+'"/>'}
+    o+=T(260,326,'REQUIREMENTS · WORKSHOPS · UAT',MU,14,'middle',700);
+  }
+  return '<svg viewBox="0 0 520 360" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Illustration: '+t+'">'+o+'</svg>';
+}
+
+/* ---------- PAGES ---------- */
+function chipsRow(a){return a.map(function(c,i){return '<span class="chip '+(i===0?'g':i===2?'l':'')+'">'+c+'</span>'}).join('')}
+function tags(a){return '<div class="tags">'+a.map(function(t){return '<span class="chip">'+t+'</span>'}).join('')+'</div>'}
+
+function pageWork(){
+  var w=SITE.work, f=w.featured, h='';
+  h+='<section class="wrap hero"><div class="chips">'+chipsRow(w.chips)+'</div>'+
+     '<h1 class="display">'+w.headline+'</h1><p class="lede">'+w.lede+'</p>'+
+     '<div class="hero-cta"><a class="btn p" href="'+SITE.resume+'" download>Download resume '+ic('download')+'</a><a class="btn" href="#/contact">Get in touch '+ic('right')+'</a></div>'+
+     '<div class="stats">'+w.stats.map(function(s){return '<div class="card stat"><div class="lbl">'+s.k+'</div><div class="metric">'+s.v+(s.u?'<small>'+s.u+'</small>':'')+'</div><div class="cap">'+s.d+'</div></div>'}).join('')+'</div></section>';
+  h+='<section class="wrap sec"><div class="sec-h"><span class="lbl acc">Highlights</span><h2 class="h2">Signature achievements</h2></div>';
+  h+='<article class="card feat"><div class="txt"><span class="lbl lime">'+f[0].tag+'</span><h3>'+f[0].title+'</h3><p>'+f[0].desc+'</p>'+
+     '<div class="mets">'+f[0].mets.map(function(m){return '<div><span class="lbl">'+m[0]+'</span><b>'+m[1]+'</b></div>'}).join('')+'</div>'+tags(f[0].chips)+(f[0].case?'<div><button class="btn p sm" data-a="case" data-i="0">Read the case study '+ic('right')+'</button></div>':'')+'</div>'+
+     '<div class="vis">'+vis(f[0])+'</div>'+
+     (f[0].steps?'<div class="flow"><span class="lbl lime">How it works</span><ol>'+f[0].steps.map(function(t,k){return '<li><span class="n">STEP 0'+(k+1)+'</span><b>'+t[0]+'</b><span class="d">'+t[1]+'</span></li>'}).join('')+'</ol></div>':'')+'</article>';
+  h+='<div class="two">'+[f[1],f[2]].map(function(x,k){return '<article class="card pj hov"><span class="lbl lime">'+x.tag+'</span><h3>'+x.title+'</h3><p>'+x.desc+'</p><div class="vis">'+vis(x)+'</div><div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">'+tags(x.chips)+(x.case?'<button class="btn sm" data-a="case" data-i="'+(k+1)+'">'+(x.link||'Read the case study')+' '+ic('right')+'</button>':'<a class="btn sm" href="#/contact">'+(x.link||'Discuss this work')+' '+ic('right')+'</a>')+'</div></article>'}).join('')+'</div></section>';
+  h+='<section class="wrap sec"><div class="sec-h"><span class="lbl acc">Also delivered</span><h2 class="h2">More of the work</h2></div><div class="mgrid">'+w.more.map(function(x){return '<article class="card mc hov"><div class="mvis">'+illo(x.ill)+'</div><span class="lbl lime">'+x.k+'</span><h3>'+x.t+'</h3><p>'+x.d+'</p><span class="chip g" style="align-self:flex-start;margin-top:auto">'+x.m+'</span></article>'}).join('')+'</div></section>';
+  h+='<section class="wrap sec"><div class="cols"><div><div class="sec-h"><span class="lbl acc">Career</span><h2 class="h2">Experience</h2></div>'+
+     w.roles.map(function(r){return '<div class="card role"><div class="top"><h3>'+r.t+(r.tag?' <span class="chip g" style="margin-left:6px">'+r.tag+'</span>':'')+'</h3><span class="lbl lime">'+r.yrs+'</span></div><span class="lbl">'+r.org+'</span><p>'+r.d+'</p></div>'}).join('')+
+     '<div class="sec-h" style="margin-top:44px"><span class="lbl acc">Toolkit</span><h2 class="h2">Skills</h2></div>'+skillsHTML(w.skills)+'</div>'+
+     '<div><div class="sec-h"><span class="lbl acc">Recognition</span><h2 class="h2">Awards &amp; certifications</h2></div><div class="card" style="padding:18px">'+
+     w.honours.map(function(x){return '<div class="hon"><span class="ico">'+ic('award')+'</span><div class="t"><b>'+x.t+'</b><span class="mono-cap">'+x.s+'</span></div><span class="lbl lime">'+x.y+'</span></div>'}).join('')+'</div>'+
+     resumeCard()+'</div></div>';
+  h+='<div class="card cta"><h3>Have a process worth fixing? Let&rsquo;s talk.</h3><div style="display:flex;gap:12px;flex-wrap:wrap"><a class="btn p" href="#/contact">Get in touch '+ic('right')+'</a><a class="btn" href="'+SITE.links[0].u+'" target="_blank" rel="noopener">LinkedIn '+ic('arrow')+'</a></div></div></section>';
+  return h;
+}
+
+function resumeCard(){
+  return '<div class="card resume"><div class="rt"><span class="rico">'+ic('file')+'</span><div><span class="lbl lime">Resume · PDF</span><h3>Tarun Inala — Senior Business Analyst</h3></div></div>'+
+    '<p>The full story on one document: experience, results, education and certifications.</p>'+
+    '<div class="ra"><a class="btn p" href="'+SITE.resume+'" download>Download '+ic('download')+'</a><a class="btn" href="'+SITE.resume+'" target="_blank" rel="noopener">View online '+ic('arrow')+'</a></div></div>';
+}
+function skillsHTML(sk){
+  if(Array.isArray(sk)) return tags(sk);
+  return '<div class="sgroups">'+Object.keys(sk).map(function(g){return '<div class="sg"><span class="lbl acc">'+g+'</span>'+tags(sk[g])+'</div>'}).join('')+'</div>';
+}
+
+function pageWelcome(){
+  return '<section class="wrap land"><div class="chips"><span class="chip g"><i class="dot"></i>Welcome</span></div>'+
+    '<h1 class="display">Hi, I&rsquo;m Tarun.<em style="display:block">Where would you like to start?</em></h1>'+
+    '<p class="lede">There are two sides to this site. Pick the one you came for &mdash; you can switch at any time.</p>'+
+    '<div class="choices">'+
+    '<button class="card choice work hov" data-a="mode" data-v="work" aria-label="Explore my work"><span class="ico">'+ic('briefcase')+'</span><h2>My work</h2>'+
+      '<p>Business analysis, Generative AI and payments delivery: signature projects, case studies, experience and results.</p>'+
+      '<span class="go">Explore my work '+ic('right')+'</span></button>'+
+    '<button class="card choice alt hov" data-a="mode" data-v="personal" aria-label="Explore my writings and photographs"><span class="ico">'+ic('book')+'</span><h2>The personal side</h2>'+
+      '<p>Writings and photographs, kept in one quiet place away from the day job.</p>'+
+      '<span class="go">Read &amp; look around '+ic('right')+'</span></button>'+
+    '</div>'+
+    '<div class="note"><span>Just here for the CV?</span><a href="'+SITE.resume+'" download>Download my resume</a></div></section>';
+}
+
+var poemFilter='All';
+var LANGS=['English','Telugu','Hindi'];
+function isTe(p){return p.lang==='Telugu'}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;')}
+function nonEmpty(p){return p.lines.filter(function(l){return l})}
+function excerpt(p){
+  var out=[],n=0,ls=nonEmpty(p);
+  for(var i=0;i<ls.length&&out.length<3&&n<150;i++){out.push(ls[i]);n+=ls[i].length}
+  var s=out.join('\n'); if(s.length>170) s=s.slice(0,167).replace(/\s+\S*$/,'')+'\u2026';
+  return s;
+}
+function pageCard(p){
+  var te=isTe(p)?' te':'';
+  return '<button class="card poem hov" data-a="poem" data-id="'+p.id+'" aria-label="Read '+esc(p.title)+'"><div class="top"><span class="chip g">'+p.lang+'</span>'+(p.kind?'<span class="lbl">'+p.kind+'</span>':'')+'</div><h3 class="'+te.trim()+'">'+esc(p.title)+'</h3><div class="ex'+te+'">'+esc(excerpt(p))+'</div><div class="ft"><span class="lbl">'+nonEmpty(p).length+' lines</span><b>Read '+ic('right')+'</b></div></button>';
+}
+function featuredOf(list){
+  var f=list.filter(function(p){return nonEmpty(p).length<=12&&nonEmpty(p).every(function(l){return l.length<=80})});
+  return f[0]||list[0];
+}
+function poemsBody(){
+  var list=SITE.writings.filter(function(p){return poemFilter==='All'||p.lang===poemFilter});
+  if(!list.length) return '<p class="mono-cap">No writings in this language yet.</p>';
+  var first=featuredOf(list), rest=list.filter(function(p){return p!==first}), h='';
+  var q=nonEmpty(first).slice(0,4).map(function(l){return '<span>'+esc(l.length>90?l.slice(0,87).replace(/\s+\S*$/,'')+'\u2026':l)+'</span>'}).join('');
+  h+='<article class="card pfeat"><div><span class="chip l">Featured</span><h2 class="h2'+(isTe(first)?' te':'')+'" style="margin-top:18px">'+esc(first.title)+'</h2><p class="mono-cap" style="margin:8px 0 22px">'+first.lang+(first.kind?' · '+first.kind:'')+'</p><button class="btn p" data-a="poem" data-id="'+first.id+'">Read this '+ic('right')+'</button></div><div class="q'+(isTe(first)?' te':'')+'">'+q+'</div></article>';
+  if(rest.length) h+='<div class="pgrid">'+rest.map(function(p){return pageCard(p)}).join('')+'</div>';
+  return h;
+}
+function pageWritings(){
+  var present=LANGS.filter(function(l){return SITE.writings.some(function(p){return p.lang===l})});
+  SITE.writings.forEach(function(p){if(present.indexOf(p.lang)<0)present.push(p.lang)});
+  var cnt=function(l){return l==='All'?SITE.writings.length:SITE.writings.filter(function(p){return p.lang===l}).length};
+  var tabs=['All'].concat(present);
+  return '<section class="wrap hero"><div class="chips"><span class="chip g"><i class="dot"></i>Writing archive</span><span class="chip">'+SITE.writings.length+' writings</span><span class="chip">'+present.length+' languages</span></div>'+
+    '<h1 class="display">Words, <em>slowly</em> written.</h1><p class="lede">Poems, thoughts and short pieces written over the years in English, Telugu and Hindi. Choose a language, then tap any card to read in a quiet view.</p></section>'+
+    '<section class="wrap"><div class="filters" id="pf" role="group" aria-label="Filter writings by language">'+tabs.map(function(t){return '<button class="fbtn'+(t===poemFilter?' on':'')+'" data-a="pfilter" data-v="'+t+'">'+t+' <span style="opacity:.6">'+cnt(t)+'</span></button>'}).join('')+'</div>'+
+    '<div id="pbody" style="margin-top:24px">'+poemsBody()+'</div></section>';
+}
+
+var photoFilter='All';
+function photoCard(p,i){
+  return '<button class="card ph hov '+p.span+(p.tall?' tall':'')+'" data-a="photo" data-id="'+p.id+'" aria-label="Open '+p.title+'"><div class="img">'+pic(p)+
+    '<div class="badge"><span class="chip g">Plate '+('0'+(i+1)).slice(-2)+'</span><span class="chip">'+p.cat+'</span></div>'+(p.src?'':'<span class="hint">Sample art</span>')+
+    '<div class="cap2"><span class="lbl">'+p.place+'</span><b>'+p.title+'</b></div></div>'+
+    '<div class="meta"><span>'+p.f+' · '+p.s+' · ISO '+p.iso+'</span><em>'+p.lens+'</em></div></button>';
+}
+function photosBody(){
+  var all=SITE.photos, list=all.filter(function(p){return photoFilter==='All'||p.cat===photoFilter});
+  return '<div class="pg">'+list.map(function(p){return photoCard(p,all.indexOf(p))}).join('')+'</div>';
+}
+function pagePhotos(){
+  var cats=['All'].concat(SITE.photos.map(function(p){return p.cat}).filter(function(v,i,a){return a.indexOf(v)===i}));
+  return '<section class="wrap hero"><div class="chips"><span class="chip g"><i class="dot"></i>Visual diary</span><span class="chip l">'+SITE.photos.length+' plates</span></div>'+
+    '<h1 class="display">Photography &amp; <em>light</em>.</h1><p class="lede">A sample introduction to your photography — the places, the moods, the gear. Every frame opens into a full view with its camera settings.</p></section>'+
+    '<section class="wrap"><div class="ribbon"><span class="lbl">Kit</span><span>'+SITE.photos[0].cam+'</span><span class="sep">//</span><span>35mm · 50mm · 85mm</span><span class="sep">//</span><span style="color:var(--lime-t)">Edited in your editor of choice</span></div>'+
+    '<div class="filters" id="phf" role="group" aria-label="Filter photos by category">'+cats.map(function(t){return '<button class="fbtn'+(t===photoFilter?' on':'')+'" data-a="pcat" data-v="'+t+'">'+t+'</button>'}).join('')+'</div>'+
+    '<div id="phbody" style="margin-top:20px">'+photosBody()+'</div></section>';
+}
+
+var sentMsg=null;
+var contactMode='work';
+function pageContact(mode){
+  contactMode=mode||'work';
+  var lede=contactMode==='work'?'For product, business-analysis and consulting conversations, collaborations, or a quick question about my work. I read everything.':'For a thought about a piece of writing or a photograph, or simply to say hello. I read everything.';
+  var links=SITE.links.map(function(l){return '<a href="'+l.u+'"><span>'+l.k.slice(0,2)+'</span><span style="opacity:.7">'+l.k+'</span></a>'}).join('');
+  return '<section class="wrap hero"><div class="chips"><span class="chip g"><i class="dot"></i>Say hello</span></div>'+
+    '<h1 class="display">Start a <em>conversation</em>.</h1><p class="lede">'+lede+'</p></section>'+
+    '<section class="wrap"><div class="cgrid"><div class="stack">'+
+    '<div class="card box"><span class="lbl">Direct email</span><div class="email"><span>'+SITE.email+'</span><button class="btn sm" data-a="copy-email">'+ic('copy')+' <span id="cplbl">Copy</span></button></div></div>'+
+    '<div class="card box"><span class="lbl">Elsewhere</span><div class="links">'+links+'</div></div>'+
+    '<div class="card box"><span class="lbl">Typical response</span><div class="head" style="font-size:22px;font-weight:700;margin-top:8px;letter-spacing:-.02em">Usually within a few days</div><p class="mono-cap" style="margin:6px 0 0">Based in Hyderabad, India · IST.</p></div>'+
+    '</div><div class="card form" id="formwrap">'+formHTML()+'</div></div></section>';
+}
+function formHTML(){
+  if(sentMsg) return '<div class="ok"><div class="head" style="font-size:22px;font-weight:700;display:flex;gap:10px;align-items:center">'+ic('check')+' Almost there</div><p style="margin:10px 0 16px;color:var(--mu)">Your message is ready. Open it in your email app to send it.</p><a class="btn p" href="'+sentMsg+'">Open in email '+ic('arrow')+'</a> <button class="btn" data-a="again" style="margin-left:6px">Write another</button></div>';
+  var topics=contactMode==='work'?['Business analysis','Product ownership','Collaboration','Just saying hi']:['Writing','Photography','Collaboration','Just saying hi'];
+  return '<div class="lbl acc">Message</div>'+
+    '<div class="f2"><div class="fld"><label class="lbl" for="fn">Your name</label><input id="fn" placeholder="Your name" autocomplete="name"></div><div class="fld"><label class="lbl" for="fe">Your email</label><input id="fe" type="email" placeholder="you@example.com" autocomplete="email"></div></div>'+
+    '<div class="fld"><span class="lbl">What is it about?</span><div class="filters" id="topics">'+topics.map(function(t,i){return '<button type="button" class="fbtn'+(i===0?' on':'')+'" data-a="topic" data-v="'+t+'">'+t+'</button>'}).join('')+'</div></div>'+
+    '<div class="fld"><label class="lbl" for="fm">Message</label><textarea id="fm" placeholder="Tell me a little about what you have in mind…"></textarea><div class="err" id="ferr" role="alert"></div></div>'+
+    '<div><button class="btn p" data-a="send">Send message '+ic('right')+'</button></div>';
+}
+
+/* ---------- ROUTER ---------- */
+var ROUTES={
+  welcome:{l:'Welcome',m:null,f:pageWelcome},
+  work:{l:'Work',m:'work',f:pageWork},
+  contact:{l:'Contact',m:'work',f:function(){return pageContact('work')}},
+  writings:{l:'Writings',m:'personal',f:pageWritings},
+  photography:{l:'Photography',m:'personal',f:pagePhotos},
+  hello:{l:'Say hello',m:'personal',f:function(){return pageContact('personal')}}
+};
+var MODES={work:['work','contact'],personal:['writings','photography','hello']};
+var FOOT={work:'Business analysis and product delivery — clear requirements, shipped outcomes.',personal:'Writings and photographs — kept in one quiet place.'};
+function savedMode(){try{var m=localStorage.getItem('inala-mode');if(m==='work'||m==='personal')return m}catch(e){}return 'work'}
+function route(){
+  var k=location.hash.replace(/^#\/?/,'').split('/')[0];
+  if(k==='poetry'){k='writings';try{history.replaceState(null,'','#/writings')}catch(e){}}
+  if(!ROUTES[k]) k='welcome';
+  var land=(k==='welcome');
+  document.body.classList.toggle('landing',land);
+  if(land){
+    $('#nav-d').innerHTML=''; $('#nav-m').innerHTML='';
+    document.querySelectorAll('#mode button').forEach(function(b){b.classList.remove('on');b.setAttribute('aria-pressed','false')});
+    $('#brand').setAttribute('href','#/');
+    $('#main').innerHTML=pageWelcome();
+    document.title='Tarun Inala — Business Analyst, writings & photographs';
+    closeOv(); window.scrollTo(0,0);
+    return;
+  }
+  var mode=ROUTES[k].m;
+  try{localStorage.setItem('inala-mode',mode)}catch(e){}
+  var nav=MODES[mode].map(function(r){return '<a href="#/'+r+'" class="'+(r===k?'on':'')+'"'+(r===k?' aria-current="page"':'')+'>'+ROUTES[r].l+'</a>'}).join('');
+  $('#nav-d').innerHTML=nav; $('#nav-m').innerHTML=nav;
+  document.querySelectorAll('#mode button').forEach(function(b){var on=b.dataset.v===mode;b.classList.toggle('on',on);b.setAttribute('aria-pressed',on)});
+  $('#brand').setAttribute('href','#/');
+  $('#f-tag').textContent=FOOT[mode];
+  $('#f-nav').innerHTML='<li><a href="#/">Home</a></li>'+MODES[mode].map(function(r){return '<li><a href="#/'+r+'">'+ROUTES[r].l+'</a></li>'}).join('');
+  $('#main').innerHTML=ROUTES[k].f();
+  document.title=ROUTES[k].l+' — Tarun Inala';
+  closeOv(); window.scrollTo(0,0);
+}
+window.addEventListener('hashchange',route);
+
+/* ---------- OVERLAY (writing reader + photo viewer) ---------- */
+var cur={t:null,i:0};
+function curList(){return SITE.writings.filter(function(p){return poemFilter==='All'||p.lang===poemFilter})}
+function openPoem(id){
+  var L=curList(); var idx=L.findIndex(function(p){return p.id===id}); if(idx<0){L=SITE.writings;idx=L.findIndex(function(p){return p.id===id}); if(idx<0)return}
+  cur={t:'poem',i:idx,list:L}; var p=L[idx], n=L.length;
+  var te=isTe(p)?' te':'';
+  $('#ov').innerHTML='<div class="sheet"><div class="sh-h"><span class="lbl acc">Writing '+(idx+1)+' / '+n+'</span><button class="iconbtn" data-a="close" aria-label="Close">'+ic('x')+'</button></div>'+
+    '<div class="sh-b"><div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><span class="chip g">'+p.lang+'</span>'+(p.kind?'<span class="lbl">'+p.kind+'</span>':'')+'</div><h2 class="display'+te+'" style="font-size:clamp(30px,5vw,44px);margin-top:16px">'+esc(p.title)+'</h2>'+
+    '<div class="poemtxt'+te+'">'+p.lines.map(function(l){return l?'<p>'+esc(l)+'</p>':'<p>&nbsp;</p>'}).join('')+'</div>'+(p.note?'<p class="pnote">'+esc(p.note)+'</p>':'')+'</div>'+
+    '<div class="sh-f"><button class="btn sm" data-a="prev">'+ic('left')+' Previous</button><button class="btn sm" data-a="next">Next '+ic('right')+'</button></div></div>';
+  showOv();
+}
+function openPhoto(id){
+  var idx=SITE.photos.findIndex(function(p){return p.id===id}); if(idx<0)return;
+  cur={t:'photo',i:idx}; var p=SITE.photos[idx], n=SITE.photos.length;
+  $('#ov').innerHTML='<div class="sheet wide"><div class="sh-h"><span class="lbl acc">Plate '+('0'+(idx+1)).slice(-2)+' / '+('0'+n).slice(-2)+'</span><button class="iconbtn" data-a="close" aria-label="Close">'+ic('x')+'</button></div>'+
+    '<div class="lb"><div class="art">'+pic(p,600,700)+'</div><div class="info"><div><span class="chip g">'+p.cat+'</span><h2 class="h2" style="margin-top:14px">'+p.title+'</h2><p class="mono-cap" style="margin:6px 0 0">'+p.place+'</p></div>'+
+    '<div class="kv"><div><span class="lbl">Camera</span><b>'+p.cam+'</b></div><div><span class="lbl">Lens</span><b>'+p.lens+'</b></div><div><span class="lbl">Aperture</span><b>'+p.f+'</b></div><div><span class="lbl">Shutter</span><b>'+p.s+'</b></div><div><span class="lbl">ISO</span><b>'+p.iso+'</b></div><div><span class="lbl">Category</span><b>'+p.cat+'</b></div></div>'+
+    '<p class="mono-cap" style="margin:0">A short note about the story behind this frame goes here.</p></div></div>'+
+    '<div class="sh-f"><button class="btn sm" data-a="prev">'+ic('left')+' Previous</button><button class="btn sm" data-a="next">Next '+ic('right')+'</button></div></div>';
+  showOv();
+}
+function openCase(i){
+  var x=SITE.work.featured[i]; if(!x||!x.case) return;
+  cur={t:'case',i:i};
+  $('#ov').innerHTML='<div class="sheet"><div class="sh-h"><span class="lbl acc">Case study</span><button class="iconbtn" data-a="close" aria-label="Close">'+ic('x')+'</button></div>'+
+    '<div class="sh-b"><span class="lbl lime">'+x.tag+'</span><h2 class="display" style="font-size:clamp(26px,4.4vw,38px);margin-top:12px">'+x.title+'</h2>'+
+    '<div class="case">'+x.case.map(function(c,k){return '<div class="cs"><span class="n">0'+(k+1)+'</span><div><span class="lbl acc">'+c[0]+'</span><p>'+c[1]+'</p></div></div>'}).join('')+'</div></div>'+
+    '<div class="sh-f"><button class="btn sm" data-a="close">Close</button><button class="btn p sm" data-a="discuss">Discuss this work '+ic('right')+'</button></div></div>';
+  showOv();
+}
+var lastFocus=null;
+function showOv(){lastFocus=document.activeElement;var o=$('#ov');o.classList.add('on');o.scrollTop=0;document.body.style.overflow='hidden';var c=$('#ov [data-a="close"]');if(c)c.focus()}
+function closeOv(){var o=$('#ov');if(!o.classList.contains('on'))return;o.classList.remove('on');o.innerHTML='';document.body.style.overflow='';cur={t:null,i:0};if(lastFocus&&lastFocus.focus)try{lastFocus.focus()}catch(e){}}
+function step(d){
+  if(cur.t==='poem'){var n=cur.list.length;openPoem(cur.list[(cur.i+d+n)%n].id)}
+  else if(cur.t==='photo'){var m=SITE.photos.length;openPhoto(SITE.photos[(cur.i+d+m)%m].id)}
+}
+
+/* ---------- EVENTS ---------- */
+document.addEventListener('click',function(e){
+  if(e.target===$('#ov')){closeOv();return}
+  var el=e.target.closest('[data-a]'); if(!el)return;
+  var a=el.dataset.a, v=el.dataset.v;
+  if(a==='mode'){location.hash='#/'+MODES[v][0]}
+  else if(a==='poem'){openPoem(el.dataset.id)}
+  else if(a==='photo'){openPhoto(el.dataset.id)}
+  else if(a==='case'){openCase(+el.dataset.i)}
+  else if(a==='discuss'){closeOv();location.hash='#/contact'}
+  else if(a==='close'){closeOv()}
+  else if(a==='prev'){step(-1)}
+  else if(a==='next'){step(1)}
+  else if(a==='pfilter'){poemFilter=v;document.querySelectorAll('#pf .fbtn').forEach(function(b){b.classList.toggle('on',b.dataset.v===v)});$('#pbody').innerHTML=poemsBody()}
+  else if(a==='pcat'){photoFilter=v;document.querySelectorAll('#phf .fbtn').forEach(function(b){b.classList.toggle('on',b.dataset.v===v)});$('#phbody').innerHTML=photosBody()}
+  else if(a==='topic'){document.querySelectorAll('#topics .fbtn').forEach(function(b){b.classList.toggle('on',b===el)})}
+  else if(a==='copy-email'){
+    var done=function(){var l=$('#cplbl');if(l){l.textContent='Copied';setTimeout(function(){l.textContent='Copy'},1600)}};
+    try{navigator.clipboard.writeText(SITE.email).then(done,done)}catch(x){done()}
+  }
+  else if(a==='send'){
+    var n=$('#fn').value.trim(), m=$('#fe').value.trim(), t=$('#fm').value.trim(), err=$('#ferr');
+    var tp=$('#topics .fbtn.on'); tp=tp?tp.dataset.v:'Hello';
+    if(!n||!/^\S+@\S+\.\S+$/.test(m)||!t){err.textContent='Please add your name, a valid email and a message.';return}
+    sentMsg='mailto:'+SITE.email+'?subject='+encodeURIComponent(tp+' — from '+n)+'&body='+encodeURIComponent(t+'\n\n— '+n+' ('+m+')');
+    $('#formwrap').innerHTML=formHTML();
+  }
+  else if(a==='again'){sentMsg=null;$('#formwrap').innerHTML=formHTML()}
+});
+document.addEventListener('keydown',function(e){
+  if(!$('#ov').classList.contains('on'))return;
+  if(e.key==='Escape')closeOv();
+  else if(e.key==='ArrowLeft')step(-1);
+  else if(e.key==='ArrowRight')step(1);
+});
+
+/* ---------- FOOTER + INIT ---------- */
+function boot(){
+$('#f-links').innerHTML=SITE.links.map(function(l){return '<li><a href="'+l.u+'">'+l.k+'</a></li>'}).join('')+'<li><a href="mailto:'+SITE.email+'">Email</a></li><li><a href="'+SITE.resume+'" download>Resume (PDF)</a></li>';
+$('#copy').textContent='© '+new Date().getFullYear()+' Tarun Inala. All rights reserved.';
+paintToggle();
+route();
+}
+function fillDefaults(d){
+  if(!d.resume) d.resume=BUILTIN.resume;
+  var D=BUILTIN.work.featured, F=d.work.featured||[];
+  D.forEach(function(x,i){ if(F[i]) ['steps','case'].forEach(function(k){ if(!F[i][k]&&x[k]) F[i][k]=x[k]; }); });
+}
+/* Load content.json (edit that file, or sync it from Notion). If it can't be loaded, the built-in copy above is used. */
+(function(){
+  var done=false; function go(){ if(done) return; done=true; boot(); }
+  try{
+    fetch('content.json',{cache:'no-store'}).then(function(r){return r.ok?r.json():Promise.reject()})
+      .then(function(d){ if(d&&!d.writings&&d.poems) d.writings=d.poems; if(d&&d.work&&d.writings&&d.photos){ SITE=d; fillDefaults(SITE); } }).catch(function(){}).then(go);
+    setTimeout(go,2500);
+  }catch(e){ go(); }
+})();
+</script>
+</body>
+</html>
