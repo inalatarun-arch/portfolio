@@ -13,7 +13,8 @@
    "Hyderabad, India"
   ],
   "headline": "Turning <em>business needs</em> into products that <em>deliver real value</em>.",
-  "lede": "Senior Business Analyst and Functional Lead with 5+ years owning the path from problem to shipped product — discovery, prioritisation, stakeholder alignment and delivery — across Generative AI tools, payments platforms and large-scale ERP migrations.",
+  "sub": "Senior Business Analyst and Functional Lead. Five years taking products from first problem to shipped release.",
+  "lede": "Senior Business Analyst and Functional Lead with 5+ years owning the path from problem to shipped product (discovery, prioritisation, stakeholder alignment and delivery) across Generative AI tools, payments platforms and large-scale ERP migrations.",
   "stats": [
    {
     "k": "Experience",
@@ -38,7 +39,7 @@
    {
     "tag": "Flagship case study · Generative AI",
     "title": "Generative AI engine for clinical-trial contract extraction",
-    "desc": "Led end-to-end development of an engine that reads complex Clinical Trial Agreement budget terms from unstructured PDFs and maps them into APECS — with a “Single Pane of Glass” UI to review, validate and commit every AI-extracted mapping, and automated checks that protect timely site reimbursements.",
+    "desc": "Led end-to-end development of an engine that reads complex Clinical Trial Agreement budget terms from unstructured PDFs and maps them into APECS, with a “Single Pane of Glass” UI to review, validate and commit every AI-extracted mapping, and automated checks that protect timely site reimbursements.",
     "mets": [
      [
       "Daily manual effort",
@@ -96,7 +97,7 @@
    {
     "tag": "Achievement 02 · Financial controls",
     "title": "Payment Term Validation: closing a leak since day one",
-    "desc": "Designed, specified and tested validation that aligns 100% of outgoing payments with contractual costs — ending systemic overpayments that had persisted since the application launched, including edge cases like calendar boundaries and amendment tracking.",
+    "desc": "Designed, specified and tested validation that aligns 100% of outgoing payments with contractual costs, ending systemic overpayments that had persisted since the application launched, including edge cases like calendar boundaries and amendment tracking.",
     "chips": [
      "Validation",
      "Compliance",
@@ -126,7 +127,7 @@
    {
     "tag": "Achievement 03 · Payments",
     "title": "Unlocked $1.5M in clinical-trial payouts in month one",
-    "desc": "Launched a critical payments capability the platform had been missing for 12 years, enabling $1.5M in payouts within its first month — and cut invoice processing from 2 hours of manual validation to 1 minute.",
+    "desc": "Launched a critical payments capability the platform had been missing for 12 years, enabling $1.5M in payouts within its first month, and cut invoice processing from 2 hours of manual validation to 1 minute.",
     "chips": [
      "Payments",
      "Automation",
@@ -154,7 +155,7 @@
    {
     "k": "Payments Portal",
     "t": "Payee transparency, self-service",
-    "d": "Functional Lead for the payment portal — the liaison between payees, the Payment Processing Group and tech teams. Defined data mapping and reconciliation logic across Oracle EBS and APECS.",
+    "d": "Functional Lead for the payment portal, the liaison between payees, the Payment Processing Group and tech teams. Defined data mapping and reconciliation logic across Oracle EBS and APECS.",
     "m": "−50% support inquiries",
     "ill": "portal"
    },
@@ -198,21 +199,21 @@
    {
     "t": "Senior Business Analyst",
     "org": "Winfo Solutions · APECS",
-    "yrs": "Mar 2023 — Present",
+    "yrs": "Mar 2023 - Present",
     "d": "Functional Lead for a clinical-trial payments and contracts platform: Generative AI extraction, payment validation, the payee portal, automated testing and reporting migration.",
     "tag": "Current"
    },
    {
     "t": "Business Analyst",
     "org": "Winfo Solutions · FinancialForce, Oracle Fusion, RPA",
-    "yrs": "Jun 2021 — Mar 2023",
-    "d": "Owned UAT, requirements and test automation across ERP and RPA engagements — including an award-winning FinancialForce automation demo.",
+    "yrs": "Jun 2021 - Mar 2023",
+    "d": "Owned UAT, requirements and test automation across ERP and RPA engagements, including an award-winning FinancialForce automation demo.",
     "tag": ""
    },
    {
     "t": "Junior Software Tester",
     "org": "Infionic Inc. · Cloud ERP",
-    "yrs": "Aug 2018 — Apr 2019",
+    "yrs": "Aug 2018 - Apr 2019",
     "d": "Tested the Finance module (AR & AP) and shaped a Windows-based ERP through competitive analysis of Tally and SAP.",
     "tag": ""
    }
@@ -221,12 +222,12 @@
    {
     "t": "Client Focus Award",
     "s": "Clinical trial payments project · dedication to clients",
-    "y": "2025–26"
+    "y": "2025-26"
    },
    {
     "t": "Client Focus Award",
     "s": "Clinical trial payments project · dedication to clients",
-    "y": "2024–25"
+    "y": "2024-25"
    },
    {
     "t": "Certified Generative AI Professional",
@@ -241,12 +242,12 @@
    {
     "t": "Above and Beyond Award",
     "s": "FinancialForce engagement",
-    "y": "2022–23"
+    "y": "2022-23"
    },
    {
     "t": "Award-winning client demonstration",
     "s": "FinancialForce test automation",
-    "y": "2022–23"
+    "y": "2022-23"
    }
   ],
   "skills": {
