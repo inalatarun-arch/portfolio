@@ -110,7 +110,7 @@ var HEADRUNS=[
  [['h',5,7],['d',9,12],['m',12,12],['m',13,17]],
  [['d',10,12],['m',13,17]],
  [['d',11,13],['m',14,16]]];
-var HEADMAP={h:C.hair,g:C.hairL,s:C.skin,l:C.skinL,d:C.skinD,m:'#1d1511',b:'#17110e',a:'#a46c46',t:'#8a4a3a'};
+var HEADMAP={h:C.hair,g:C.hairL,s:C.skin,l:C.skinL,d:C.skinD,m:'#b97a50',b:'#17110e',a:'#a46c46',t:'#8a4a3a'};
 var HEADSPR=null;
 function headSprite(){if(HEADSPR)return HEADSPR;var w=20,h=HEADRUNS.length,o=mk(w,h),r,k,i,run;
   for(r=0;r<h;r++)for(k=0;k<HEADRUNS[r].length;k++){run=HEADRUNS[r][k];for(i=run[1];i<=run[2];i++)P1(o.x,i,r,HEADMAP[run[0]])}
@@ -146,6 +146,8 @@ function drawPerson(o,pose){
   for(r=0;r<=26;r++){t=r/26;c=sx+(hx-sx)*t;xb=Math.round(c-(r<2?4:6));xf=Math.round(c+(r<2?3:(r<4?5:6)));
     R(x,xb,sy+r,xf-xb+1,1,C.tee);R(x,xb,sy+r,2,1,C.teeD);if(r>1&&r<9)R(x,xf-1,sy+r,2,1,C.teeL);if(r>=24)R(x,xb,sy+r,xf-xb+1,1,C.teeD)}
   R(x,sx-3,sy,6,1,C.teeL);
+  /* camera hanging on a strap sits on the chest, under the arms */
+  if(pose.strap){LN(x,sx+1,sy-1,pose.strap.x+hx+1,pose.strap.y+hy-4,1,'#2a2a34');camera(x,hx+pose.strap.x,hy+pose.strap.y)}
   /* near arm */
   var nj=drawArm(x,sx+2,sy+5,hx+pose.nh.x,hy+pose.nh.y,false,pose.dir);
   /* head: neck first, then the head sprite (neck sits under the jaw, x 10..13 of the sprite) */
@@ -155,7 +157,6 @@ function drawPerson(o,pose){
   var ex=hxp+15,ey=hyp+9;
   if(pose.blink){P1(x,ex,ey+1,'#2a1a12')}else{R(x,ex,ey,1,2,'#120c09');P1(x,ex-1,ey,C.skinL)}
   /* camera hanging on a strap */
-  if(pose.strap){LN(x,sx+1,sy-1,pose.strap.x+hx+1,pose.strap.y+hy-4,1,'#2a2a34');camera(x,hx+pose.strap.x,hy+pose.strap.y)}
   if(pose.cam){camera(x,hxp+pose.cam.x,hyp+pose.cam.y)}
   return {head:{x:hxp,y:hyp},sh:{x:sx,y:sy},nj:nj}}
 
@@ -316,7 +317,7 @@ function buildPark(W,H){
   var gp=[[121,194,86],[98,176,74],[78,155,68],[60,133,62]],id,d;
   for(j=HOR;j<bottom;j++){var t=(j-HOR)/(bottom-HOR);for(i=left;i<right;i++){var b=clamp(Math.floor(t*3.4+bay(i+ox,j+oy)-.5),0,3),c=gp[b];g.fillStyle='rgb('+c[0]+','+c[1]+','+c[2]+')';g.fillRect(i,j,1,1)}}
   /* path: a winding stone path into the distance */
-  function pcx(y){var u=(y-HOR)/(bottom-HOR);return lerp(-70,-34,u)+Math.sin(u*3.4)*10}
+  function pcx(y){var u=(y-HOR)/(bottom-HOR);return lerp(-100,-58,u)+Math.sin(u*3.4)*8}
   function phw(y){var u=(y-HOR)/(bottom-HOR);return lerp(5,22,u)}
   for(j=HOR+1;j<bottom;j++){var cxp=pcx(j),hw=phw(j);for(i=Math.round(cxp-hw);i<=Math.round(cxp+hw);i++){var edge=(i-Math.round(cxp-hw)<2||Math.round(cxp+hw)-i<2);
       P1(g,i,j,edge?'#c9a878':(bay(i+ox,j+oy)<.25?'#e6cfa0':'#ecd9b0'))}
@@ -329,16 +330,16 @@ function buildPark(W,H){
     else{var fc=fcol[Math.floor(r()*fcol.length)];P1(g,gx,gy,'#2f7a40');P1(g,gx,gy-1,'#2f7a40');P1(g,gx,gy-2,fc);if(dp>.35){P1(g,gx-1,gy-2,fc);P1(g,gx+1,gy-2,fc);P1(g,gx,gy-3,fc);P1(g,gx,gy-2,'#ffe9a8')}}}
   /* shadows: tree + bench + person */
   g.fillStyle='rgba(24,70,48,.26)';
-  for(j=-2;j<=3;j++){var rw=Math.round(46*Math.sqrt(1-j*j/12));g.fillRect(58-rw,30+j,rw*2,1)}
+  for(j=-2;j<=3;j++){var rw=Math.round(46*Math.sqrt(1-j*j/12));g.fillRect(-98-rw,30+j,rw*2,1)}
   for(j=-2;j<=2;j++){var rw2=Math.round(24*Math.sqrt(1-j*j/8));g.fillRect(HX+8-rw2,29+j,rw2*2,1)}
   g.fillStyle='rgba(24,70,48,.16)';
-  for(j=-3;j<=3;j++){var rw3=Math.round(70*Math.sqrt(1-j*j/16));g.fillRect(60-rw3,31+j,rw3*2,1)}
+  for(j=-3;j<=3;j++){var rw3=Math.round(70*Math.sqrt(1-j*j/16));g.fillRect(-96-rw3,31+j,rw3*2,1)}
   /* lamp post */
-  var lx=-92,ly=24;
+  var lx=52,ly=24;
   R(g,lx-2,ly-2,5,3,'#2a2f3b');R(g,lx-1,ly-56,3,54,'#363c4b');R(g,lx-1,ly-56,1,54,'#4c5468');
   R(g,lx-4,ly-62,9,6,'#2a2f3b');R(g,lx-3,ly-61,7,4,'#ffe9a0');R(g,lx-5,ly-64,11,2,'#2a2f3b');R(g,lx-2,ly-66,5,2,'#2a2f3b');
   /* tree trunk + branches */
-  var tx=60;
+  var tx=-96;
   for(j=-64;j<28;j++){var u2=(j+64)/92,wd=Math.round(lerp(4,8,u2*u2)+ (j>20?(j-20)*.5:0)),cx2=tx+Math.round(Math.sin(j*.07)*1.5);
     R(g,cx2-wd,j,wd*2,1,C.woodDD);R(g,cx2-wd+1,j,wd,1,'#8b5a36');R(g,cx2-wd+1,j,2,1,'#a8734a');
     if(j%5===0)R(g,cx2-wd+3,j,1,3,'#6a4529')}
@@ -371,9 +372,9 @@ function buildPark(W,H){
   var canFront=canopyLayer(130,80,3,cf,palB);
   /* sprites */
   var person=newPerson(),leaves=[],bflies=[];
-  for(i=0;i<7;i++)leaves.push({x:30+r()*70,y:-60+r()*80,v:4+r()*4,p:r()*6,c:i%3===0?'#e9a43c':(i%2?'#58b45e':'#2f8a45')});
-  bflies.push({cx:-45,cy:28,ax:26,ay:8,s:.7,p:0,c:'#ffd25a'},{cx:-62,cy:44,ax:20,ay:6,s:.9,p:2,c:'#ff7f93'});
-  var canX=60-65-0,canY=-98+0;   /* where the canopy canvases land (top-left, in world px) */
+  for(i=0;i<7;i++)leaves.push({x:-135+r()*80,y:-60+r()*80,v:4+r()*4,p:r()*6,c:i%3===0?'#e9a43c':(i%2?'#58b45e':'#2f8a45')});
+  bflies.push({cx:-78,cy:30,ax:26,ay:8,s:.7,p:0,c:'#ffd25a'},{cx:-98,cy:46,ax:20,ay:6,s:.9,p:2,c:'#ff7f93'});
+  var canX=-96-60,canY=-98;   /* where the canopy canvases land (top-left, in world px) */
 
   var T=9;
   function phase(t){var s=t%T,e=0,fl=0,up=0;
@@ -403,22 +404,29 @@ function buildPark(W,H){
       ctx.restore();
       ctx.drawImage(bn.c,0,0);
       ctx.save();ctx.translate(ox,oy);
-      /* open diary on his lap: cover, pages and live ink */
-      LN(ctx,HX-9,dy0+1,HX-25,dy0-3,2,'#a2481c');
-      LN(ctx,HX-9,dy0-1,HX-25,dy0-5,2,C.cream);
-      LN(ctx,HX-9,dy0-2,HX-25,dy0-6,1,'#fffaf0');
-      var u=(t*.45)%1,inkN=Math.floor(u*14);
-      for(i=0;i<3;i++){var lw=i===2?inkN:14;ctx.fillStyle='#7a6a52';for(k=0;k<Math.min(lw,14);k+=2){var lx2=HX-10-k,ly2=dy0-2-Math.round(k*.25)-(i);ctx.fillRect(lx2,ly2,1,1)}}
+      /* open diary on his lap, seen slightly from above: ruled page, cover edge, live ink */
+      var ws=ph.s<3.6?ph.s:(ph.s>6.6?ph.s-3:3.6),line=Math.min(2,Math.floor(ws/2)),lp=clamp((ws-line*2)/2,0,1);
+      var d0=9,d1=26;
+      for(i=d0;i<=d1;i++){var f=(i-d0)/(d1-d0),yt=Math.round(lerp(-9,-13,f)),yb=Math.round(lerp(-3,-7,f));
+        R(ctx,HX-i,yt,1,yb-yt+1,C.cream);R(ctx,HX-i,yt,1,1,'#fffaf0');R(ctx,HX-i,yb+1,1,2,'#a2481c');
+        for(k=1;k<=3;k++)if(i%2===0)P1(ctx,HX-i,yt+k*1.5|0,'#d9cfb8')}
+      R(ctx,HX-d0,-9,1,8,'#a2481c');R(ctx,HX-d1,-13,1,8,'#a2481c');R(ctx,HX-17,-11,1,8,'#c9b88e');
+      /* ink: earlier lines complete, current line grows with the pen; fades out before the loop restarts */
+      var fade=ph.s>8.6?clamp(1-(ph.s-8.6)/.4,0,1):1;ctx.globalAlpha=fade;
+      for(var ln=0;ln<=line;ln++){var len=ln<line?15:Math.floor(lp*15);
+        for(k=0;k<len;k++){var uu=d0+1+k,ff=(uu-d0)/(d1-d0),yy=Math.round(lerp(-9,-13,ff))+1+ln*2+((k*7+ln*3)%5<2?1:0)-0;
+          if((k%4)!==3)P1(ctx,HX-uu,Math.min(yy,Math.round(lerp(-3,-7,ff))),'#2b3a7a')}}
+      ctx.globalAlpha=1;
       /* person */
       var writing=1-e;
-      var wob=Math.sin(t*9)*1.2,sweep=((t*.5)%1)*5;
-      var pen={x:Math.round(15+sweep+wob*.4),y:-12+(Math.sin(t*14)>.4?1:0)};
+      var tipU=d0+2+Math.floor(lp*30)/2+(Math.sin(t*26)>0?0:.5),tipF=(tipU-d0)/(d1-d0),
+          pen={x:Math.round(tipU)-2,y:Math.round(lerp(-9,-13,tipF))+1+line*2-3+(Math.sin(t*26)>.2?1:0)};
       var camPos={x:lerp(5,20,e),y:lerp(29,10,e)};
       var pose={lean:Math.round(lerp(2,0,e)),head:{dx:Math.round(lerp(2,1,e)),dy:Math.round(lerp(2,-1,e))},blink:(t%3.4)<.13||(ph.s>5.0&&ph.s<5.3),dir:1,
         legs:{kx:21,ky:0,ax:23,ay:22,foot:'hang'},
         nh:{x:Math.round(lerp(pen.x,11,e)),y:Math.round(lerp(pen.y,-33,e))},
-        fh:{x:Math.round(lerp(21,17,e)),y:Math.round(lerp(-12,-34,e))},
-        strap:e<.02?{x:5,y:-14}:null,cam:e<.02?null:{x:camPos.x,y:camPos.y}};
+        fh:{x:Math.round(lerp(22,17,e)),y:Math.round(lerp(-10,-34,e))},
+        strap:e<.02?{x:3,y:-9}:null,cam:e<.02?null:{x:camPos.x,y:camPos.y}};
       var info=drawPerson(person,pose);
       /* pen */
       if(e<.5){var hh=info.nj;LN(person.x,hh.hx,hh.hy,hh.hx+3,hh.hy+3,1,'#d5360c');P1(person.x,hh.hx+3,hh.hy+3,'#1b1730')}
@@ -442,7 +450,7 @@ function buildPark(W,H){
       /* light shafts through the leaves */
       var a1=.07+.02*Math.sin(t*.5);
       ctx.fillStyle='rgba(255,246,190,'+a1.toFixed(3)+')';
-      for(j2=-34;j2<34;j2++){var o3=(j2+34)*.55;ctx.fillRect(38-Math.round(o3),j2,11,1);ctx.fillRect(66-Math.round(o3),j2,6,1);ctx.fillRect(14-Math.round(o3*.8),j2,4,1)}
+      for(j2=-34;j2<34;j2++){var o3=(j2+34)*.55;ctx.fillRect(-120-Math.round(o3),j2,11,1);ctx.fillRect(-92-Math.round(o3),j2,6,1);ctx.fillRect(-144-Math.round(o3*.8),j2,4,1)}
       /* floating pollen */
       for(i=0;i<14;i++){var px2=Math.round(left+((i*37+t*(2+i%3))%W)),py2=Math.round(-30+(i*23)%70+Math.sin(t*.6+i)*4);ctx.fillStyle='rgba(255,255,230,'+(.3+.3*Math.sin(t*2+i)).toFixed(2)+')';ctx.fillRect(px2,py2,1,1)}
       ctx.restore();
@@ -457,7 +465,7 @@ function buildPark(W,H){
    device pixels per art pixel, so the pixels never go soft once a move settles. */
 var Stage=(function(){
   var el=null,panels={},mode='off',cur=null,geo=null,dpr=1,ticking=false,t0=0,lastDraw=0,shown=false,tw={},rt=0,still=null;
-  var KIND={office:{build:buildOffice,F:[-12,-30],still:1.3,hash:'#/work'},park:{build:buildPark,F:[-12,-35],still:1.3,hash:'#/writings'}};
+  var KIND={office:{build:buildOffice,F:[33,0],still:1.3,hash:'#/work'},park:{build:buildPark,F:[3,0],still:1.3,hash:'#/writings'}};
   var OF={work:'office',personal:'park'};
   function q(k){return Math.max(1/dpr,Math.floor(k*dpr+1e-6)/dpr)}
   function HS(n){return n==='park'?geo.Hp:geo.H}
@@ -466,19 +474,25 @@ var Stage=(function(){
 
   function measure(){
     dpr=Math.min(window.devicePixelRatio||1,3);
-    var vw=el.clientWidth||innerWidth,vh=el.clientHeight||innerHeight,narrow=vw<860||vh>vw,kL,kH,L={},H;
-    if(narrow){kL=q(Math.min(vw/232,vh*.5/150));kH=q(Math.min(vw/175,vh/150));
-      L.office={t:0,r:0,b:.5,l:0,fx:.5,fy:.3,k:kL};L.park={t:.5,r:0,b:0,l:0,fx:.5,fy:.68,k:kL};H={t:0,r:0,b:0,l:0,fx:.5,fy:.8,k:kH}}
-    else{kL=q(Math.min(vw*.5/232,vh/150));kH=q(Math.min(vw/250,vh/150));
-      L.office={t:0,r:.5,b:0,l:0,fx:.25,fy:.52,k:kL};L.park={t:0,r:0,b:0,l:.5,fx:.75,fy:.52,k:kL};H={t:0,r:0,b:0,l:0,fx:.74,fy:.6,k:kH}}
+    var vw=el.clientWidth||innerWidth,vh=el.clientHeight||innerHeight,narrow=vw<860||vh>vw,kL,kH,kP,L={},H,Hp;
+    /* Both scenes are drawn mirrored, so the two of you sit back to back at the seam and lean on each other. */
+    if(narrow){
+      kL=q(Math.min(vw/232,vh*.5/150));kH=q(Math.min(vw/175,vh/150));kP=kH;
+      L.office={t:0,r:0,b:.5,l:0,fx:.64,fy:.31,k:kL};L.park={t:.5,r:0,b:0,l:0,fx:.36,fy:.71,k:kL};
+      H={t:0,r:0,b:0,l:0,fx:.68,fy:.8,k:kH};Hp={t:0,r:0,b:0,l:0,fx:.36,fy:.46,k:kP}}
+    else{
+      kH=q(Math.min(vw/250,vh/150));kL=Math.min(q(Math.min(vw*.5/140,vh/150)),q(kH/1.2));kP=q(kH*.8);
+      L.office={t:0,r:.5,b:0,l:0,fx:.5-13*kL/vw,fy:.6,k:kL};L.park={t:0,r:0,b:0,l:.5,fx:.5+14*kL/vw,fy:.6,k:kL};
+      H={t:0,r:0,b:0,l:0,fx:.72,fy:.62,k:kH};Hp={t:0,r:0,b:0,l:0,fx:.62,fy:.4,k:kP}}
     if(kH<kL*1.15)H.k=q(kL*1.3);
     /* logical canvas size: must cover every state (with margin for the move in between) */
-    var need=[L.office,L.park,H],i,mL=0,mR=0,mT=0,mB=0,s,Fo=KIND.office.F,Fp=KIND.park.F,fxm=Math.max(Math.abs(Fo[0]),Math.abs(Fp[0])),fym=Math.max(Math.abs(Fo[1]),Math.abs(Fp[1]));
-    for(i=0;i<3;i++){s=need[i];
+    var need=[L.office,L.park,H,Hp],i,mL=0,mR=0,mT=0,mB=0,s,fxm=40,fym=0;
+    for(i=0;i<need.length;i++){s=need[i];
       mL=Math.max(mL,(s.fx-s.l)*vw/s.k);mR=Math.max(mR,((1-s.r)-s.fx)*vw/s.k);
       mT=Math.max(mT,(s.fy-s.t)*vh/s.k);mB=Math.max(mB,((1-s.b)-s.fy)*vh/s.k)}
     var W=Math.ceil(2*(Math.max(mL,mR)*1.1+fxm))+8,Hh=Math.ceil(2*(Math.max(mT,mB)*1.1+fym+8))+8;
-    var Hp={};for(var kk in H)Hp[kk]=H[kk];Hp.fy=narrow?.46:.34;geo={vw:vw,vh:vh,narrow:narrow,L:L,H:H,Hp:Hp,W:W,Hh:Hh};
+    W+=W&1;Hh+=Hh&1;
+    geo={vw:vw,vh:vh,narrow:narrow,L:L,H:H,Hp:Hp,W:W,Hh:Hh};
   }
 
   function build(name){var p=panels[name],K=KIND[name];
@@ -507,12 +521,13 @@ var Stage=(function(){
   function z(name,n){panels[name].d.style.zIndex=n}
 
   /* ---- drawing loop (about 24 fps, only while something is on screen) */
-  function drawAll(t){var n,p;for(n in panels){p=panels[n];if(p.on&&p.scene)p.scene.draw(p.x,t)}}
+  function mdraw(p,t){var x=p.x;x.save();x.translate(geo.W,0);x.scale(-1,1);p.scene.draw(x,t);x.restore()}
+  function drawAll(t){var n,p;for(n in panels){p=panels[n];if(p.on&&p.scene)mdraw(p,t)}}
   function tick(){var now=performance.now();if(now-lastDraw<40)return;lastDraw=now;
     if(document.hidden||!shown||scrollY>innerHeight*1.15)return;drawAll((now-t0)/1000)}
   function run(){var want=shown&&!reduced();if(want&&!ticking&&G){G.ticker.add(tick);ticking=true}else if(!want&&ticking){G.ticker.remove(tick);ticking=false}
     if(shown&&reduced())drawStill()}
-  function drawStill(){var n,p;for(n in panels){p=panels[n];if(p.on&&p.scene)p.scene.draw(p.x,KIND[n].still)}}
+  function drawStill(){var n,p;for(n in panels){p=panels[n];if(p.on&&p.scene)mdraw(p,KIND[n].still)}}
 
   function ensure(name){if(!panels[name])mkPanel(name);if(!panels[name].scene)build(name)}
   function init(){if(el)return;el=document.getElementById('stage');if(!el)return;measure();

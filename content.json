@@ -198,11 +198,18 @@
   ],
   "roles": [
    {
+    "t": "Lead Consultant",
+    "org": "Winfo Solutions · APECS",
+    "yrs": "Jul 2026 - Present",
+    "d": "Leading functional delivery for the clinical-trial payments and contracts platform, owning the roadmap, stakeholder alignment and release quality across the team.",
+    "tag": "Current"
+   },
+   {
     "t": "Senior Business Analyst",
     "org": "Winfo Solutions · APECS",
-    "yrs": "Mar 2023 - Present",
+    "yrs": "Mar 2023 - Jul 2026",
     "d": "Functional Lead for a clinical-trial payments and contracts platform: Generative AI extraction, payment validation, the payee portal, automated testing and reporting migration.",
-    "tag": "Current"
+    "tag": ""
    },
    {
     "t": "Business Analyst",
