@@ -457,6 +457,125 @@ function buildPark(W,H){
     }};
 }
 
+/* ===================================================================== DESK (top-down)
+   The tabletop seen from straight above, used for the "messy cards -> structured cards" scroll sequence.
+   Static (baked once): horizontal planks, window light, and the things on a real work desk, kept to the
+   two sides so the middle stays free for the cards. W/H are logical art pixels, margin = free side width. */
+function buildDesk(W,H,margin){
+  var o=mk(W,H),x=o.x,r=rng(41),i,j,k,pl=22,tones=[C.wood,'#c98d58','#d49a66','#c4864f'],ink='#3b2416';
+  /* planks */
+  for(j=0,k=0;j<H;j+=pl,k++){
+    R(x,0,j,W,pl,tones[(k*7+(k>>1))%tones.length]);
+    R(x,0,j,W,1,C.woodDD);R(x,0,j+1,W,1,C.woodL);
+    /* end joints, staggered */
+    for(i=-((k*53)%97);i<W;i+=97+((k*13)%31)){if(i>0)R(x,i,j+1,1,pl-1,C.woodD)}
+    /* grain */
+    for(i=0;i<W*pl/70;i++){var gx=Math.floor(r()*W),gy=j+3+Math.floor(r()*(pl-5)),gl=6+Math.floor(r()*26);R(x,gx,gy,gl,1,r()<.55?C.woodD:C.woodL)}
+    /* a knot now and then */
+    if(r()<.45){var kx=Math.floor(r()*W),ky=j+6+Math.floor(r()*(pl-12));ell(x,kx,ky,4,2,C.woodD);ell(x,kx,ky,2,1,C.woodDD);R(x,kx-6,ky-3,12,1,C.woodL);R(x,kx-6,ky+3,12,1,C.woodL)}
+  }
+  /* window light: warm, dithered, slanting from the top-left */
+  var id=x.getImageData(0,0,W,H),d=id.data,p,e;
+  for(j=0;j<H;j++)for(i=0;i<W;i++){
+    e=Math.max(0,1-(i*.9+((j%260)*.5))/(W*1.1))*.34;
+    p=(j*W+i)*4;
+    if(bay(i,j)<e){d[p]=Math.min(255,d[p]+22);d[p+1]=Math.min(255,d[p+1]+16);d[p+2]=Math.min(255,d[p+2]+6)}
+  }
+  x.putImageData(id,0,0);
+
+  /* ---- things on the desk: each is drawn on its own small canvas, outlined, shadowed, then stamped */
+  function item(w,h,fn){var s=mk(w+2,h+2);fn(s.x,1,1);outline(s,ink);return s}
+  function stamp(s,X,Y){
+    var sh=mk(s.w,s.h);sh.x.drawImage(s.c,0,0);sh.x.globalCompositeOperation='source-in';sh.x.fillStyle='rgba(40,20,8,.34)';sh.x.fillRect(0,0,s.w,s.h);
+    x.drawImage(sh.c,Math.round(X)+2,Math.round(Y)+3);x.drawImage(s.c,Math.round(X),Math.round(Y))}
+  var make={
+    laptop:function(){return item(46,32,function(c,a,b){
+      R(c,a,b,46,32,C.steel);R(c,a,b,46,1,'#f4f6fa');R(c,a,b+31,46,1,C.steelDD);R(c,a+45,b,1,32,C.steelD);
+      R(c,a+2,b+2,42,28,'#dfe3ea');
+      ell(c,a+23,b+16,4,4,C.steelD);ell(c,a+23,b+16,3,3,'#f4f6fa');            /* logo disc */
+      R(c,a+1,b+1,44,1,'#fff');P1(c,a+22,b+16,C.orangeL);
+      /* a sticker */
+      R(c,a+34,b+22,7,5,C.orange);R(c,a+35,b+23,5,1,C.orangeL)})},
+    mug:function(){return item(26,22,function(c,a,b){
+      ell(c,a+10,b+11,10,10,C.cream);ell(c,a+10,b+11,8,8,'#fff');ell(c,a+10,b+11,7,7,'#5a331c');ell(c,a+9,b+10,5,5,'#74421f');ell(c,a+7,b+8,2,1,'#a56a36');
+      /* handle */
+      R(c,a+20,b+8,4,2,C.cream);R(c,a+23,b+9,2,5,C.cream);R(c,a+20,b+13,4,2,C.cream);R(c,a+21,b+10,2,3,'rgba(0,0,0,0)')})},
+    notebook:function(){return item(40,52,function(c,a,b){
+      R(c,a,b,40,52,C.orange);R(c,a,b,40,1,C.orangeL);R(c,a,b,2,52,'#a52a07');R(c,a+34,b,3,52,'#2a2438');
+      R(c,a+6,b+8,22,14,C.cream);R(c,a+8,b+11,18,1,C.wallDD);R(c,a+8,b+14,14,1,C.wallDD);R(c,a+8,b+17,16,1,C.wallDD);
+      /* pen resting on it */
+      R(c,a+30,b+4,3,42,'#22243a');R(c,a+30,b+4,1,42,'#4a4d70');R(c,a+30,b+44,3,3,C.steelD)})},
+    plant:function(){return item(46,46,function(c,a,b){
+      var cx=a+23,cy=b+23,n=9,t;
+      for(t=0;t<n;t++){var an=t/n*Math.PI*2+.3,lx=cx+Math.cos(an)*14,ly=cy+Math.sin(an)*14;LN(c,cx,cy,lx,ly,2,C.leafD);ell(c,lx,ly,7,4,t%2?C.leaf:C.leafD);ell(c,(lx+cx)/2+Math.cos(an)*3,(ly+cy)/2+Math.sin(an)*3,5,3,t%3?C.leaf:C.leafL)}
+      ell(c,cx,cy,7,7,C.potD);ell(c,cx,cy,6,6,C.pot);ell(c,cx-1,cy-1,3,3,C.potD)})},
+    phone:function(){return item(22,40,function(c,a,b){
+      R(c,a,b,22,40,'#242736');R(c,a+1,b+1,20,38,'#171a27');R(c,a+2,b+3,18,34,'#26416e');R(c,a+2,b+3,18,2,'#3e6bb0');
+      R(c,a+4,b+8,6,6,C.code1);R(c,a+12,b+8,6,6,C.code2);R(c,a+4,b+17,6,6,C.code3);R(c,a+12,b+17,6,6,C.code4);P1(c,a+11,b+1,'#4b5070')})},
+    glasses:function(){return item(36,16,function(c,a,b){
+      ell(c,a+8,b+8,7,6,'#2a2438');ell(c,a+8,b+8,5,4,'rgba(190,225,250,.9)');ell(c,a+27,b+8,7,6,'#2a2438');ell(c,a+27,b+8,5,4,'rgba(190,225,250,.9)');
+      R(c,a+14,b+6,6,2,'#2a2438');R(c,a,b+6,2,2,'#2a2438');R(c,a+34,b+6,2,2,'#2a2438');P1(c,a+6,b+6,'#fff');P1(c,a+25,b+6,'#fff')})},
+    pencils:function(){return item(40,18,function(c,a,b){
+      var cols=['#e9b44c','#3e8e5a','#5d86b9','#d5360c'],t;
+      for(t=0;t<4;t++){R(c,a,b+t*4,34,3,cols[t]);R(c,a,b+t*4,34,1,'rgba(255,255,255,.35)');R(c,a+34,b+t*4,4,3,'#f0d5b0');R(c,a+37,b+t*4+1,2,1,'#2a2438')}})},
+    ruler:function(){return item(8,70,function(c,a,b){
+      R(c,a,b,8,70,'#e9b44c');R(c,a,b,8,1,'#f6d27a');var t;for(t=2;t<68;t+=3)R(c,a,b+t,t%9===2?5:3,1,'#6b4a12')})},
+    sticky:function(){return item(26,26,function(c,a,b){
+      R(c,a,b,26,26,'#f6d85f');R(c,a,b+22,26,4,'#e6c445');R(c,a+4,b+5,16,1,'#b6993a');R(c,a+4,b+9,12,1,'#b6993a');R(c,a+4,b+13,14,1,'#b6993a')})},
+    paper:function(){return item(30,30,function(c,a,b){
+      var pts=[[2,6],[10,1],[19,3],[27,9],[28,19],[21,28],[11,27],[3,20]],j2,t;
+      c.fillStyle='#f3efe6';c.beginPath();c.moveTo(a+pts[0][0],b+pts[0][1]);for(j2=1;j2<pts.length;j2++)c.lineTo(a+pts[j2][0],b+pts[j2][1]);c.closePath();c.fill();
+      LN(c,a+6,b+8,a+16,b+14,1,'#cfc8b6');LN(c,a+16,b+14,a+24,b+11,1,'#cfc8b6');LN(c,a+9,b+22,a+15,b+14,1,'#cfc8b6');LN(c,a+15,b+14,a+22,b+22,1,'#d8d1c0')})},
+    clips:function(){return item(20,12,function(c,a,b){
+      R(c,a,b,12,1,C.steelD);R(c,a,b,1,8,C.steelD);R(c,a,b+7,10,1,C.steelD);R(c,a+3,b+3,12,1,C.steelD);R(c,a+14,b+3,1,8,C.steelD);R(c,a+5,b+10,10,1,C.steelD)})},
+    cable:function(){return item(34,34,function(c,a,b){
+      var t,px=a,py=b+30;for(t=1;t<=40;t++){var u=t/40,nx=a+u*30,ny=b+30-Math.sin(u*Math.PI)*26+Math.sin(u*Math.PI*3)*4;LN(c,px,py,nx,ny,2,'#f0eadf');px=nx;py=ny}
+      R(c,a+29,b+27,5,6,'#9aa2b0')})}
+  };
+  /* mug ring stain, baked straight on the wood before the mug goes over it */
+  function ringAt(X,Y){var t;x.fillStyle='rgba(90,50,24,.4)';for(t=0;t<40;t++){var an=t/40*Math.PI*2;x.fillRect(Math.round(X+Math.cos(an)*9),Math.round(Y+Math.sin(an)*9),1,1)}}
+
+  /* placement: down both sides, from the very top to the very bottom */
+  var s,side;
+  /* the first screen always shows a laptop on the left and a mug on the right */
+  var seq=[['laptop',0],['mug',1],['notebook',0],['plant',1],['phone',0],['pencils',1],['glasses',0],['sticky',1]];
+  var pool=['paper','ruler','clips','cable','mug','notebook','plant','phone','glasses','pencils','sticky','laptop'];
+  var cur=[14,40],cnt=0;
+  function place(kind,sideI){
+    s=make[kind]();if(!s)return;
+    var gapX=r()*8,X=sideI===0?Math.max(-6,Math.round(margin-s.w-4-gapX)-(r()*10|0)):Math.min(W-s.w+6,Math.round(W-margin+4+gapX)+(r()*10|0));
+    if(margin<20)X=sideI===0?Math.round(-s.w*.35):Math.round(W-s.w*.65);
+    if(kind==='mug')ringAt(X+11,cur[sideI]+12);
+    stamp(s,X,cur[sideI]);cur[sideI]+=s.h+16+Math.round(r()*28)}
+  for(i=0;i<seq.length;i++)place(seq[i][0],seq[i][1]);
+  while(cur[0]<H||cur[1]<H){
+    side=cur[0]<=cur[1]?0:1;place(pool[(cnt++*5+side*3)%pool.length],side)}
+  /* soft vignette so the edges feel lit from the middle */
+  vignette(o,.5);
+  return {c:o.c,W:W,H:H};
+}
+
+/* the hand that arranges the cards: a pixel hand pinching at the top (the tip), sleeve running off the bottom */
+function makeHand(cv){
+  var w=30,h=420,o=mk(w,h),x=o.x,S=C.skin,SL=C.skinL,SD=C.skinD;
+  /* sleeve */
+  R(x,5,56,20,364,C.tee);R(x,5,56,3,364,C.teeD);R(x,22,56,3,364,C.teeL);R(x,5,56,20,3,C.teeD);
+  LN(x,9,70,12,100,1,C.teeD);LN(x,17,66,19,106,1,C.teeD);LN(x,10,130,13,190,1,C.teeD);LN(x,18,120,17,176,1,C.teeD);LN(x,9,230,12,300,1,C.teeD);LN(x,17,250,19,340,1,C.teeD);
+  /* forearm + wrist */
+  R(x,9,40,12,17,S);R(x,9,40,3,17,SD);R(x,19,40,2,17,SL);
+  /* palm */
+  R(x,6,23,18,19,S);R(x,6,23,3,19,SD);R(x,21,23,3,19,SL);R(x,8,38,14,2,SD);
+  /* curled fingers, seen as knuckles on the right */
+  var t;for(t=0;t<3;t++){R(x,20,24+t*5,6,5,S);R(x,25,25+t*5,1,3,SD);R(x,20,28+t*5,6,1,SD)}
+  /* thumb and index meet at the top */
+  LN(x,9,33,12,5,5,S);LN(x,9,33,12,5,1,SD);
+  LN(x,16,27,17,5,5,S);LN(x,19,27,19,6,1,SL);
+  R(x,12,2,6,5,S);R(x,13,2,4,1,SL);P1(x,14,3,SL);P1(x,16,3,SL);
+  outline(o,C.ink);
+  cv.width=w+0;cv.height=h;var cx=cv.getContext('2d');cx.imageSmoothingEnabled=false;cx.drawImage(o.c,0,0);
+  return {w:w,h:h,tipX:15}
+}
+
 /* ===================================================================== STAGE
    Owns the fixed layer behind the page: one canvas per scene, each inside a clipped "panel".
    A panel's whole look is one tweenable state { insets t/r/b/l, focus fx/fy, scale k }, so the
@@ -524,7 +643,7 @@ var Stage=(function(){
   function mdraw(p,t){var x=p.x;x.save();x.translate(geo.W,0);x.scale(-1,1);p.scene.draw(x,t);x.restore()}
   function drawAll(t){var n,p;for(n in panels){p=panels[n];if(p.on&&p.scene)mdraw(p,t)}}
   function tick(){var now=performance.now();if(now-lastDraw<40)return;lastDraw=now;
-    if(document.hidden||!shown||scrollY>innerHeight*1.15)return;drawAll((now-t0)/1000)}
+    if(document.hidden||!shown||(!live&&scrollY>innerHeight*1.15))return;drawAll((now-t0)/1000)}
   function run(){var want=shown&&!reduced();if(want&&!ticking&&G){G.ticker.add(tick);ticking=true}else if(!want&&ticking){G.ticker.remove(tick);ticking=false}
     if(shown&&reduced())drawStill()}
   function drawStill(){var n,p;for(n in panels){p=panels[n];if(p.on&&p.scene)mdraw(p,KIND[n].still)}}
@@ -583,8 +702,34 @@ var Stage=(function(){
     var s=panels[oth].s,dir=geo.narrow?{fy:s.fy+(name==='office'?.06:-.06)}:{fx:s.fx+(name==='office'?.06:-.06)};
     G.to(s,Object.assign({duration:1.15,ease:'power3.inOut',overwrite:true,onUpdate:function(){apply(oth)}},dir));
   }
+
+  /* ---- experience sequence: a top-down desk fades over the office while cards fall and get arranged */
+  var desk=null,live=false,dK=2,dW=0,dH=0,dPan=0,dM=1;
+  function sm(t){t=clamp(t,0,1);return t*t*(3-2*t)}
+  function deskK(){var vw=(el&&el.clientWidth)||innerWidth;return q(clamp(vw/240,1.5,5))}
+  function deskT(pan,m){if(!desk)return;
+    var vw=geo.vw,vh=geo.vh,tx=-(dW*dK-vw)/2,ty=-pan,s;
+    if(Math.abs(m-1)<1e-4){tx=Math.round(tx*dpr)/dpr;ty=Math.round(ty*dpr)/dpr;s='translate3d('+tx+'px,'+ty+'px,0) scale('+dK+')'}
+    else{var cx=vw/2,cy=vh/2;s='translate('+cx+'px,'+cy+'px) scale('+m+') translate('+(-cx)+'px,'+(-cy)+'px) translate('+tx+'px,'+ty+'px) scale('+dK+')'}
+    desk.c.style.transform=s}
+  /* P = extra scroll depth of the desk in px; cardW = width of the cards so the clutter stays at the sides */
+  function seqBegin(P,cardW){init();if(!el||!geo)return false;
+    if(!desk){var d=document.createElement('div'),c=document.createElement('canvas');d.className='stage-p stage-desk';d.appendChild(c);d.style.zIndex=3;d.style.opacity=0;d.style.display='none';el.appendChild(d);desk={d:d,c:c}}
+    dK=deskK();dW=Math.ceil(geo.vw/dK)+2;dH=Math.ceil((geo.vh+P)/dK)+4;
+    var margin=Math.max(0,Math.floor((dW-cardW/dK)/2)),b=buildDesk(dW,dH,margin);
+    desk.c.width=dW;desk.c.height=dH;var cx=desk.c.getContext('2d');cx.imageSmoothingEnabled=false;cx.drawImage(b.c,0,0);
+    return true}
+  function seqApply(S){if(!desk||!geo||!panels.office)return;
+    var z=sm(S.zoom),f=sm(S.fade),H=geo.H,vw=geo.vw,vh=geo.vh,kz=q(H.k*2.6),k=z<=0?H.k:(z>=1?kz:lerp(H.k,kz,z));
+    put('office',{fx:lerp(H.fx,.5+42*k/vw,z),fy:lerp(H.fy,.5+18*k/vh,z),k:k});
+    desk.d.style.display=f>.002?'block':'none';desk.d.style.opacity=f;
+    deskT(S.pan||0,lerp(2.4,1,f))}
+  function seqLive(on){live=!!on}
+  function seqEnd(){live=false;if(desk){desk.d.style.display='none';desk.d.style.opacity=0}
+    if(geo&&panels.office&&(mode==='work'))put('office',geo.H)}
+  function hand(cv){return makeHand(cv)}
   function info(){return geo}
-  return {set:set,zoom:zoom,info:info,init:init};
+  return {set:set,zoom:zoom,info:info,init:init,seqBegin:seqBegin,seqApply:seqApply,seqLive:seqLive,seqEnd:seqEnd,hand:hand};
 })();
 window.Stage=Stage;
 })();
