@@ -229,6 +229,10 @@ function buildOffice(W,H){
   R(x,35,-18,8,2,C.chair);LN(x,39,-18,39,-34,1,C.chair);LN(x,39,-34,31,-41,1,C.chair);R(x,26,-46,12,4,C.orange);R(x,26,-46,12,1,C.orangeL);R(x,28,-42,8,1,'#fff3c4');
   /* small notebook + pen on desk */
   R(x,2,-18,8,2,C.cream);R(x,2,-17,8,1,C.wallDD);R(x,10,-18,3,1,C.orange);
+  /* phone propped on the desk, screen towards the room (6x11 body, 4x9 glass). The contact scroll scene zooms into it. */
+  R(x,17,-27,6,11,'#262a36');R(x,17,-27,6,1,'#555b6e');R(x,17,-27,1,11,'#3b4152');R(x,22,-27,1,11,'#1a1d27');
+  R(x,18,-26,4,9,C.navy);R(x,18,-26,4,1,'#2b4c8c');R(x,18,-23,3,1,'#3d5fa8');R(x,18,-21,2,1,'#3d5fa8');R(x,18,-19,3,1,'#3d5fa8');
+  R(x,17,-16,6,1,'rgba(18,10,4,.28)');
   vignette(bg,.6);
 
   /* live window content */
@@ -257,6 +261,9 @@ function buildOffice(W,H){
       ctx.drawImage(bg.c,0,0);
       ctx.save();ctx.translate(ox,oy);
       screen(ctx,t);
+      /* phone: a notification dot that blinks, and a faint glow on the desk */
+      if(Math.floor(t*1.4)%2===0)R(ctx,21,-25,1,1,C.orangeL);
+      ctx.fillStyle='rgba(150,190,255,'+(.10+.05*Math.sin(t*1.4)).toFixed(3)+')';ctx.fillRect(16,-16,8,1);
       /* clock hands */
       var sa=t*Math.PI/30,ma=t*Math.PI/1800+1.2;LN(ctx,38,-84,38+Math.round(Math.sin(ma)*5),-84-Math.round(Math.cos(ma)*5),1,C.ink);LN(ctx,38,-84,38+Math.round(Math.sin(sa)*6),-84-Math.round(Math.cos(sa)*6),1,C.orange);
       /* steam */
@@ -719,17 +726,42 @@ var Stage=(function(){
     var margin=Math.max(0,Math.floor((dW-cardW/dK)/2)),b=buildDesk(dW,dH,margin);
     desk.c.width=dW;desk.c.height=dH;var cx=desk.c.getContext('2d');cx.imageSmoothingEnabled=false;cx.drawImage(b.c,0,0);
     return true}
+  /* ---- devices: the camera glides to the laptop on the office desk, then along the desk to the phone.
+     World points (art pixels from the room origin, before the scene is mirrored):
+       laptop screen centre (7.5,-26.5), phone centre (20,-21.5).  A viewport X for world x is  fx*vw-(33+x)*k,  Y is  fy*vh+y*k. */
+  var LAPW={x:7.5,y:-26.5},PHW={x:20,y:-21.5};
+  function camFor(w,px,py,k){return {fx:(px+(33+w.x)*k)/geo.vw,fy:(py-w.y*k)/geo.vh,k:k}}
+  function devK(kind){var vw=geo.vw,vh=geo.vh;
+    if(kind==='lap')return q(Math.max(4,Math.min(vw*(geo.narrow?.8:.44)/15,vh*.7/17)));
+    return q(Math.max(4,Math.min(vh*.56/11,vw*.62/6)))}
+  function devTy(){return geo.vh*.5+(geo.narrow?10:18)}
   function seqApply(S){if(!desk||!geo||!panels.office)return;
-    var z=sm(S.zoom),f=sm(S.fade),H=geo.H,vw=geo.vw,vh=geo.vh,kz=q(H.k*2.6),k=z<=0?H.k:(z>=1?kz:lerp(H.k,kz,z));
-    put('office',{fx:lerp(H.fx,.5+42*k/vw,z),fy:lerp(H.fy,.5+18*k/vh,z),k:k});
+    var z=sm(S.zoom),f=sm(S.fade),H=geo.H,vw=geo.vw,vh=geo.vh,kz=q(H.k*2.6),k=z<=0?H.k:(z>=1?kz:lerp(H.k,kz,z)),st={fx:lerp(H.fx,.5+42*k/vw,z),fy:lerp(H.fy,.5+18*k/vh,z),k:k};
+    var lz=clamp(S.lz||0,0,1),pz=clamp(S.pz||0,0,1);
+    if(lz>0){
+      /* H -> laptop: the laptop centre travels from where it sits in the room to the middle of the screen while the zoom is geometric */
+      var kL=devK('lap'),p0x=H.fx*vw-(33+LAPW.x)*H.k,p0y=H.fy*vh-LAPW.y*H.k,kk=H.k*Math.pow(kL/H.k,lz);
+      st=camFor(LAPW,lerp(p0x,vw/2,lz),lerp(p0y,devTy(),lz),kk);
+      if(pz>0){
+        /* laptop -> phone: slide along the desk at a steady height, easing the zoom between the two sizes */
+        var kP=devK('ph'),k2=kL*Math.pow(kP/kL,pz),w={x:lerp(LAPW.x,PHW.x,pz),y:lerp(LAPW.y,PHW.y,pz)};
+        st=camFor(w,vw/2,devTy(),k2)}}
+    put('office',st);
     desk.d.style.display=f>.002?'block':'none';desk.d.style.opacity=f;
     deskT(S.pan||0,lerp(2.4,1,f))}
+  /* where the laptop glass and the phone body are on screen right now (viewport px), read from the live camera */
+  function devRects(){if(!geo||!panels.office)return null;var s=panels.office.s,k=s.k,cx=s.fx*geo.vw,cy=s.fy*geo.vh;
+    var X=function(wx){return cx-(33+wx)*k},Y=function(wy){return cy+wy*k};
+    return {
+      lap:{x:X(18),y:Y(-35),w:15*k,h:17*k,sh:6*k},   /* sheared: the bottom edge sits sh to the right of the top edge */
+      ph:{x:X(23),y:Y(-27),w:6*k,h:11*k},
+      k:k}}
   function seqLive(on){live=!!on}
   function seqEnd(){live=false;if(desk){desk.d.style.display='none';desk.d.style.opacity=0}
     if(geo&&panels.office&&(mode==='work'))put('office',geo.H)}
   function hand(cv){return makeHand(cv)}
   function info(){return geo}
-  return {set:set,zoom:zoom,info:info,init:init,seqBegin:seqBegin,seqApply:seqApply,seqLive:seqLive,seqEnd:seqEnd,hand:hand};
+  return {set:set,zoom:zoom,info:info,init:init,seqBegin:seqBegin,seqApply:seqApply,seqLive:seqLive,seqEnd:seqEnd,hand:hand,devRects:devRects};
 })();
 window.Stage=Stage;
 })();

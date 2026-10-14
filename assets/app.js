@@ -269,8 +269,6 @@ function pageWork(){
       (feat?'<div class="cell-feat"><span class="cell-ic">'+ic(ILL[m.ill]||'star')+'</span><div><div class="big">'+esc(m.big)+'</div><div class="big-l">'+esc(m.bigLabel||'')+'</div></div></div>'
            :'<div class="cell-top"><span class="cell-ic">'+ic(ILL[m.ill]||'star')+'</span></div>')+
       '<div class="cell-body"><h3>'+esc(m.k)+'</h3><div class="t">'+esc(m.t)+'</div><p class="d">'+esc(m.d)+'</p>'+(feat?'':'<div class="m">'+esc(m.m)+'</div>')+'</div></article>'}).join('');
-  var roles=(W.roles||[]).map(function(r){return '<div class="role" data-r><div class="role-y">'+esc(r.yrs)+'</div><div class="role-b">'+
-    '<h3>'+esc(r.t)+(r.tag?'<span class="now">'+esc(r.tag)+'</span>':'')+'</h3><div class="role-o">'+esc(r.org)+'</div><p class="role-d">'+esc(r.d)+'</p></div></div>'}).join('');
   var hon=(W.honours||[]).map(function(h){var cert=/certif|essentials/i.test(h.t);return '<div class="award" data-r>'+ic(cert?'cert':'medal')+
     '<div><b>'+esc(h.t)+'</b><span>'+esc(h.s)+'</span></div><span class="y">'+esc(h.y)+'</span></div>'}).join('');
   var sk=[];Object.keys(W.skills||{}).forEach(function(g){(W.skills[g]||[]).forEach(function(s){sk.push(s)})});
@@ -295,7 +293,6 @@ function pageWork(){
   '<div class="wrap"><div class="viz" data-r><canvas data-field="structure" role="img" aria-label="Animated graphic: scattered fragments of a document assemble into an ordered table, the idea behind the contract extraction engine."></canvas></div></div>'+
   flag+
   '<section class="sec"><div class="wrap"><h2 class="sec-h" data-r>More across the platform.</h2><div class="bento">'+more+'</div></div></section>'+
-  '<section class="sec" id="tlSec"><div class="wrap"><h2 class="sec-h" data-r>Experience</h2><div class="tl"><span class="tl-line" aria-hidden="true"></span><span class="tl-fill" aria-hidden="true"></span>'+roles+'</div></div></section>'+
   '<section class="sec"><div class="wrap"><p class="eyebrow" data-r>Recognition</p><h2 class="sec-h" data-r>Awards and certifications.</h2>'+
     '<div class="rec">'+hon+'</div>'+
     '<div class="marq-wrap" data-r><div class="marq-bar"><h3>Tools and methods</h3><button class="icon-btn" type="button" id="marqBtn" aria-pressed="false" aria-label="Pause the moving skills list">'+ic('pause')+'</button></div>'+
@@ -359,15 +356,19 @@ function pagePhotos(){
    Experience sequence (Work page). Scrolling pins the hero and runs one scrubbed timeline:
    the camera pushes into the desk, a pile of cards drops and lands messy, a hand files them one
    by one into a tidy column (the camera follows down), then it all pulls back to the office with
-   the four roles stacked behind you on the left. Everything is driven by scroll position, so it
+   the four roles stacked behind you on the left. Then the camera pushes into the laptop (one app per case study),
+   slides to the phone and shows the contact widget. Everything is driven by scroll position, so it
    reverses cleanly and never traps the page. Reduced motion keeps the plain Experience timeline.
    ===================================================================== */
 function mountSeq(scope,rm){
   var seq=$('#seq',scope);if(!seq||!G||!ST||rm||!window.Stage)return;
   var cam=$('.bay-cam',seq),cards=$$('.bay-card',seq),scraps=$$('.bay-scrap',seq),hand=$('.bay-hand',seq),eb=$('.bay-eyebrow',seq),
-      scrim=$('.seq-scrim',seq),hin=$('.hero-in',seq),h1=$('h1',seq),tlSec=$('#tlSec',scope),mc=null,rt=0,dims=[innerWidth,innerHeight],on=false;
+      scrim=$('.seq-scrim',seq),hin=$('.hero-in',seq),h1=$('h1',seq),mc=null,rt=0,dims=[innerWidth,innerHeight],on=false;
   if(!cam||!cards.length||!hand)return;
   Stage.hand(hand);
+  /* devices: laptop with one app per case study, then the phone with the contact widget (see assets/devices.js) */
+  var dev=window.Devices?window.Devices.mount(seq,{$:$,$$:$$,esc:esc,ic:ic,SITE:SITE,ILL:ILL,Spring:Spring,reachHTML:reachHTML,initReach:initReach,lock:lock,reduced:reduced,
+    say:function(t){var l=$('#live');if(l)l.textContent=t}}):null;
   var HI='0 1.7rem 2.4rem 0 rgba(30,14,0,.40)',LO='0 .125rem .4rem 0 rgba(30,14,0,.34)',MID='0 .75rem 1.2rem 0 rgba(30,14,0,.36)';
   var POSE=[[-.13,-.06,-15],[.12,-.01,17],[-.055,.03,-22],[.075,-.07,9]];
   var SCP=[[-.30,-.08,-22],[.30,-.11,16],[-.22,.1,31],[.24,.1,-28],[.02,-.15,7],[-.36,.09,-9]];
@@ -376,7 +377,6 @@ function mountSeq(scope,rm){
     var vw=innerWidth,vh=innerHeight,narrow=vw<860||vh>vw,rem=parseFloat(getComputedStyle(document.documentElement).fontSize)||16,
         hdr=4.5*rem,gut=Math.max(1.25*rem,Math.min(.04*vw,3*rem)),n=cards.length;
     seq.classList.add('seq-live');seq.classList.toggle('seq-narrow',narrow);
-    if(tlSec&&!narrow&&tlSec.parentNode){tlSec.parentNode.removeChild(tlSec);tlSec=null}
     var cardW=narrow?Math.min(vw-2*gut,30*rem):Math.min(34*rem,vw-2*gut),cardH=(narrow?8.75:8.5)*rem,gap=(narrow?.75:1)*rem,pitch=cardH+gap,
         Ys0=Math.max(hdr+cardH/2+1.2*rem,vh*.19),
         pileY=Math.min(Math.max(Ys0+(n-1)*pitch+.45*pitch,vh*.7),vh-cardH/2-.07*vh-rem),
@@ -385,7 +385,8 @@ function mountSeq(scope,rm){
     var lx=h1?h1.getBoundingClientRect().left:gut,cw,ch,cx,top0,cgap;
     if(narrow){cw=vw-2*gut;ch=6.25*rem;cgap=.5*rem;cx=vw/2;top0=hdr+3.5*rem}
     else{cw=Math.min(30*rem,vw*.44);ch=cardH;cgap=.75*rem;cx=lx+cw/2;var sh=n*ch+(n-1)*cgap;top0=Math.max(hdr+3.6*rem,(vh-sh)/2+rem);var av=vh-top0-rem;if(sh>av)cgap=Math.max(.25*rem,(av-n*ch)/(n-1))}
-    var kh=narrow?2:3,L=Math.round(vh*7);
+    var kh=narrow?2:3,TT=dev?212:112,L=Math.round(vh*7*TT/112);
+    if(dev)dev.layout(vw,vh,narrow,(document.getElementById('hdr')||{}).offsetHeight||hdr);
 
     Stage.seqBegin(P,cardW);Stage.seqLive(true);on=true;
     G.set(cards,{width:cardW,height:cardH,xPercent:-50,yPercent:-50,autoAlpha:0,x:0,y:0,scale:1,rotation:0,boxShadow:LO});
@@ -395,11 +396,11 @@ function mountSeq(scope,rm){
     var ebY=top0-2.6*rem;G.set(eb,{autoAlpha:0,x:lx,y:ebY+10});
     G.set(hin,{autoAlpha:1,y:0});G.set(scrim,{opacity:1});
 
-    var S={zoom:0,fade:0,pan:0},HD={x:vw*1.05,y:vh+140},bx=vw*.92,by=vh+300;
+    var S={zoom:0,fade:0,pan:0,lz:0,pz:0,lu:0,lb:0,os:0,dim:0,cap:0,pu:0,px:0},HD={x:vw*1.05,y:vh+140},bx=vw*.92,by=vh+300;
     function sync(){
       G.set(cam,{y:-S.pan});
       G.set(hand,{x:HD.x,y:HD.y,rotation:Math.atan2(-(bx-HD.x),by-HD.y)*180/Math.PI});
-      Stage.seqApply(S)}
+      Stage.seqApply(S);if(dev)dev.update(S,Stage.devRects())}
     function slot(i){return {x:slotX,y:Ys0+i*pitch}}
     function pile(i){return {x:vw/2+POSE[i%4][0]*vw*(narrow?.7:1),y:pileY+POSE[i%4][1]*vh,r:POSE[i%4][2]}}
 
@@ -447,6 +448,29 @@ function mountSeq(scope,rm){
         .to(S,{fade:0,duration:9},92)
         .to(eb,{autoAlpha:1,y:ebY,duration:5,ease:'power2.out'},100)
         .to({},{duration:6},106);
+      /* 6. the filed roles leave, the camera pushes into the laptop on the desk and the glass grows into a desktop */
+      var T0=112;
+      cards.forEach(function(c,i){tl.to(c,{y:'-=36',autoAlpha:0,duration:6,ease:'power2.in'},T0+i*.7)});
+      tl.to(eb,{autoAlpha:0,duration:4},T0);
+      if(dev){
+        tl.to(S,{lz:1,duration:20,ease:'power2.inOut'},T0+2)
+          .to(S,{dim:1,duration:12,ease:'none'},T0+8)
+          .to(S,{lu:1,duration:14,ease:'power2.inOut'},T0+14)
+          .to(S,{os:1,duration:7,ease:'none'},T0+25);
+        /* 7. one app window per case study opens, one after another; each plays its own small demo as it lands */
+        dev.wins.forEach(function(w,i){var t=T0+28+i*4;
+          tl.fromTo(w,{autoAlpha:0,y:34,scale:.92},{autoAlpha:1,y:0,scale:1,duration:5,ease:'power3.out'},t)
+            .to({},{duration:.01,onStart:function(){w.classList.add('on')},onReverseComplete:function(){w.classList.remove('on')}},t+3)});
+        tl.to(S,{cap:1,duration:4,ease:'none'},T0+41);
+        /* 8. leave the laptop on the desk, slide along to the phone and open it up */
+        var tp=T0+58;
+        tl.to(S,{lb:1,duration:10,ease:'power2.inOut'},tp)
+          .to(S,{pz:1,duration:20,ease:'power2.inOut'},tp+1)
+          .to(S,{pu:1,duration:14,ease:'power2.inOut'},tp+12)
+          .to(S,{px:1,duration:6,ease:'none'},tp+24)
+          .to({},{duration:.01,onStart:function(){dev.phoneOpen(true)},onReverseComplete:function(){dev.phoneOpen(false)}},tp+30)
+          .to({},{duration:10},tp+31);
+      }
     },seq);
     sync()}
 
@@ -456,7 +480,7 @@ function mountSeq(scope,rm){
     var w=innerWidth,h=innerHeight;if(w===dims[0]&&Math.abs(h-dims[1])<130)return;dims=[w,h];rebuild()},260)}
   build();
   window.addEventListener('resize',onR);
-  cleanups.push(function(){clearTimeout(rt);window.removeEventListener('resize',onR);teardown();seq.classList.remove('seq-live');Stage.seqLive(false);Stage.seqEnd()});
+  cleanups.push(function(){clearTimeout(rt);window.removeEventListener('resize',onR);teardown();if(dev)dev.destroy();seq.classList.remove('seq-live');Stage.seqLive(false);Stage.seqEnd()});
 }
 
 function enhance(scope){
@@ -494,9 +518,6 @@ function enhance(scope){
       G.to(icn,{rotate:s.isActive?-8:0,scale:s.isActive?1.08:1,duration:.7,ease:'back.out(1.7)',overwrite:true});
     }});
   });
-  // timeline line draws as you read
-  var fill=$('.tl-fill',scope);
-  if(fill&&G&&ST){if(rm)G.set(fill,{scaleY:1});else G.fromTo(fill,{scaleY:0},{scaleY:1,ease:'none',scrollTrigger:{trigger:fill.parentNode,start:'top 70%',end:'bottom 62%',scrub:.5}})}
   // canvases
   $$('canvas[data-field]',scope).forEach(function(c){cleanups.push(field(c))});
   // landing doors: hover lifts one side, click zooms the camera into it
@@ -639,6 +660,7 @@ function initReach(el){
   var ro=new ResizeObserver(function(){if(measure()){place();paint(sp.value())}});ro.observe(cl);ro.observe(pn);
   if(measure()){place();paint(sp.value())}
   self.close=function(now){setOpen(false,{now:!!now,silent:true})};
+  self.open=function(now){setOpen(true,{now:!!now,silent:true})};
   self.destroy=function(){sp.stop();ro.disconnect();if(pop)document.removeEventListener('pointerdown',onDown)};
   return self;
 }
