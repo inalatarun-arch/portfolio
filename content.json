@@ -13,7 +13,7 @@
    "Hyderabad, India"
   ],
   "headline": "Turning <em>business needs</em> into products that <em>deliver real value</em>.",
-  "sub": "Senior Business Analyst and Functional Lead. Five years taking products from first problem to shipped release.",
+  "sub": "Senior Business Analyst and Functional Lead in Hyderabad.",
   "lede": "Senior Business Analyst and Functional Lead with 5+ years owning the path from problem to shipped product (discovery, prioritisation, stakeholder alignment and delivery) across Generative AI tools, payments platforms and large-scale ERP migrations.",
   "stats": [
    {
@@ -92,7 +92,9 @@
       "The result",
       "Daily manual effort down 40%, budget-entry cycle time down 60%, manual entry errors eliminated, and backlogs cleared with SLAs met."
      ]
-    ]
+    ],
+    "big": "−60%",
+    "bigLabel": "faster budget entry"
    },
    {
     "tag": "Achievement 02 · Financial controls",
@@ -122,7 +124,9 @@
       "The result",
       "100% alignment between outgoing payments and contractual costs, and an end to the systemic overpayments."
      ]
-    ]
+    ],
+    "big": "100%",
+    "bigLabel": "payments aligned to contracts"
    },
    {
     "tag": "Achievement 03 · Payments",
@@ -148,7 +152,9 @@
       "The result",
       "$1.5M in payouts enabled within the first month, and invoice validation cut from 2 hours to 1 minute."
      ]
-    ]
+    ],
+    "big": "$1.5M",
+    "bigLabel": "in payouts, month one"
    }
   ],
   "more": [
@@ -157,7 +163,9 @@
     "t": "Payee transparency, self-service",
     "d": "Functional Lead for the payment portal, the liaison between payees, the Payment Processing Group and tech teams. Defined data mapping and reconciliation logic across Oracle EBS and APECS.",
     "m": "−50% support inquiries",
-    "ill": "portal"
+    "ill": "portal",
+    "big": "−50%",
+    "bigLabel": "support inquiries"
    },
    {
     "k": "Automated Testing Tool",
@@ -181,13 +189,6 @@
     "ill": "merge"
    },
    {
-    "k": "Oracle Fusion",
-    "t": "Faster customer & supplier setup",
-    "d": "Streamlined the customer and supplier creation process to lift procurement efficiency.",
-    "m": "−30% lead time",
-    "ill": "form"
-   },
-   {
     "k": "Team leadership",
     "t": "Better requirements, better UAT",
     "d": "Led a team of Business Analysts on requirement documentation and ran cross-functional workshops to align stakeholders.",
@@ -205,9 +206,9 @@
    },
    {
     "t": "Business Analyst",
-    "org": "Winfo Solutions · FinancialForce, Oracle Fusion, RPA",
+    "org": "Winfo Solutions · FinancialForce and ERP delivery",
     "yrs": "Jun 2021 - Mar 2023",
-    "d": "Owned UAT, requirements and test automation across ERP and RPA engagements, including an award-winning FinancialForce automation demo.",
+    "d": "Owned UAT, requirements and test automation across ERP engagements, including an award-winning FinancialForce automation demo.",
     "tag": ""
    },
    {
@@ -261,7 +262,6 @@
    "Tools & platforms": [
     "APECS",
     "Oracle EBS",
-    "Oracle Fusion",
     "Incorta",
     "FinancialForce",
     "JIRA",
@@ -279,7 +279,8 @@
     "UAT & test planning",
     "Stakeholder management"
    ]
-  }
+  },
+  "status": "Open to Product Owner and Lead BA roles"
  },
  "writings": [
   {
@@ -1232,7 +1233,8 @@
     "#2a0f3a",
     "#ff4fa3"
    ],
-   "span": "s-a"
+   "span": "s-a",
+   "placeholder": true
   },
   {
    "id": "p2",
@@ -1251,7 +1253,8 @@
     "#1a1c22"
    ],
    "span": "s-b",
-   "tall": 1
+   "tall": 1,
+   "placeholder": true
   },
   {
    "id": "p3",
@@ -1269,7 +1272,8 @@
     "#2b1b3a",
     "#ffe2a8"
    ],
-   "span": "s-c"
+   "span": "s-c",
+   "placeholder": true
   },
   {
    "id": "p4",
@@ -1287,7 +1291,8 @@
     "#050d10",
     "#7ff0e0"
    ],
-   "span": "s-c"
+   "span": "s-c",
+   "placeholder": true
   },
   {
    "id": "p5",
@@ -1305,7 +1310,8 @@
     "#1a1030",
     "#ffffff"
    ],
-   "span": "s-c"
+   "span": "s-c",
+   "placeholder": true
   },
   {
    "id": "p6",
@@ -1323,7 +1329,8 @@
     "#0d0a08",
     "#f3c98b"
    ],
-   "span": "s-a"
+   "span": "s-a",
+   "placeholder": true
   }
  ],
  "resume": "Tarun_Inala_Resume.pdf"

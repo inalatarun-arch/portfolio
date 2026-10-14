@@ -3,1007 +3,130 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Tarun Inala - Business Analyst, writings and photographs</title>
-<meta name="description" content="Tarun Inala, Senior Business Analyst and Functional Lead in Hyderabad. Case studies in Generative AI, payments and ERP delivery, plus writings and photographs.">
-<meta property="og:title" content="Tarun Inala">
-<meta property="og:description" content="Senior Business Analyst and Functional Lead. Generative AI, payments platforms and ERP delivery.">
+<title>Tarun Inala – Senior Business Analyst, open to Product Owner roles</title>
+<meta name="description" content="Tarun Inala is a Senior Business Analyst and Functional Lead in Hyderabad, open to Product Owner roles. Case studies in Generative AI, payments and ERP delivery, plus writings and photographs.">
+<link rel="canonical" href="https://inalatarun.co.in/">
+<meta property="og:title" content="Tarun Inala – Senior Business Analyst, open to Product Owner roles">
+<meta property="og:description" content="Generative AI, payments platforms and ERP delivery, taken from first problem to shipped release.">
 <meta property="og:type" content="website">
+<meta property="og:url" content="https://inalatarun.co.in/">
+<meta property="og:image" content="https://inalatarun.co.in/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="color-scheme" content="light dark">
-<meta name="theme-color" content="#f3f4f6" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#0c0d10" media="(prefers-color-scheme: dark)">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%232b4cf0'/%3E%3Ctext x='32' y='43' font-family='Arial,sans-serif' font-size='30' font-weight='700' fill='%23f7f8ff' text-anchor='middle'%3ETI%3C/text%3E%3C/svg%3E">
-<!-- Fonts and icons. A static GitHub Pages site has no build step, so they load from jsDelivr with font-display: swap. System fonts take over if the CDN is unreachable. -->
-<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource-variable/geist@5/index.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource-variable/geist-mono@5/index.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource-variable/noto-sans-telugu@5/index.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource-variable/noto-sans-devanagari@5/index.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<meta name="theme-color" content="#E6D5BD" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#101010" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='32' fill='%23D5360C'/%3E%3Ctext x='32' y='42' font-family='Georgia,serif' font-size='30' font-weight='700' fill='%23101010' text-anchor='middle'%3ETI%3C/text%3E%3C/svg%3E">
+<link rel="preload" href="content.json?v=4" as="fetch" crossorigin>
+<link rel="stylesheet" href="assets/styles.css?v=4">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Tarun Inala","jobTitle":"Senior Business Analyst and Functional Lead","address":{"@type":"PostalAddress","addressLocality":"Hyderabad","addressCountry":"IN"},"url":"https://inalatarun.co.in/","sameAs":["https://www.linkedin.com/in/tarunksai/"],"knowsAbout":["Business analysis","Generative AI","Clinical trial payments","ERP delivery","Product ownership"]}</script>
 <script>
-/* Apply the saved theme before first paint so the page never flashes the wrong mode. */
-(function(){try{var t=localStorage.getItem('inala-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)}catch(e){}
-var rm=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;document.documentElement.classList.add(rm?'rm':'motion')})();
+/* Runs before first paint: restore the saved theme, flag JS so the static fallback hides. */
+(function(){var d=document.documentElement;d.classList.add('js');
+try{var t=localStorage.getItem('inala-theme');if(t==='light'||t==='dark')d.setAttribute('data-theme',t)}catch(e){}})();
 </script>
-<style>
-/* ==========================================================================
-   Design tokens
-   Radius rule: surfaces and media 20px, small tiles 14px, every interactive
-   control (buttons, chips, segmented switches) is a full pill.
-   One accent (cobalt) across the whole site. Z-index scale: header 40,
-   menu sheet 45, dialogs use the top layer, grain overlay 60.
-   ========================================================================== */
-:root{
-  --bg:#f3f4f6; --bg-2:#eceef1; --surface:#fbfbfc; --surface-2:#f6f7f9;
-  --ink:#111216; --ink-2:#2b2e36; --muted:#5a5e69; --faint:#8a8f9a;
-  --line:rgba(17,18,22,.10); --line-2:rgba(17,18,22,.16);
-  --accent:#2b4cf0; --accent-ink:#1f3bd1; --on-accent:#f7f8ff; --accent-soft:rgba(43,76,240,.10);
-  --shadow:0 1px 2px rgba(30,38,70,.06),0 12px 40px -12px rgba(30,38,70,.18);
-  --r-lg:20px; --r-md:14px; --pill:999px;
-  --ease:cubic-bezier(.16,1,.3,1);
-  --sans:'Geist Variable','Geist',ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,'Noto Sans Telugu Variable','Noto Sans Devanagari Variable',sans-serif;
-  --mono:'Geist Mono Variable','Geist Mono',ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
-  --indic:'Noto Sans Telugu Variable','Noto Sans Devanagari Variable','Geist Variable',system-ui,sans-serif;
-  --gut:clamp(20px,4vw,48px); --hdr:68px;
-  color-scheme:light;
-}
-@media (prefers-color-scheme:dark){
-  :root:not([data-theme="light"]){
-    --bg:#0c0d10; --bg-2:#111317; --surface:#15171c; --surface-2:#1a1d23;
-    --ink:#ecedef; --ink-2:#cfd2d8; --muted:#9a9ea8; --faint:#6e737e;
-    --line:rgba(255,255,255,.08); --line-2:rgba(255,255,255,.14);
-    --accent:#7b93ff; --accent-ink:#9aadff; --on-accent:#0b0d14; --accent-soft:rgba(123,147,255,.12);
-    --shadow:0 1px 2px rgba(0,0,0,.4),0 16px 48px -16px rgba(0,0,0,.6);
-    color-scheme:dark;
-  }
-}
-:root[data-theme="dark"]{
-  --bg:#0c0d10; --bg-2:#111317; --surface:#15171c; --surface-2:#1a1d23;
-  --ink:#ecedef; --ink-2:#cfd2d8; --muted:#9a9ea8; --faint:#6e737e;
-  --line:rgba(255,255,255,.08); --line-2:rgba(255,255,255,.14);
-  --accent:#7b93ff; --accent-ink:#9aadff; --on-accent:#0b0d14; --accent-soft:rgba(123,147,255,.12);
-  --shadow:0 1px 2px rgba(0,0,0,.4),0 16px 48px -16px rgba(0,0,0,.6);
-  color-scheme:dark;
-}
-
-/* ---------- base ---------- */
-*,*::before,*::after{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%;text-size-adjust:100%;scroll-padding-top:calc(var(--hdr) + 16px)}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.6;
-  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility;
-  font-feature-settings:'ss01','cv11';overflow-x:hidden;min-height:100dvh}
-img{max-width:100%;display:block}
-a{color:inherit;text-decoration:none}
-button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
-:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:6px}
-::selection{background:var(--accent);color:var(--on-accent)}
-.wrap{width:100%;max-width:1320px;margin:0 auto;padding-inline:var(--gut)}
-.sr{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
-.ph{line-height:1;display:inline-block}
-.mono{font-family:var(--mono);font-feature-settings:'zero','tnum'}
-em{font-style:normal;color:var(--accent)}
-h1,h2,h3,h4{margin:0;font-weight:600;letter-spacing:-.025em;line-height:1.08;text-wrap:balance}
-p{margin:0;text-wrap:pretty}
-
-/* film grain, fixed and non-interactive so it never repaints with scroll */
-body::after{content:"";position:fixed;inset:0;z-index:60;pointer-events:none;opacity:.035;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
-
-/* ---------- buttons ---------- */
-.btn{--h:48px;display:inline-flex;align-items:center;gap:10px;height:var(--h);padding:0 22px;border-radius:var(--pill);
-  font-weight:500;font-size:15px;letter-spacing:-.005em;white-space:nowrap;position:relative;isolation:isolate;
-  transition:transform .5s var(--ease),background-color .3s,color .3s,border-color .3s,box-shadow .3s}
-.btn .ph{font-size:18px;transition:transform .5s var(--ease)}
-.btn:active{transform:scale(.98) translateY(1px)}
-.btn-primary{background:var(--accent);color:var(--on-accent);box-shadow:0 8px 24px -10px var(--accent)}
-.btn-primary:hover{background:var(--accent-ink)}
-.btn-primary:hover .ph{transform:translate(2px,-2px)}
-.btn-ghost{border:1px solid var(--line-2);color:var(--ink);background:color-mix(in srgb,var(--surface) 60%,transparent)}
-.btn-ghost:hover{border-color:var(--ink)}
-.btn-ghost:hover .ph-arrow-down{transform:translateY(3px)}
-.icon-btn{width:40px;height:40px;border-radius:var(--pill);display:grid;place-items:center;color:var(--ink);
-  border:1px solid var(--line);transition:background-color .3s,border-color .3s,transform .4s var(--ease)}
-.icon-btn:hover{border-color:var(--line-2);background:var(--surface)}
-.icon-btn:active{transform:scale(.94)}
-.icon-btn .ph{font-size:18px}
-.chip{display:inline-flex;align-items:center;height:28px;padding:0 12px;border-radius:var(--pill);font-size:13px;
-  color:var(--ink-2);border:1px solid var(--line);background:color-mix(in srgb,var(--surface) 70%,transparent);white-space:nowrap}
-
-/* ---------- header ---------- */
-.hdr{position:fixed;inset:0 0 auto 0;z-index:40;height:var(--hdr);view-transition-name:hdr;
-  transition:background-color .4s,border-color .4s,backdrop-filter .4s;border-bottom:1px solid transparent}
-.hdr.scrolled{background:color-mix(in srgb,var(--bg) 78%,transparent);border-bottom-color:var(--line);
-  backdrop-filter:blur(18px) saturate(160%);-webkit-backdrop-filter:blur(18px) saturate(160%)}
-.hdr .wrap{height:100%;display:flex;align-items:center;gap:24px}
-.brand{display:flex;align-items:center;gap:10px;font-weight:600;letter-spacing:-.02em;font-size:16px;margin-right:auto}
-.brand-mark{width:30px;height:30px;border-radius:9px;background:var(--accent);color:var(--on-accent);display:grid;place-items:center;
-  font-size:12px;font-weight:700;letter-spacing:0;transition:transform .6s var(--ease)}
-.brand:hover .brand-mark{transform:rotate(-8deg) scale(1.06)}
-.nav{display:flex;gap:4px}
-.nav a{position:relative;padding:8px 14px;border-radius:var(--pill);font-size:14.5px;color:var(--muted);transition:color .25s}
-.nav a:hover{color:var(--ink)}
-.nav a.on{color:var(--ink)}
-.nav a.on::after{content:"";position:absolute;left:50%;bottom:2px;width:4px;height:4px;margin-left:-2px;border-radius:50%;background:var(--accent)}
-.seg{position:relative;display:grid;grid-template-columns:1fr 1fr;padding:4px;border-radius:var(--pill);border:1px solid var(--line);background:var(--surface-2)}
-.seg button{position:relative;z-index:1;height:32px;padding:0 16px;border-radius:var(--pill);font-size:13.5px;color:var(--muted);transition:color .3s}
-.seg button[aria-pressed="true"]{color:var(--ink)}
-.seg-ind{position:absolute;top:4px;bottom:4px;left:4px;width:calc(50% - 4px);border-radius:var(--pill);background:var(--surface);
-  box-shadow:0 1px 2px rgba(0,0,0,.08),0 0 0 1px var(--line);transition:transform .55s var(--ease),opacity .3s}
-.seg[data-on="personal"] .seg-ind{transform:translateX(100%)}
-.seg[data-on=""] .seg-ind{opacity:0}
-.hdr-tools{display:flex;align-items:center;gap:10px}
-#menuBtn{display:none}
-body.landing .nav,body.landing #modeSeg{display:none}
-
-/* mobile sheet */
-.sheet{position:fixed;inset:0;z-index:45;background:var(--bg);padding:calc(var(--hdr) + 24px) var(--gut) 32px;display:flex;flex-direction:column;gap:28px;
-  opacity:0;visibility:hidden;transition:opacity .35s var(--ease),visibility .35s}
-body.menu-open .sheet{opacity:1;visibility:visible}
-.sheet nav{display:flex;flex-direction:column}
-.sheet nav a{font-size:clamp(32px,9vw,44px);font-weight:600;letter-spacing:-.03em;padding:6px 0;opacity:0;transform:translateY(14px);
-  transition:opacity .5s var(--ease),transform .6s var(--ease);transition-delay:calc(var(--i,0)*60ms + 80ms)}
-.sheet nav a.on{color:var(--accent)}
-body.menu-open .sheet nav a{opacity:1;transform:none}
-.sheet .seg{align-self:flex-start}
-body.menu-open{overflow:hidden}
-
-/* ---------- page transitions (View Transitions API) ---------- */
-main{view-transition-name:page;min-height:100dvh}
-::view-transition-old(page){animation:vt-out .28s var(--ease) both}
-::view-transition-new(page){animation:vt-in .6s var(--ease) both}
-@keyframes vt-out{to{opacity:0;transform:translateY(-12px);filter:blur(4px)}}
-@keyframes vt-in{from{opacity:0;transform:translateY(22px);filter:blur(6px)}}
-.vt-theme ::view-transition-old(root),.vt-theme ::view-transition-new(root){animation:none;mix-blend-mode:normal}
-.vt-theme main,.vt-theme .hdr{view-transition-name:none}
-.vt-filter ::view-transition-old(page),.vt-filter ::view-transition-new(page){animation:none}
-::view-transition-group(*){animation-duration:.55s;animation-timing-function:var(--ease)}
-
-/* ---------- reveal on scroll ---------- */
-.motion [data-r]{opacity:0;transform:translateY(26px);transition:opacity .9s var(--ease),transform 1s var(--ease);transition-delay:calc(var(--i,0)*70ms)}
-.motion [data-r].in{opacity:1;transform:none}
-.motion .hl .wm{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.12em;margin-bottom:-.12em}
-.motion .hl .wi{display:inline-block;transform:translateY(105%);transition:transform 1.1s var(--ease);transition-delay:calc(var(--i,0)*55ms + 120ms)}
-.motion .hl.in .wi{transform:none}
-
-/* ---------- landing ---------- */
-.land{min-height:100dvh;display:flex;flex-direction:column;padding-top:var(--hdr)}
-.land-top{padding-block:clamp(28px,5vh,56px) clamp(20px,4vh,40px);display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap}
-.land-top h1{font-size:clamp(40px,6.4vw,88px);letter-spacing:-.045em;line-height:1}
-.land-top p{color:var(--muted);font-size:17px;max-width:34ch}
-.doors{flex:1;display:flex;gap:14px;padding:0 var(--gut) var(--gut);max-width:1320px;margin:0 auto;width:100%;min-height:420px}
-.door{position:relative;flex:1;border-radius:var(--r-lg);overflow:hidden;isolation:isolate;display:flex;flex-direction:column;justify-content:flex-end;
-  padding:clamp(22px,3vw,40px);border:1px solid var(--line);background:var(--surface);transition:flex-grow .9s var(--ease),border-color .4s,box-shadow .5s}
-.door canvas{position:absolute;inset:0;width:100%;height:100%;z-index:-2}
-.door::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(to top,var(--surface) 8%,color-mix(in srgb,var(--surface) 40%,transparent) 45%,transparent 75%);pointer-events:none}
-.door-k{font-size:clamp(44px,6vw,84px);font-weight:600;letter-spacing:-.045em;line-height:.95;display:flex;align-items:center;gap:16px}
-.door-k .ph{font-size:.5em;color:var(--accent);transition:transform .7s var(--ease)}
-.door p{color:var(--muted);margin-top:12px;max-width:36ch;font-size:16px}
-@media (hover:hover) and (min-width:861px){
-  .doors:hover .door{flex-grow:.8}
-  .doors .door:hover{flex-grow:1.35;border-color:var(--line-2);box-shadow:var(--shadow)}
-  .door:hover .door-k .ph{transform:rotate(45deg)}
-}
-.door:focus-visible{outline-offset:4px;border-radius:var(--r-lg)}
-
-/* ---------- work: hero ---------- */
-.hero{padding-top:calc(var(--hdr) + clamp(32px,7vh,88px));padding-bottom:clamp(40px,8vh,88px)}
-.hero h1{font-size:clamp(36px,4.6vw,66px);letter-spacing:-.045em;line-height:1.05;max-width:24ch}
-.hero-row{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(24px,4vw,64px);margin-top:clamp(28px,5vh,52px);align-items:end}
-.hero-sub{font-size:clamp(17px,1.4vw,19px);color:var(--muted);max-width:38ch}
-.hero-cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
-.viz{position:relative;border-radius:var(--r-lg);overflow:hidden;border:1px solid var(--line);background:
-  radial-gradient(120% 90% at 85% 10%,var(--accent-soft),transparent 60%),var(--surface);aspect-ratio:16/8.4;box-shadow:var(--shadow)}
-.viz canvas{position:absolute;inset:0;width:100%;height:100%}
-
-/* ---------- stats band ---------- */
-.stats{display:grid;grid-template-columns:repeat(3,1fr);border-block:1px solid var(--line)}
-.stat{padding:clamp(24px,4vw,44px) clamp(8px,2vw,28px) clamp(24px,4vw,40px)}
-.stat+.stat{border-left:1px solid var(--line)}
-.stat-v{font-family:var(--mono);font-size:clamp(40px,5vw,72px);font-weight:500;letter-spacing:-.05em;line-height:1;display:flex;align-items:baseline;gap:4px}
-.stat-v small{font-size:.42em;color:var(--accent);letter-spacing:-.02em}
-.stat-k{margin-top:14px;font-weight:500}
-.stat-d{color:var(--muted);font-size:14.5px;margin-top:2px}
-
-/* ---------- statement ---------- */
-.statement{padding-block:clamp(72px,14vh,160px)}
-.statement p{font-size:clamp(26px,3.4vw,46px);line-height:1.18;letter-spacing:-.03em;font-weight:500;max-width:28ch}
-@supports (animation-timeline:view()){
-  .motion .statement .w{opacity:.16;animation:word-in linear both;animation-timeline:view();animation-range:cover 12% cover 38%}
-}
-@keyframes word-in{to{opacity:1}}
-
-/* ---------- section headings ---------- */
-.sec{padding-block:clamp(56px,10vh,120px)}
-.sec-h{font-size:clamp(30px,3.6vw,52px);letter-spacing:-.04em;max-width:20ch}
-.sec-p{color:var(--muted);margin-top:14px;max-width:60ch;font-size:17px}
-.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:18px}
-
-/* ---------- flagship (sticky split) ---------- */
-.flag{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:clamp(28px,6vw,96px);margin-top:clamp(36px,6vh,64px)}
-.flag-l{position:sticky;top:calc(var(--hdr) + 28px);align-self:start}
-.flag-l h3{font-size:clamp(26px,2.6vw,38px);letter-spacing:-.035em}
-.flag-l p{color:var(--muted);margin-top:16px;font-size:16.5px;max-width:52ch}
-.mets{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:28px}
-.met{padding:16px 14px;border-radius:var(--r-md);background:var(--surface);border:1px solid var(--line)}
-.met b{display:block;font-family:var(--mono);font-size:clamp(20px,2vw,26px);font-weight:500;letter-spacing:-.04em;color:var(--accent)}
-.met span{display:block;font-size:13px;color:var(--muted);margin-top:4px;line-height:1.35}
-.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
-.flag-l .btn{margin-top:28px}
-.steps{display:flex;flex-direction:column;gap:clamp(16px,3vh,28px);position:relative}
-.step{position:relative;min-height:clamp(220px,36vh,340px);border-radius:var(--r-lg);border:1px solid var(--line);background:var(--surface);
-  padding:clamp(24px,3vw,40px);display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;isolation:isolate;
-  transition:border-color .6s,box-shadow .6s,transform .8s var(--ease)}
-.step::before{content:"";position:absolute;inset:auto -20% -60% -20%;height:90%;z-index:-1;opacity:0;transition:opacity .9s var(--ease);
-  background:radial-gradient(50% 60% at 50% 100%,var(--accent-soft),transparent 70%)}
-.step.active{border-color:var(--line-2);box-shadow:var(--shadow)}
-.step.active::before{opacity:1}
-.step-ic{width:56px;height:56px;border-radius:var(--r-md);display:grid;place-items:center;background:var(--accent-soft);color:var(--accent);font-size:26px;
-  transition:transform .8s var(--ease)}
-.step.active .step-ic{transform:rotate(-6deg) scale(1.06)}
-.step h4{font-size:clamp(24px,2.4vw,34px);letter-spacing:-.035em;margin-top:28px}
-.step p{color:var(--muted);margin-top:8px;font-size:16.5px;max-width:36ch}
-.step-bar{height:3px;border-radius:3px;background:var(--line);overflow:hidden;margin-top:28px}
-.step-bar i{display:block;height:100%;width:100%;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform 1.4s var(--ease)}
-.step.active .step-bar i{transform:scaleX(1)}
-
-/* ---------- duo (achievements 02/03) ---------- */
-.duo{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:14px;margin-top:clamp(56px,10vh,110px)}
-.ach{position:relative;border-radius:var(--r-lg);padding:clamp(26px,3.2vw,44px);display:flex;flex-direction:column;min-height:440px;overflow:hidden;isolation:isolate;border:1px solid var(--line)}
-.ach-a{background:var(--surface)}
-.ach-a::after{content:"";position:absolute;right:-12%;top:-30%;width:70%;aspect-ratio:1;border-radius:50%;z-index:-1;
-  background:conic-gradient(from 120deg,var(--accent-soft),transparent 40%,var(--accent-soft) 75%,transparent);filter:blur(30px)}
-.ach-b{background:var(--accent);color:var(--on-accent);border-color:transparent}
-.ach.ach-b .ach-tag,.ach.ach-b p{color:color-mix(in srgb,var(--on-accent) 84%,transparent)}
-.ach-b .chip{color:var(--on-accent);border-color:color-mix(in srgb,var(--on-accent) 30%,transparent);background:transparent}
-.ach-b .btn-ghost{color:var(--on-accent);border-color:color-mix(in srgb,var(--on-accent) 45%,transparent);background:transparent}
-.ach-b .btn-ghost:hover{border-color:var(--on-accent)}
-.ach-ic{font-size:30px;width:60px;height:60px;border-radius:var(--r-md);display:grid;place-items:center;background:var(--accent-soft);color:var(--accent)}
-.ach-b .ach-ic{background:color-mix(in srgb,var(--on-accent) 14%,transparent);color:var(--on-accent)}
-.ach-tag{font-size:14px;color:var(--muted);margin-top:auto;padding-top:40px}
-.ach h3{font-size:clamp(24px,2.4vw,34px);letter-spacing:-.035em;margin-top:8px;max-width:22ch}
-.ach p{color:var(--muted);margin-top:14px;max-width:54ch}
-.ach .btn{align-self:flex-start;margin-top:26px}
-
-/* ---------- bento (more work) ---------- */
-.bento{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:minmax(220px,auto);gap:14px;margin-top:clamp(32px,5vh,52px)}
-.cell{--mx:50%;--my:50%;position:relative;border-radius:var(--r-lg);border:1px solid var(--line);background:var(--surface);padding:26px;
-  display:flex;flex-direction:column;overflow:hidden;isolation:isolate;transition:transform .7s var(--ease),border-color .4s}
-.cell::before{content:"";position:absolute;inset:0;z-index:-1;opacity:0;transition:opacity .4s;
-  background:radial-gradient(360px circle at var(--mx) var(--my),var(--accent-soft),transparent 60%)}
-.cell:hover::before{opacity:1}
-.cell:hover{border-color:var(--line-2)}
-.cell .ph{font-size:24px;color:var(--accent)}
-.cell h3{font-size:20px;letter-spacing:-.025em;margin-top:auto;padding-top:26px}
-.cell .t{color:var(--ink-2);font-size:15px;margin-top:2px}
-.cell .d{color:var(--muted);font-size:14.5px;margin-top:10px;max-width:46ch}
-.cell .m{font-family:var(--mono);font-size:13px;color:var(--accent);margin-top:18px;letter-spacing:-.01em}
-.c1{grid-column:span 2;grid-row:span 2;background:linear-gradient(155deg,color-mix(in srgb,var(--accent) 22%,var(--surface)) 0%,var(--surface) 62%)}
-.c1 h3{font-size:clamp(26px,2.6vw,36px);letter-spacing:-.035em}
-.c1 .m{font-size:clamp(28px,3vw,44px);letter-spacing:-.05em;font-weight:500;margin-top:22px}
-.c1 .d{font-size:16px}
-.c2,.c5,.c6{grid-column:span 2}
-.c5{background:repeating-linear-gradient(135deg,transparent 0 11px,var(--line) 11px 12px),var(--surface-2)}
-.c6{background:var(--ink);color:var(--bg);border-color:transparent}
-.c6 .d,.c6 .t{color:color-mix(in srgb,var(--bg) 72%,transparent)}
-.c6 .ph,.c6 .m{color:color-mix(in srgb,var(--accent) 70%,var(--bg))}
-.c6::before{background:radial-gradient(360px circle at var(--mx) var(--my),rgba(123,147,255,.22),transparent 60%)}
-
-/* ---------- timeline ---------- */
-.tl{position:relative;margin-top:clamp(32px,5vh,52px);display:grid;gap:0}
-.tl::before{content:"";position:absolute;left:180px;top:10px;bottom:10px;width:1px;background:var(--line-2)}
-.tl::after{content:"";position:absolute;left:180px;top:10px;bottom:10px;width:1px;background:var(--accent);transform-origin:top}
-@supports (animation-timeline:view()){
-  .motion .tl::after{animation:grow linear both;animation-timeline:view();animation-range:entry 30% cover 70%}
-}
-@keyframes grow{from{transform:scaleY(0)}to{transform:scaleY(1)}}
-.role{display:grid;grid-template-columns:180px minmax(0,1fr);gap:0;padding-block:22px}
-.role-y{font-family:var(--mono);font-size:13px;color:var(--muted);padding-top:6px;padding-right:24px}
-.role-b{position:relative;padding-left:44px}
-.role-b::before{content:"";position:absolute;left:-5px;top:12px;width:11px;height:11px;border-radius:50%;background:var(--bg);border:2px solid var(--accent)}
-.role-b h3{font-size:clamp(22px,2.2vw,30px);letter-spacing:-.03em;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
-.now{font-size:12px;font-weight:500;letter-spacing:0;height:24px;padding:0 10px;border-radius:var(--pill);background:var(--accent-soft);color:var(--accent);display:inline-flex;align-items:center}
-.role-o{color:var(--ink-2);margin-top:4px}
-.role-d{color:var(--muted);margin-top:10px;max-width:62ch}
-
-/* ---------- recognition ---------- */
-.rec{display:grid;grid-template-columns:repeat(2,1fr);gap:14px 14px;margin-top:clamp(32px,5vh,52px)}
-.award{display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:start;padding:20px 22px;border-radius:var(--r-md);background:var(--surface);border:1px solid var(--line)}
-.award .ph{font-size:22px;color:var(--accent);margin-top:2px}
-.award b{display:block;font-weight:500;letter-spacing:-.01em}
-.award span{display:block;color:var(--muted);font-size:14.5px;margin-top:2px}
-.award .y{font-family:var(--mono);font-size:13px;color:var(--faint);white-space:nowrap}
-
-/* ---------- skills marquee (the one marquee on the page) ---------- */
-.marq{margin-top:clamp(40px,7vh,72px);overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
-.marq-t{display:flex;gap:10px;width:max-content;animation:marq 70s linear infinite}
-.marq:hover .marq-t{animation-play-state:paused}
-.marq .chip{height:40px;padding:0 18px;font-size:15px}
-@keyframes marq{to{transform:translateX(-50%)}}
-.rm .marq-t{animation:none;flex-wrap:wrap;width:auto}
-.rm .marq{-webkit-mask-image:none;mask-image:none}
-
-/* ---------- closing ---------- */
-.close{padding-block:clamp(80px,16vh,180px)}
-.close h2{font-size:clamp(40px,7vw,104px);letter-spacing:-.05em;line-height:.98}
-.mail{display:inline-flex;align-items:center;gap:14px;margin-top:clamp(24px,4vh,40px);font-size:clamp(20px,2.6vw,34px);font-weight:500;letter-spacing:-.03em;
-  border-bottom:2px solid var(--line-2);padding-bottom:6px;transition:border-color .3s,color .3s}
-.mail:hover{border-color:var(--accent);color:var(--accent)}
-.mail .ph{transition:transform .5s var(--ease)}
-.mail:hover .ph{transform:translate(3px,-3px)}
-.close-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:32px}
-
-/* ---------- contact pages ---------- */
-.contact{padding-top:calc(var(--hdr) + clamp(40px,9vh,110px));padding-bottom:clamp(64px,12vh,140px);display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(32px,6vw,96px);min-height:100dvh}
-.contact h1{font-size:clamp(44px,6.4vw,92px);letter-spacing:-.05em;line-height:.98}
-.contact .lede{color:var(--muted);margin-top:22px;font-size:18px;max-width:36ch}
-.rows{display:flex;flex-direction:column;align-self:end}
-.row{display:grid;grid-template-columns:44px 1fr auto;gap:18px;align-items:center;padding:26px 4px;border-top:1px solid var(--line);transition:padding .5s var(--ease)}
-.row:last-child{border-bottom:1px solid var(--line)}
-.row>.ph{font-size:24px;color:var(--accent)}
-.row small{display:block;color:var(--muted);font-size:13.5px}
-.row b{display:block;font-weight:500;font-size:clamp(18px,2vw,24px);letter-spacing:-.025em;word-break:break-word}
-.row .go{font-size:22px;color:var(--muted);transition:transform .5s var(--ease),color .3s}
-.row:hover .go{transform:translate(3px,-3px);color:var(--ink)}
-@media (hover:hover){.row:hover{padding-left:12px}}
-.copy{display:inline-flex;align-items:center;gap:8px;height:36px;padding:0 14px;border-radius:var(--pill);border:1px solid var(--line-2);font-size:13.5px;color:var(--ink);transition:border-color .3s,background-color .3s}
-.copy:hover{border-color:var(--ink)}
-.copy.done{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
-
-/* ---------- personal: shared hero ---------- */
-.p-hero{padding-top:calc(var(--hdr) + clamp(36px,8vh,96px));padding-bottom:clamp(24px,4vh,40px);display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap}
-.p-hero h1{font-size:clamp(48px,8vw,120px);letter-spacing:-.055em;line-height:.95}
-.p-hero p{color:var(--muted);font-size:17px;margin-top:16px;max-width:40ch}
-
-/* filters */
-.filters{position:relative;display:inline-flex;padding:4px;border-radius:var(--pill);border:1px solid var(--line);background:var(--surface-2);flex-wrap:wrap}
-.filters button{position:relative;z-index:1;height:38px;padding:0 16px;border-radius:var(--pill);font-size:14px;color:var(--muted);display:inline-flex;align-items:center;gap:8px;transition:color .3s}
-.filters button .mono{font-size:12px;color:var(--faint);transition:color .3s}
-.filters button[aria-pressed="true"]{color:var(--ink)}
-.filters button[aria-pressed="true"] .mono{color:var(--accent)}
-.f-ind{position:absolute;top:4px;bottom:4px;left:0;width:0;border-radius:var(--pill);background:var(--surface);box-shadow:0 1px 2px rgba(0,0,0,.08),0 0 0 1px var(--line);
-  transition:transform .55s var(--ease),width .55s var(--ease)}
-
-/* writings */
-.wgrid{columns:3 300px;column-gap:14px;padding-bottom:clamp(64px,12vh,140px);margin-top:clamp(12px,3vh,28px)}
-.wcard{break-inside:avoid;display:block;width:100%;text-align:left;margin-bottom:14px;padding:26px 24px 22px;border-radius:var(--r-lg);border:1px solid var(--line);
-  background:var(--surface);transition:border-color .4s,box-shadow .5s,transform .7s var(--ease)}
-.wcard:hover{border-color:var(--line-2);box-shadow:var(--shadow);transform:translateY(-3px)}
-.wcard h3{font-size:22px;letter-spacing:-.025em;line-height:1.2;font-family:var(--sans)}
-.wcard .ex{color:var(--muted);margin-top:12px;font-size:15px;line-height:1.65;display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden}
-.wmeta{display:flex;justify-content:space-between;align-items:center;margin-top:20px;font-size:13px;color:var(--faint)}
-.wmeta .ph{font-size:18px;color:var(--accent);transition:transform .5s var(--ease)}
-.wcard:hover .wmeta .ph{transform:translateX(4px)}
-[lang="te"],[lang="hi"]{font-family:var(--indic);letter-spacing:0}
-.wcard[lang] h3{letter-spacing:0}
-.empty{padding:80px 0 140px;text-align:left}
-.empty h3{font-size:26px}
-.empty p{color:var(--muted);margin-top:8px}
-
-/* photographs */
-.pgrid{columns:3 280px;column-gap:14px;padding-bottom:clamp(64px,12vh,140px);margin-top:clamp(12px,3vh,28px)}
-.pcard{break-inside:avoid;display:block;width:100%;text-align:left;margin-bottom:22px}
-.pimg{position:relative;border-radius:var(--r-lg);overflow:hidden;aspect-ratio:4/3;isolation:isolate}
-.pcard.tall .pimg{aspect-ratio:3/4}
-.pcard.sq .pimg{aspect-ratio:1}
-.pimg .art,.pimg img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform 1.4s var(--ease)}
-.pcard:hover .art,.pcard:hover img{transform:scale(1.05)}
-.pcap{display:flex;justify-content:space-between;gap:12px;margin-top:12px;font-size:14.5px}
-.pcap b{font-weight:500}
-.pcap span{color:var(--faint);font-size:13.5px}
-
-/* ---------- dialogs (case study, reader, photo viewer) ---------- */
-dialog{border:0;padding:0;margin:0;max-width:none;max-height:none;width:100%;height:100%;background:transparent;color:var(--ink)}
-dialog::backdrop{background:color-mix(in srgb,var(--bg) 70%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
-.dlg{position:absolute;inset:0;overflow-y:auto;overscroll-behavior:contain;display:flex;justify-content:center;padding:clamp(12px,3vw,40px)}
-.panel{position:relative;width:100%;max-width:880px;margin:auto;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--shadow);
-  padding:clamp(28px,5vw,64px)}
-.motion dialog[open] .panel{animation:panel-in .7s var(--ease) both}
-.motion dialog[open]::backdrop{animation:fade-in .4s ease both}
-.motion dialog.closing .panel{animation:panel-out .3s var(--ease) both}
-.motion dialog.closing::backdrop{animation:fade-in .3s ease reverse both}
-@keyframes panel-in{from{opacity:0;transform:translateY(36px) scale(.97)}}
-@keyframes panel-out{to{opacity:0;transform:translateY(20px) scale(.98)}}
-@keyframes fade-in{from{opacity:0}}
-.x{position:absolute;top:18px;right:18px}
-.case-tag{font-size:14px;color:var(--accent)}
-.panel h2{font-size:clamp(28px,3.6vw,46px);letter-spacing:-.04em;margin-top:10px;max-width:22ch}
-.case{margin-top:clamp(28px,4vh,44px);display:grid;gap:0}
-.case-row{display:grid;grid-template-columns:200px minmax(0,1fr);gap:24px;padding:22px 0;border-top:1px solid var(--line)}
-.case-row h4{font-size:15px;font-weight:500;letter-spacing:-.01em;color:var(--ink-2)}
-.case-row p{color:var(--muted);font-size:16.5px}
-.panel .mets{margin-top:28px}
-/* reader */
-.reader{max-width:720px}
-.reader .rmeta{font-size:13.5px;color:var(--muted);display:flex;gap:14px;flex-wrap:wrap}
-.reader h2{font-size:clamp(30px,4vw,48px);letter-spacing:-.035em}
-.reader h2[lang]{letter-spacing:0;line-height:1.25}
-.verse{margin-top:30px;font-size:18px;line-height:1.85;color:var(--ink-2)}
-.verse p+p{margin-top:0}
-.verse .gap{height:1.1em}
-.reader[lang] .verse{font-size:18.5px;line-height:2}
-.rnav{display:flex;justify-content:space-between;gap:12px;margin-top:44px;padding-top:24px;border-top:1px solid var(--line);align-items:center}
-.rnav .pos{font-size:13px;color:var(--faint)}
-/* photo viewer */
-.viewer{max-width:min(1120px,calc(68vh*1.5 + 48px));padding:clamp(14px,2vw,22px)}
-.viewer .pimg{border-radius:var(--r-md);aspect-ratio:3/2;width:min(100%,calc(68vh*1.5));margin-inline:auto}
-.viewer .pimg.tall{aspect-ratio:4/5;width:min(100%,calc(68vh*.8))}
-.vinfo{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;padding:20px 10px 8px;align-items:flex-end}
-.vinfo h2{font-size:clamp(24px,2.6vw,34px);margin:0}
-.vinfo p{color:var(--muted);font-size:14.5px;margin-top:4px}
-.exif{display:flex;gap:6px;flex-wrap:wrap}
-.exif .chip{font-family:var(--mono);font-size:12px}
-.viewer .x{top:28px;right:28px;background:color-mix(in srgb,var(--surface) 80%,transparent);backdrop-filter:blur(8px)}
-
-/* ---------- footer ---------- */
-.foot{border-top:1px solid var(--line);padding-block:44px 36px}
-.foot .wrap{display:grid;grid-template-columns:minmax(0,1.4fr) repeat(2,minmax(0,1fr));gap:32px}
-.foot p{color:var(--muted);font-size:14.5px;margin-top:10px;max-width:36ch}
-.foot h4{font-size:13px;font-weight:500;color:var(--faint);letter-spacing:0;margin-bottom:12px}
-.foot ul{list-style:none;margin:0;padding:0;display:grid;gap:8px;font-size:14.5px}
-.foot ul a{color:var(--ink-2);transition:color .25s}
-.foot ul a:hover{color:var(--accent)}
-.foot-b{grid-column:1/-1;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;padding-top:28px;margin-top:8px;border-top:1px solid var(--line);font-size:13px;color:var(--faint)}
-body.landing .foot{display:none}
-
-/* ---------- responsive ---------- */
-@media (max-width:1024px){
-  .bento{grid-template-columns:repeat(2,1fr)}
-  .c1{grid-row:span 1}
-}
-@media (max-width:860px){
-  :root{--hdr:62px}
-  .nav,#modeSeg{display:none}
-  #menuBtn{display:grid}
-  .doors{flex-direction:column;min-height:0}
-  .door{min-height:clamp(240px,34dvh,340px)}
-  .hero-row,.flag,.duo,.contact,.rec{grid-template-columns:1fr}
-  .viz{aspect-ratio:16/11}
-  .flag-l{position:static}
-  .step{min-height:0;gap:22px}
-  .stats{grid-template-columns:1fr}
-  .stat+.stat{border-left:0;border-top:1px solid var(--line)}
-  .stat{padding-inline:0}
-  .ach{min-height:0}
-  .tl::before,.tl::after{left:5px}
-  .role{grid-template-columns:1fr}
-  .role-y{padding-left:28px;padding-top:0}
-  .role-b{padding-left:28px}
-  .role-b::before{left:0}
-  .case-row{grid-template-columns:1fr;gap:6px}
-  .foot .wrap{grid-template-columns:1fr 1fr}
-  .foot .wrap>div:first-child{grid-column:1/-1}
-  .contact .rows{align-self:start}
-}
-@media (max-width:620px){
-  .bento{grid-template-columns:1fr}
-  .c1,.c2,.c5,.c6{grid-column:auto}
-  .mets{grid-template-columns:1fr}
-  .award{grid-template-columns:auto 1fr}
-  .award .y{grid-column:2}
-  .hero-cta .btn{flex:1 1 auto;justify-content:center}
-  .filters{display:flex;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;max-width:100%}
-  .row{grid-template-columns:28px 1fr auto;gap:14px}
-}
-
-/* ---------- reduced motion: everything settles instantly ---------- */
-@media (prefers-reduced-motion:reduce){
-  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}
-  ::view-transition-group(*),::view-transition-old(*),::view-transition-new(*){animation:none!important}
-}
-@media (prefers-reduced-transparency:reduce){
-  .hdr.scrolled{background:var(--bg);backdrop-filter:none;-webkit-backdrop-filter:none}
-  dialog::backdrop{background:var(--bg);backdrop-filter:none}
-}
-</style>
 </head>
 <body class="landing">
-<a class="sr" href="#main">Skip to content</a>
+<a class="skip" href="#main">Skip to content</a>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="i-arrow-ur" viewBox="0 0 24 24"><path d="M7 17 17 7M8 7h9v9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-arrow-r" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-arrow-l" viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-arrow-d" viewBox="0 0 24 24"><path d="M12 5v14M6 13l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-down" viewBox="0 0 24 24"><path d="M12 4v11m0 0-4-4m4 4 4-4M5 20h14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 8h16M4 16h16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6 7 7M17 17l1.4 1.4M5.6 18.4 7 17M17 7l1.4-1.4"/></g></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></symbol>
+    <symbol id="i-auto" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 1 0 16Z" fill="currentColor"/></g></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2.5"/><path d="M5 15V6.5A2.5 2.5 0 0 1 7.5 4H15"/></g></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-mail" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m4 8 8 6 8-6"/></g></symbol>
+    <symbol id="i-linkedin" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="3.5" width="17" height="17" rx="4"/><path d="M8 10.5V16M8 7.8v.1M12 16v-5.5M12 13c0-1.7 1-2.6 2.3-2.6S16.5 11.3 16.5 13V16"/></g></symbol>
+    <symbol id="i-pdf" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"><path d="M7 3h7l5 5v11a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"/><path d="M14 3v5h5M8.5 15h7M8.5 18h4"/></g></symbol>
+    <symbol id="i-pause" viewBox="0 0 24 24"><path d="M9 6v12M15 6v12" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5Z" fill="currentColor" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4 4"/></g></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"><path d="M12 3 5 6v5.5c0 4.5 3 7.7 7 9.5 4-1.8 7-5 7-9.5V6Z"/><path d="m9 12 2.2 2.2L15.5 10"/></g></symbol>
+    <symbol id="i-coins" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><ellipse cx="9" cy="7" rx="5.5" ry="3"/><path d="M3.5 7v5c0 1.7 2.5 3 5.5 3M3.5 12v5c0 1.7 2.5 3 5.5 3 3 0 5.5-1.3 5.5-3v-1"/><ellipse cx="15.5" cy="13" rx="5" ry="2.6"/><path d="M10.5 13v3.4c0 1.4 2.2 2.6 5 2.6s5-1.2 5-2.6V13"/></g></symbol>
+    <symbol id="i-portal" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M3 9h18M7 6.5v.1M10 6.5v.1"/></g></symbol>
+    <symbol id="i-test" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"><path d="M9 3h6M10 3v6.5L5 18a2 2 0 0 0 1.8 3h10.4A2 2 0 0 0 19 18l-5-8.5V3"/><path d="M7.5 15h9"/></g></symbol>
+    <symbol id="i-swap" viewBox="0 0 24 24"><path d="M4 8h14m0 0-3.5-3.5M18 8l-3.5 3.5M20 16H6m0 0 3.5-3.5M6 16l3.5 3.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-merge" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="5.5" r="2.5"/><circle cx="6" cy="18.5" r="2.5"/><circle cx="18" cy="12" r="2.5"/><path d="M6 8v8M6 8c0 4 4 4 9.5 4"/></g></symbol>
+    <symbol id="i-team" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.2"/><circle cx="5.5" cy="10" r="2.4"/><circle cx="18.5" cy="10" r="2.4"/><path d="M6.5 19c0-3 2.4-5 5.5-5s5.5 2 5.5 5M2.5 17c0-2 1.3-3.4 3-3.6M21.5 17c0-2-1.3-3.4-3-3.6"/></g></symbol>
+    <symbol id="i-file" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"><path d="M7 3h7l5 5v11a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></g></symbol>
+    <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M18 6l-2.5 2.5M8.5 15.5 6 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="i-check-sq" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="m8.5 12.3 2.4 2.4 4.6-5"/></g></symbol>
+    <symbol id="i-medal" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"><circle cx="12" cy="15" r="5"/><path d="m9 3 3 6 3-6M12 12.5v5"/></g></symbol>
+    <symbol id="i-cert" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"><rect x="3" y="4" width="18" height="13" rx="3"/><path d="M7.5 9h9M7.5 12.5h5M9 17v4l3-1.5L15 21v-4"/></g></symbol>
+    <symbol id="i-star" viewBox="0 0 24 24"><path d="m12 3.5 2.6 5.4 5.9.8-4.3 4.1 1 5.9L12 17l-5.2 2.7 1-5.9L3.5 9.7l5.9-.8Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></symbol>
+  </defs>
+</svg>
 
 <header class="hdr" id="hdr">
-  <div class="wrap">
-    <a class="brand" id="brand" href="#/" aria-label="Tarun Inala, home"><span class="brand-mark" aria-hidden="true">TI</span><span>Tarun Inala</span></a>
+  <div class="hdr-bg" aria-hidden="true"></div>
+  <div class="wrap hdr-row">
+    <a class="brand" id="brand" href="#/" aria-label="Tarun Inala, home"><span class="brand-mark" aria-hidden="true">TI</span><span class="brand-name">Tarun Inala</span></a>
     <nav class="nav" id="nav" aria-label="Primary"></nav>
     <div class="hdr-tools">
       <div class="seg" id="modeSeg" data-on="" role="group" aria-label="Site section">
+        <span class="seg-ind" aria-hidden="true"></span>
         <button type="button" data-v="work" aria-pressed="false">Work</button>
         <button type="button" data-v="personal" aria-pressed="false">Personal</button>
-        <span class="seg-ind" aria-hidden="true"></span>
       </div>
-      <button class="icon-btn" id="themeBtn" type="button" aria-label="Switch colour theme"><i class="ph ph-moon" aria-hidden="true"></i></button>
-      <button class="icon-btn" id="menuBtn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="sheet"><i class="ph ph-list" aria-hidden="true"></i></button>
+      <button class="icon-btn" id="themeBtn" type="button" aria-label="Theme: follows system. Press to change."><svg class="ic" aria-hidden="true"><use href="#i-auto"/></svg></button>
+      <button class="icon-btn" id="menuBtn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="sheet"><svg class="ic" aria-hidden="true"><use href="#i-menu"/></svg></button>
     </div>
   </div>
 </header>
 
-<div class="sheet" id="sheet" aria-hidden="true">
-  <div class="seg" id="modeSegM" data-on="" role="group" aria-label="Site section">
-    <button type="button" data-v="work" aria-pressed="false">Work</button>
-    <button type="button" data-v="personal" aria-pressed="false">Personal</button>
-    <span class="seg-ind" aria-hidden="true"></span>
+<div class="sheet" id="sheet" aria-hidden="true" inert>
+  <div class="sheet-in">
+    <div class="seg" id="modeSegM" data-on="" role="group" aria-label="Site section">
+      <span class="seg-ind" aria-hidden="true"></span>
+      <button type="button" data-v="work" aria-pressed="false">Work</button>
+      <button type="button" data-v="personal" aria-pressed="false">Personal</button>
+    </div>
+    <nav id="navM" aria-label="Menu"></nav>
   </div>
-  <nav id="navM" aria-label="Menu"></nav>
 </div>
 
-<main id="main" tabindex="-1"></main>
+<main id="main" tabindex="-1">
+  <!-- Static fallback: what crawlers, link previews and no-JS visitors read. Hidden once the app renders. -->
+  <div id="shell" class="shell wrap">
+    <h1>Tarun Inala</h1>
+    <p>Senior Business Analyst and Functional Lead in Hyderabad, India. Open to Product Owner and Lead Business Analyst roles.</p>
+    <p>Five-plus years taking products from first problem to shipped release across Generative AI tools, clinical-trial payments platforms and large-scale ERP migrations.</p>
+    <ul>
+      <li>Generative AI contract-extraction engine: 40% less daily manual effort and 60% faster budget entry.</li>
+      <li>Payment Term Validation: 100% alignment of outgoing payments with contractual costs.</li>
+      <li>Launched a 12-year-pending payments capability that enabled $1.5M in payouts in its first month.</li>
+    </ul>
+    <p><a href="mailto:taruntks97@gmail.com">taruntks97@gmail.com</a> · <a href="https://www.linkedin.com/in/tarunksai/">LinkedIn</a> · <a href="Tarun_Inala_Resume.pdf">Download resume (PDF)</a></p>
+    <noscript><p>This site uses JavaScript for its interactive sections.</p></noscript>
+  </div>
+</main>
 
 <footer class="foot">
-  <div class="wrap">
-    <div>
-      <a class="brand" href="#/"><span class="brand-mark" aria-hidden="true">TI</span><span>Tarun Inala</span></a>
+  <div class="wrap foot-grid">
+    <div class="foot-brand">
+      <a class="brand" href="#/"><span class="brand-mark" aria-hidden="true">TI</span><span class="brand-name">Tarun Inala</span></a>
       <p id="footTag"></p>
     </div>
-    <div><h4>Pages</h4><ul id="footNav"></ul></div>
-    <div><h4>Elsewhere</h4><ul id="footLinks"></ul></div>
-    <div class="foot-b"><span>&copy; <span id="yr"></span> Tarun Inala</span><span>Hyderabad, India</span></div>
+    <div><h2 class="foot-h">Pages</h2><ul id="footNav"></ul></div>
+    <div><h2 class="foot-h">Elsewhere</h2><ul id="footLinks"></ul></div>
+    <div class="foot-b"><span>&copy; <span id="yr">2026</span> Tarun Inala</span><span>Hyderabad, India</span></div>
   </div>
 </footer>
 
-<dialog id="dlg" aria-labelledby="dlgTitle"><div class="dlg" id="dlgBody"></div></dialog>
+<dialog id="dlg" aria-labelledby="dlgTitle"><div class="scrim" id="scrim"></div><div class="dlg" id="dlgBody"></div></dialog>
 <div class="sr" aria-live="polite" id="live"></div>
 
-<!-- Built-in copy of content.json. The live site reads content.json; this copy is only used if that file cannot be loaded. -->
-<script type="application/json" id="fallback">{"email":"taruntks97@gmail.com","links":[{"k":"LinkedIn","u":"https://www.linkedin.com/in/tarunksai/"}],"work":{"chips":["Senior Business Analyst","Generative AI","Hyderabad, India"],"headline":"Turning <em>business needs<\/em> into products that <em>deliver real value<\/em>.","sub":"Senior Business Analyst and Functional Lead. Five years taking products from first problem to shipped release.","lede":"Senior Business Analyst and Functional Lead with 5+ years owning the path from problem to shipped product (discovery, prioritisation, stakeholder alignment and delivery) across Generative AI tools, payments platforms and large-scale ERP migrations.","stats":[{"k":"Experience","v":"5+","u":"years","d":"Business analysis & functional leadership"},{"k":"Budget entry cycle time","v":"−60","u":"%","d":"Via GenAI contract extraction"},{"k":"Payouts unlocked","v":"$1.5M","u":"","d":"In the first month of a 12-year-old feature"}],"featured":[{"tag":"Flagship case study · Generative AI","title":"Generative AI engine for clinical-trial contract extraction","desc":"Led end-to-end development of an engine that reads complex Clinical Trial Agreement budget terms from unstructured PDFs and maps them into APECS, with a “Single Pane of Glass” UI to review, validate and commit every AI-extracted mapping, and automated checks that protect timely site reimbursements.","mets":[["Daily manual effort","−40%"],["Entry cycle time","−60%"],["Entry errors","Eliminated"]],"chips":["Generative AI","Clinical Trials","SLA","UX Design"],"ill":"extract","steps":[["Ingest","Unstructured Clinical Trial Agreement budget PDFs"],["Extract & validate","Generative AI reads the terms; automated checks catch errors"],["Review & commit","Single Pane of Glass in APECS to validate, then commit"]],"case":[["The problem","Budget terms in Clinical Trial Agreements arrived as unstructured PDFs and were keyed into APECS by hand. Entry was slow and error-prone, backlogs built up, and delays put site reimbursements and SLAs at risk."],["My role","Led the engine end to end as Senior Business Analyst: shaped the requirements, defined how extracted terms map into APECS, and designed the “Single Pane of Glass” screen where every AI-extracted mapping is reviewed, validated and committed."],["Safeguards built in","Automated validation checks run inside the AI workflow, so problems are caught before anything is committed and site reimbursements stay accurate and on time."],["The result","Daily manual effort down 40%, budget-entry cycle time down 60%, manual entry errors eliminated, and backlogs cleared with SLAs met."]]},{"tag":"Achievement 02 · Financial controls","title":"Payment Term Validation: closing a leak since day one","desc":"Designed, specified and tested validation that aligns 100% of outgoing payments with contractual costs, ending systemic overpayments that had persisted since the application launched, including edge cases like calendar boundaries and amendment tracking.","chips":["Validation","Compliance","Testing"],"ill":"validate","link":"Read the case study","case":[["The problem","Outgoing payments could drift from what the contracts allowed. Overpayments and financial leakage had persisted since the application first went live."],["My role","Led design, requirement gathering and testing end to end for a validation solution that checks payments against contractual costs."],["Edge cases solved","Built robust validation logic for the awkward scenarios: calendar boundaries and amendment tracking, so complex clinical-trial structures stay compliant."],["The result","100% alignment between outgoing payments and contractual costs, and an end to the systemic overpayments."]]},{"tag":"Achievement 03 · Payments","title":"Unlocked $1.5M in clinical-trial payouts in month one","desc":"Launched a critical payments capability the platform had been missing for 12 years, enabling $1.5M in payouts within its first month, and cut invoice processing from 2 hours of manual validation to 1 minute.","chips":["Payments","Automation","Delivery"],"ill":"payout","link":"Read the case study","case":[["The problem","A critical capability in the clinical-trial payment system had been pending for 12 years, and invoice processing relied on about two hours of manual validation."],["My role","Delivered the launch and streamlined the invoice-processing workflow. Also led a team of Business Analysts on requirement documentation, lifting UAT solution quality by 20%."],["The result","$1.5M in payouts enabled within the first month, and invoice validation cut from 2 hours to 1 minute."]]}],"more":[{"k":"Payments Portal","t":"Payee transparency, self-service","d":"Functional Lead for the payment portal, the liaison between payees, the Payment Processing Group and tech teams. Defined data mapping and reconciliation logic across Oracle EBS and APECS.","m":"−50% support inquiries","ill":"portal"},{"k":"Automated Testing Tool","t":"End-to-end regression & sanity checks","d":"Architected a custom automated testing tool across multiple environments, with real-time environment-health reporting and a faster Deployment Validation Process.","m":"Faster post-deployment checks","ill":"testing"},{"k":"Jasper → Incorta","t":"Reporting migration","d":"Led requirements, documentation and testing to migrate legacy reports to Incorta, validating accuracy and performance parity with the old platform.","m":"Data integrity & parity","ill":"migrate"},{"k":"FinancialForce","t":"Two acquired entities, one clean go-live","d":"Drove stakeholder alignment and UAT for customisations across multiple legal entities, and integrated two acquired entities with zero critical post-go-live issues.","m":"0 critical issues","ill":"merge"},{"k":"Oracle Fusion","t":"Faster customer & supplier setup","d":"Streamlined the customer and supplier creation process to lift procurement efficiency.","m":"−30% lead time","ill":"form"},{"k":"Team leadership","t":"Better requirements, better UAT","d":"Led a team of Business Analysts on requirement documentation and ran cross-functional workshops to align stakeholders.","m":"+20% UAT solution quality","ill":"team"}],"roles":[{"t":"Senior Business Analyst","org":"Winfo Solutions · APECS","yrs":"Mar 2023 - Present","d":"Functional Lead for a clinical-trial payments and contracts platform: Generative AI extraction, payment validation, the payee portal, automated testing and reporting migration.","tag":"Current"},{"t":"Business Analyst","org":"Winfo Solutions · FinancialForce, Oracle Fusion, RPA","yrs":"Jun 2021 - Mar 2023","d":"Owned UAT, requirements and test automation across ERP and RPA engagements, including an award-winning FinancialForce automation demo.","tag":""},{"t":"Junior Software Tester","org":"Infionic Inc. · Cloud ERP","yrs":"Aug 2018 - Apr 2019","d":"Tested the Finance module (AR & AP) and shaped a Windows-based ERP through competitive analysis of Tally and SAP.","tag":""}],"honours":[{"t":"Client Focus Award","s":"Clinical trial payments project · dedication to clients","y":"2025-26"},{"t":"Client Focus Award","s":"Clinical trial payments project · dedication to clients","y":"2024-25"},{"t":"Certified Generative AI Professional","s":"Oracle Cloud Infrastructure 2025","y":"2025"},{"t":"Career Essentials in Business Analysis","s":"Microsoft & LinkedIn","y":"2024"},{"t":"Above and Beyond Award","s":"FinancialForce engagement","y":"2022-23"},{"t":"Award-winning client demonstration","s":"FinancialForce test automation","y":"2022-23"}],"skills":{"Domain & functional":["Clinical trial payments","Financial ERP","Contract data extraction","Payment validation","Financial reconciliation"],"Tools & platforms":["APECS","Oracle EBS","Oracle Fusion","Incorta","FinancialForce","JIRA","Visio / Draw.io","SQL"],"Methods & techniques":["Generative AI","Requirement elicitation","BRD / FSD","User stories & use cases","Gap analysis","Process modelling","Agile","UAT & test planning","Stakeholder management"]}},"writings":[{"id":"w1","title":"Faults and us","lang":"English","lines":["I've always believed that as humans, we all are faulty in some way or another. Also said that we, as humans need to use our intellect and thinking capabilities to make ourselves better. And I will always stand by the statement.","","I also believe that for us humans, it's difficult to accept the fact that we're not perfect and we're flawed. And we only tend to accept this when we realise that our inner defects. The problems writing us that we are scared to acknowledge. I've done that. I didn't want to accept that I was a lazy, selfish and \"dont-leave-the-comfort-zone guy\". Maybe because I didn't want to see that side of myself. I wanted to see myself as a perfect human being. But there was always this voice inside me that said I wasn't. But when I finally accept it and see myself for what I am, I feel much lighter and better. Not because I am that person but because I know that I'm at least not lying to myself.","","I've come to believe that when we accept the flaws in us, we feel a lot lighter and guilt free because we at least know that we're not lying to ourselves. And when we accept this, we stop asking \"What is wrong with me?\" and start asking \"What can I do about it?\". Simply put, we have one less thing to worry about. We only have to worry about bettering ourselves.","","I never tell people to \"Be positive ALWAYS\" because I think there's something called \"TOXIC POSITIVITY\"  and it affects is. It makes us set false hopes for ourselves and makes us get hurt when we are unable to to reach them. Instead, if we stop 'being positive' with ourselves for a moment and be brutally honest, we will see ourselves for what we truly are.","","Remember, change in anything can only be bought when you acknowledge the flaws/shortcomings in it. Because that's when you start working on the result."]},{"id":"w2","title":"THE DROP","lang":"English","lines":["You look sad today. What's the matter?","Asked the sun as he looked at the droplet.","From what he knew of her,","She was always Happy.","The one that cheered up every drop in the pond.","The one that wasn't necessarily the class clown,","But knew how to get rid of someone's frown,","With a personality for which she was known.","It was very unusual of her to be sad.","","\"I'm afraid.","I'm afraid I will live forever in this pond.","I'm afraid I can't be what I want to be.","I'm afraid all my fellow drops would one day reach the sky,","And be the raindrop I always dreamt of being.","I'm afraid I'll be where I am now forever.","I'm afraid I won't live upto the expectations of the drops that I love  and the drops that love me back.","","I'm afraid I won't even be a dew drop like my friend.","He says, I deserve more than  being just a dew drop. I want to believe in him. I want to think I deserve better and that's what I'm waiting for.","But I only want to. I can't.","I'm afraid all my fellow droplets will become rain drops, the drinking water that humans use,  beautiful dew drops on the flowers that humans admire.","While I sulk in this pond, soaking in mud forever and being someone who I am not.","","Some of them even join the sea. I waited for that too.","But it feels like the nature, she wants me to sit here forever,","In the middle of nowhere,","Where I don't have any path to tread on.","","Is it that I don't deserve to be like them?","Am I not capable of being like them?","Why can't I get what I want?","Why does everyone else get what they desire and I don't?","Don't I deserve even the least of all things?","","I want to be a lot of things Mr.Sun.","But I don't want to die as a nothing.","I want to be what I want to be. \"","","The sun stared at her","While he waited her to speak up.","He didn't hear a word of what she said.","For it was all in her head.","It wanted to shout all these words out loud so the nature could hear it too.","But for the kind of droplet that she was,","It would be unusual for her to be sad.","For she, was a happy lad.","","The drop smiled and said,","\"Nothing. Was just thinking about my fanta-sea with the sea and thought it would be better if I drop-ped them. \"","The sun laughed out loud for the terrible pun.","","The sun set,","The smile on the drop, dropped,","Another day passed by."]},{"id":"w3","title":"Never Enough","lang":"English","lines":["You could give everything to someone and still not be enough. And you could give nothing to someone else and still be enough."],"kind":"thoughts"},{"id":"w4","title":"COVID AND QUARANTINE","lang":"English","lines":["And there she sat,","In the garden,","overlooking the hills,","where she had everything in her sight.","Everything under the limitless sky,","From things so intricate that couldn't be seen with a human eye.","To the beautiful valleys,","that were as deep as her heart that contained no malice.","","She rested there in the garden,","where she could feel the winds gently kissing her cheeks","as if she was something carefully sculpted.","The dew drops on her face,","Were a sight to be amazed at every morning.","The sunlight so bright,","it filled her soul with so much light,","everyone's sight could see it in her","gleaming smile.","The fog wrapped her","in it's arms  every morning.","And made sure she wasn't feeling trapped","for her petals, pieces of art,","were as fragile as her heart.","","She dwelled there in a place so beautiful,","Yet she felt wasn't very fanciful.","","News spread that there was a storm coming,","The gardener dreaded that she would be destroyed.","He thought she was so florid,","That It'd be horrid to lose her.","A thought so horrific,","He thought was a dream meant to be morbid.","","He carefully placed her in a pot,","and put her in the window bay","Near his cot.","She was furious and uncomfortable.","For she missed her habitat,","where she usually 'enjoyed' resting at.","","Only she could hear her squalls,","As she cursed him for putting her","between the four walls.","","She sat there in the room,","looking at the storm which could have been her doom,","from the window for two days,","dazed, as all her friends","ceased to exist one by one.","She saw all the neighbor trees","being scarred and succumbing to the storm with ease.","She was scared and paranoid,","and felt like everything was being sucked into the void.","She just wished the storm finished soon,","so she could live a few more days under the moon.","","The storms passed by.","The sun shined again.","She was back to her usual place.","A place where the beauty hadn't been debased,","Despite the storm that took place.","She thanked the gardener for what he had done.","and despised herself","remembering how she spited him before.","","She looked at her surrounding with utmost care this time.","Everything seemed way more beautiful than it ever looked to her eyes.","She could feel her lips rise,","She smiled,","felt grateful for what she had,","and sat there ever after,","treasuring every moment of her life,","with smiles and laughter."]},{"id":"w5","title":"Good?","lang":"English","lines":["These days, I wonder","What does it mean to be good?","","The inability to do bad,","or the ability to do bad and choosing not to?","","If I make the choice to not be bad,","Why do I still hurt someone?","Why do I end up being the antagonist in someone's life?","","And if I end up being bad even when I don't intend to,","Am I good for choosing not to be bad or am I bad for hurting them?"]},{"id":"w6","title":"నీవుంటే","lang":"Telugu","lines":["నీవుంటే","నావెంటే","వెన్నంటే","వున్నట్టే,","వెన్నెల్లే.","","నీవల్లే నవ్వులే,","నీ నవ్వే వెన్నెలే.","","నీవు అల్లే ఈ నవ్వుల వల్లే,","నావ అల్లే, నాలో కలలే.","","నీవు అల్లే, వన్నెల వల్లే,","నా ఈ నవ్వులే"],"kind":"poetry"},{"id":"w7","title":"Pyaar mein log bahut Kuch karte hai","lang":"Hindi","lines":["Pyaar mein log bahut Kuch karte hai.","","Pyaar mein kho jaathe hain,","Khud ko kho bhi dethe Hain.","","Bhul jaathe hain,","Khud ko bhula bhi dethe Hain.","","Haseen bann jaathe hain,","Hasee bhool bhi jaathe hai.","","Pyaar mein kisikeliye khwaaish karte Hain,","Kisika khwaaish bhi ban jaathe hain.","","Agar yahi mohabbat hain,","Toh humein yoohi rehne dijiye.","Iss pyaar mein humein fanaa honey dijiye."]},{"id":"w8","title":"Musaafir","lang":"Hindi","lines":["Shaam ke 6 baj raha thha","Dhalthe hue sooraj ko dekhte,","Nadi ke kinaare baitha thha mein","","Ithne mein aaya woh.","Ek musaafir.","Naa jaana uska naam","Naa poocha uska patha.","","Paas aake baitha,","Aur kehne laga ki,","Uske naukri se behadd pyaar toh karta hai","Par aaj Kal mann nahi lagtha.","Thakaan toh bahut mehsoos karta hai","Par raath ko neend nahi aathi.","Hasna aur muskuraana chahtha hai.","Par hasthe hasthe ro Letha Hain.","","Kaha, ki usey ab andhere se hi nahi,","Roshni se bhi darr lagne laga.","Bola ki koi uss se baat tak nahi karta.","Kisi ko parvah nahi ki woh sahi salamat hai ya nahi.","Baatein karte bhi hai toh log sirf uske baatein sunthe hai.","Par uska khaamoshi koi nahi samajhta hai.","","Unke aankhon se aasoo behne lagi","Mein khaamosh baitha raha","Uska haath thaama, aur gale lagaya.","Ro pada aur kaha,","\"Shukra guzaar hai ki aap milein aur hamara dil ki baat samjhe","Par afsoos to yeh hain ki,","Aapka milne mein thodi der ho gayi\"","","Aur faristhe ki tarah,","Hawaa mein gaayab ho gaya."],"note":"Forgive for any grammar mistakes. I'm not that good at Hindi grammar. Please comment if there are any mistakes."},{"id":"w9","title":"WAQT","lang":"Hindi","lines":["Chaahe tum aaj kitna bhi betein hue Kal mein waqt guzaaro,","Kal jab  waqt aaye,","Aur tumhe guzar jaane ka mann kare","Bus itni Guzaarish hai,","hamare saath thhoda waqt guzaar le"]},{"id":"w10","title":"Mental Health","lang":"English","lines":["As children, we were always taught that \"Be happy\" or \"Keep smiling\".","Maybe that's the issue.","We're taught to be happy always and be smiling but not to listen to people who are in pain. We often forget that not every smile is real. Not everyone who makes others laugh is actually happy inside. We're not taught to be there for people no matter what. We're not told that it's okay to be sad. We're not taught about depression. We're not told how important mental health is.","","It's easy to ignore a call.","It's easy to leave someone on read.","It's easy to act as if someone doesn't exist.","","But It's hard to sit there in a room alone, look at those blue ticks and cry yourself to sleep.","It's hard to stare into the void,  talk to yourself and slowly feel yourself fall apart.","It's harder to live knowing that you weren't there for someone in their last days when they needed you the most and live with that guilt.","","Do you know what's easier than that?","It's way easier if you just pick up that call and listen to them.","It's easier to say a few kind words and talk to them about their pain.","It's easier to ask \"Are you okay?\" and listen to how they're feeling.","","For us, these are celebrities.","They are 'stars'.","They are idols.","But for someone out there,","They are sons, loved ones, brothers and friends just like us.","","Depression can happen to anyone.","God forbid, but it can happen to anyone of those persons around you.","You never know what someone's facing.","For smiles are masks that we were taught to wear all the time.","And that's what people do.","They smile no matter what their mental state is and that's what makes it difficult to know what they're going through.","","The least we can do is talk and listen to people what they feel.","Be there no matter what and talk to them.","Life's too short to ignore someone and not listen to them.","","Not everyone has someone to talk to.","The one's who do, succeed it.","The one's who don't succumb to it.","","\"All it takes is one bad day.\""],"kind":"journal"},{"id":"w12","title":"HUMANS","lang":"English","lines":["We've lost our right to be called humans anymore.","","We feed animals.","But we fill the food with crackers 'just for fun'.","Psychotic.","","We do riots against oppression against innocent lives.","But vandalize properties of innocent people as a part of it.?","Cunning.","","We organize campaigns about global 'warming' and how wildlife is suffering Because of it.","But turn 'cold' while disposing plastic into oceans.","Cold.","","We parade for equal rights","But act blind when we hear about false accusations.","Conniving","","We say we love our country and act in movies about the nation.","But when the need comes to be a real life hero, the reel villain takes the throne.","Pretentious.","","There was a time when human character was distinguished into Black, White or Grey.","But we HUmans are now just men with  different HUES of black characters.","","We aren't humans anymore I guess.","Not the ones we were taught to be.","Neither are we demons.","Because from what we're doing right now, we're worse than them.","We humans, are worse than demons.","And maybe, from now on when a demon does something terrible, they'd be called a human."],"kind":"thoughts"},{"id":"w14","title":"నీవు","lang":"Telugu","lines":["\"ఎలా ఉన్నావ్?\" అన్న నీ ప్రశ్నకీ,","\"నీవు లేకుండా నేను ఎందుకు ఉన్నా\" అన్న నా ప్రశ్న కి,","సమాధానం వేరు అయినా,","రెండిటికీ కారణం ఒక్కటే."],"kind":"poetry"},{"id":"w15","title":"Love story","lang":"English","lines":["You know the best love story I know?","The one between sun and the moon.","","He rises for the moon every morning,","Thinking he will finally express his love for her that day.","But the moon - she never sees him.","For the sun silently stands there and admires her beauty no matter how she looks that day. Full, Half, crescent.","He looks at her as if it was his first time looking at her.","The more he looks at her, the brighter he gets.","She, brings out the best in him.","Her presence,","Her beauty,","Her Aura.","","Like everyday, she leaves without noticing him.","He searches for her all day.","Throughout the sky,","Grows tired and leaves just before she comes.","And comes for her again the next day.","","And the most beautiful part?","That moment, when he finally expresses his love for her","And they both come together and become one.","The eclipse.","That, is the most beautiful moment.","It makes it all worth it.","His longing to meet her,","His endless love towards her,","His admiration for her.","His efforts to express his love.","His search for her everyday.","","That, my friend, is the most beautiful love story I know.","Love needs patience. For when it pays off, all the wait and efforts will be worth it."],"kind":"poetry"},{"id":"w16","title":"Locked-Down","lang":"English","lines":["Life was no more a rat race anymore.","Everything came to halt.","A simple, peaceful life never looked this beautiful.","Being locked up in their homes,","People unlocked all the unlearnt lessons that they ignored while life happened.","People spent more time with their families.","They dug their closets to find happiness in old albums.","Relations started to redefine themselves.","While the father and son spoke to each other peacefully in years,","the daughter cooked with her mother while they happily sang their favorite songs together.","The kid spent more time with his grandparents,","The couple, for the first time since marriage, sat in their balcony and talked about everything apart from work and future.","Everyone realised life wasn't just about being one in the world.","It was being the only one for someone's world.","","People took nothing for granted anymore.","They knew the value of the simplest of things.","They realized the value of a short walk.","They realized the value of being able to meet friends.","They realized the value of talking to their families.","They realized how important their forgotten hobbies were.","They realized the privilege they have as humans.","They realized how animals felt in the zoo.","They realized the value of not just taking care of oneself. But also the nature and the fellow creatures."],"kind":"journal"},{"id":"w17","title":"తాను నేను","lang":"Telugu","lines":["నిశి రాత్రి లో చీకటి నేనైతే,","ఆ చీకటికి వెలుగు తెచ్చిన మిణుగురు తాను."],"kind":"poetry"},{"id":"w18","title":"తాను నేను.","lang":"Telugu","lines":["నేనంటే ఇష్టం అని చెప్పలేక తాను,","తానంటే ఎంత ఇష్టమో చెప్పలేక నేను.","","నేనంటే ఎందుకు ఇష్టమో తెలియక తాను,","తానంటే ఎందుకు అంత ఇష్టమో తెలుపలేక నేను.","","నేను ఉంటే సంతోషం అనే తాను.","తాను ఉంటేనే సంతోషం అని నేను.","","నేను ఉంటే లోకం అని తాను","తాను ఉన్నదే లోకం అనే నేను.","","నాకై కలలు కనే తాను","తానే కల అనుకునే నేను","","నా చూపులో ప్రేమని వెతుక్కునే తాను","తన చూపే ప్రేమ అనుకునే నేను","","ప్రేమ చూపలేక తాను.","ప్రేమ చూపించటానికి ధైర్యం లేని నేను.","","గమ్యం తెలియని మా ప్రయాణం.","ప్రయాణంలో","తానైన నేను.","నేనైన తాను.","","తాను నేను."],"kind":"poetry"},{"id":"w20","title":"విలువ","lang":"Telugu","lines":["ఒకళ్ళ ప్రేమకి విలువ ఇవ్వటానికి,","విలువ కట్టడానికి,","చాలా తేడా ఉంది."],"kind":"poetry"},{"id":"w22","title":"Burning bridges","lang":"English","lines":["Watching the bridges burn,","I still stand here,","On the bridge,","While you walk away","And ignite everything between us,","Slowly reducing every memory we made together to ashes","Destroying everything that we had between us.","Wrecking all the castles we built","Ruining every part of me that loved you.","But still keeping the love alive.","All I can do is love you","Everytime I see you","Though it hurts me","As these scars burn","Everything you've given me feels bitter sweet."]},{"id":"w23","title":"If it's true","lang":"English","lines":["If it's true.","If it's true that we won't remember each other","When we meet in the afterlife,","I might not recognize you.","But maybe","I'd still remember our memories","I'd still feel the love you gave me","I'd still want you as much as I do now","I'd still look at you like a miracle.","I'd still think you're the best thing I've known.","I'd still you hold you tight in my arms as if it was the last time.","I'd still tell you how much I love you just with my eyes."]},{"id":"w25","title":"Difference","lang":"English","lines":["You know the difference between your love and mine?","","While you stripped her naked,","touched her everywhere,","kissed her neck,","and made love to her body,","I stripped her soul naked,","touched the darkest corners of her heart,","kissed her insecurities","and made love to her soul.","","You loved her flesh.","While I loved her soul."]},{"id":"w26","title":"Feeling","lang":"English","lines":["Flying in the sky,","Alone,","All she wanted was to know how it used to feel having someone","All she wanted was to know how it used to feel being loved.","All she wanted was to remember how it felt when she was cared.","All she wanted was to recollect how she used to feel feelings.","For the world was so cold, her heart is now stone cold.","And she forgot how things feel anymore."]},{"id":"w27","title":"I'll be gone","lang":"English","lines":["One day, I'll be gone.","I'll be gone from the lives of every person that I've known.","I'll be gone leaving all these papers I write poems on, empty.","I'll be gone with all these songs unheard.","I'll be gone leaving all my poems unfelt.","I'll be gone with all of these feelings still buried inside myself.","I'll be gone with all my tears still unseen.","I'll be gone with all my pain unknown.","I'll be gone knowing they never mattered.","I'll be gone still wondering if 'I' ever did.","","And even after I go I'll still wonder if you even cared about me."]},{"id":"w28","title":"Flower","lang":"English","lines":["And there it lived","In the beautiful garden","Alone in a corner","Like an odd one out","While it's petals dried and fell one by one","Longing for the touch of love","Waiting for someone to make it feel special","Yearning for someone to call it beautiful.","Yen-ning for someone to tell it that's it's worth all the pain of the thorns.","Wishing someone would pick it up and give it the care if deserved.","","But there it still lived","Waiting for someone who'd never come.","While it was breaking a little everyday.","Falling a bit more than it was the day before.","","Finally There it perished","Still waiting for the love.","While all it's petals fell down","And lost all of it's beauty.","","It was forgotten.","Just like every broken flower that ever lived in the garden."]},{"id":"w30","title":"Falling/Failing in love","lang":"English","lines":["Why do we do this Clark ?","Why do we love someone we know would never love us back?","","Why do we spend nights dreaming about them while they spend the night in someone's arms m","","Why do we sing songs for someone when we know they would never get to listen to them?","","Why do we cry for someone when we can't express our love towards them?","","Why do we fall for people we don't deserve?","","Why do we do this to ourself?","","What have I done to myself?"]},{"id":"w31","title":"I've given up","lang":"English","lines":["I've given up.","I've given up on thinking about you.","I've given up on asking you for forgiveness.","I've given up on remembering you every night.","I've given up on the thought that one day you'd come back","I've given up on regretting my decisions that made me lose you.","I've given up on every single memory of you that makes me smile.","I've given up on all these messages I send you hoping you'd one day see them.","I've given up on you.","I've given up on wanting you."],"kind":"thoughts","note":"It's hard when people just don't forgive you."},{"id":"w32","title":"దేవుడు","lang":"Telugu","lines":["మనుషులు దేవుడిని నమ్ముతారు కాబట్టి గుడికి వెళ్ళటంలేదు","మనుషులు దేవుడికి భయపడుతున్నారు కాబట్టి గుడికి వెళ్తున్నారు.","గుడికి వెళ్లకపోతే మంచి జరగదేమో అన్న భయానికి వెళ్తున్నారు","దేవుడికి దండం పెట్టకపోతే ఏం జరుగుతుందో అన్న భయంతో వెళ్తున్నారు.","","నేను నాస్తికుడిని కాను.","దేవుడిని నమ్ముతా.","దేవుడు అనేవాడు ఖచ్చితంగా ఉన్నాడు.","","దేవుడికి మనిషి భయపడి ప్రార్థన చెయ్యకూడదు.","ఇష్టపడి చెయ్యాలి.","మనసారా చెయ్యాలి.","ప్రార్థన చెయ్యడానికి గుడికి వెళ్లాల్సిన అవసరం లేదని నా నమ్మకం.","ఎందుకంటే","దేవుడు ఫోటోలలో లేదా విగ్రహాలలో ఉడడు","మనిషిలో ఉంటాడు","మనిషి పుట్టుక లో ఉంటాడు","మనిషి జన్మలో ఉంటాడు","మనిషి మనిషిలో ఉంటాడు","","అందుకే ఎవరన్నా మనకి సహాయం చేస్తే \"నువ్వు దేవుడివిరా అంటాం\"","చిన్నప్పుడు మన తల్లితండ్రులు చెప్పేవారు మనందరిలో దేవుడు ఉంటాడు ఆయన ఎప్పుడూ మనతోనే ఉంటాడు అని","బహుశా అందుకే ఏమో మనకి ఎలాంటి బాధ కలిగినా దేవుడితో కాకుండా మనకి బాగా దగ్గరైన మనిషితో ఆ బాధిని పంచుకుంటాం.","","మనం రోజూ గుడిలో పూజించే దేవుడికి మనకి ఎప్పుడు ఎక్కడ ఎలాంటి ఆపద వచ్చినా","వెంటనే దేవుడా దేవుడా అనుకుంటూ ఉంటాం. ఆయనని కోరికలు కోరుకుంటాం.","అంతా బాగుండాలి అని అనుకుంటాం","యే?","గుడికి వెళ్లచ్చుగా?","ఎందుకంటే ఆయన వింటాడు అన్న నమ్మకం.","ఆయన మనచుట్టూ ఉన్నాడు అన్న నమ్మకం."]},{"id":"w34","title":"War","lang":"English","lines":["We're all at war.","No.","Not the war filled with blood.","Not necessarily with our enemies.","But we ARE at war.","","We aren't at war for power.","We're at war for peace.","For the peace we wish we had inside us.","","We aren't at war for authority.","We are at war for justice.","For the justice we wish we could do to ourself.","","We aren't at war to prove to the world that we're greater than others.","We are at war to prove ourself that we're greater than we think we are.","For the greatness in us we should've known years ago.","","We are at war.","Not with any enemies.","With ourselves.","A war where there's little to no blood but plenty of tears.","A war where we're our own enemy.","A war that will never end."]},{"id":"w35","title":"I fail everyday","lang":"English","lines":["I fail everyday.","I fail everyday to be a better person.","Just hoping I could be better tomorrow.","And tomorrow I might be a better person than I was today.","But I'll still fail.","I will fail from being the better person I could be day after.","I will fail by being one step farther from being a perfect person I could be.","","I fail everyday.","I fail everyday to be a better writer.","Just hoping I could write something better tomorrow.","And tomorrow I might write something fascinating than I ever did.","But I will still fail.","I'll fail from being the better writer I could be the day after.","I'll fail by being one step farther from being the best writer I could be.","","And that's what makes me better everyday.","The constant thriving and push to be better than I was yesterday.","The constant push to be my best self."]},{"id":"w36","title":"న్యాయం/ధర్మం","lang":"Telugu","lines":["నిజం తెలియటం, న్యాయం.","నిజం చెప్పటం, ధర్మం."]},{"id":"w40","title":"అనాధ?","lang":"Telugu","lines":["అనాధ?","ఎవరు అనాధ?","","ఎంత ఒంటరిగా ఉన్నా చిరునవ్వుతో ఉండేవాడు అనాధా","లేక ఎంతమంది నీకోసం ఉన్నా బాధలో ఉండే నువ్వు అనాధవా ?","","చనిపోయాక నా అన్నవారు లేకపోయినా తను లేదు అని బాధ పాడే వారు ఉన్న తను అనాధ?","లేక చితిని వెలిగించడానికి మనిషి తప్ప ఎడవటానికి ఎవ్వరూ లేని నువ్వు అనాధవా?","","జీవితంలో ఇబ్బంది వస్తే ఒకళ్ళతో చెప్పుకొనే తను అనాధ","లేక ఎంతమంది నీ జీవితంలో ఉన్నా నీ బాధని పంచుకోటానికి ఎవ్వరూ లేని నువ్వు అనాధ?","","ఎవరు అనాధ?"]},{"id":"w41","title":"తెలుగు","lang":"Telugu","lines":["రాసే ప్రతి మాట కవిత అవ్వదు,","పాడే ప్రతి గానం పాట అవ్వదు","నడిచే ప్రతి దారి బాట అవ్వదు","చెక్కే ప్రత్రి రాయి సిల అవ్వదు","చేరే ప్రతి ఒడ్డు తీరం అవ్వదు","వలచిన ప్రతి మనసు ప్రాణం అవ్వదు.","","నిన్ను ప్రేమించిన ప్రతీ క్షణం మాత్రం జ్ఞాపకం అయ్యింది."]},{"id":"w42","title":"Her","lang":"English","lines":["She sat on the footpath with her baby in her hands.","She Cried in pain.","Screamed for help.","People looked at her with disgust.","The way she looked and smelt.","They covered their noses, turned away from her.","The baby started crying louder.","After all, having no food for about a week would make anyone hungry.","","Her wounds became worse.","She started bleeding more.","She had no strength left in her to walk anymore.","She lied there on the footpath, hoping someone would feed her.","She stayed there all night.","The night became colder as it rained.","She shivered. So did the baby.","She covered him with her body.","Hunger kept the baby awake all night.","He shouted as louder as he could.","Hoping his mom would get something for him.","","The night went by,","both the mom and the son fell asleep.","","But they never woke up again.","The next day again, people walked by them covering their noses and eyes.","No one cared about them.","They didn't bat an eye.","Not even after they died.","They were busy liking dog videos online,","ignoring these poor stray dogs."]},{"id":"w49","title":"To the one who let her go,","lang":"English","lines":["To the one who let her go,","","She finds it hard to fall asleep these days.","She stares at the roof for hours hoping she'd fall asleep","Never did she tell me what's she thinking about or looking at.","Is she remembering you and your memories?","Or is she looking deep into the darkness you pushed her into?","She never tells me and neither do I want to force her.","","She falls asleep late in the night hoping your nightmares won't haunt her.","But there she goes, waking up again and weeping.","Your memories haunt her in her nightmares.","What was it that scared her so much?","The fact that you'd never come back? The feeling that you never cared?","What did the your thought feel like?","","I take her to the beach hoping she'd get better.","But all she does is sit and look at the sky.","I see her eyes get wet slowly.","I wonder what was it this time?","Was it about the time you spent with her on the beach that she remembered?","Or the tides taking away everything lying on the shore that reminded of you?","","I ask her to write down her feelings hoping she'd feel better.","But she ends up tearing the sheet of paper into bits and pieces.","What was it this time?","Was that how she feels? Torn apart?","Or was it because she doesn't know what's going on with her?","","She's leaving me with too many questions.","Questions that I find difficult to answer.","But I'll find them.","I'll find them with my love and care.","","I don't know how she's going to get better.","How's she going to come back from the darkness you pushed her into.","How's she going to fight with the thought of you.","How's she going to smile again.","How's she going to sleep peacefully again.","","But I swear I'll try my best.","I'll pull her close to my chest when she doesn't fall asleep at night.","I'll kiss her forehead and tell her everything will be fine when she starts crying in the middle of the night.","I'll put her head on my lap and caress her when she feels lonely at the beach.","I'll do everything I'm doing right now.","But I'll not give up.","Because she deserves it.","She deserves the love you failed to give her.","She deserves the care you never minded giving her.","She deserves the feeling of specialness you never made her feel.","She deserves everything beautiful in this world.","She deserves everything you failed to give as a lover and a human.","For she, is a miracle.","And I'll make sure she's treated like one.","","Yours unlovingly,","The one who deserves her."]},{"id":"w302","title":"Why it never worked","lang":"English","lines":["You know why it never worked?","Because I always made it about you.","And you made it all about yourself too."]}],"photos":[{"id":"p1","title":"Rain Alley","cat":"Street","place":"Location, City","cam":"Your Camera","lens":"35mm","f":"f/1.8","s":"1/60s","iso":"800","type":"city","pal":["#071a2b","#2a0f3a","#ff4fa3"],"span":"s-a"},{"id":"p2","title":"Concrete Horizon","cat":"Architecture","place":"Location, City","cam":"Your Camera","lens":"24mm","f":"f/8","s":"1/250s","iso":"100","type":"brutal","pal":["#d9dce2","#5a5f6b","#1a1c22"],"span":"s-b","tall":1},{"id":"p3","title":"Golden Hour Shore","cat":"Landscape","place":"Location, Coast","cam":"Your Camera","lens":"50mm","f":"f/2.8","s":"1/500s","iso":"200","type":"sun","pal":["#ff9a4d","#2b1b3a","#ffe2a8"],"span":"s-c"},{"id":"p4","title":"Corridor Echoes","cat":"Architecture","place":"Location, City","cam":"Your Camera","lens":"16mm","f":"f/4","s":"1/30s","iso":"1600","type":"tunnel","pal":["#0f2a2e","#050d10","#7ff0e0"],"span":"s-c"},{"id":"p5","title":"Dune Starlight","cat":"Landscape","place":"Location, Desert","cam":"Your Camera","lens":"20mm","f":"f/2.8","s":"20s","iso":"3200","type":"stars","pal":["#0a0f2c","#1a1030","#ffffff"],"span":"s-c"},{"id":"p6","title":"Window Light","cat":"Portrait","place":"Location, Home","cam":"Your Camera","lens":"85mm","f":"f/1.8","s":"1/200s","iso":"400","type":"portrait","pal":["#3a2a1e","#0d0a08","#f3c98b"],"span":"s-a"}],"resume":"Tarun_Inala_Resume.pdf"}</script>
-
-<script>
-(function(){
-'use strict';
-var $=function(s,r){return (r||document).querySelector(s)};
-var $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
-var RM=window.matchMedia('(prefers-reduced-motion: reduce)');
-var reduced=function(){return RM.matches};
-var esc=function(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})};
-var rich=function(s){return esc(s).replace(/&lt;(\/?)em&gt;/g,'<$1em>')};
-var LANG={English:'en',Telugu:'te',Hindi:'hi'};
-var SITE={}; var booted=false; var cleanups=[];
-try{SITE=JSON.parse($('#fallback').textContent)}catch(e){SITE={}}
-
-/* ---------- icons per content key ---------- */
-var ILL={extract:'ph-magnifying-glass',validate:'ph-shield-check',payout:'ph-coins',portal:'ph-browsers',testing:'ph-test-tube',
-  migrate:'ph-arrows-left-right',merge:'ph-git-merge',form:'ph-address-book',team:'ph-users-three'};
-var STEP_IC=['ph-file-text','ph-sparkle','ph-check-square'];
-var ic=function(n,extra){return '<i class="ph '+n+(extra?' '+extra:'')+'" aria-hidden="true"></i>'};
-
-/* ---------- theme ---------- */
-var root=document.documentElement;
-function curTheme(){var t=root.getAttribute('data-theme');if(t)return t;return matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}
-function paintThemeIcon(){var b=$('#themeBtn');var d=curTheme()==='dark';b.innerHTML=ic(d?'ph-sun':'ph-moon');b.setAttribute('aria-label',d?'Switch to light theme':'Switch to dark theme')}
-function setTheme(t){root.setAttribute('data-theme',t);try{localStorage.setItem('inala-theme',t)}catch(e){}paintThemeIcon();window.dispatchEvent(new Event('themechange'))}
-$('#themeBtn').addEventListener('click',function(e){
-  var next=curTheme()==='dark'?'light':'dark';
-  if(!document.startViewTransition||reduced()){setTheme(next);return}
-  var x=e.clientX||window.innerWidth-40,y=e.clientY||34;
-  var r=Math.hypot(Math.max(x,innerWidth-x),Math.max(y,innerHeight-y));
-  root.classList.add('vt-theme');
-  var t=document.startViewTransition(function(){setTheme(next)});
-  t.ready.then(function(){root.animate({clipPath:['circle(0px at '+x+'px '+y+'px)','circle('+r+'px at '+x+'px '+y+'px)']},{duration:700,easing:'cubic-bezier(.16,1,.3,1)',pseudoElement:'::view-transition-new(root)'})}).catch(function(){});
-  t.finished.then(function(){root.classList.remove('vt-theme')},function(){root.classList.remove('vt-theme')});
-});
-matchMedia('(prefers-color-scheme: dark)').addEventListener('change',function(){paintThemeIcon();window.dispatchEvent(new Event('themechange'))});
-paintThemeIcon();
-
-/* ---------- routes ---------- */
-var ROUTES={
-  welcome:{m:'',l:'Home',f:pageWelcome},
-  work:{m:'work',l:'Work',f:pageWork},
-  contact:{m:'work',l:'Contact',f:function(){return pageContact('work')}},
-  writings:{m:'personal',l:'Writings',f:pageWritings},
-  photography:{m:'personal',l:'Photographs',f:pagePhotos},
-  hello:{m:'personal',l:'Say hello',f:function(){return pageContact('personal')}}
-};
-var MODES={work:['work','contact'],personal:['writings','photography','hello']};
-var FOOT={work:'Business analysis and product delivery. Clear requirements, shipped outcomes.',personal:'Writings and photographs, kept in one quiet place.'};
-var TITLES={welcome:'Tarun Inala - Business Analyst, writings and photographs'};
-
-function routeKey(){var k=location.hash.replace(/^#\/?/,'').split(/[/?]/)[0];if(k==='poetry'){k='writings';try{history.replaceState(null,'','#/writings')}catch(e){}}return ROUTES[k]?k:'welcome'}
-
-function route(){
-  var k=routeKey();
-  closeMenu(); closeDlg(true);
-  var go=function(){render(k)};
-  if(booted&&document.startViewTransition&&!reduced()){document.startViewTransition(go)}else{go()}
-  booted=true;
-}
-function render(k){
-  cleanups.forEach(function(f){try{f()}catch(e){}});cleanups=[];
-  var R=ROUTES[k],mode=R.m;
-  document.body.classList.toggle('landing',k==='welcome');
-  if(mode){try{localStorage.setItem('inala-mode',mode)}catch(e){}}
-  var links=mode?MODES[mode].map(function(r,i){var on=r===k;return '<a href="#/'+r+'" style="--i:'+i+'" class="'+(on?'on':'')+'"'+(on?' aria-current="page"':'')+'>'+ROUTES[r].l+'</a>'}).join(''):'';
-  $('#nav').innerHTML=links;
-  var mm=mode?MODES[mode]:MODES.work;
-  $('#navM').innerHTML='<a href="#/" style="--i:0">Home</a>'+mm.map(function(r,i){var on=r===k;return '<a href="#/'+r+'" style="--i:'+(i+1)+'" class="'+(on?'on':'')+'">'+ROUTES[r].l+'</a>'}).join('');
-  $$('.seg').forEach(function(s){s.setAttribute('data-on',mode);$$('button',s).forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.v===mode))})});
-  $('#footTag').textContent=FOOT[mode||'work'];
-  $('#footNav').innerHTML='<li><a href="#/">Home</a></li>'+(mode?MODES[mode]:MODES.work).map(function(r){return '<li><a href="#/'+r+'">'+ROUTES[r].l+'</a></li>'}).join('');
-  $('#main').innerHTML=R.f();
-  document.title=TITLES[k]||(R.l+' - Tarun Inala');
-  window.scrollTo(0,0);
-  enhance($('#main'));
-}
-window.addEventListener('hashchange',route);
-
-$$('.seg button').forEach(function(b){b.addEventListener('click',function(){location.hash='#/'+MODES[b.dataset.v][0]})});
-
-/* ---------- mobile menu ---------- */
-function closeMenu(){document.body.classList.remove('menu-open');$('#menuBtn').setAttribute('aria-expanded','false');$('#menuBtn').innerHTML=ic('ph-list');$('#sheet').setAttribute('aria-hidden','true')}
-$('#menuBtn').addEventListener('click',function(){var open=!document.body.classList.contains('menu-open');
-  document.body.classList.toggle('menu-open',open);this.setAttribute('aria-expanded',String(open));this.innerHTML=ic(open?'ph-x':'ph-list');
-  $('#sheet').setAttribute('aria-hidden',String(!open));this.setAttribute('aria-label',open?'Close menu':'Open menu')});
-document.addEventListener('keydown',function(e){if(e.key==='Escape'&&document.body.classList.contains('menu-open'))closeMenu()});
-
-/* ---------- header state via a sentinel (no scroll listeners) ---------- */
-var sentinel=document.createElement('div');sentinel.style.cssText='position:absolute;top:0;left:0;height:24px;width:1px;pointer-events:none';
-document.body.prepend(sentinel);
-new IntersectionObserver(function(es){$('#hdr').classList.toggle('scrolled',!es[0].isIntersecting)}).observe(sentinel);
-
-/* ---------- helpers ---------- */
-function headline(html){
-  // wrap each word in a mask so the headline rises in word by word; <em> spans survive
-  var out='',i=0,inEm=false;
-  html.split(/(<\/?em>)/).forEach(function(part){
-    if(part==='<em>'){inEm=true;return}if(part==='</em>'){inEm=false;return}
-    part.split(/(\s+)/).forEach(function(w){if(!w)return;if(/^\s+$/.test(w)){out+=' ';return}
-      var inner=inEm?'<em>'+w+'</em>':w;out+='<span class="wm"><span class="wi" style="--i:'+(i++)+'">'+inner+'</span></span>'})
-  });
-  return out;
-}
-function words(text){return esc(text).split(/\s+/).map(function(w){return '<span class="w">'+w+'</span>'}).join(' ')}
-function resumeHref(){return SITE.resume||'Tarun_Inala_Resume.pdf'}
-function linkedIn(){var l=(SITE.links||[]).filter(function(x){return /linkedin/i.test(x.k)})[0];return l?l.u:''}
-
-/* =====================================================================
-   PAGES
-   ===================================================================== */
-function pageWelcome(){
-  return '<section class="land">'+
-    '<div class="wrap land-top"><h1 class="hl" data-hl>'+headline('Hi, I’m <em>Tarun.</em>')+'</h1>'+
-    '<p data-r style="--i:3">Business analyst by day. Writer and photographer the rest of the time. Choose where to start.</p></div>'+
-    '<div class="doors">'+
-      '<a class="door" href="#/work" data-r style="--i:4"><canvas data-field="grid" aria-hidden="true"></canvas>'+
-        '<span class="door-k">Work'+ic('ph-arrow-up-right')+'</span><p>Case studies in Generative AI, payments platforms and ERP delivery.</p></a>'+
-      '<a class="door" href="#/writings" data-r style="--i:5"><canvas data-field="flow" aria-hidden="true"></canvas>'+
-        '<span class="door-k">Personal'+ic('ph-arrow-up-right')+'</span><p>Writings in English, Telugu and Hindi, and a growing set of photographs.</p></a>'+
-    '</div></section>';
-}
-
-function pageWork(){
-  var W=SITE.work||{};
-  var stats=(W.stats||[]).map(function(s,i){return '<div class="stat" data-r style="--i:'+i+'"><div class="stat-v"><span data-count="'+esc(s.v)+'">'+esc(s.v)+'</span>'+(s.u?'<small>'+esc(s.u)+'</small>':'')+'</div>'+
-    '<div class="stat-k">'+esc(s.k)+'</div><div class="stat-d">'+esc(s.d)+'</div></div>'}).join('');
-  var F=W.featured||[], f0=F[0];
-  var flag='';
-  if(f0){
-    flag='<section class="sec" id="featured"><div class="wrap">'+
-      '<p class="eyebrow" data-r>Selected work</p><h2 class="sec-h" data-r style="--i:1">Three problems I took from messy to measurable.</h2>'+
-      '<div class="flag"><div class="flag-l" data-r>'+
-        '<h3>'+esc(f0.title)+'</h3><p>'+esc(f0.desc)+'</p>'+
-        '<div class="mets">'+(f0.mets||[]).map(function(m){return '<div class="met"><b>'+esc(m[1])+'</b><span>'+esc(m[0])+'</span></div>'}).join('')+'</div>'+
-        '<div class="chips">'+(f0.chips||[]).map(function(c){return '<span class="chip">'+esc(c)+'</span>'}).join('')+'</div>'+
-        (f0.case?'<button class="btn btn-ghost" type="button" data-case="0">Read the case study'+ic('ph-arrow-up-right')+'</button>':'')+
-      '</div><div class="steps">'+(f0.steps||[]).map(function(s,i){return '<div class="step" data-step><span class="step-ic">'+ic(STEP_IC[i%3])+'</span>'+
-        '<div><h4>'+esc(s[0])+'</h4><p>'+esc(s[1])+'</p><div class="step-bar"><i></i></div></div></div>'}).join('')+'</div></div>';
-    var rest=F.slice(1,3);
-    if(rest.length){
-      flag+='<div class="duo">'+rest.map(function(a,i){var n=i+1;return '<article class="ach '+(i===0?'ach-a':'ach-b')+'" data-r style="--i:'+i+'">'+
-        '<span class="ach-ic">'+ic(ILL[a.ill]||'ph-star')+'</span>'+
-        '<div class="ach-tag">'+esc(String(a.tag||'').replace(/^.*?·\s*/,''))+'</div><h3>'+esc(a.title)+'</h3><p>'+esc(a.desc)+'</p>'+
-        '<div class="chips">'+(a.chips||[]).map(function(c){return '<span class="chip">'+esc(c)+'</span>'}).join('')+'</div>'+
-        (a.case?'<button class="btn btn-ghost" type="button" data-case="'+n+'">'+esc(a.link||'Read the case study')+ic('ph-arrow-up-right')+'</button>':'')+
-      '</article>'}).join('')+'</div>';
-    }
-    flag+='</div></section>';
-  }
-  var more=(W.more||[]).map(function(m,i){return '<article class="cell c'+(i+1)+'" data-r style="--i:'+(i%3)+'">'+ic(ILL[m.ill]||'ph-briefcase')+
-    '<h3>'+esc(m.k)+'</h3><div class="t">'+esc(m.t)+'</div><p class="d">'+esc(m.d)+'</p><div class="m">'+esc(m.m)+'</div></article>'}).join('');
-  var roles=(W.roles||[]).map(function(r,i){return '<div class="role" data-r style="--i:'+i+'"><div class="role-y">'+esc(r.yrs)+'</div><div class="role-b">'+
-    '<h3>'+esc(r.t)+(r.tag?'<span class="now">'+esc(r.tag)+'</span>':'')+'</h3><div class="role-o">'+esc(r.org)+'</div><p class="role-d">'+esc(r.d)+'</p></div></div>'}).join('');
-  var hon=(W.honours||[]).map(function(h,i){var cert=/certif|essentials/i.test(h.t);return '<div class="award" data-r style="--i:'+(i%2)+'">'+ic(cert?'ph-certificate':'ph-medal')+
-    '<div><b>'+esc(h.t)+'</b><span>'+esc(h.s)+'</span></div><span class="y">'+esc(h.y)+'</span></div>'}).join('');
-  var sk=[];Object.keys(W.skills||{}).forEach(function(g){(W.skills[g]||[]).forEach(function(s){sk.push(s)})});
-  var skH=sk.map(function(s){return '<span class="chip">'+esc(s)+'</span>'}).join('');
-  var mail=esc(SITE.email||'');
-  return ''+
-  '<section class="hero"><div class="wrap">'+
-    '<h1 class="hl" data-hl>'+headline(rich(W.headline||''))+'</h1>'+
-    '<div class="hero-row"><div data-r style="--i:5"><p class="hero-sub">'+esc(W.sub||W.lede||'')+'</p>'+
-      '<div class="hero-cta"><a class="btn btn-primary" data-magnet href="'+esc(resumeHref())+'" download>Download resume'+ic('ph-download-simple')+'</a>'+
-      '<button class="btn btn-ghost" type="button" data-scroll="#featured">See the work'+ic('ph-arrow-down')+'</button></div></div>'+
-      '<div class="viz" data-r style="--i:6"><canvas data-field="structure" role="img" aria-label="Animated graphic: scattered fragments of a document assemble into an ordered table, the idea behind the contract extraction engine."></canvas></div>'+
-    '</div></div></section>'+
-  '<div class="wrap"><div class="stats">'+stats+'</div></div>'+
-  (W.lede?'<section class="statement"><div class="wrap"><p>'+words(W.lede)+'</p></div></section>':'')+
-  flag+
-  '<section class="sec"><div class="wrap"><h2 class="sec-h" data-r>More across the platform.</h2>'+
-    '<div class="bento" data-spot>'+more+'</div></div></section>'+
-  '<section class="sec"><div class="wrap"><h2 class="sec-h" data-r>Experience</h2><div class="tl">'+roles+'</div></div></section>'+
-  '<section class="sec"><div class="wrap"><p class="eyebrow" data-r>Recognition</p><h2 class="sec-h" data-r style="--i:1">Awards and certifications.</h2>'+
-    '<div class="rec">'+hon+'</div></div>'+
-    '<div class="marq" aria-label="Skills"><div class="marq-t">'+skH+'<span aria-hidden="true" style="display:contents">'+skH+'</span></div></div></section>'+
-  '<section class="close"><div class="wrap"><h2 class="hl" data-hl>'+headline('Have a product that needs <em>clear thinking?</em>')+'</h2>'+
-    '<a class="mail" data-r href="mailto:'+mail+'">'+mail+ic('ph-arrow-up-right')+'</a>'+
-    '<div class="close-row" data-r style="--i:1"><a class="btn btn-primary" data-magnet href="'+esc(resumeHref())+'" download>Download resume'+ic('ph-download-simple')+'</a>'+
-    (linkedIn()?'<a class="btn btn-ghost" href="'+esc(linkedIn())+'" target="_blank" rel="noopener">LinkedIn'+ic('ph-arrow-up-right')+'</a>':'')+'</div></div></section>';
-}
-
-function pageContact(mode){
-  var mail=esc(SITE.email||'');var work=mode==='work';
-  var rows='<div class="row" data-r style="--i:2">'+ic('ph-envelope-simple')+'<a href="mailto:'+mail+'"><small>Email</small><b>'+mail+'</b></a>'+
-    '<button class="copy" type="button" data-copy="'+mail+'">'+ic('ph-copy')+'<span>Copy</span></button></div>';
-  if(linkedIn())rows+='<a class="row" data-r style="--i:3" href="'+esc(linkedIn())+'" target="_blank" rel="noopener">'+ic('ph-linkedin-logo')+'<span><small>LinkedIn</small><b>in/tarunksai</b></span>'+ic('ph-arrow-up-right','go')+'</a>';
-  if(work)rows+='<a class="row" data-r style="--i:4" href="'+esc(resumeHref())+'" download>'+ic('ph-file-pdf')+'<span><small>Resume</small><b>Download resume</b></span>'+ic('ph-download-simple','go')+'</a>';
-  return '<section class="wrap contact"><div><h1 class="hl" data-hl>'+headline(work?'Let’s build something <em>useful.</em>':'Say <em>hello.</em>')+'</h1>'+
-    '<p class="lede" data-r style="--i:4">'+(work?'Open to Product Owner, Lead Business Analyst and Generative AI roles. Email is the fastest way to reach me.':'Read something that stayed with you? I would love to hear about it.')+'</p></div>'+
-    '<div class="rows">'+rows+'</div></section>';
-}
-
-var wFilter='All';
-function wList(){var L=SITE.writings||[];return wFilter==='All'?L:L.filter(function(w){return w.lang===wFilter})}
-function kindLabel(k){return {poetry:'Poem',thoughts:'Thought',journal:'Journal'}[k]||'Writing'}
-function wCards(){
-  var L=wList();
-  if(!L.length)return '<div class="empty"><h3>Nothing here yet.</h3><p>No '+esc(wFilter)+' writings are published so far. Try another language.</p></div>';
-  return '<div class="wgrid">'+L.map(function(w){var lg=LANG[w.lang]||'en';
-    var ex=(w.lines||[]).filter(function(l){return l&&l.trim()}).slice(0,5).join(' ');if(ex.length>240)ex=ex.slice(0,240).replace(/\s+\S*$/,'')+'…';
-    return '<button type="button" class="wcard" data-w="'+esc(w.id)+'" lang="'+lg+'" style="view-transition-name:w-'+esc(w.id)+'">'+
-      '<h3>'+esc(w.title)+'</h3><p class="ex">'+esc(ex)+'</p><div class="wmeta" lang="en"><span>'+kindLabel(w.kind)+' · '+esc(w.lang)+'</span>'+ic('ph-arrow-right')+'</div></button>'}).join('')+'</div>';
-}
-function pageWritings(){
-  var L=SITE.writings||[];var langs=['All'];L.forEach(function(w){if(langs.indexOf(w.lang)<0)langs.push(w.lang)});
-  if(langs.indexOf(wFilter)<0)wFilter='All';
-  var btns=langs.map(function(l){var n=l==='All'?L.length:L.filter(function(w){return w.lang===l}).length;
-    return '<button type="button" data-f="'+esc(l)+'" aria-pressed="'+(l===wFilter)+'">'+esc(l)+'<span class="mono">'+n+'</span></button>'}).join('');
-  return '<section class="wrap"><div class="p-hero"><div><h1 class="hl" data-hl>'+headline('Writings')+'</h1>'+
-    '<p data-r style="--i:2">Poems, thoughts and journal pages, written over the years in English, Telugu and Hindi.</p></div>'+
-    '<div class="filters" role="group" aria-label="Filter by language" data-r style="--i:3"><span class="f-ind" aria-hidden="true"></span>'+btns+'</div></div>'+
-    '<div id="wwrap">'+wCards()+'</div></section>';
-}
-
-function photoArt(p){
-  var pal=p.pal||['#1b1e27','#3a3f4f','#7b93ff'];
-  return 'background:radial-gradient(70% 60% at 22% 28%,'+pal[2]+' 0%,transparent 62%),radial-gradient(80% 70% at 82% 78%,'+pal[1]+' 0%,transparent 66%),linear-gradient(160deg,'+pal[0]+','+pal[1]+')';
-}
-function photoMedia(p){
-  var file=p.src||p.img||p.file;
-  if(file){var src=/^(https?:)?\/\//.test(file)||file.indexOf('/')>=0?file:'images/'+file;
-    return '<div class="art" style="'+photoArt(p)+'"></div><img src="'+esc(src)+'" alt="'+esc(p.title)+'" loading="lazy" decoding="async">'}
-  return '<div class="art" role="img" aria-label="'+esc(p.title)+', photograph coming soon" style="'+photoArt(p)+'"></div>';
-}
-function pagePhotos(){
-  var P=SITE.photos||[];
-  var cards=P.map(function(p,i){var shape=p.tall?'tall':(i%3===2?'sq':'');
-    return '<button type="button" class="pcard '+shape+'" data-p="'+esc(p.id)+'" data-r style="--i:'+(i%3)+'"><div class="pimg">'+photoMedia(p)+'</div>'+
-      '<div class="pcap"><b>'+esc(p.title)+'</b><span>'+esc(p.cat||'')+'</span></div></button>'}).join('');
-  return '<section class="wrap"><div class="p-hero"><div><h1 class="hl" data-hl>'+headline('Photographs')+'</h1>'+
-    '<p data-r style="--i:2">Streets, buildings and light, as I find them.</p></div></div>'+
-    (P.length?'<div class="pgrid">'+cards+'</div>':'<div class="empty"><h3>Photographs are on the way.</h3><p>Check back soon.</p></div>')+'</section>';
-}
-
-/* =====================================================================
-   ENHANCEMENTS (run after each render)
-   ===================================================================== */
-function enhance(scope){
-  // headline word rise
-  $$('[data-hl]',scope).forEach(function(h){requestAnimationFrame(function(){requestAnimationFrame(function(){h.classList.add('in')})})});
-  // reveals
-  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{rootMargin:'0px 0px -8% 0px',threshold:.08});
-  $$('[data-r]',scope).forEach(function(el){io.observe(el)});
-  cleanups.push(function(){io.disconnect()});
-  // count-up
-  var cio=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){countUp(e.target);cio.unobserve(e.target)}})},{threshold:.6});
-  $$('[data-count]',scope).forEach(function(el){if(!reduced())cio.observe(el)});
-  cleanups.push(function(){cio.disconnect()});
-  // flagship steps
-  var sio=new IntersectionObserver(function(es){es.forEach(function(e){e.target.classList.toggle('active',e.isIntersecting)})},{rootMargin:'-40% 0px -40% 0px'});
-  $$('[data-step]',scope).forEach(function(el){sio.observe(el)});
-  cleanups.push(function(){sio.disconnect()});
-  // canvases
-  $$('canvas[data-field]',scope).forEach(function(c){cleanups.push(field(c,c.dataset.field))});
-  // spotlight cells
-  $$('[data-spot] .cell',scope).forEach(function(c){c.addEventListener('pointermove',function(e){var r=c.getBoundingClientRect();c.style.setProperty('--mx',(e.clientX-r.left)+'px');c.style.setProperty('--my',(e.clientY-r.top)+'px')})});
-  // magnetic primary buttons
-  if(!reduced()&&matchMedia('(hover:hover)').matches){$$('[data-magnet]',scope).forEach(function(b){
-    b.addEventListener('pointermove',function(e){var r=b.getBoundingClientRect();var x=(e.clientX-r.left-r.width/2)*.18,y=(e.clientY-r.top-r.height/2)*.28;b.style.transform='translate('+x+'px,'+y+'px)'});
-    b.addEventListener('pointerleave',function(){b.style.transform=''});
-  })}
-  // scroll buttons
-  $$('[data-scroll]',scope).forEach(function(b){b.addEventListener('click',function(){var t=$(b.dataset.scroll);if(t)t.scrollIntoView({behavior:reduced()?'auto':'smooth'})})});
-  // case studies
-  $$('[data-case]',scope).forEach(function(b){b.addEventListener('click',function(){openCase(+b.dataset.case)})});
-  // copy email
-  $$('[data-copy]',scope).forEach(function(b){b.addEventListener('click',function(){copyText(b.dataset.copy,b)})});
-  // writings
-  var fl=$('.filters',scope);
-  if(fl){placeInd(fl);var ro=new ResizeObserver(function(){placeInd(fl)});ro.observe(fl);cleanups.push(function(){ro.disconnect()});
-    $$('button',fl).forEach(function(b){b.addEventListener('click',function(){if(b.dataset.f===wFilter)return;wFilter=b.dataset.f;
-      $$('button',fl).forEach(function(x){x.setAttribute('aria-pressed',String(x===b))});placeInd(fl);
-      var swap=function(){$('#wwrap').innerHTML=wCards();bindW()};
-      if(document.startViewTransition&&!reduced()){root.classList.add('vt-filter');var t=document.startViewTransition(swap);t.finished.then(function(){root.classList.remove('vt-filter')},function(){root.classList.remove('vt-filter')})}else swap();
-      $('#live').textContent=wList().length+' writings shown';
-    })})}
-  bindW();
-  $$('[data-p]',scope).forEach(function(b){b.addEventListener('click',function(){openPhoto(b.dataset.p)})});
-}
-function bindW(){$$('[data-w]').forEach(function(b){b.onclick=function(){openWriting(b.dataset.w)}})}
-function placeInd(fl){var on=$('button[aria-pressed="true"]',fl),ind=$('.f-ind',fl);if(!on||!ind)return;ind.style.width=on.offsetWidth+'px';ind.style.transform='translateX('+on.offsetLeft+'px)'}
-
-function countUp(el){
-  var raw=el.dataset.count,m=raw.match(/^([^\d]*)([\d.,]+)(.*)$/);if(!m)return;
-  var pre=m[1],num=parseFloat(m[2].replace(/,/g,'')),suf=m[3],dec=(m[2].split('.')[1]||'').length,t0=performance.now(),D=1600;
-  (function tick(now){var p=Math.min(1,(now-t0)/D),e=p===1?1:1-Math.pow(2,-10*p);el.textContent=pre+(num*e).toFixed(dec)+suf;if(p<1)requestAnimationFrame(tick)})(t0);
-}
-function copyText(t,b){
-  var done=function(){b.classList.add('done');b.innerHTML=ic('ph-check')+'<span>Copied</span>';$('#live').textContent='Email address copied';
-    setTimeout(function(){b.classList.remove('done');b.innerHTML=ic('ph-copy')+'<span>Copy</span>'},2000)};
-  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){location.href='mailto:'+t})}else{location.href='mailto:'+t}
-}
-
-/* =====================================================================
-   DIALOGS
-   ===================================================================== */
-var dlg=$('#dlg'),lastFocus=null,dlgKeys=null;
-function openDlg(html,keys){
-  lastFocus=document.activeElement;$('#dlgBody').innerHTML=html;dlgKeys=keys||null;
-  if(!dlg.open){dlg.classList.remove('closing');dlg.showModal();document.body.style.overflow='hidden'}
-  $('#dlgBody').scrollTop=0;var x=$('.x',dlg);if(x)x.focus({preventScroll:true});
-  $$('[data-close]',dlg).forEach(function(b){b.addEventListener('click',function(){closeDlg()})});
-}
-function closeDlg(now){
-  if(!dlg.open)return;
-  var fin=function(){dlg.classList.remove('closing');dlg.close();document.body.style.overflow='';dlgKeys=null;if(lastFocus&&lastFocus.focus&&!now)lastFocus.focus({preventScroll:true})};
-  if(now||reduced()){fin();return}
-  dlg.classList.add('closing');setTimeout(fin,280);
-}
-dlg.addEventListener('cancel',function(e){e.preventDefault();closeDlg()});
-$('#dlgBody').addEventListener('click',function(e){if(e.target===this)closeDlg()});
-document.addEventListener('keydown',function(e){if(!dlg.open||!dlgKeys)return;if(e.key==='ArrowRight'&&dlgKeys.next)dlgKeys.next();if(e.key==='ArrowLeft'&&dlgKeys.prev)dlgKeys.prev()});
-var X='<button class="icon-btn x" type="button" data-close aria-label="Close">'+ic('ph-x')+'</button>';
-
-function openCase(i){
-  var f=((SITE.work||{}).featured||[])[i];if(!f)return;
-  var html='<article class="panel">'+X+'<div class="case-tag">'+esc(f.tag)+'</div><h2 id="dlgTitle">'+esc(f.title)+'</h2>'+
-    (f.mets?'<div class="mets">'+f.mets.map(function(m){return '<div class="met"><b>'+esc(m[1])+'</b><span>'+esc(m[0])+'</span></div>'}).join('')+'</div>':'')+
-    '<div class="case">'+(f.case||[]).map(function(c){return '<div class="case-row"><h4>'+esc(c[0])+'</h4><p>'+esc(c[1])+'</p></div>'}).join('')+'</div>'+
-    '<div class="chips">'+(f.chips||[]).map(function(c){return '<span class="chip">'+esc(c)+'</span>'}).join('')+'</div></article>';
-  openDlg(html);
-}
-function openWriting(id){
-  var L=wList(),i=L.findIndex(function(w){return w.id===id});if(i<0){L=SITE.writings||[];i=L.findIndex(function(w){return w.id===id})}if(i<0)return;
-  var w=L[i],lg=LANG[w.lang]||'en',prev=L[i-1],next=L[i+1];
-  var verse=(w.lines||[]).map(function(l){return l&&l.trim()?'<p>'+esc(l)+'</p>':'<div class="gap"></div>'}).join('');
-  var html='<article class="panel reader" '+(lg!=='en'?'lang="'+lg+'"':'')+'>'+X+
-    '<div class="rmeta" lang="en"><span>'+kindLabel(w.kind)+'</span><span>'+esc(w.lang)+'</span></div>'+
-    '<h2 id="dlgTitle" style="margin-top:12px">'+esc(w.title)+'</h2><div class="verse">'+verse+'</div>'+
-    '<div class="rnav" lang="en">'+(prev?'<button class="btn btn-ghost" type="button" data-go="'+esc(prev.id)+'">'+ic('ph-arrow-left')+'Previous</button>':'<span></span>')+
-    '<span class="pos mono">'+(i+1)+' / '+L.length+'</span>'+
-    (next?'<button class="btn btn-ghost" type="button" data-go="'+esc(next.id)+'">Next'+ic('ph-arrow-right')+'</button>':'<span></span>')+'</div></article>';
-  openDlg(html,{prev:prev?function(){openWriting(prev.id)}:null,next:next?function(){openWriting(next.id)}:null});
-  $$('[data-go]',dlg).forEach(function(b){b.addEventListener('click',function(){openWriting(b.dataset.go)})});
-}
-function openPhoto(id){
-  var P=SITE.photos||[],i=P.findIndex(function(p){return p.id===id});if(i<0)return;var p=P[i],prev=P[i-1],next=P[i+1];
-  var ex=[p.cam,p.lens,p.f,p.s,p.iso?'ISO '+p.iso:''].filter(function(x){return x&&!/^your /i.test(x)});
-  var html='<article class="panel viewer">'+X+'<div class="pimg'+(p.tall?' tall':'')+'">'+photoMedia(p)+'</div>'+
-    '<div class="vinfo"><div><h2 id="dlgTitle">'+esc(p.title)+'</h2><p>'+esc([p.cat,p.place].filter(Boolean).join(', '))+'</p></div>'+
-    '<div class="exif">'+ex.map(function(x){return '<span class="chip">'+esc(x)+'</span>'}).join('')+'</div></div>'+
-    '<div class="rnav" style="margin-top:12px;padding-inline:10px">'+(prev?'<button class="btn btn-ghost" type="button" data-pgo="'+esc(prev.id)+'">'+ic('ph-arrow-left')+'Previous</button>':'<span></span>')+
-    '<span class="pos mono">'+(i+1)+' / '+P.length+'</span>'+(next?'<button class="btn btn-ghost" type="button" data-pgo="'+esc(next.id)+'">Next'+ic('ph-arrow-right')+'</button>':'<span></span>')+'</div></article>';
-  openDlg(html,{prev:prev?function(){openPhoto(prev.id)}:null,next:next?function(){openPhoto(next.id)}:null});
-  $$('[data-pgo]',dlg).forEach(function(b){b.addEventListener('click',function(){openPhoto(b.dataset.pgo)})});
-}
-
-/* =====================================================================
-   CANVAS FIELDS
-   structure: document fragments assembling into a table (hero visual)
-   grid:      a dot lattice with signals running along it (Work door)
-   flow:      ink-like strokes drifting through a field (Personal door)
-   Each one pauses offscreen and in hidden tabs, and draws a single
-   still frame when reduced motion is on.
-   ===================================================================== */
-function field(cv,kind){
-  var ctx=cv.getContext('2d'),W=0,H=0,dpr=1,raf=0,vis=false,col={},px=-9999,py=-9999,t0=performance.now(),parts=[],seeded=false;
-  function readCol(){var cs=getComputedStyle(cv);col={ink:cs.getPropertyValue('--ink').trim()||'#111',acc:cs.getPropertyValue('--accent').trim()||'#2b4cf0',
-    muted:cs.getPropertyValue('--faint').trim()||'#888',bg:cs.getPropertyValue('--surface').trim()||'#fff',line:cs.getPropertyValue('--line-2').trim()||'rgba(0,0,0,.15)'}}
-  function size(){var r=cv.getBoundingClientRect();dpr=Math.min(2,window.devicePixelRatio||1);W=Math.max(1,r.width);H=Math.max(1,r.height);
-    cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);seed();if(kind==='flow')ctx.clearRect(0,0,W,H);if(!loopOK())frame(performance.now())}
-  var rnd=function(a){var x=Math.sin(a*127.1)*43758.5453;return x-Math.floor(x)};
-  function seed(){
-    parts=[];
-    if(kind==='structure'){
-      var cols=4,rows=7,pad=W*.07,docW=W*.30,docX=pad,docY=H*.14,docH=H*.72,tabX=W*.50,tabW=W*.50-pad,tabY=H*.18,rowH=(H*.64)/rows,cw=tabW/cols;
-      parts.layout={docX:docX,docY:docY,docW:docW,docH:docH,tabX:tabX,tabY:tabY,tabW:tabW,rowH:rowH,cw:cw,rows:rows,cols:cols};
-      for(var r=0;r<rows;r++)for(var c=0;c<cols;c++){var k=r*cols+c;
-        var sw=10+rnd(k+3.1)*28;parts.push({sx:docX+12+rnd(k+1)*(docW-24-sw),sy:docY+14+rnd(k+7.3)*(docH-28),sw:sw,
-          tx:tabX+c*cw+6,ty:tabY+r*rowH+rowH*.32,tw:cw-12-(c===0?0:rnd(k+9)*cw*.35),r:r,c:c,d:(c*.12+r*.05)})}
-    }else if(kind==='grid'){
-      var gap=W<500?26:30;for(var y=gap/2;y<H;y+=gap)for(var x=gap/2;x<W;x+=gap)parts.push({x:x,y:y});
-      parts.gap=gap;parts.sig=[];for(var i=0;i<7;i++)parts.sig.push({row:Math.floor(rnd(i+2)*(H/gap)),sp:.08+rnd(i+5)*.12,off:rnd(i+8),dir:i%2?1:-1,vert:i%3===0});
-    }else{
-      var n=Math.round(Math.min(220,W*H/2600));for(var j=0;j<n;j++)parts.push({x:rnd(j+1.7)*W,y:rnd(j+4.2)*H,a:rnd(j+9.9)});
-      seeded=true;
-    }
-  }
-  var ease=function(p){return p<.5?4*p*p*p:1-Math.pow(-2*p+2,3)/2};
-  function frame(now){
-    var t=(now-t0)/1000;
-    if(kind==='structure'){
-      ctx.clearRect(0,0,W,H);var L=parts.layout;if(!L)return;
-      var cyc=8,ph=reduced()?3.6:(t%cyc);
-      // frames
-      ctx.lineWidth=1;ctx.strokeStyle=col.line;
-      rr(L.docX,L.docY,L.docW,L.docH,10);ctx.stroke();
-      ctx.globalAlpha=.6;for(var g=0;g<=L.rows;g++){ctx.beginPath();ctx.moveTo(L.tabX,L.tabY+g*L.rowH-L.rowH*.18);ctx.lineTo(L.tabX+L.tabW,L.tabY+g*L.rowH-L.rowH*.18);ctx.stroke()}
-      ctx.globalAlpha=1;
-      // validation sweep row
-      var sweepOn=ph>3.4&&ph<6.2,sr=Math.floor(((ph-3.4)/2.8)*L.rows);
-      parts.forEach(function(p){
-        var k=Math.min(1,Math.max(0,ph<5.9?(ph-1-p.d)/1.6:1-(ph-6.6-p.d*.5)/1.0));var e=ease(k);
-        var jx=Math.sin(t*1.3+p.sx)*1.6*(1-e),jy=Math.cos(t*1.1+p.sy)*1.6*(1-e);
-        var x=p.sx+(p.tx-p.sx)*e+jx,y=p.sy+(p.ty-p.sy)*e+jy,w=p.sw+(p.tw-p.sw)*e,h=5+e*3;
-        var hot=sweepOn&&p.r===sr;
-        ctx.fillStyle=hot?col.acc:(p.c===0&&e>.9?col.ink:col.muted);ctx.globalAlpha=hot?1:(.45+e*.4);
-        rr(x,y,w,h,h/2);ctx.fill();
-      });
-      ctx.globalAlpha=1;
-      if(sweepOn){var y0=L.tabY+sr*L.rowH-L.rowH*.18;ctx.fillStyle=col.acc;ctx.globalAlpha=.08;ctx.fillRect(L.tabX,y0,L.tabW,L.rowH);ctx.globalAlpha=1;
-        ctx.beginPath();ctx.arc(L.tabX+L.tabW-8,y0+L.rowH/2,4,0,7);ctx.fill()}
-      // connector
-      var ax=L.docX+L.docW+14,bx=L.tabX-14,ay=H/2;ctx.strokeStyle=col.line;ctx.setLineDash([3,5]);ctx.beginPath();ctx.moveTo(ax,ay);ctx.lineTo(bx,ay);ctx.stroke();ctx.setLineDash([]);
-      var mv=reduced()?.5:((t*.6)%1);ctx.fillStyle=col.acc;ctx.beginPath();ctx.arc(ax+(bx-ax)*mv,ay,3,0,7);ctx.fill();
-    }else if(kind==='grid'){
-      ctx.clearRect(0,0,W,H);var gp=parts.gap;
-      parts.forEach(function(p){var d=Math.hypot(p.x-px,p.y-py),near=Math.max(0,1-d/160);
-        ctx.fillStyle=near>.02?col.acc:col.muted;ctx.globalAlpha=.28+near*.7;ctx.beginPath();ctx.arc(p.x,p.y,1.3+near*1.6,0,7);ctx.fill()});
-      ctx.globalAlpha=1;
-      (parts.sig||[]).forEach(function(s){var prog=reduced()?s.off:((t*s.sp+s.off)%1);if(s.dir<0)prog=1-prog;
-        var x,y,len=90;ctx.lineWidth=2;
-        if(s.vert){x=(Math.floor(s.off*W/gp)+.5)*gp;y=prog*(H+len)-len;var gr=ctx.createLinearGradient(x,y,x,y+len);gr.addColorStop(0,'transparent');gr.addColorStop(1,col.acc);ctx.strokeStyle=gr;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x,y+len);ctx.stroke()}
-        else{y=(s.row+.5)*gp;x=prog*(W+len)-len;var g2=ctx.createLinearGradient(x,y,x+len,y);g2.addColorStop(0,'transparent');g2.addColorStop(1,col.acc);ctx.strokeStyle=g2;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+len,y);ctx.stroke()}
-      });
-    }else{
-      // flow: fade previous frame toward surface colour to leave soft trails
-      ctx.globalCompositeOperation='source-over';ctx.globalAlpha=reduced()?1:.06;ctx.fillStyle=col.bg;ctx.fillRect(0,0,W,H);ctx.globalAlpha=1;
-      var steps=reduced()?60:1;
-      for(var s2=0;s2<steps;s2++){var tt=reduced()?s2*.05:t;
-      parts.forEach(function(p,i){
-        var a=Math.sin(p.x*.0042+tt*.25)*Math.cos(p.y*.0051-tt*.2)*Math.PI*2+p.a;
-        var dx=p.x-px,dy=p.y-py,dd=dx*dx+dy*dy;if(dd<14400){a+=Math.atan2(dy,dx)*.6}
-        var nx=p.x+Math.cos(a)*.9,ny=p.y+Math.sin(a)*.9;
-        ctx.strokeStyle=i%9===0?col.acc:col.muted;ctx.globalAlpha=i%9===0?.55:.22;ctx.lineWidth=1.1;
-        ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(nx,ny);ctx.stroke();
-        p.x=nx;p.y=ny;if(p.x<-4||p.x>W+4||p.y<-4||p.y>H+4){p.x=Math.random()*W;p.y=Math.random()*H}
-      })}
-      ctx.globalAlpha=1;
-    }
-  }
-  function rr(x,y,w,h,r){ctx.beginPath();if(ctx.roundRect)ctx.roundRect(x,y,w,h,r);else ctx.rect(x,y,w,h)}
-  function loopOK(){return vis&&!document.hidden&&!reduced()}
-  function loop(now){frame(now);raf=loopOK()?requestAnimationFrame(loop):0}
-  function kick(){if(!raf&&loopOK())raf=requestAnimationFrame(loop)}
-  readCol();
-  var ro=new ResizeObserver(size);ro.observe(cv);
-  var io=new IntersectionObserver(function(es){vis=es[0].isIntersecting;kick()});io.observe(cv);
-  var onVis=function(){kick()};document.addEventListener('visibilitychange',onVis);
-  var onTheme=function(){readCol();if(kind==='flow'){ctx.fillStyle=col.bg;ctx.globalAlpha=1;ctx.fillRect(0,0,W,H)}if(!loopOK())frame(performance.now())};window.addEventListener('themechange',onTheme);
-  var host=cv.parentElement;
-  var pm=function(e){var r=cv.getBoundingClientRect();px=e.clientX-r.left;py=e.clientY-r.top};var pl=function(){px=py=-9999};
-  host.addEventListener('pointermove',pm);host.addEventListener('pointerleave',pl);
-  return function(){cancelAnimationFrame(raf);raf=0;ro.disconnect();io.disconnect();document.removeEventListener('visibilitychange',onVis);window.removeEventListener('themechange',onTheme);
-    host.removeEventListener('pointermove',pm);host.removeEventListener('pointerleave',pl)};
-}
-
-/* =====================================================================
-   BOOT: load content.json (edit it directly or sync it from Notion).
-   If it cannot be loaded, the built-in copy above is used.
-   ===================================================================== */
-$('#yr').textContent=new Date().getFullYear();
-function fillLinks(){$('#footLinks').innerHTML='<li><a href="mailto:'+esc(SITE.email||'')+'">Email</a></li>'+(SITE.links||[]).map(function(l){return '<li><a href="'+esc(l.u)+'" target="_blank" rel="noopener">'+esc(l.k)+'</a></li>'}).join('')}
-var started=false;
-function start(){if(started)return;started=true;fillLinks();route()}
-var timer=setTimeout(start,1500);
-if(window.fetch){fetch('content.json',{cache:'no-store'}).then(function(r){return r.ok?r.json():Promise.reject()}).then(function(d){
-  if(d&&typeof d==='object'){SITE=d}
-  clearTimeout(timer);if(!started)start();else{fillLinks();render(routeKey())}
-}).catch(function(){clearTimeout(timer);start()})}else{start()}
-})();
-</script>
+<script src="vendor/gsap.min.js?v=4"></script>
+<script src="vendor/ScrollTrigger.min.js?v=4"></script>
+<script src="assets/app.js?v=4"></script>
 </body>
 </html>
