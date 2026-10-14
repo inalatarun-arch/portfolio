@@ -331,15 +331,19 @@ function pageWritings(){
 function realPhotos(){return (SITE.photos||[]).filter(function(p){return !p.placeholder&&(p.src||p.img||p.file)})}
 function photoSrc(p){var file=p.src||p.img||p.file;return /^(https?:)?\/\//.test(file)||file.indexOf('/')>=0?file:'images/'+file}
 function pagePhotos(){
-  var P=realPhotos();
-  var cards=P.map(function(p,i){var shape=p.tall?'tall':(i%3===2?'sq':'');
-    return '<button type="button" class="pcard '+shape+'" data-feel data-p="'+esc(p.id)+'" data-r><div class="pimg"><img src="'+esc(photoSrc(p))+'" alt="'+esc(p.alt||p.title)+'" loading="lazy" decoding="async"></div>'+
-      '<div class="pcap"><b>'+esc(p.title)+'</b><span>'+esc(p.cat||'')+'</span></div></button>'}).join('');
+  var P=realPhotos(),Gs=SITE.photoGroups||[];
   var empty='<div class="p-empty"><div class="blk-a" data-r><svg class="art" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true" fill="currentColor"><circle cx="300" cy="90" r="80" opacity=".16"/><circle cx="300" cy="90" r="40" opacity=".18"/><rect x="40" y="200" width="220" height="14" rx="7" opacity=".16"/></svg><h3>Still in the darkroom.</h3></div>'+
     '<div class="blk-b" data-r><h3>Photographs are on the way.</h3><p>Streets, buildings and light, as I find them. The first set will appear here as soon as it is ready.</p></div></div>';
+  var body=Gs.map(function(g){
+    var ps=P.filter(function(p){return p.g===g.id});if(!ps.length)return '';
+    var cards=ps.map(function(p){return '<button type="button" class="pcard" data-feel data-p="'+esc(p.id)+'" aria-label="Open photograph, '+esc(g.name)+'">'+
+      '<div class="pimg" style="aspect-ratio:'+(p.tw||p.w)+'/'+(p.th||p.h)+'"><img src="'+esc(p.thumb||photoSrc(p))+'" width="'+(p.tw||p.w)+'" height="'+(p.th||p.h)+'" alt="Photograph in the group: '+esc(g.name)+'" loading="lazy" decoding="async" draggable="false"></div></button>'}).join('');
+    return '<section class="pgroup" aria-labelledby="pg-'+esc(g.id)+'"><header class="pg-h" data-r><div><h2 id="pg-'+esc(g.id)+'">'+esc(g.name)+'</h2><p>'+esc(g.note||'')+'</p></div>'+
+      '<div class="pg-meta"><span class="pg-sw" aria-hidden="true">'+(g.sw||[]).map(function(c){return '<i style="background:'+esc(c)+'"></i>'}).join('')+'</span><span class="mono">'+ps.length+'</span></div></header>'+
+      '<div class="pgrid">'+cards+'</div></section>'}).join('');
   return '<section class="wrap"><div class="p-hero"><div><h1 data-hl>'+headline('Photographs')+'</h1>'+
-    '<p data-r>Streets, buildings and light, as I find them.</p></div></div>'+
-    (P.length?'<div class="pgrid">'+cards+'</div>':empty)+'</section>';
+    '<p data-r>Streets, buildings and light, as I find them. Grouped by the colour that carries each frame.</p></div></div>'+
+    (P.length?'<div class="pgroups" oncontextmenu="return false">'+body+'</div>':empty)+'</section>';
 }
 
 /* =====================================================================
@@ -696,10 +700,9 @@ function openWriting(id,o){
 }
 function openPhoto(id,o,trigger){
   o=o||{};var P=realPhotos(),i=P.findIndex(function(p){return p.id===id});if(i<0)return;var p=P[i],prev=P[i-1],next=P[i+1];
-  var ex=[p.cam,p.lens,p.f,p.s,p.iso?'ISO '+p.iso:''].filter(function(x){return x&&!/^your /i.test(x)});
-  var html='<article class="panel viewer">'+GRAB+X+'<div class="sw"><div class="pimg'+(p.tall?' tall':'')+'"><img src="'+esc(photoSrc(p))+'" alt="'+esc(p.alt||p.title)+'"></div>'+
-    '<div class="vinfo"><div><h2 id="dlgTitle">'+esc(p.title)+'</h2><p>'+esc([p.cat,p.place].filter(Boolean).join(', '))+'</p></div>'+
-    '<div class="exif">'+ex.map(function(x){return '<span class="chip">'+esc(x)+'</span>'}).join('')+'</div></div>'+
+  var gg=(SITE.photoGroups||[]).filter(function(g){return g.id===p.g})[0]||{name:'Photograph'},ar=(p.w||3)/(p.h||2);
+  var html='<article class="panel viewer" oncontextmenu="return false">'+GRAB+X+'<div class="sw"><div class="pimg" style="aspect-ratio:'+(p.w||3)+'/'+(p.h||2)+';width:min(100%,calc(68vh*'+ar.toFixed(3)+'))"><img src="'+esc(photoSrc(p))+'" alt="Photograph in the group: '+esc(gg.name)+'" draggable="false"></div>'+
+    '<div class="vinfo"><div><h2 id="dlgTitle">'+esc(gg.name)+'</h2><p>'+esc(gg.note||'')+'</p></div></div>'+
     '<div class="rnav" style="margin-top:.75rem;padding-inline:.625rem">'+(prev?'<button class="btn btn-ghost" type="button" data-pgo="'+esc(prev.id)+'" data-dir="1">'+ic('arrow-l')+'Previous</button>':'<span></span>')+
     '<span class="pos mono">'+(i+1)+' / '+P.length+'</span>'+(next?'<button class="btn btn-ghost" type="button" data-pgo="'+esc(next.id)+'" data-dir="-1">Next'+ic('arrow-r')+'</button>':'<span></span>')+'</div></div></article>';
   var keys={prev:prev?function(d){openPhoto(prev.id,{dir:d==null?1:d})}:null,next:next?function(d){openPhoto(next.id,{dir:d==null?-1:d})}:null};
@@ -758,6 +761,6 @@ var footReach=null;
 function fillReach(){var h=$('#footReach');h.innerHTML=reachHTML('foot','foot',{pop:true});footReach=initReach($('[data-reach]',h))}
 function start(){fillReach();route()}
 function fail(){root.classList.remove('js')}   // show the static fallback instead of a blank page
-if(window.fetch){fetch('content.json?v=5',{cache:'no-cache'}).then(function(r){return r.ok?r.json():Promise.reject()}).then(function(d){
+if(window.fetch){fetch('content.json?v=6',{cache:'no-cache'}).then(function(r){return r.ok?r.json():Promise.reject()}).then(function(d){
   if(d&&typeof d==='object'){SITE=d;start()}else fail()}).catch(fail)}else fail();
 })();
