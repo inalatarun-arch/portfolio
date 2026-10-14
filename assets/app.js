@@ -139,6 +139,7 @@ function render(k,first){
   cleanups.forEach(function(f){try{f()}catch(e){}});cleanups=[];
   var R=ROUTES[k],mode=R.m,main=$('#main');
   document.body.classList.toggle('landing',k==='welcome');
+  if(window.Stage)Stage.set({welcome:'landing',work:'work',writings:'personal'}[k]||'off',{first:first});
   var links=mode?MODES[mode].map(function(r){var on=r===k;return '<a href="#/'+r+'"'+(on?' class="on" aria-current="page"':'')+'>'+ROUTES[r].l+'</a>'}).join(''):'';
   $('#nav').innerHTML=links;
   var mm=mode?MODES[mode]:MODES.work;
@@ -226,23 +227,15 @@ function linkedIn(){var l=(SITE.links||[]).filter(function(x){return /linkedin/i
 /* =====================================================================
    Pages
    ===================================================================== */
-var DOOR_WORK='<svg class="door-art" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true" fill="currentColor">'+
-  '<g class="bars" opacity=".16"><rect x="30" y="34" width="210" height="18" rx="9"/><rect x="30" y="68" width="300" height="18" rx="9"/><rect x="30" y="102" width="170" height="18" rx="9"/><rect x="30" y="136" width="260" height="18" rx="9"/><rect x="30" y="170" width="120" height="18" rx="9"/></g>'+
-  '<circle class="orb" cx="330" cy="70" r="44" opacity=".2"/></svg>';
-var DOOR_PERS='<svg class="door-art" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2">'+
-  '<g class="rings" opacity=".22"><circle cx="300" cy="90" r="30"/><circle cx="300" cy="90" r="58"/><circle cx="300" cy="90" r="88"/><circle cx="300" cy="90" r="120"/></g>'+
-  '<path class="arc" d="M30 150c60-80 130-80 190 0" opacity=".25"/></svg>';
-
 function pageWelcome(){
-  return '<section class="land">'+
-    '<div class="wrap land-top"><h1 data-hl>'+headline('Hi, I’m <em>Tarun.</em>')+'</h1>'+
-    '<p data-r>Business analyst by day. Writer and photographer the rest of the time. Choose where to start.</p></div>'+
-    '<div class="doors">'+
-      '<a class="door door-work" href="#/work" data-r data-feel><div class="door-top">'+DOOR_WORK+'<span class="door-k"><span>Work</span><span class="door-arrow">'+ic('arrow-ur')+'</span></span></div>'+
-        '<p class="door-bot">Case studies in Generative AI, payments platforms and ERP delivery.</p></a>'+
-      '<a class="door door-personal" href="#/writings" data-r data-feel><div class="door-top">'+DOOR_PERS+'<span class="door-k"><span>Personal</span><span class="door-arrow">'+ic('arrow-ur')+'</span></span></div>'+
-        '<p class="door-bot">Writings in English, Telugu and Hindi, and photographs on the way.</p></a>'+
-    '</div></section>';
+  return '<section class="land" aria-label="Choose where to start">'+
+    '<div class="land-card"><h1 data-hl>'+headline('Hi, I’m <em>Tarun.</em>')+'</h1>'+
+    '<p>Business analyst by day. Writer and photographer the rest of the time. Choose where to start.</p></div>'+
+    '<a class="pdoor pdoor-work" href="#/work" data-door="office"><span class="pdoor-in"><span class="pdoor-k"><span>Work</span><span class="door-arrow">'+ic('arrow-ur')+'</span></span>'+
+      '<span class="pdoor-s">Case studies in Generative AI, payments platforms and ERP delivery.</span></span></a>'+
+    '<a class="pdoor pdoor-pers" href="#/writings" data-door="park"><span class="pdoor-in"><span class="pdoor-k"><span>Personal</span><span class="door-arrow">'+ic('arrow-ur')+'</span></span>'+
+      '<span class="pdoor-s">Writings in English, Telugu and Hindi, and photographs on the way.</span></span></a>'+
+  '</section>';
 }
 
 function pageWork(){
@@ -283,16 +276,17 @@ function pageWork(){
   var sk=[];Object.keys(W.skills||{}).forEach(function(g){(W.skills[g]||[]).forEach(function(s){sk.push(s)})});
   var skH=sk.map(function(s){return '<span class="chip">'+esc(s)+'</span>'}).join('');
   return ''+
-  '<section class="hero"><div class="wrap">'+
+  '<section class="hero hero-scene"><div class="wrap hero-in">'+
     (W.status?'<div class="pill" data-r>'+esc(W.status)+'</div>':'')+
     '<h1 data-hl>'+headline(rich(W.headline||''))+'</h1>'+
-    '<div class="hero-row"><div data-r><p class="hero-sub">'+esc(W.sub||'')+' '+esc('Five years taking products from first problem to shipped release.')+'</p>'+
+    '<div data-r><p class="hero-sub">'+esc(W.sub||'')+' '+esc('Five years taking products from first problem to shipped release.')+'</p>'+
       '<div class="hero-cta"><a class="btn btn-primary" data-feel data-magnet href="'+esc(resumeHref())+'" download>Download resume<span class="dot">'+ic('down')+'</span></a>'+
       '<button class="btn btn-ghost" type="button" data-feel data-scroll="#featured">See the work'+ic('arrow-d')+'</button></div></div>'+
-      '<div class="viz" data-r><canvas data-field="structure" role="img" aria-label="Animated graphic: scattered fragments of a document assemble into an ordered table, the idea behind the contract extraction engine."></canvas></div>'+
-    '</div></div></section>'+
+  '</div></section>'+
+  '<div class="after">'+
   '<div class="wrap"><div class="stats">'+stats+'</div></div>'+
   (W.lede?'<section class="statement"><div class="wrap"><p data-words>'+words(W.lede)+'</p></div></section>':'')+
+  '<div class="wrap"><div class="viz" data-r><canvas data-field="structure" role="img" aria-label="Animated graphic: scattered fragments of a document assemble into an ordered table, the idea behind the contract extraction engine."></canvas></div></div>'+
   flag+
   '<section class="sec"><div class="wrap"><h2 class="sec-h" data-r>More across the platform.</h2><div class="bento">'+more+'</div></div></section>'+
   '<section class="sec"><div class="wrap"><h2 class="sec-h" data-r>Experience</h2><div class="tl"><span class="tl-line" aria-hidden="true"></span><span class="tl-fill" aria-hidden="true"></span>'+roles+'</div></div></section>'+
@@ -301,7 +295,8 @@ function pageWork(){
     '<div class="marq-wrap" data-r><div class="marq-bar"><h3>Tools and methods</h3><button class="icon-btn" type="button" id="marqBtn" aria-pressed="false" aria-label="Pause the moving skills list">'+ic('pause')+'</button></div>'+
     '<div class="marq" role="group" aria-label="Skills"><div class="marq-t">'+skH+'<span aria-hidden="true" style="display:contents">'+skH+'</span></div></div></div></div></section>'+
   '<section class="close"><div class="wrap"><h2 data-hl>'+headline('Have a product that needs <em>clear thinking?</em>')+'</h2>'+
-    '<div class="reach-slot" data-r>'+reachHTML('work','close')+'</div></div></section>';
+    '<div class="reach-slot" data-r>'+reachHTML('work','close')+'</div></div></section>'+
+  '</div>';
 }
 
 function pageContact(mode){
@@ -327,10 +322,10 @@ function pageWritings(){
   if(langs.indexOf(wFilter)<0)wFilter='All';
   var btns=langs.map(function(l){var n=l==='All'?L.length:L.filter(function(w){return w.lang===l}).length;
     return '<button type="button" data-f="'+esc(l)+'" aria-pressed="'+(l===wFilter)+'">'+esc(l)+'<span class="mono">'+n+'</span></button>'}).join('');
-  return '<section class="wrap"><div class="p-hero"><div><h1 data-hl>'+headline('Writings')+'</h1>'+
-    '<p data-r>Poems, thoughts and journal pages, written over the years in English, Telugu and Hindi.</p></div>'+
-    '<div class="filters" role="group" aria-label="Filter by language" data-r><span class="f-ind" aria-hidden="true"></span>'+btns+'</div></div>'+
-    '<div id="wwrap">'+wCards()+'</div></section>';
+  return '<section class="hero hero-scene hero-short"><div class="wrap hero-in"><h1 data-hl>'+headline('Writings')+'</h1>'+
+    '<div data-r><p class="hero-sub">Poems, thoughts and journal pages, written over the years in English, Telugu and Hindi.</p></div></div></section>'+
+    '<div class="after"><section class="wrap"><div class="after-bar"><div class="filters" role="group" aria-label="Filter by language" data-r><span class="f-ind" aria-hidden="true"></span>'+btns+'</div></div>'+
+    '<div id="wwrap">'+wCards()+'</div></section></div>';
 }
 
 function realPhotos(){return (SITE.photos||[]).filter(function(p){return !p.placeholder&&(p.src||p.img||p.file)})}
@@ -389,8 +384,8 @@ function enhance(scope){
   if(fill&&G&&ST){if(rm)G.set(fill,{scaleY:1});else G.fromTo(fill,{scaleY:0},{scaleY:1,ease:'none',scrollTrigger:{trigger:fill.parentNode,start:'top 70%',end:'bottom 62%',scrub:.5}})}
   // canvases
   $$('canvas[data-field]',scope).forEach(function(c){cleanups.push(field(c))});
-  // doors: ambient motion only while on screen, arrow turns on hover
-  $$('.door',scope).forEach(function(d){doorFX(d,rm)});
+  // landing doors: hover lifts one side, click zooms the camera into it
+  doors(scope,rm);
   // buttons and cards: press on pointer-down, magnet on primary buttons
   $$('[data-feel]',scope).forEach(function(b){feel(b,{magnet:b.hasAttribute('data-magnet'),press:b.classList.contains('door')||b.classList.contains('wcard')||b.classList.contains('pcard')?.985:.965})});
   $$('[data-scroll]',scope).forEach(function(b){b.addEventListener('click',function(){var t=$(b.dataset.scroll);if(t)t.scrollIntoView({behavior:reduced()?'auto':'smooth'})})});
@@ -420,24 +415,30 @@ function enhance(scope){
 }
 function bindW(){$$('[data-w]').forEach(function(b){b.onclick=function(){openWriting(b.dataset.w,{trigger:b})}})}
 
-function doorFX(d,rm){
-  if(!G)return;var arrow=$('.door-arrow',d),art=$('.door-art',d);
-  d.addEventListener('pointerenter',function(e){if(e.pointerType==='mouse'&&!rm)G.to(arrow,{rotate:45,duration:.7,ease:'back.out(1.8)',overwrite:true})});
-  d.addEventListener('pointerleave',function(){G.to(arrow,{rotate:0,duration:.55,ease:'expo.out',overwrite:true})});
-  if(rm||!ST)return;
-  var tl=G.timeline({paused:true});
-  if(d.classList.contains('door-work')){
-    tl.to($$('.bars rect',d),{x:function(i){return (i%2?-1:1)*18},duration:2.6,ease:'sine.inOut',stagger:.25,repeat:-1,yoyo:true})
-      .to($('.orb',d),{y:14,duration:2.6,ease:'sine.inOut',repeat:-1,yoyo:true},0);
-  }else{
-    tl.to($$('.rings circle',d),{scale:1.06,transformOrigin:'50% 50%',duration:2.8,ease:'sine.inOut',stagger:.3,repeat:-1,yoyo:true})
-      .to($('.arc',d),{x:16,duration:2.8,ease:'sine.inOut',repeat:-1,yoyo:true},0);
+/* Landing doors. Hover: the other side dims a little. Click: the camera pushes into that side and the
+   hero for that page is already waiting at the end of the move. */
+function doors(scope,rm){
+  var land=$('.land',scope);if(!land)return;
+  var ds=$$('.pdoor',land),card=$('.land-card',land),busy=false;
+  ds.forEach(function(d){
+    var other=ds.filter(function(x){return x!==d})[0],arrow=$('.door-arrow',d);
+    d.addEventListener('pointerenter',function(e){if(e.pointerType!=='mouse'||busy)return;land.setAttribute('data-hot',d===ds[0]?'a':'b');if(G&&!rm)G.to(arrow,{rotate:45,duration:.7,ease:'back.out(1.8)',overwrite:true})});
+    d.addEventListener('pointerleave',function(){if(busy)return;land.removeAttribute('data-hot');if(G)G.to(arrow,{rotate:0,duration:.55,ease:'expo.out',overwrite:true})});
+    d.addEventListener('click',function(e){
+      if(e.metaKey||e.ctrlKey||e.shiftKey||e.button)return;
+      if(!window.Stage||!G||rm)return;           // plain navigation: the stage crossfades on its own
+      e.preventDefault();if(busy)return;busy=true;land.setAttribute('data-go',d===ds[0]?'a':'b');
+      var href=d.getAttribute('href');
+      G.to([card,ds],{opacity:0,y:function(i,t){return t===card?-12:12},duration:.35,ease:'power2.in',overwrite:true});
+      Stage.zoom(d.dataset.door,function(){location.hash=href});
+    });
+  });
+  // intro: the scenes fade in, then the card and the two labels settle
+  if(G){
+    if(rm){G.set([card,ds],{opacity:1});return}
+    G.fromTo(card,{opacity:0,y:-16},{opacity:1,y:0,duration:.9,ease:'expo.out',delay:.35});
+    G.fromTo(ds,{opacity:0},{opacity:1,duration:.9,ease:'power2.out',delay:.55,stagger:.12});
   }
-  ST.create({trigger:d,onToggle:function(s){tl.paused(!s.isActive)}});
-  // art leans gently toward the pointer
-  var qx=G.quickTo(art,'x',{duration:.9,ease:'expo.out'}),qy=G.quickTo(art,'y',{duration:.9,ease:'expo.out'});
-  d.addEventListener('pointermove',function(e){if(e.pointerType!=='mouse')return;var r=d.getBoundingClientRect();qx((e.clientX-r.left-r.width/2)*-.03);qy((e.clientY-r.top-r.height/2)*-.03)});
-  d.addEventListener('pointerleave',function(){qx(0);qy(0)});
 }
 
 /* =====================================================================
