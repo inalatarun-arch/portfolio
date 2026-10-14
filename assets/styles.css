@@ -137,31 +137,60 @@ body.landing .nav,body.landing #modeSeg{display:none}
 .sheet nav a.on{color:var(--accent)}
 body.menu-open{overflow:hidden}
 
-/* ---------- landing ---------- */
-.land{min-height:100dvh;display:flex;flex-direction:column;padding-top:var(--hdr)}
-.land-top{padding-block:clamp(1.5rem,5vh,3.5rem) clamp(1.25rem,3vh,2.5rem);display:flex;align-items:flex-end;justify-content:space-between;gap:1.5rem;flex-wrap:wrap}
-.land-top h1{font-size:clamp(3.25rem,9vw,8.5rem);line-height:.92;letter-spacing:-.045em}
-.land-top p{color:var(--muted);font-size:1.0625rem;max-width:30ch}
-.doors{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:1rem;padding:0 var(--gut) var(--gut);max-width:82.5rem;margin:0 auto;width:100%;min-height:26rem}
-.door{position:relative;display:flex;flex-direction:column;border-radius:var(--r-lg);overflow:hidden;border:.0625rem solid var(--line);background:var(--surface);will-change:transform}
-.door-top{position:relative;flex:1;min-height:12rem;padding:clamp(1.25rem,2.6vw,2.25rem);display:flex;align-items:flex-end;overflow:hidden;isolation:isolate}
-.door-work .door-top{background:var(--accent);color:var(--on-accent)}
-.door-personal .door-top{background:var(--blk);color:var(--on-blk)}
-.door-art{position:absolute;inset:0;z-index:-1;width:100%;height:100%}
-.door-k{display:flex;align-items:center;justify-content:space-between;gap:1rem;width:100%;font-family:var(--serif);font-weight:650;font-size:clamp(3.25rem,7vw,6.5rem);letter-spacing:-.045em;line-height:.9}
-.door-arrow{width:clamp(2.75rem,4.5vw,4rem);height:clamp(2.75rem,4.5vw,4rem);border-radius:50%;border:.125rem solid currentColor;display:grid;place-items:center;flex:none;will-change:transform}
+/* ---------- stage: the pixel scenes live in one fixed layer behind the page ---------- */
+.stage{position:fixed;left:0;top:0;width:100vw;height:100%;z-index:0;display:none;opacity:0;background:var(--bg);overflow:hidden;contain:strict}
+.stage-p{position:absolute;inset:0;display:none;will-change:clip-path}
+.stage-p canvas{position:absolute;left:0;top:0;transform-origin:0 0;image-rendering:pixelated;image-rendering:crisp-edges;image-rendering:pixelated;will-change:transform}
+:root[data-theme="dark"] .stage::after{content:"";position:absolute;inset:0;background:rgba(10,10,20,.34);pointer-events:none}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .stage::after{content:"";position:absolute;inset:0;background:rgba(10,10,20,.34);pointer-events:none}}
+main,.foot{position:relative;z-index:2}
+.foot{background:var(--bg)}
+body.has-stage .hdr-bg{opacity:1}
+body.landing .hdr-bg{opacity:0}
+:root:has(body.landing){scrollbar-gutter:auto;overflow:hidden}
+body.landing .brand,body.landing .icon-btn{background:color-mix(in srgb,var(--bg) 86%,transparent);-webkit-backdrop-filter:blur(.75rem);backdrop-filter:blur(.75rem)}
+body.landing .brand{padding:.25rem 1rem .25rem .25rem;border-radius:var(--pill);margin-right:auto}
+.after{position:relative;background:var(--bg);border-radius:1.75rem 1.75rem 0 0;margin-top:-1.75rem;padding-top:clamp(1rem,3vh,2rem)}
+.after-bar{padding-top:clamp(1rem,2.5vh,1.75rem);padding-bottom:1.25rem}
+
+/* ---------- landing: two doors, one on each half of the scene ---------- */
+.land{position:fixed;inset:0;z-index:3;pointer-events:none}
+.land-card{position:absolute;left:50%;top:calc(var(--hdr) + .75rem);transform:translateX(-50%);width:min(32rem,calc(100% - 2*var(--gut)));padding:1.125rem 1.5rem 1.25rem;text-align:center;
+  background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(.75rem);-webkit-backdrop-filter:blur(.75rem);border:.0625rem solid var(--line);border-radius:var(--r-lg)}
+.land-card h1{font-size:clamp(2.25rem,5vw,3.75rem);line-height:.95;letter-spacing:-.045em}
+.land-card p{color:var(--muted);font-size:.9375rem;margin:.625rem auto 0;max-width:34ch}
+.pdoor{position:absolute;display:flex;align-items:flex-end;pointer-events:auto;color:var(--fg);-webkit-tap-highlight-color:transparent;transition:background-color .5s}
+.pdoor-work{left:0;top:0;bottom:0;width:50%}
+.pdoor-pers{right:0;top:0;bottom:0;width:50%}
+.pdoor::before{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(0deg,color-mix(in srgb,var(--bg) 92%,transparent) 0,color-mix(in srgb,var(--bg) 70%,transparent) 22%,transparent 48%);transition:opacity .4s}
+.pdoor-in{position:relative;display:block;width:100%;padding:0 clamp(1.25rem,3.4vw,3rem) clamp(1.5rem,5vh,3rem)}
+.pdoor-k{display:flex;align-items:center;justify-content:space-between;gap:1rem;font-family:var(--serif);font-weight:650;font-size:clamp(2.75rem,6vw,5.5rem);letter-spacing:-.045em;line-height:.9}
+.door-arrow{width:clamp(2.75rem,4.2vw,3.75rem);height:clamp(2.75rem,4.2vw,3.75rem);border-radius:50%;border:.125rem solid currentColor;display:grid;place-items:center;flex:none;background:var(--bg);will-change:transform}
 .door-arrow .ic{width:48%;height:48%}
-.door-bot{padding:1.25rem clamp(1.25rem,2.6vw,2.25rem) 1.5rem;color:var(--muted);font-size:1.0625rem;max-width:44ch}
+.pdoor-s{display:block;margin-top:.875rem;color:var(--muted);font-size:1.0625rem;max-width:34ch}
+.pdoor:focus-visible{outline:.1875rem solid var(--accent);outline-offset:-.1875rem}
+/* the side you are not pointing at settles back a little */
+.pdoor::after{content:"";position:absolute;inset:0;background:var(--bg);opacity:0;pointer-events:none;transition:opacity .5s}
+.land[data-hot="a"] .pdoor-pers::after,.land[data-hot="b"] .pdoor-work::after{opacity:.32}
+.land[data-go] .pdoor::before{opacity:0}
 
 /* ---------- work: hero ---------- */
 .hero{padding-top:calc(var(--hdr) + clamp(2rem,6vh,5rem));padding-bottom:clamp(2.5rem,7vh,5rem)}
+.hero-scene{position:relative;display:flex;align-items:center;min-height:calc(100svh - 1.75rem);padding-bottom:calc(clamp(2.5rem,7vh,5rem) + 1.75rem)}
+.hero-scene::before{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,var(--bg) 0,color-mix(in srgb,var(--bg) 94%,transparent) 30%,color-mix(in srgb,var(--bg) 55%,transparent) 44%,transparent 60%)}
+.hero-scene .hero-in{position:relative;width:100%}
+.hero-scene .hero-in>*{max-width:40rem}
+.hero-scene h1{max-width:14ch;font-size:clamp(2.5rem,4.9vw,4.75rem)}
+.hero-scene .pill{background:color-mix(in srgb,var(--bg) 70%,transparent)}
+.hero-short{min-height:calc(76svh - 1.75rem)}
+.hero-short h1{font-size:clamp(3.5rem,10vw,8.5rem);letter-spacing:-.055em;line-height:.9}
 .pill{display:inline-flex;align-items:center;gap:.625rem;min-height:2.25rem;padding:.25rem 1rem .25rem .75rem;border-radius:var(--pill);border:.09375rem solid var(--line-2);font-size:.875rem;font-weight:500;margin-bottom:1.5rem}
 .pill::before{content:"";width:.625rem;height:.625rem;border-radius:50%;background:var(--accent);flex:none}
 .hero h1{font-size:clamp(2.75rem,6vw,5.5rem);line-height:.98;letter-spacing:-.04em;max-width:17ch}
 .hero-row{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(1.5rem,4vw,4rem);margin-top:clamp(2rem,5vh,3.5rem);align-items:end}
 .hero-sub{font-size:clamp(1.0625rem,1.5vw,1.25rem);color:var(--muted);max-width:34ch}
 .hero-cta{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:1.75rem}
-.viz{position:relative;border-radius:var(--r-lg);overflow:hidden;background:var(--accent);aspect-ratio:16/9.4}
+.viz{position:relative;border-radius:var(--r-lg);overflow:hidden;background:var(--accent);aspect-ratio:21/9;margin-top:clamp(2rem,6vh,4rem)}
 .viz canvas{position:absolute;inset:0;width:100%;height:100%}
 
 /* ---------- stats ---------- */
@@ -432,10 +461,24 @@ body.landing .foot{display:none}
   :root{--hdr:4rem}
   .nav,#modeSeg{display:none}
   #menuBtn{display:grid}
-  .doors{grid-template-columns:1fr;min-height:0}
-  .door-top{min-height:clamp(11rem,26dvh,15rem)}
-  .hero-row,.flag,.duo,.contact,.rec,.p-empty{grid-template-columns:1fr}
+  .pdoor-work{left:0;right:0;top:0;bottom:50%;width:auto}
+  .pdoor-pers{left:0;right:0;top:50%;bottom:0;width:auto}
+  .pdoor-in{padding:0 var(--gut) 1.125rem}
+  .pdoor-k{font-size:clamp(2.25rem,11vw,3.25rem)}
+  .pdoor-s{font-size:.9375rem;margin-top:.5rem}
+  .pdoor::before{background:linear-gradient(0deg,color-mix(in srgb,var(--bg) 92%,transparent) 0,color-mix(in srgb,var(--bg) 66%,transparent) 30%,transparent 62%)}
+  .land-card{padding:.875rem 1.25rem 1rem}
+  .land-card p{display:none}
+  .hero-scene{align-items:flex-start;min-height:calc(100svh - 1.75rem);padding-top:calc(var(--hdr) + 1rem)}
+  .hero-scene h1{font-size:clamp(2.125rem,9.5vw,2.75rem);max-width:15ch}
+  .hero-scene .pill{margin-bottom:1rem;min-height:2rem;font-size:.8125rem}
+  .hero-scene .hero-sub{font-size:.9375rem;margin-top:1rem}
+  .hero-scene .hero-cta{margin-top:1.125rem;flex-wrap:nowrap}
+  .hero-scene .hero-cta .btn{padding-inline:1rem;font-size:.9375rem;white-space:nowrap}
+  .hero-scene::before{background:linear-gradient(180deg,var(--bg) 0,color-mix(in srgb,var(--bg) 90%,transparent) 36%,color-mix(in srgb,var(--bg) 40%,transparent) 54%,transparent 68%)}
+  .hero-short{min-height:calc(66svh - 1.75rem)}
   .viz{aspect-ratio:16/11}
+  .hero-row,.flag,.duo,.contact,.rec,.p-empty{grid-template-columns:1fr}
   .flag-l{position:static}
   .step{min-height:0;gap:1.5rem}
   .stats{grid-template-columns:1fr}
