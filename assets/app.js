@@ -127,7 +127,7 @@ function routeKey(){var k=location.hash.replace(/^#\/?/,'').split(/[/?]/)[0];if(
 
 function route(){
   var k=routeKey(),first=!routed;routed=true;
-  closeMenu(true);closeDlg({now:true});
+  closeMenu(true);closeDlg({now:true});if(footReach)footReach.close(true);
   var main=$('#main');
   if(first){render(k,true);return}
   if(!G){render(k,false);return}
@@ -282,7 +282,6 @@ function pageWork(){
     '<div><b>'+esc(h.t)+'</b><span>'+esc(h.s)+'</span></div><span class="y">'+esc(h.y)+'</span></div>'}).join('');
   var sk=[];Object.keys(W.skills||{}).forEach(function(g){(W.skills[g]||[]).forEach(function(s){sk.push(s)})});
   var skH=sk.map(function(s){return '<span class="chip">'+esc(s)+'</span>'}).join('');
-  var mail=esc(SITE.email||'');
   return ''+
   '<section class="hero"><div class="wrap">'+
     (W.status?'<div class="pill" data-r>'+esc(W.status)+'</div>':'')+
@@ -302,20 +301,14 @@ function pageWork(){
     '<div class="marq-wrap" data-r><div class="marq-bar"><h3>Tools and methods</h3><button class="icon-btn" type="button" id="marqBtn" aria-pressed="false" aria-label="Pause the moving skills list">'+ic('pause')+'</button></div>'+
     '<div class="marq" role="group" aria-label="Skills"><div class="marq-t">'+skH+'<span aria-hidden="true" style="display:contents">'+skH+'</span></div></div></div></div></section>'+
   '<section class="close"><div class="wrap"><h2 data-hl>'+headline('Have a product that needs <em>clear thinking?</em>')+'</h2>'+
-    '<a class="mail" data-r href="mailto:'+mail+'">'+mail+ic('arrow-ur')+'</a>'+
-    '<div class="close-row" data-r><a class="btn btn-primary" data-feel data-magnet href="'+esc(resumeHref())+'" download>Download resume<span class="dot">'+ic('down')+'</span></a>'+
-    (linkedIn()?'<a class="btn btn-ghost" data-feel href="'+esc(linkedIn())+'" target="_blank" rel="noopener">LinkedIn'+ic('arrow-ur')+'</a>':'')+'</div></div></section>';
+    '<div class="reach-slot" data-r>'+reachHTML('work','close')+'</div></div></section>';
 }
 
 function pageContact(mode){
-  var mail=esc(SITE.email||''),work=mode==='work';
-  var rows='<div class="row" data-r>'+ic('mail')+'<a href="mailto:'+mail+'"><small>Email</small><b>'+mail+'</b></a>'+
-    '<button class="copy" type="button" data-feel data-copy="'+mail+'">'+ic('copy')+'<span>Copy</span></button></div>';
-  if(linkedIn())rows+='<a class="row" data-r href="'+esc(linkedIn())+'" target="_blank" rel="noopener">'+ic('linkedin')+'<span><small>LinkedIn</small><b>in/tarunksai</b></span>'+ic('arrow-ur','go')+'</a>';
-  if(work)rows+='<a class="row" data-r href="'+esc(resumeHref())+'" download>'+ic('pdf')+'<span><small>Resume</small><b>Download resume</b></span>'+ic('down','go')+'</a>';
+  var work=mode==='work';
   return '<section class="wrap contact"><div><h1 data-hl>'+headline(work?'Let’s build something <em>useful.</em>':'Say <em>hello.</em>')+'</h1>'+
     '<p class="lede" data-r>'+(work?'Open to Product Owner, Lead Business Analyst and Generative AI roles. Email is the fastest way to reach me.':'Read something that stayed with you? I would love to hear about it.')+'</p></div>'+
-    '<div class="rows">'+rows+'</div></section>';
+    '<div class="reach-slot" data-r>'+reachHTML(mode,'page',{open:true})+'</div></section>';
 }
 
 var wFilter='All';
@@ -402,7 +395,8 @@ function enhance(scope){
   $$('[data-feel]',scope).forEach(function(b){feel(b,{magnet:b.hasAttribute('data-magnet'),press:b.classList.contains('door')||b.classList.contains('wcard')||b.classList.contains('pcard')?.985:.965})});
   $$('[data-scroll]',scope).forEach(function(b){b.addEventListener('click',function(){var t=$(b.dataset.scroll);if(t)t.scrollIntoView({behavior:reduced()?'auto':'smooth'})})});
   $$('[data-case]',scope).forEach(function(b){b.addEventListener('click',function(){openCase(+b.dataset.case,b)})});
-  $$('[data-copy]',scope).forEach(function(b){b.addEventListener('click',function(){copyText(b.dataset.copy,b)})});
+  // contact cards
+  $$('[data-reach]',scope).forEach(function(r){cleanups.push(initReach(r).destroy)});
   // marquee
   var mq=$('.marq',scope);if(mq)marquee(mq,$('#marqBtn',scope),rm);
   // writings
@@ -446,9 +440,97 @@ function doorFX(d,rm){
   d.addEventListener('pointerleave',function(){qx(0);qy(0)});
 }
 
+/* =====================================================================
+   Reach card. One pill ("Get in touch") that grows into the contact panel and folds back.
+   One spring (p: 0 closed, 1 open) drives the box size, the corner radius and the cross-fade:
+   the pill blurs out in the first third, the panel rows blur in one after another.
+   Because everything is derived from p, it can be tapped again mid-flight and reverses cleanly.
+   ===================================================================== */
+function liPath(){return linkedIn().replace(/^https?:\/\/(www\.)?linkedin\.com\//i,'').replace(/\/$/,'')}
+function reachHTML(kind,id,o){
+  o=o||{};var mail=esc(SITE.email||''),work=kind==='work',pers=kind==='personal',li=linkedIn(),open=o.open?'true':'false';
+  var title=pers?'Say hello':(work?'Let’s talk':'Get in touch'),label=pers?'Say hello':'Get in touch';
+  var rows=(li?'<a class="rc-row" data-rs href="'+esc(li)+'" target="_blank" rel="noopener"><span class="rc-ico">'+ic('linkedin')+'</span><span class="rc-n">LinkedIn</span><span class="rc-m">'+esc(liPath())+'</span>'+ic('arrow-ur','rc-go-i')+'</a>':'')+
+    (work?'<a class="rc-row" data-rs href="'+esc(resumeHref())+'" download><span class="rc-ico">'+ic('pdf')+'</span><span class="rc-n">Resume</span><span class="rc-m">PDF</span>'+ic('down','rc-go-i')+'</a>':'');
+  return '<div class="reach'+(o.pop?' reach-pop':'')+'" data-reach data-open="'+open+'"><div class="rc-box">'+
+    '<div class="rc-closed"><span class="rc-av" aria-hidden="true">TI</span>'+
+      '<button class="rc-go" type="button" data-rc-open aria-expanded="'+open+'" aria-controls="rcp-'+id+'">'+ic('mail')+'<span>'+label+'</span></button></div>'+
+    '<div class="rc-panel" id="rcp-'+id+'" role="group" aria-label="Contact details" tabindex="-1">'+
+      '<div class="rc-head" data-rs><span class="rc-title">'+ic('mail')+'<span>'+title+'</span></span><button class="rc-x" type="button" data-rc-close aria-label="Close contact details">'+ic('x')+'</button></div>'+
+      '<div class="rc-field" data-rs>'+ic('mail')+'<span class="rc-addr">'+mail+'</span>'+(pers?'':'<span class="rc-tag">Fastest</span>')+'</div>'+
+      (rows?'<p class="rc-lab" data-rs>Elsewhere</p>'+rows:'')+
+      '<div class="rc-foot" data-rs><button class="rc-b" type="button" data-rc-copy data-email="'+mail+'" data-label="Copy email">'+ic('copy')+'<span>Copy email</span></button>'+
+        '<a class="rc-b rc-b-pri" href="mailto:'+mail+'">'+ic('send')+'<span>Send email</span></a></div>'+
+    '</div></div></div>';
+}
+function initReach(el){
+  var box=$('.rc-box',el),cl=$('.rc-closed',el),pn=$('.rc-panel',el),goBtn=$('[data-rc-open]',el),xBtn=$('[data-rc-close]',el),cpBtn=$('[data-rc-copy]',el),
+      items=$$('[data-rs]',pn),pop=el.classList.contains('reach-pop'),open=el.dataset.open==='true',dim={cw:0,ch:0,ow:0,oh:0},wantScroll=false,OPEN_R=28,self={};
+  var sp=Spring(open?1:0,{response:.5,damping:.86,precision:.001});
+  var smooth=function(t){return t*t*(3-2*t)};
+  function layer(e,op,blur,sc,y){
+    e.style.opacity=op;e.style.filter=blur>.05?'blur('+blur.toFixed(2)+'px)':'';
+    e.style.transform=(sc!==1||y)?'translateY('+y.toFixed(2)+'px) scale('+sc.toFixed(3)+')':'';
+  }
+  function measure(){
+    var a=cl.offsetWidth,b=cl.offsetHeight,c=pn.offsetWidth,d=pn.offsetHeight;
+    if(!a||!c)return false;dim={cw:a,ch:b,ow:c,oh:d};
+    if(pop)el.style.height=(b+2)+'px';
+    return true;
+  }
+  function paint(p){
+    if(!dim.cw&&!measure())return;
+    var q=clamp(p,0,1);
+    box.style.width=(dim.cw+(dim.ow-dim.cw)*p)+'px';
+    box.style.height=(dim.ch+(dim.oh-dim.ch)*p)+'px';
+    box.style.borderRadius=(dim.ch/2+(OPEN_R-dim.ch/2)*q)+'px';
+    var c=clamp(1-q/.3,0,1);layer(cl,c,(1-c)*7,.9+.1*c,0);
+    items.forEach(function(it,i){var t=smooth(clamp((q-.24-i*.05)/.4,0,1));layer(it,t,(1-t)*9,1,(1-t)*10)});
+  }
+  function inertFor(v){
+    if(v){cl.setAttribute('inert','');pn.removeAttribute('inert')}else{pn.setAttribute('inert','');cl.removeAttribute('inert')}
+  }
+  function place(){ // footer card: grow rightwards if there is room, otherwise leftwards
+    if(!pop||open||!dim.ow)return;
+    el.classList.toggle('rc-r',el.getBoundingClientRect().left+dim.ow+8>innerWidth);
+  }
+  function setOpen(v,o){
+    o=o||{};if(v===open)return;open=v;
+    el.dataset.open=String(v);goBtn.setAttribute('aria-expanded',String(v));inertFor(v);
+    el.classList.toggle('rc-rm',reduced());
+    if(v)measure();
+    if(o.now){sp.set(v?1:0)}
+    else{wantScroll=v&&!pop;sp.to(v?1:0,v?{response:.55,damping:.84}:{response:.42,damping:.92})}
+    if(v&&!o.silent){pn.focus({preventScroll:true})}
+    else if(!v&&o.focus){goBtn.focus({preventScroll:true})}
+    if(!o.silent)$('#live').textContent=v?'Contact details open':'Contact details closed';
+  }
+  sp.update(paint).rest(function(){
+    if(!open){place();return}
+    if(!wantScroll)return;wantScroll=false;
+    var r=box.getBoundingClientRect(),over=r.bottom-(innerHeight-20);
+    if(over>0)window.scrollBy({top:Math.min(over,Math.max(0,r.top-72)),behavior:reduced()?'auto':'smooth'});
+  });
+  inertFor(open);
+  [goBtn,xBtn,cpBtn,$('.rc-b-pri',el)].forEach(function(b){if(b)feel(b,{press:b===xBtn?.9:.96})});
+  goBtn.addEventListener('click',function(){setOpen(true)});
+  xBtn.addEventListener('click',function(){setOpen(false,{focus:true})});
+  cpBtn.addEventListener('click',function(){copyText(cpBtn.dataset.email,cpBtn)});
+  el.addEventListener('keydown',function(e){if(e.key==='Escape'&&open){e.stopPropagation();setOpen(false,{focus:true})}});
+  var onDown=function(e){if(pop&&open&&!el.contains(e.target))setOpen(false)};
+  if(pop)document.addEventListener('pointerdown',onDown);
+  // sizes depend on fonts, text size and viewport; the footer is also measured the first time it becomes visible
+  var ro=new ResizeObserver(function(){if(measure()){place();paint(sp.value())}});ro.observe(cl);ro.observe(pn);
+  if(measure()){place();paint(sp.value())}
+  self.close=function(now){setOpen(false,{now:!!now,silent:true})};
+  self.destroy=function(){sp.stop();ro.disconnect();if(pop)document.removeEventListener('pointerdown',onDown)};
+  return self;
+}
+
 function copyText(t,b){
+  var label=b.dataset.label||'Copy';
   var done=function(){b.classList.add('done');b.innerHTML=ic('check')+'<span>Copied</span>';$('#live').textContent='Email address copied';
-    setTimeout(function(){b.classList.remove('done');b.innerHTML=ic('copy')+'<span>Copy</span>'},2000)};
+    setTimeout(function(){b.classList.remove('done');b.innerHTML=ic('copy')+'<span>'+label+'</span>'},2000)};
   if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){location.href='mailto:'+t})}else{location.href='mailto:'+t}
 }
 
@@ -671,8 +753,9 @@ function field(cv){
    Boot: fetch content, then render exactly once (no timer, no late re-render)
    ===================================================================== */
 $('#yr').textContent=new Date().getFullYear();
-function fillLinks(){$('#footLinks').innerHTML='<li><a href="mailto:'+esc(SITE.email||'')+'">Email</a></li>'+(SITE.links||[]).map(function(l){return '<li><a href="'+esc(l.u)+'" target="_blank" rel="noopener">'+esc(l.k)+'</a></li>'}).join('')}
-function start(){fillLinks();route()}
+var footReach=null;
+function fillReach(){var h=$('#footReach');h.innerHTML=reachHTML('foot','foot',{pop:true});footReach=initReach($('[data-reach]',h))}
+function start(){fillReach();route()}
 function fail(){root.classList.remove('js')}   // show the static fallback instead of a blank page
 if(window.fetch){fetch('content.json?v=4',{cache:'no-cache'}).then(function(r){return r.ok?r.json():Promise.reject()}).then(function(d){
   if(d&&typeof d==='object'){SITE=d;start()}else fail()}).catch(fail)}else fail();
