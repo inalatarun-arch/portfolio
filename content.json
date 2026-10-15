@@ -3247,5 +3247,9 @@
  "music": {
   "playlist": "PLNKsHcEBNWDg",
   "url": "https://www.youtube.com/playlist?list=PLNKsHcEBNWDg"
+ },
+ "reviews": {
+  "endpoint": "",
+  "maxLength": 400
  }
 }
