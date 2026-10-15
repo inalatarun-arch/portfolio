@@ -385,7 +385,7 @@ function mountSeq(scope,rm){
     var lx=h1?h1.getBoundingClientRect().left:gut,cw,ch,cx,top0,cgap;
     if(narrow){cw=vw-2*gut;ch=6.25*rem;cgap=.5*rem;cx=vw/2;top0=hdr+3.5*rem}
     else{cw=Math.min(30*rem,vw*.44);ch=cardH;cgap=.75*rem;cx=lx+cw/2;var sh=n*ch+(n-1)*cgap;top0=Math.max(hdr+3.6*rem,(vh-sh)/2+rem);var av=vh-top0-rem;if(sh>av)cgap=Math.max(.25*rem,(av-n*ch)/(n-1))}
-    var kh=narrow?2:3,TT=90,L=Math.round(vh*7*TT/112);
+    var kh=narrow?2:3,TT=dev?212:112,L=Math.round(vh*7*TT/112);
     if(dev)dev.layout(vw,vh,narrow,(document.getElementById('hdr')||{}).offsetHeight||hdr);
 
     Stage.seqBegin(P,cardW);Stage.seqLive(true);on=true;
@@ -396,7 +396,7 @@ function mountSeq(scope,rm){
     var ebY=top0-2.6*rem;G.set(eb,{autoAlpha:0,x:lx,y:ebY+10});
     G.set(hin,{autoAlpha:1,y:0});G.set(scrim,{opacity:1});
 
-    var S={zoom:0,fade:1,pan:0,lz:0,pz:0,lu:0,lb:0,os:1,dim:0,cap:0,pu:0,px:1},HD={x:vw*1.05,y:vh+140},bx=vw*.92,by=vh+300;
+    var S={zoom:0,fade:0,pan:0,lz:0,pz:0,lu:0,lb:0,os:0,dim:0,cap:0,pu:0,px:0},HD={x:vw*1.05,y:vh+140},bx=vw*.92,by=vh+300;
     function sync(){
       G.set(cam,{y:-S.pan});
       G.set(hand,{x:HD.x,y:HD.y,rotation:Math.atan2(-(bx-HD.x),by-HD.y)*180/Math.PI});
@@ -405,19 +405,71 @@ function mountSeq(scope,rm){
     function pile(i){return {x:vw/2+POSE[i%4][0]*vw*(narrow?.7:1),y:pileY+POSE[i%4][1]*vh,r:POSE[i%4][2]}}
 
     mc=G.context(function(){
-      /* One continuous, scroll-scrubbed camera take: room/desk -> laptop -> phone.
-         Each camera leg starts exactly where the previous leg ends. No reset to the room,
-         opacity crossfade, or cut. */
       var tl=G.timeline({defaults:{ease:'none'},onUpdate:sync,
-        scrollTrigger:{trigger:seq,start:'top top',end:'+='+L,pin:true,scrub:.35,anticipatePin:1,invalidateOnRefresh:true}});
-      G.set(hin,{autoAlpha:0,y:0});
-      G.set(scrim,{opacity:0});
-      G.set(eb,{autoAlpha:0});
-      tl.to(S,{lz:1,lu:1,duration:54,ease:'none'},0);
+        scrollTrigger:{trigger:seq,start:'top top',end:'+='+L,pin:true,scrub:.6,anticipatePin:1,invalidateOnRefresh:true}});
+      /* 1. camera pushes in on the desk, the page text lets go */
+      tl.to(hin,{autoAlpha:0,y:-48,duration:8,ease:'power2.in'},0)
+        .to(scrim,{opacity:0,duration:10},0)
+        .to(S,{zoom:1,duration:14,ease:'power2.inOut'},0)
+        .to(S,{fade:1,duration:9},8);
+      /* 2. cards and stray notes drop onto the table and land at angles */
+      cards.forEach(function(c,i){var p=pile(i),t0=15+i*1.5;
+        tl.fromTo(c,{x:p.x+(i%2?1:-1)*vw*.05,y:p.y-vh*.8,scale:1.75,rotation:p.r+(i%2?34:-34),boxShadow:HI},
+                    {x:p.x,y:p.y,scale:1,rotation:p.r,boxShadow:LO,duration:7,ease:'power2.in'},t0)
+          .fromTo(c,{autoAlpha:0},{autoAlpha:1,duration:2},t0)
+          .set(c,{zIndex:n-i+2},0)});
+      scraps.forEach(function(c,i){var d=SCP[i%SCP.length],t0=14+i*1.1,x=vw/2+d[0]*vw*sp,y=pileY+d[1]*vh;
+        tl.fromTo(c,{x:x,y:y-vh*.7,scale:1.6,rotation:d[2]+30,boxShadow:HI},{x:x,y:y,scale:1,rotation:d[2],boxShadow:LO,duration:6.5,ease:'power2.in'},t0)
+          .fromTo(c,{autoAlpha:0},{autoAlpha:1,duration:2},t0)
+          .set(c,{zIndex:1},0)});
+      /* 3. one card at a time: the hand picks it off the pile, carries it to its place, the camera steps down */
+      cards.forEach(function(c,i){
+        var t=28+13*i,p=pile(i),sl=slot(i),pan=i*dl,tipP={x:p.x,y:p.y-pan-tipUp},tipS={x:sl.x,y:sl.y-pan-tipUp},away={x:vw*1.05,y:vh+140};
+        tl.fromTo(HD,{x:away.x,y:away.y},{x:tipP.x,y:tipP.y,duration:3.2,ease:'power2.out'},t)
+          .set(c,{zIndex:40},t+3.2)
+          .to(c,{scale:1.06,rotation:p.r*.5,boxShadow:MID,duration:.9,ease:'power2.out'},t+3.2)
+          .to(HD,{x:tipS.x,y:tipS.y,duration:5,ease:'power2.inOut'},t+4.1)
+          .to(c,{x:sl.x,y:sl.y,rotation:0,boxShadow:HI,duration:5,ease:'power2.inOut'},t+4.1)
+          .to(c,{scale:1,boxShadow:LO,duration:.9,ease:'power2.in'},t+9.1)
+          .set(c,{zIndex:n-i+2},t+10)
+          .to(HD,{x:away.x,y:away.y,duration:3,ease:'power2.in'},t+10)
+          .to(S,{pan:(i+1)*dl,duration:3,ease:'power2.inOut'},t+10);
+        /* stray notes get swept off the table as the work gets tidier */
+        [i*2,i*2+1].forEach(function(k){var sc=scraps[k];if(!sc)return;
+          tl.to(sc,{x:(k%2?1:-1)*vw*.8,rotation:'+='+(k%2?70:-70),autoAlpha:0,duration:4,ease:'power2.in'},t+8+(k%2)*1.2)})
+      });
+      /* 4. the camera lifts back so the whole tidy column is in view */
+      tl.to(S,{pan:0,duration:8,ease:'power2.inOut'},80);
+      /* 5. pull back to the office: the column slides left behind you */
+      cards.forEach(function(c,i){
+        tl.to(c,{x:cx,y:top0+i*(ch+cgap)+ch/2,width:cw,height:ch,duration:9,ease:'power3.inOut'},91+i*.7);
+        if(narrow)tl.to($('.bc-d',c),{opacity:0,duration:5},91+i*.7)});
+      tl.to(S,{zoom:0,duration:14,ease:'power2.inOut'},92)
+        .to(S,{fade:0,duration:9},92)
+        .to(eb,{autoAlpha:1,y:ebY,duration:5,ease:'power2.out'},100)
+        .to({},{duration:6},106);
+      /* 6. the filed roles leave, the camera pushes into the laptop on the desk and the glass grows into a desktop */
+      var T0=112;
+      cards.forEach(function(c,i){tl.to(c,{y:'-=36',autoAlpha:0,duration:6,ease:'power2.in'},T0+i*.7)});
+      tl.to(eb,{autoAlpha:0,duration:4},T0);
       if(dev){
-        /* Continue the same move across the desk and into the phone. */
-        tl.to(S,{pz:1,pu:1,duration:36,ease:'none'},54);
-        tl.to({}, {duration:.01,onStart:function(){dev.phoneOpen(true)},onReverseComplete:function(){dev.phoneOpen(false)}},89.99);
+        tl.to(S,{lz:1,duration:20,ease:'power2.inOut'},T0+2)
+          .to(S,{dim:1,duration:12,ease:'none'},T0+8)
+          .to(S,{lu:1,duration:14,ease:'power2.inOut'},T0+14)
+          .to(S,{os:1,duration:7,ease:'none'},T0+25);
+        /* 7. one app window per case study opens, one after another; each plays its own small demo as it lands */
+        dev.wins.forEach(function(w,i){var t=T0+28+i*4;
+          tl.fromTo(w,{autoAlpha:0,y:34,scale:.92},{autoAlpha:1,y:0,scale:1,duration:5,ease:'power3.out'},t)
+            .to({},{duration:.01,onStart:function(){w.classList.add('on')},onReverseComplete:function(){w.classList.remove('on')}},t+3)});
+        tl.to(S,{cap:1,duration:4,ease:'none'},T0+41);
+        /* 8. leave the laptop on the desk, slide along to the phone and open it up */
+        var tp=T0+58;
+        tl.to(S,{lb:1,duration:10,ease:'power2.inOut'},tp)
+          .to(S,{pz:1,duration:20,ease:'power2.inOut'},tp+1)
+          .to(S,{pu:1,duration:14,ease:'power2.inOut'},tp+12)
+          .to(S,{px:1,duration:6,ease:'none'},tp+24)
+          .to({},{duration:.01,onStart:function(){dev.phoneOpen(true)},onReverseComplete:function(){dev.phoneOpen(false)}},tp+30)
+          .to({},{duration:10},tp+31);
       }
     },seq);
     sync()}
