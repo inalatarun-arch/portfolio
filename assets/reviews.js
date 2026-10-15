@@ -4,7 +4,7 @@
      line) throws the carriage return and rolls the paper up one line, the bell rings near the end of a line,
      the keys on the keyboard press as you type. GSAP runs all of it; prefers-reduced-motion drops the movement.
    - Reviews are stored in a Google Sheet through Apps Script (backend/reviews.gs). Set reviews.endpoint in content.json.
-     Until then the whole feature stays out of sight; add ?reviews=preview to the URL to try it with notes kept on this device. */
+     Until then it runs in a clearly labelled preview where notes stay on the visitor's device. */
 (function(){
 'use strict';
 var G=window.gsap,P=window.PX||null,RMQ=window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -317,10 +317,10 @@ function bind(){
 window.Reviews={
   init:function(site){
     CFG=(site&&site.reviews)||{};preview=/[?&]reviews=preview\b/.test(location.search);
-    if(!CFG.endpoint&&!preview)return;if(C.band)return;
+    if(C.band)return;
     if(!P)return;
     build();bind();load();
-    if(!CFG.endpoint)C.band.querySelector('.rv-lede').insertAdjacentHTML('afterend','<p class="rv-preview">Preview mode: notes are kept on this device only.</p>');
+    if(!CFG.endpoint)C.band.querySelector('.rv-lede').insertAdjacentHTML('afterend','<p class="rv-preview">Preview: the shared wall isn’t switched on yet, so notes are kept on this device only.</p>');
     this.setRoute(document.body.classList.contains('landing')?'welcome':'x')},
   setRoute:function(k){if(!C.band)return;var land=k==='welcome';C.band.hidden=land;C.pill.classList.toggle('is-away',false);if(!land&&window.ScrollTrigger)requestAnimationFrame(function(){ScrollTrigger.refresh()})}
 };
