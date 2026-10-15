@@ -76,7 +76,7 @@ function setState(){
   if(S.error)np.textContent='Couldn’t load the playlist';
   else if(S.blocked&&!S.playing)np.textContent='Tap play for music';
   else if(S.playing&&S.title)np.textContent='Now playing: '+S.title;
-  loop();if(S.zen)syncZen()}
+  loop();if(S.zen){var zt=$('#bbZenTrack');if(zt)zt.textContent=(S.title||'CHOOSE A TRACK TO BEGIN').toLocaleUpperCase();var zp=$('#bbZenPlay');if(zp){zp.textContent=S.playing?'Ⅱ':'▶';zp.setAttribute('aria-pressed',String(S.playing));zp.setAttribute('aria-label',S.playing?'Pause music':'Play music')}var zs=$('#bbZenShuffle');if(zs){zs.setAttribute('aria-pressed',String(S.shuffle));zs.setAttribute('aria-label',S.shuffle?'Shuffle on':'Shuffle off')}var zc=$('#bbZenCassette');if(zc)zc.classList.toggle('is-spinning',S.playing)}}
 function say(t,ms){var np=$('.bb-np',S.el);if(!np)return;np.textContent=t;S.el.classList.add('np-on');clearTimeout(S.npT);S.npT=setTimeout(function(){S.el.classList.remove('np-on')},ms||3200)}
 
 /* ------------------------------------------------------------------ YouTube */
