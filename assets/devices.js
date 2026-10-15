@@ -230,7 +230,7 @@ function mount(seq,D){
       var P=R.ph,F2=lay.pflat,w=gm(P.w,F2.w,pf),h=gm(P.h,F2.h,pf),cx=lerp(P.x+P.w/2,F2.cx,pf),cy=lerp(P.y+P.h/2,F2.cy,pf),a=w/F2.w,d=h/F2.h,e=cx-w/2,g=cy-h/2;
       if(pf>.999){e=Math.round(e);g=Math.round(g)}
       ph.style.transform='matrix('+a.toFixed(5)+',0,0,'+d.toFixed(5)+','+e.toFixed(2)+','+g.toFixed(2)+')';
-      $('.ph-ui',ph).style.opacity=clamp((S.px||0),0,1).toFixed(3)}
+      $('.ph-ui',ph).style.opacity=clamp((S.px||0),0,1).toFixed(3);
     setPhLive(pf>.995&&(S.px||0)>.9)}
 
   function destroy(){
