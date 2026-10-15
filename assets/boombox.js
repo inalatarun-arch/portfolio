@@ -164,6 +164,8 @@ function init(site){
   function flipZenTape(){cass.classList.remove('is-flipping');void cass.offsetWidth;cass.classList.add('is-flipping')}
   $('#bbZenPrev').addEventListener('click',function(){flipZenTape();$('.bb-prev',S.el).click()});$('#bbZenNext').addEventListener('click',function(){flipZenTape();$('.bb-next',S.el).click()});zp.addEventListener('click',function(){$('.bb-play',S.el).click()});zs.addEventListener('click',function(){$('#bbShuffle',S.el).click()});zv.addEventListener('input',function(){S.vol=+zv.value;if(volume)volume.value=zv.value;try{if(S.player&&S.ready)S.player.setVolume(S.vol)}catch(e){}});
   window.addEventListener('resize',function(){if(S.zen)try{S.player&&S.ready&&S.player.setSize(Math.min(innerWidth-48,900),Math.min(Math.round((innerWidth-48)*.5625),506))}catch(e){}});
+  /* Prepare the YouTube player without starting playback. */
+  (window.requestIdleCallback||function(f){setTimeout(f,900)})(function(){loadApi()},{timeout:2500});
 
 }
 function setMode(mode){
