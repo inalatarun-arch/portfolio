@@ -141,8 +141,9 @@ body.menu-open{overflow:hidden}
 .stage{position:fixed;left:0;top:0;width:100vw;height:100%;z-index:0;display:none;opacity:0;background:var(--bg);overflow:hidden;contain:strict}
 .stage-p{position:absolute;inset:0;display:none;will-change:clip-path}
 .stage-p canvas{position:absolute;left:0;top:0;transform-origin:0 0;image-rendering:pixelated;image-rendering:crisp-edges;image-rendering:pixelated;will-change:transform}
-:root[data-theme="dark"] .stage::after{content:"";position:absolute;inset:0;background:rgba(10,10,20,.34);pointer-events:none}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .stage::after{content:"";position:absolute;inset:0;background:rgba(10,10,20,.34);pointer-events:none}}
+/* The scenes now have their own day/night palettes; retain only a light night-time depth tint. */
+:root[data-theme="dark"] .stage::after{content:"";position:absolute;inset:0;background:rgba(7,12,28,.12);pointer-events:none}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .stage::after{content:"";position:absolute;inset:0;background:rgba(7,12,28,.12);pointer-events:none}}
 main,.foot{position:relative;z-index:2}
 .foot{background:var(--bg)}
 body.has-stage .hdr-bg{opacity:1}
