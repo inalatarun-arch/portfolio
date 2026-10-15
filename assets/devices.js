@@ -82,7 +82,7 @@ function mount(seq,D){
       '<div class="os-area"><div class="os-grid">'+cases.map(function(a,i){return '<div class="os-slot s'+(i+1)+'"></div>'}).join('')+'</div></div>'+
       apps.map(winHTML).join('')+
       '<nav class="dock" aria-label="Apps">'+apps.map(function(a,i){return '<button class="dk" type="button" data-dock="'+i+'" aria-label="Open '+esc(a.name)+'"><span class="dk-t">'+esc(a.name)+'</span>'+icon(a.id)+'<i class="dk-dot"></i></button>'}).join('')+'</nav>'+
-    '</div></div><div class="lap-base" aria-hidden="true"></div></div>'+
+    '<span class="dv-cur" aria-hidden="true"><i class="cur-rip"></i><svg viewBox="0 0 20 24"><path d="M2 1.5v18l4.6-4.3 3.1 7 3-1.4-3.1-6.9H16Z" fill="#fff" stroke="#111" stroke-width="1.6" stroke-linejoin="round"/></svg></span></div></div><div class="lap-base" aria-hidden="true"></div></div>'+
     '<p class="dv-cap" aria-hidden="true"><span>Selected work</span> Open any window to read the case study.</p>'+
     '<div class="ph" inert><div class="ph-body"><div class="ph-screen"><div class="ph-ui">'+
       '<div class="ph-sb"><b>9:41</b><span class="ph-isl"></span><span class="ph-bt"><i></i></span></div>'+
@@ -156,7 +156,7 @@ function mount(seq,D){
     w.f={x:0,y:MB,w:lay.Wd,h:lay.Hd-MB};sizeLayers(w)}
   function openApp(i){
     var w=wins[i];if(!w||(cur>=0&&cur!==i)||!live)return;
-    closing=null;measureFor(w);cur=i;w.el.style.visibility='visible';w.el.classList.add('is-front');
+    stopHint(true);closing=null;measureFor(w);cur=i;w.el.style.visibility='visible';w.el.classList.add('is-front');
     D.lock(true);
     wins.forEach(function(x){if(x!==w)x.el.inert=true});dock.inert=true;
     w.full.inert=false;w.tile.inert=true;
@@ -206,11 +206,55 @@ function mount(seq,D){
   }
   bind();
 
+  /* ---------- affordance: a ghost pointer tours the windows, "clicks" each, then the dock; any real input ends it ---------- */
+  var hintTl=null,hintTimer=0,hintLoops=0,curEl=$('.dv-cur',root),ripEl=$('.cur-rip',root),coarse=window.matchMedia&&matchMedia('(pointer:coarse)').matches;
+  var capEl=$('.dv-cap',root);if(capEl)capEl.innerHTML=capEl.innerHTML.replace('Open any window',coarse?'Tap any window':'Click any window');
+  function ctr(el){var r=el.getBoundingClientRect(),o=os.getBoundingClientRect(),sc=o.width/lay.Wd||1;return {x:(r.left+r.width/2-o.left)/sc,y:(r.top+r.height/2-o.top)/sc}}
+  function stopHint(hard){
+    clearTimeout(hintTimer);if(hintTl){hintTl.kill();hintTl=null}
+    wins.forEach(function(w){w.el.classList.remove('is-hint')});dks.forEach(function(b){b.classList.remove('is-hint')});
+    if(G&&curEl){G.killTweensOf([curEl,ripEl].concat(wins.map(function(w){return w.tile}),dks));G.to(curEl,{opacity:0,duration:.2,overwrite:true});
+      G.to(wins.map(function(w){return w.tile}),{scale:1,boxShadow:'none',duration:.35,ease:'power3.out',overwrite:true});G.set(dks,{clearProps:'scale,y'})}
+    if(hard)hintLoops=99}
+  function startHint(delay){
+    if(!G||D.reduced()||!curEl||!live||cur>=0||hintLoops>=3)return;
+    stopHint(false);hintTimer=setTimeout(runHint,(delay==null?1.2:delay)*1000)}
+  function runHint(){
+    if(!live||cur>=0||D.reduced())return;
+    var cw=wins.filter(function(w){return w.a.kind==='case'}),notes=dks[dks.length-1],o=os.getBoundingClientRect(),sc=o.width/lay.Wd||1;
+    var tl=hintTl=G.timeline({onComplete:function(){hintTl=null;hintLoops++;hintTimer=setTimeout(function(){startHint(0)},4200)}});
+    var from={x:lay.Wd*.5,y:lay.Hd*.92};
+    tl.set(curEl,{x:from.x,y:from.y,opacity:0,scale:1}).to(curEl,{opacity:1,duration:.3,ease:'power2.out'});
+    cw.forEach(function(w){
+      var h=$('.wt-hint',w.el),t=ctr(h);
+      tl.to(curEl,{x:t.x-4,y:t.y-3,duration:.95,ease:'power3.inOut'})                       /* glide */
+        .add(function(){w.el.classList.add('is-hint')})
+        .to(w.tile,{scale:1.012,boxShadow:'0 14px 34px rgba(0,0,0,.28)',duration:.35,ease:'power2.out'},'<')   /* hover lift */
+        .to(curEl,{scale:.82,duration:.1,ease:'power2.in'},'+=.35')                               /* press */
+        .fromTo(ripEl,{scale:.2,opacity:.7},{scale:1.7,opacity:0,duration:.55,ease:'power2.out'},'<')
+        .to(w.tile,{scale:.99,duration:.1,ease:'power2.in'},'<')
+        .to(curEl,{scale:1,duration:.4,ease:'elastic.out(1,.5)'})
+        .to(w.tile,{scale:1,boxShadow:'none',duration:.5,ease:'elastic.out(1,.55)'},'<')
+        .add(function(){w.el.classList.remove('is-hint')},'+=.15')});
+    var d=ctr(notes);
+    tl.to(curEl,{x:d.x+8,y:d.y+2,duration:.9,ease:'power3.inOut'})
+      .add(function(){notes.classList.add('is-hint')})
+      .to(notes,{scale:1.45,y:-18,duration:.28,ease:'power2.out'},'<')
+      .to(curEl,{scale:.82,duration:.1,ease:'power2.in'},'+=.3').fromTo(ripEl,{scale:.2,opacity:.7},{scale:1.7,opacity:0,duration:.55,ease:'power2.out'},'<')
+      .to(curEl,{scale:1,duration:.4,ease:'elastic.out(1,.5)'})
+      .to(notes,{scale:1,y:0,duration:.6,ease:'elastic.out(1,.5)'},'<')
+      .add(function(){notes.classList.remove('is-hint')},'+=.1')
+      .to(curEl,{opacity:0,duration:.35,ease:'power2.in'},'+=.1')}
+  os.addEventListener('pointerdown',function(){stopHint(true)});
+  os.addEventListener('pointermove',function(e){if(e.pointerType==='mouse')stopHint(true)});
+  os.addEventListener('keydown',function(){stopHint(true)});
+
   /* ---------- per-frame: S is the scrubbed state ---------- */
   function setLive(v){v=!!v;if(v===live)return;live=v;
     root.classList.toggle('is-live',v);os.inert=!v;
     if(!v&&cur>=0)closeNow();
-    dks.forEach(function(b){b.tabIndex=v?0:-1})}
+    dks.forEach(function(b){b.tabIndex=v?0:-1});
+    if(v)startHint(1.4);else stopHint(false)}
   function setPhLive(v){v=!!v;if(v===phLive)return;phLive=v;ph.classList.toggle('is-live',v);ph.inert=!v}
   function affine(R,F,f,round){
     /* quad (sheared, tiny) -> flat: size is interpolated geometrically so the zoom feels even, shear and centre linearly */
