@@ -458,14 +458,14 @@ function buildPark(W,H){
         strap:e<.02?{x:3,y:-9}:null,cam:e<.02?null:{x:camPos.x,y:camPos.y}};
       var info=drawPerson(person,pose);
       /* portable stereo cassette player beside the seated character */
-      R(person.x+30,person.y+1,22,16,'#222735');
-      R(person.x+31,person.y+2,20,14,'#657487');
-      R(person.x+32,person.y+3,18,12,'#aeb9c5');
-      R(person.x+34,person.y+4,14,5,'#30394a');
-      R(person.x+35,person.y+5,4,3,'#101722');R(person.x+43,person.y+5,4,3,'#101722');
-      P1(person.x+36,person.y+5,'#7fa6d2');P1(person.x+44,person.y+5,'#7fa6d2');
-      R(person.x+34,person.y+10,3,2,'#d5dce3');R(person.x+39,person.y+10,3,2,'#d5dce3');
-      R(person.x+44,person.y+10,4,2,'#3a4659');
+      R(person.x,30,1,22,16,'#222735');
+      R(person.x,31,2,20,14,'#657487');
+      R(person.x,32,3,18,12,'#aeb9c5');
+      R(person.x,34,4,14,5,'#30394a');
+      R(person.x,35,5,4,3,'#101722');R(person.x,43,5,4,3,'#101722');
+      P1(person.x,36,5,'#7fa6d2');P1(person.x,44,5,'#7fa6d2');
+      R(person.x,34,10,3,2,'#d5dce3');R(person.x,39,10,3,2,'#d5dce3');
+      R(person.x,44,10,4,2,'#3a4659');
 
       /* pen */
       if(e<.5){var hh=info.nj;LN(person.x,hh.hx,hh.hy,hh.hx+3,hh.hy+3,1,'#d5360c');P1(person.x,hh.hx+3,hh.hy+3,'#1b1730')}
