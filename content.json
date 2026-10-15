@@ -39,7 +39,7 @@
    {
     "tag": "Flagship case study · Generative AI",
     "title": "Generative AI engine for clinical-trial contract extraction",
-    "desc": "Led end-to-end development of an engine that reads complex Clinical Trial Agreement budget terms from unstructured PDFs and maps them into APECS, with a “Single Pane of Glass” UI to review, validate and commit every AI-extracted mapping, and automated checks that protect timely site reimbursements.",
+    "desc": "Led end-to-end development of an engine that reads complex Clinical Trial Agreement budget terms from unstructured PDFs and maps them into Clinical Trial Payment System, with a “Single Pane of Glass” UI to review, validate and commit every AI-extracted mapping, and automated checks that protect timely site reimbursements.",
     "mets": [
      [
       "Daily manual effort",
@@ -72,17 +72,17 @@
      ],
      [
       "Review & commit",
-      "Single Pane of Glass in APECS to validate, then commit"
+      "Single Pane of Glass in Clinical Trial Payment System to validate, then commit"
      ]
     ],
     "case": [
      [
       "The problem",
-      "Budget terms in Clinical Trial Agreements arrived as unstructured PDFs and were keyed into APECS by hand. Entry was slow and error-prone, backlogs built up, and delays put site reimbursements and SLAs at risk."
+      "Budget terms in Clinical Trial Agreements arrived as unstructured PDFs and were keyed into Clinical Trial Payment System by hand. Entry was slow and error-prone, backlogs built up, and delays put site reimbursements and SLAs at risk."
      ],
      [
       "My role",
-      "Led the engine end to end as Senior Business Analyst: shaped the requirements, defined how extracted terms map into APECS, and designed the “Single Pane of Glass” screen where every AI-extracted mapping is reviewed, validated and committed."
+      "Led the engine end to end as Senior Business Analyst: shaped the requirements, defined how extracted terms map into Clinical Trial Payment System, and designed the “Single Pane of Glass” screen where every AI-extracted mapping is reviewed, validated and committed."
      ],
      [
       "Safeguards built in",
@@ -161,7 +161,7 @@
    {
     "k": "Payments Portal",
     "t": "Payee transparency, self-service",
-    "d": "Functional Lead for the payment portal, the liaison between payees, the Payment Processing Group and tech teams. Defined data mapping and reconciliation logic across Oracle EBS and APECS.",
+    "d": "Functional Lead for the payment portal, the liaison between payees, the Payment Processing Group and tech teams. Defined data mapping and reconciliation logic across Oracle EBS and Clinical Trial Payment System.",
     "m": "−50% support inquiries",
     "ill": "portal",
     "big": "−50%",
@@ -199,14 +199,14 @@
   "roles": [
    {
     "t": "Lead Consultant",
-    "org": "Winfo Solutions · APECS",
+    "org": "Winfo Solutions · Clinical Trial Payment System",
     "yrs": "Jul 2026 - Present",
     "d": "Leading functional delivery for the clinical-trial payments and contracts platform, owning the roadmap, stakeholder alignment and release quality across the team.",
     "tag": "Current"
    },
    {
     "t": "Senior Business Analyst",
-    "org": "Winfo Solutions · APECS",
+    "org": "Winfo Solutions · Clinical Trial Payment System",
     "yrs": "Mar 2023 - Jul 2026",
     "d": "Functional Lead for a clinical-trial payments and contracts platform: Generative AI extraction, payment validation, the payee portal, automated testing and reporting migration.",
     "tag": ""
@@ -267,7 +267,7 @@
     "Financial reconciliation"
    ],
    "Tools & platforms": [
-    "APECS",
+    "Clinical Trial Payment System",
     "Oracle EBS",
     "Incorta",
     "FinancialForce",

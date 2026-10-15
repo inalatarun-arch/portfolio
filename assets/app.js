@@ -852,6 +852,6 @@ var footReach=null;
 function fillReach(){var h=$('#footReach');h.innerHTML=reachHTML('foot','foot',{pop:true});footReach=initReach($('[data-reach]',h))}
 function start(){fillReach();if(window.Boombox)Boombox.init(SITE);route();if(window.Reviews)Reviews.init(SITE)}
 function fail(){root.classList.remove('js')}   // show the static fallback instead of a blank page
-if(window.fetch){fetch('content.json?v=10',{cache:'no-cache'}).then(function(r){return r.ok?r.json():Promise.reject()}).then(function(d){
+if(window.fetch){fetch('content.json?v=11',{cache:'no-cache'}).then(function(r){return r.ok?r.json():Promise.reject()}).then(function(d){
   if(d&&typeof d==='object'){SITE=d;start()}else fail()}).catch(fail)}else fail();
 })();
