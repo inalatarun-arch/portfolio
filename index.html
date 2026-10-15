@@ -20,7 +20,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='32' fill='%23D5360C'/%3E%3Ctext x='32' y='42' font-family='Georgia,serif' font-size='30' font-weight='700' fill='%23101010' text-anchor='middle'%3ETI%3C/text%3E%3C/svg%3E">
 <link rel="preload" href="content.json?v=8" as="fetch" crossorigin>
 <link rel="stylesheet" href="assets/styles.css?v=14">
-<link rel="stylesheet" href="assets/personal.css?v=10">
+<link rel="stylesheet" href="assets/personal.css?v=15">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Tarun Inala","jobTitle":"Senior Business Analyst and Functional Lead","address":{"@type":"PostalAddress","addressLocality":"Hyderabad","addressCountry":"IN"},"url":"https://inalatarun.co.in/","sameAs":["https://www.linkedin.com/in/tarunksai/"],"knowsAbout":["Business analysis","Generative AI","Clinical trial payments","ERP delivery","Product ownership"]}</script>
 <script>
 /* Runs before first paint: restore the saved theme, flag JS so the static fallback hides. */
@@ -49,6 +49,9 @@ try{var t=localStorage.getItem('inala-theme');if(t==='light'||t==='dark')d.setAt
     <symbol id="i-linkedin" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="3.5" width="17" height="17" rx="4"/><path d="M8 10.5V16M8 7.8v.1M12 16v-5.5M12 13c0-1.7 1-2.6 2.3-2.6S16.5 11.3 16.5 13V16"/></g></symbol>
     <symbol id="i-send" viewBox="0 0 24 24"><path d="M21 3 10.5 13.5M21 3l-6.5 18-4-7.5L3 9.5 21 3Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
     <symbol id="i-pdf" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"><path d="M7 3h7l5 5v11a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"/><path d="M14 3v5h5M8.5 15h7M8.5 18h4"/></g></symbol>
+    <symbol id="i-vol" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4Z" fill="currentColor"/><path d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11"/></g></symbol>
+    <symbol id="i-vol-low" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4Z" fill="currentColor"/><path d="M15.5 9a4 4 0 0 1 0 6"/></g></symbol>
+    <symbol id="i-vol-off" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4Z" fill="currentColor"/><path d="m16 9.5 5 5M21 9.5l-5 5"/></g></symbol>
     <symbol id="i-pause" viewBox="0 0 24 24"><path d="M9 6v12M15 6v12" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></symbol>
     <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5Z" fill="currentColor" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></symbol>
     <symbol id="i-search" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4 4"/></g></symbol>
@@ -79,7 +82,7 @@ try{var t=localStorage.getItem('inala-theme');if(t==='light'||t==='dark')d.setAt
   <div class="wrap hdr-row">
     <a class="brand" id="brand" href="#/" aria-label="Tarun Inala, home"><span class="brand-mark" aria-hidden="true">TI</span><span class="brand-name">Tarun Inala</span></a>
     <div class="bb" id="bb" data-state="loading" hidden>
-      <div class="bb-volume"><button id="bbVolumeKnob" class="bb-volume-knob" type="button" role="slider" aria-label="Music volume" aria-valuemin="0" aria-valuemax="100" aria-valuenow="80"><span class="bb-volume-notch" aria-hidden="true"></span></button><span class="bb-volume-value" id="bbVolumeValue" aria-hidden="true">80</span></div>
+      <div class="bb-volume"><button id="bbMute" class="bb-vol-ic" type="button" aria-label="Mute" aria-pressed="false"><svg class="ic" aria-hidden="true"><use href="#i-vol"/></svg></button><input id="bbVolumeSlider" class="bb-vol-range" type="range" min="0" max="100" step="1" value="80" aria-label="Music volume"><span class="bb-volume-value" id="bbVolumeValue" aria-hidden="true">80</span></div>
       <div class="bb-box" role="group" aria-label="Music player">
         <canvas id="bbCv" width="72" height="34" aria-hidden="true"></canvas>
         <button class="bb-b bb-prev" type="button" aria-label="Previous track"></button>
@@ -170,7 +173,7 @@ try{var t=localStorage.getItem('inala-theme');if(t==='light'||t==='dark')d.setAt
 <script src="assets/devices.js?v=3"></script>
 <script src="assets/personal-art.js?v=1"></script>
 <script src="assets/personal.js?v=3"></script>
-<script src="assets/boombox.js?v=3"></script>
+<script src="assets/boombox.js?v=4"></script>
 <script src="assets/app.js?v=20"></script>
 </body>
 </html>

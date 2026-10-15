@@ -167,19 +167,25 @@ body.has-bb .hdr-row .brand{margin-right:0}
 .bb-tip{translate:var(--tip-dx,0) 0}
 .bb:has(.bb-volume.is-show) .bb-np{opacity:0!important}
 
-/* volume knob: a pixel dial. --ks is its size; the notch turns about the dial's centre */
-.bb-volume{--ks:1.75rem;position:relative;flex:none;display:grid;place-items:center;width:calc(var(--ks) + .25rem);height:2.5rem}
-.bb-volume-knob::after{content:"";position:absolute;inset:-.5rem -.375rem}/* a bigger target than the dial itself */
-.bb-volume-knob{--knob-angle:0deg;position:relative;display:block;width:var(--ks);height:var(--ks);padding:0;border:3px solid #171c27;border-radius:3px;background:repeating-linear-gradient(0deg,#b6b09b 0 4px,#9a947e 4px 8px);
-  box-shadow:inset 0 0 0 2px #d7ceb2,2px 2px 0 #171c27;cursor:ns-resize;touch-action:none;-webkit-tap-highlight-color:transparent;transition:box-shadow .12s,translate .12s}
-.bb-volume-knob::before{content:"";position:absolute;inset:3px;border:2px solid #4b493d;background:#393a32;box-shadow:inset 0 0 0 2px #68634f}
-.bb-volume-notch{position:absolute;z-index:1;left:calc(50% - 2px);top:2px;width:4px;height:7px;background:#ffe4a2;border:1px solid #171c27;transform-origin:2px calc((var(--ks) - 6px)/2 - 2px);transform:rotate(var(--knob-angle))}
-.bb-volume.is-drag .bb-volume-knob{box-shadow:inset 0 0 0 2px #d7ceb2,0 0 0 #171c27;translate:2px 2px}
-.bb-volume.is-mute .bb-volume-notch{background:#ff7a5c}
-.bb-volume-knob:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
-.bb-volume-value{position:absolute;left:50%;top:calc(100% + .125rem);z-index:6;transform:translate(-50%,-.25rem);padding:.1875rem .5rem;border-radius:var(--pill);background:var(--blk);color:var(--on-blk);font:700 .6875rem/1 var(--mono);letter-spacing:.04em;font-variant-numeric:tabular-nums;
+/* volume: a speaker button (mute) and a slim slider. The thumb is a chunky pixel block to match the boombox. */
+.bb-volume{position:relative;flex:none;display:flex;align-items:center;gap:.125rem;height:2.5rem}
+.bb-vol-ic{display:grid;place-items:center;width:2.25rem;height:2.25rem;padding:0;border:0;border-radius:var(--pill);background:transparent;color:var(--fg);cursor:pointer;transition:background .15s,transform .12s;-webkit-tap-highlight-color:transparent}
+.bb-vol-ic .ic{width:1.25rem;height:1.25rem}
+.bb-vol-ic:hover{background:color-mix(in srgb,var(--fg) 9%,transparent)}
+.bb-vol-ic:active{transform:scale(.9)}
+.bb-vol-ic:focus-visible{outline:3px solid var(--accent);outline-offset:1px}
+.bb-volume.is-mute .bb-vol-ic{color:#e0573c}
+.bb-vol-range{--fill:80%;appearance:none;-webkit-appearance:none;width:5.5rem;height:2.25rem;margin:0;padding:0;background:transparent;cursor:pointer;touch-action:pan-y;-webkit-tap-highlight-color:transparent}
+.bb-vol-range::-webkit-slider-runnable-track{height:.5rem;border:2px solid #171c27;border-radius:2px;background:linear-gradient(90deg,#e7a84e var(--fill),color-mix(in srgb,var(--fg) 14%,transparent) var(--fill))}
+.bb-vol-range::-moz-range-track{height:.5rem;border:2px solid #171c27;border-radius:2px;background:color-mix(in srgb,var(--fg) 14%,transparent)}
+.bb-vol-range::-moz-range-progress{height:.5rem;border-radius:0;background:#e7a84e}
+.bb-vol-range::-webkit-slider-thumb{-webkit-appearance:none;width:.875rem;height:1.375rem;margin-top:-.5625rem;border:3px solid #171c27;border-radius:2px;background:#f5e8c8;box-shadow:inset 0 0 0 2px #d7ceb2,2px 2px 0 #171c27;transition:transform .12s}
+.bb-vol-range::-moz-range-thumb{box-sizing:border-box;width:.875rem;height:1.375rem;border:3px solid #171c27;border-radius:2px;background:#f5e8c8;box-shadow:inset 0 0 0 2px #d7ceb2,2px 2px 0 #171c27}
+.bb-volume.is-drag .bb-vol-range::-webkit-slider-thumb{transform:translate(2px,2px);box-shadow:inset 0 0 0 2px #d7ceb2,0 0 0 #171c27}
+.bb-vol-range:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:3px}
+.bb-volume-value{position:absolute;right:0;top:calc(100% + .125rem);z-index:6;transform:translateY(-.25rem);padding:.1875rem .5rem;border-radius:var(--pill);background:var(--blk);color:var(--on-blk);font:700 .6875rem/1 var(--mono);letter-spacing:.04em;font-variant-numeric:tabular-nums;
   opacity:0;pointer-events:none;transition:opacity .18s,transform .22s cubic-bezier(.2,.8,.2,1)}
-.bb-volume:hover .bb-volume-value,.bb-volume:focus-within .bb-volume-value,.bb-volume.is-show .bb-volume-value{opacity:1;transform:translate(-50%,0)}
+.bb-volume:hover .bb-volume-value,.bb-volume:focus-within .bb-volume-value,.bb-volume.is-show .bb-volume-value{opacity:1;transform:none}
 
 /* zen button */
 .bb-zen{position:relative;z-index:4;flex:none;display:inline-flex;align-items:center;gap:.4rem;min-height:2.75rem;min-width:2.75rem;padding:0 .875rem;justify-content:center;border:.0625rem solid var(--line-2);border-radius:var(--pill);background:color-mix(in srgb,var(--bg) 82%,transparent);-webkit-backdrop-filter:blur(.75rem);backdrop-filter:blur(.75rem);color:var(--fg);font:600 .8125rem/1 var(--sans);white-space:nowrap;cursor:pointer;transition:border-color .2s,background .2s,transform .15s}
@@ -193,10 +199,14 @@ body.has-bb .hdr-row .brand{margin-right:0}
 
 /* ---------- header fit: the cluster gives way in steps so the nav, the Work / Personal switch and the menu button always have room ---------- */
 body.has-bb .hdr-row{gap:1rem}
+body.has-bb .brand-name{white-space:nowrap}
 @media (max-width:90rem){.bb-zen-label{display:none}.bb-zen{padding:0}}
-@media (max-width:80rem){.bb-tl{display:none}.bb-tape{padding:.1875rem .375rem}body.has-bb .brand-name{display:none}body.landing.has-bb .brand{padding:.25rem}}
-@media (max-width:68.75rem){.bb{--k:1.5;gap:.5rem}.bb-volume{--ks:1.5rem}body.has-bb .nav a{padding:0 .625rem}.bb-tape canvas{width:calc(26px*1.5);height:calc(18px*1.5)}}
-@media (max-width:53.75rem){.bb{--k:2;margin-left:.25rem}.bb-volume{display:none}.bb-tape canvas{width:calc(26px*var(--k));height:calc(18px*var(--k))}}
+@media (max-width:88rem){body.has-bb .brand-name{display:none}body.landing.has-bb .brand{padding:.25rem}}
+@media (max-width:80rem){.bb-tl{display:none}.bb-tape{padding:.1875rem .375rem}}
+@media (max-width:68.75rem){.bb{--k:1.5;gap:.5rem}.bb-vol-range{width:4.5rem}body.has-bb .nav a{padding:0 .625rem}.bb-tape canvas{width:calc(26px*1.5);height:calc(18px*1.5)}}
+@media (max-width:62rem){.bb-vol-range{width:3.25rem}.bb-vol-ic{width:2rem}.bb-volume{gap:0}}
+@media (max-width:58rem){.bb-volume{display:none}}
+@media (max-width:53.75rem){.bb{--k:2;margin-left:.25rem}.bb-tape canvas{width:calc(26px*var(--k));height:calc(18px*var(--k))}}
 @media (max-width:30rem){.bb{--k:1.5;gap:.375rem}body.has-bb .hdr-row{gap:.5rem}.bb-tape{padding:.125rem .25rem;min-width:2.75rem;justify-content:center}.bb-tape canvas{width:calc(26px*var(--k));height:calc(18px*var(--k))}}
 @media (max-width:26.25rem){
   body.has-bb .hdr-tools{gap:.25rem}

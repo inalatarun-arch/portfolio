@@ -159,32 +159,35 @@ function init(site){
       if(i===1){if(S.playing)pause(true);else play()}
       else{flipTape();S.userPaused=false;S.want=true;if(!S.ready){loadApi();return}try{i===0?S.player.previousVideo():S.player.nextVideo()}catch(e){}if(!S.playing)try{S.player.playVideo()}catch(e){}}})});
 
-  /* ---- volume knob: drag up / right to raise it, down / left to lower it, 1:1 from wherever you grab it (no jump);
-          wheel, arrow / page / home / end keys, double-click to mute and unmute. Every route ends in setVolume(). */
-  var knob=$('#bbVolumeKnob'),vwrap=$('.bb-volume',S.el),vval=$('#bbVolumeValue'),ang={a:0},drag=null,SWEEP=130,preMute=80,bubT=0;
-  var angle=function(v){return -135+v/100*270};
-  var paintKnob=function(){knob.style.setProperty('--knob-angle',ang.a.toFixed(1)+'deg')};
+  /* ---- volume slider: a real range input, so drag, click-to-jump, touch, arrow / page / home / end keys all just work.
+          The speaker icon mutes and unmutes; the wheel nudges it. Every route ends in setVolume(). */
+  var vsl=$('#bbVolumeSlider'),vmute=$('#bbMute'),vwrap=$('.bb-volume',S.el),vval=$('#bbVolumeValue'),vuse=vmute.querySelector('use'),fillP={f:S.vol},preMute=80,bubT=0,sliding=false;
+  var paintFill=function(){vsl.style.setProperty('--fill',fillP.f.toFixed(1)+'%')};
+  function paintVol(){
+    var v=S.vol;if(+vsl.value!==v)vsl.value=v;
+    vsl.setAttribute('aria-valuetext',v===0?'Muted':v+' percent');vval.textContent=v===0?'MUTE':String(v);
+    vwrap.classList.toggle('is-mute',v===0);vuse.setAttribute('href',v===0?'#i-vol-off':v<50?'#i-vol-low':'#i-vol');
+    vmute.setAttribute('aria-label',v===0?'Unmute':'Mute');vmute.setAttribute('aria-pressed',String(v===0))}
   function setVolume(v,instant){
-    v=Math.max(0,Math.min(100,Math.round(v)));if(v===S.vol&&ang.a===angle(v)&&!S.fade)return;
+    v=Math.max(0,Math.min(100,Math.round(v)));if(v===S.vol&&!S.fade&&fillP.f===v)return;
     S.vol=v;if(S.fade){S.fade.kill();S.fade=null}/* the visitor's hand beats any fade */
-    knob.setAttribute('aria-valuenow',String(v));knob.setAttribute('aria-valuetext',v===0?'Muted':v+' percent');vval.textContent=v===0?'MUTE':String(v);vwrap.classList.toggle('is-mute',v===0);
-    if(G&&!RMQ.matches&&!instant)G.to(ang,{a:angle(v),duration:.24,ease:'power3.out',overwrite:true,onUpdate:paintKnob});
-    else{if(G)G.killTweensOf(ang);ang.a=angle(v);paintKnob()}
+    paintVol();
+    /* dragging is 1:1; jumps (mute, wheel, keys, the Zen slider) glide from wherever the fill is now */
+    if(G&&!RMQ.matches&&!instant)G.to(fillP,{f:v,duration:.24,ease:'power3.out',overwrite:true,onUpdate:paintFill});
+    else{if(G)G.killTweensOf(fillP);fillP.f=v;paintFill()}
     setPlayerVol(v);saveVol();syncZen()}
-  function pop(){/* the readout pops in while the knob is in use */
+  function pop(){/* the readout shows while the slider is in use */
     vwrap.classList.add('is-show');clearTimeout(bubT);
-    bubT=setTimeout(function(){if(!drag)vwrap.classList.remove('is-show')},900)}
-  knob.setAttribute('aria-valuenow',String(S.vol));ang.a=angle(S.vol);paintKnob();vval.textContent=S.vol===0?'MUTE':String(S.vol);knob.setAttribute('aria-valuetext',S.vol+' percent');vwrap.classList.toggle('is-mute',S.vol===0);
-  knob.addEventListener('pointerdown',function(e){if(e.button>0)return;drag={x:e.clientX,y:e.clientY,v:S.vol};try{knob.setPointerCapture(e.pointerId)}catch(x){}knob.focus({preventScroll:true});vwrap.classList.add('is-show','is-drag');e.preventDefault()});
-  knob.addEventListener('pointermove',function(e){if(!drag)return;setVolume(drag.v+((drag.y-e.clientY)+(e.clientX-drag.x))*100/SWEEP,true)});
-  var endDrag=function(){if(!drag)return;drag=null;vwrap.classList.remove('is-drag');pop()};
-  knob.addEventListener('pointerup',endDrag);knob.addEventListener('pointercancel',endDrag);knob.addEventListener('lostpointercapture',endDrag);
-  knob.addEventListener('wheel',function(e){e.preventDefault();setVolume(S.vol-Math.sign(e.deltaY)*4);pop()},{passive:false});
-  knob.addEventListener('dblclick',function(){if(S.vol>0){preMute=S.vol;setVolume(0)}else setVolume(preMute||80);pop()});
-  knob.addEventListener('keydown',function(e){
-    var d={ArrowUp:5,ArrowRight:5,ArrowDown:-5,ArrowLeft:-5,PageUp:10,PageDown:-10}[e.key];
-    if(d!=null)setVolume(S.vol+d);else if(e.key==='Home')setVolume(0);else if(e.key==='End')setVolume(100);else if(e.key==='m'||e.key==='M'){if(S.vol>0){preMute=S.vol;setVolume(0)}else setVolume(preMute||80)}else return;
-    e.preventDefault();pop()});
+    bubT=setTimeout(function(){if(!sliding)vwrap.classList.remove('is-show')},900)}
+  var toggleMute=function(){if(S.vol>0){preMute=S.vol;setVolume(0)}else setVolume(preMute||80);pop()};
+  paintVol();paintFill();
+  vsl.addEventListener('input',function(){setVolume(+vsl.value,true);pop()});
+  vsl.addEventListener('pointerdown',function(){sliding=true;vwrap.classList.add('is-show','is-drag')});
+  var endSlide=function(){if(!sliding)return;sliding=false;vwrap.classList.remove('is-drag');pop()};
+  vsl.addEventListener('pointerup',endSlide);vsl.addEventListener('pointercancel',endSlide);vsl.addEventListener('lostpointercapture',endSlide);vsl.addEventListener('blur',endSlide);
+  vsl.addEventListener('keydown',function(e){if(e.key==='m'||e.key==='M'){toggleMute();e.preventDefault()}});
+  vmute.addEventListener('click',toggleMute);
+  vwrap.addEventListener('wheel',function(e){e.preventDefault();setVolume(S.vol-Math.sign(e.deltaY)*4);pop()},{passive:false});
 
   /* the cassette: obviously a button */
   if(G&&!RMQ.matches){
