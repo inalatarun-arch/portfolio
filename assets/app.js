@@ -286,32 +286,15 @@ function wCards(){
       '<div class="wmeta" lang="en"><span>'+kindLabel(w.kind)+' · '+esc(w.lang)+'</span>'+ic('arrow-r')+'</div></button>'}).join('')+'</div>';
 }
 function pageWritings(){
-  var L=SITE.writings||[],langs=['All'];L.forEach(function(w){if(langs.indexOf(w.lang)<0)langs.push(w.lang)});
-  if(langs.indexOf(wFilter)<0)wFilter='All';
-  var btns=langs.map(function(l){var n=l==='All'?L.length:L.filter(function(w){return w.lang===l}).length;
-    return '<button type="button" data-f="'+esc(l)+'" aria-pressed="'+(l===wFilter)+'">'+esc(l)+'<span class="mono">'+n+'</span></button>'}).join('');
   return '<section class="seq pseq" id="pseq"><div class="seq-scrim" aria-hidden="true"></div><div class="hero hero-scene hero-short"><div class="wrap hero-in"><h1 data-hl>'+headline('Writings')+'</h1>'+
-    '<div data-r><p class="hero-sub">Poems, thoughts and journal pages, written over the years in English, Telugu and Hindi.</p><p class="hero-cue">'+ic('arrow-d')+'Scroll, and the diary opens.</p></div></div></div></section>'+
-    '<div class="after"><section class="wrap"><div class="after-bar"><div class="filters" role="group" aria-label="Filter by language" data-r><span class="f-ind" aria-hidden="true"></span>'+btns+'</div></div>'+
-    '<div id="wwrap">'+wCards()+'</div></section></div>';
+    '<div data-r><p class="hero-sub">Poems, thoughts and journal pages, written over the years in English, Telugu and Hindi.</p><p class="hero-cue">'+ic('arrow-d')+'Scroll, then open a diary to read.</p></div></div></div></section>';
 }
 
 function realPhotos(){return (SITE.photos||[]).filter(function(p){return !p.placeholder&&(p.src||p.img||p.file)})}
 function photoSrc(p){var file=p.src||p.img||p.file;return /^(https?:)?\/\//.test(file)||file.indexOf('/')>=0?file:'images/'+file}
 function pagePhotos(){
-  var P=realPhotos(),Gs=SITE.photoGroups||[];
-  var empty='<div class="p-empty"><div class="blk-a" data-r><svg class="art" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true" fill="currentColor"><circle cx="300" cy="90" r="80" opacity=".16"/><circle cx="300" cy="90" r="40" opacity=".18"/><rect x="40" y="200" width="220" height="14" rx="7" opacity=".16"/></svg><h3>Still in the darkroom.</h3></div>'+
-    '<div class="blk-b" data-r><h3>Photographs are on the way.</h3><p>Streets, buildings and light, as I find them. The first set will appear here as soon as it is ready.</p></div></div>';
-  var body=Gs.map(function(g){
-    var ps=P.filter(function(p){return p.g===g.id});if(!ps.length)return '';
-    var cards=ps.map(function(p){return '<button type="button" class="pcard" data-feel data-p="'+esc(p.id)+'" aria-label="Open photograph, '+esc(g.name)+'">'+
-      '<div class="pimg" style="aspect-ratio:'+(p.tw||p.w)+'/'+(p.th||p.h)+'"><img src="'+esc(p.thumb||photoSrc(p))+'" width="'+(p.tw||p.w)+'" height="'+(p.th||p.h)+'" alt="Photograph in the group: '+esc(g.name)+'" loading="lazy" decoding="async" draggable="false"></div></button>'}).join('');
-    return '<section class="pgroup" aria-labelledby="pg-'+esc(g.id)+'"><header class="pg-h" data-r><div><h2 id="pg-'+esc(g.id)+'">'+esc(g.name)+'</h2><p>'+esc(g.note||'')+'</p></div>'+
-      '<div class="pg-meta"><span class="pg-sw" aria-hidden="true">'+(g.sw||[]).map(function(c){return '<i style="background:'+esc(c)+'"></i>'}).join('')+'</span><span class="mono">'+ps.length+'</span></div></header>'+
-      '<div class="pgrid">'+cards+'</div></section>'}).join('');
   return '<section class="seq pseq" id="pseq"><div class="seq-scrim" aria-hidden="true"></div><div class="hero hero-scene hero-short"><div class="wrap hero-in"><h1 data-hl>'+headline('Photographs')+'</h1>'+
-    '<div data-r><p class="hero-sub">Streets, buildings and light, as I find them. Grouped by the colour that carries each frame.</p><p class="hero-cue">'+ic('arrow-d')+'Scroll, and the camera comes up.</p></div></div></div></section>'+
-    '<div class="after"><section class="wrap">'+(P.length?'<div class="pgroups" oncontextmenu="return false">'+body+'</div>':empty)+'</section></div>';
+    '<div data-r><p class="hero-sub">Streets, buildings and light, as I find them. Grouped by the colour that carries each frame.</p><p class="hero-cue">'+ic('arrow-d')+'Scroll, then pick up a camera to view photographs full screen.</p></div></div></div></section>';
 }
 
 /* =====================================================================
