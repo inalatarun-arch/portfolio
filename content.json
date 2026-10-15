@@ -3249,7 +3249,7 @@
   "url": "https://www.youtube.com/playlist?list=PLNKsHcEBNWDg"
  },
  "reviews": {
-  "endpoint": "",
+  "endpoint": "https://script.google.com/macros/s/AKfycbwcOJa7dyS9CBsabAlL0wexxdq2zLgv-DYnypvvqWLj6qGQ_utj2YYigC0yxQW_l4mX/exec",
   "maxLength": 400
  }
 }
