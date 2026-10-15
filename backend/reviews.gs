@@ -2,8 +2,8 @@
  * Guestbook backend for inalatarun.co.in — a Google Sheet behind a tiny Apps Script web app.
  *
  * SET UP (about 5 minutes, once):
- *  1. Create a new Google Sheet (name it e.g. "Portfolio guestbook"). Leave it empty.
- *  2. In the Sheet: Extensions > Apps Script. Delete the sample code and paste this whole file. Save.
+ *  1. The Sheet already exists ("Reviews on site.", its ID is set in SHEET_ID below). Leave it empty.
+ *  2. In that Sheet: Extensions > Apps Script. Delete the sample code and paste this whole file. Save.
  *  3. Deploy > New deployment > type "Web app".
  *       Execute as: Me          Who has access: Anyone
  *     Press Deploy, approve the permissions, and copy the "Web app URL" (it ends in /exec).
@@ -13,6 +13,7 @@
  * "hidden" column (or delete the row). It disappears from the site within a minute or two.
  * If you edit this script later, use Deploy > Manage deployments > edit > New version so the URL stays the same.
  */
+var SHEET_ID = '1-JizjtlCB59igNpr6DEybLd_Fzd9xAtVbPIfaHphgLk'; // the "Reviews on site." spreadsheet
 var SHEET_NAME = 'Reviews';
 var MAX_LEN = 400;       // characters per note
 var LIST_LIMIT = 120;    // how many notes the site loads
@@ -20,7 +21,7 @@ var MIN_FILL_MS = 2500;  // a person needs at least this long to write something
 var HOURLY_CAP = 40;     // notes accepted per hour across the whole site (stops a flood)
 
 function sheet_() {
-  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var ss = SpreadsheetApp.openById(SHEET_ID);
   var sh = ss.getSheetByName(SHEET_NAME) || ss.insertSheet(SHEET_NAME);
   if (sh.getLastRow() === 0) {
     sh.appendRow(['id', 'timestamp', 'name', 'rating', 'text', 'hidden']);
