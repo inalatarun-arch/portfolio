@@ -218,19 +218,22 @@ function mount(seq,D){
   function update(S,R){
     if(!R||!lay.flat)return;
     /* laptop */
-    var lf=clamp(S.lu,0,1)*(1-clamp(S.lb,0,1));
+    var lf=clamp(S.lu,0,1)*(1-clamp(S.lb,0,1)),lo=clamp(S.lu/.18,0,1)*(1-clamp((S.lb-.5)/.5,0,1));
     dim.style.opacity=(clamp(S.dim,0,1)*.7).toFixed(3);dim.style.display=S.dim>.004?'block':'none';
-    lap.style.visibility='visible';lap.style.opacity='1';lap.style.transform=affine(R.lap,lay.flat,lf,lf>.999)
+    if(lo<=.003){lap.style.visibility='hidden'}
+    else{lap.style.visibility='visible';lap.style.opacity=lo.toFixed(3);lap.style.transform=affine(R.lap,lay.flat,lf,lf>.999)}
     var os_=clamp(S.os,0,1)*(1-clamp((S.lb-.1)/.4,0,1));
     desk.style.opacity=os_.toFixed(3);boot.style.opacity=1;
     cap.style.opacity=(clamp(S.cap,0,1)*(1-clamp(S.lb*3,0,1))).toFixed(3);
     setLive(lf>.995&&os_>.97&&S.lb<.002);
     /* phone */
-    var pf=clamp(S.pu,0,1);ph.style.visibility='visible';ph.style.opacity='1';
+    var pf=clamp(S.pu,0,1),po=clamp(S.pu/.16,0,1);
+    if(po<=.003){ph.style.visibility='hidden'}
+    else{ph.style.visibility='visible';ph.style.opacity=po.toFixed(3);
       var P=R.ph,F2=lay.pflat,w=gm(P.w,F2.w,pf),h=gm(P.h,F2.h,pf),cx=lerp(P.x+P.w/2,F2.cx,pf),cy=lerp(P.y+P.h/2,F2.cy,pf),a=w/F2.w,d=h/F2.h,e=cx-w/2,g=cy-h/2;
       if(pf>.999){e=Math.round(e);g=Math.round(g)}
       ph.style.transform='matrix('+a.toFixed(5)+',0,0,'+d.toFixed(5)+','+e.toFixed(2)+','+g.toFixed(2)+')';
-      $('.ph-ui',ph).style.opacity=clamp((S.px||0),0,1).toFixed(3);
+      $('.ph-ui',ph).style.opacity=clamp((S.px||0),0,1).toFixed(3)}
     setPhLive(pf>.995&&(S.px||0)>.9)}
 
   function destroy(){
