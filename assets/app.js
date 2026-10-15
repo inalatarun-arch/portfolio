@@ -252,9 +252,7 @@ function pageWork(){
     '<h1 data-hl>'+headline(rich(W.headline||''))+'</h1>'+
     '<div data-r><p class="hero-sub">'+esc(W.sub||'')+' '+esc('Five years taking products from first problem to shipped release.')+'</p>'+
       '<div class="hero-cta"><a class="btn btn-primary" data-feel data-magnet href="'+esc(resumeHref())+'" download>Download resume<span class="dot">'+ic('down')+'</span></a></div></div>'+
-  '</div></div>'+bayH+'</section>'+
-  '<div class="after">'+
-  '</div>';
+  '</div></div>'+bayH+'</section>';
 }
 
 function pageContact(mode){
