@@ -172,19 +172,7 @@ function drawPerson(o,pose){
   x.drawImage(headSprite(),hxp,hyp);
   var ex=hxp+15,ey=hyp+9;
   if(pose.blink){P1(x,ex,ey+1,'#2a1a12')}else{R(x,ex,ey,1,2,'#120c09');P1(x,ex-1,ey,C.skinL)}
-  /* unmistakable over-ear headphones: padded headband above the hair, large earcups at both sides */
-  if(pose.headphones){
-    /* curved padded band */
-    LN(x,hxp+2,hyp+7,hxp+2,hyp+3,2,'#171c27');
-    LN(x,hxp+2,hyp+3,hxp+5,hyp,2,'#171c27');
-    LN(x,hxp+5,hyp,hxp+10,hyp,2,'#171c27');
-    LN(x,hxp+10,hyp,hxp+13,hyp+3,2,'#171c27');
-    LN(x,hxp+13,hyp+3,hxp+13,hyp+7,2,'#171c27');
-    /* left and right cushioned earcups, clearly larger than glasses arms */
-    R(x,hxp+1,hyp+6,4,8,'#171c27');R(x,hxp+2,hyp+7,2,6,'#527aa9');
-    R(x,hxp+13,hyp+6,4,8,'#171c27');R(x,hxp+14,hyp+7,2,6,'#527aa9');
-    P1(x,hxp+3,hyp+9,'#a9c8ed');P1(x,hxp+15,hyp+9,'#a9c8ed');
-  }
+  /* headphones removed: keep the character's original head silhouette */
   /* camera hanging on a strap */
   if(pose.cam){camera(x,hxp+pose.cam.x,hyp+pose.cam.y)}
   return {head:{x:hxp,y:hyp},sh:{x:sx,y:sy},nj:nj}}
@@ -463,12 +451,22 @@ function buildPark(W,H){
       var tipU=d0+2+Math.floor(lp*30)/2+(Math.sin(t*26)>0?0:.5),tipF=(tipU-d0)/(d1-d0),
           pen={x:Math.round(tipU)-2,y:Math.round(lerp(-9,-13,tipF))+1+line*2-3+(Math.sin(t*26)>.2?1:0)};
       var camPos={x:lerp(5,20,e),y:lerp(29,10,e)};
-      var pose={lean:Math.round(lerp(2,0,e)),head:{dx:Math.round(lerp(2,1,e)),dy:Math.round(lerp(2,-1,e)+Math.sin(t*4.2)*1.2)},headphones:true,blink:(t%3.4)<.13||(ph.s>5.0&&ph.s<5.3),dir:1,
+      var pose={lean:Math.round(lerp(2,0,e)),head:{dx:Math.round(lerp(2,1,e)),dy:Math.round(lerp(2,-1,e)+Math.sin(t*4.2)*1.2)},blink:(t%3.4)<.13||(ph.s>5.0&&ph.s<5.3),dir:1,
         legs:{kx:21,ky:0,ax:23,ay:22,foot:'hang'},
         nh:{x:Math.round(lerp(pen.x,11,e)),y:Math.round(lerp(pen.y,-33,e))},
         fh:{x:Math.round(lerp(22,17,e)),y:Math.round(lerp(-10,-34,e))},
         strap:e<.02?{x:3,y:-9}:null,cam:e<.02?null:{x:camPos.x,y:camPos.y}};
       var info=drawPerson(person,pose);
+      /* portable stereo cassette player beside the seated character */
+      R(person.x+30,person.y+1,22,16,'#222735');
+      R(person.x+31,person.y+2,20,14,'#657487');
+      R(person.x+32,person.y+3,18,12,'#aeb9c5');
+      R(person.x+34,person.y+4,14,5,'#30394a');
+      R(person.x+35,person.y+5,4,3,'#101722');R(person.x+43,person.y+5,4,3,'#101722');
+      P1(person.x+36,person.y+5,'#7fa6d2');P1(person.x+44,person.y+5,'#7fa6d2');
+      R(person.x+34,person.y+10,3,2,'#d5dce3');R(person.x+39,person.y+10,3,2,'#d5dce3');
+      R(person.x+44,person.y+10,4,2,'#3a4659');
+
       /* pen */
       if(e<.5){var hh=info.nj;LN(person.x,hh.hx,hh.hy,hh.hx+3,hh.hy+3,1,'#d5360c');P1(person.x,hh.hx+3,hh.hy+3,'#1b1730')}
       outline(person,C.ink);
