@@ -141,7 +141,9 @@ function render(k,first){
   cleanups.forEach(function(f){try{f()}catch(e){}});cleanups=[];
   var R=ROUTES[k],mode=R.m,main=$('#main');
   document.body.classList.toggle('landing',k==='welcome');
-  if(window.Stage)Stage.set({welcome:'landing',work:'work',writings:'personal'}[k]||'off',{first:first});
+  if(window.Stage){Stage.parkMode(k==='photography'?'camera':(k==='writings'?'diary':null));
+    Stage.set({welcome:'landing',work:'work',writings:'personal',photography:'personal'}[k]||'off',{first:first})}
+  if(window.Boombox)Boombox.setMode(mode==='work'?'work':(mode==='personal'?'personal':'landing'));
   var links=mode?MODES[mode].map(function(r){var on=r===k;return '<a href="#/'+r+'"'+(on?' class="on" aria-current="page"':'')+'>'+ROUTES[r].l+'</a>'}).join(''):'';
   $('#nav').innerHTML=links;
   var mm=mode?MODES[mode]:MODES.work;
@@ -288,8 +290,8 @@ function pageWritings(){
   if(langs.indexOf(wFilter)<0)wFilter='All';
   var btns=langs.map(function(l){var n=l==='All'?L.length:L.filter(function(w){return w.lang===l}).length;
     return '<button type="button" data-f="'+esc(l)+'" aria-pressed="'+(l===wFilter)+'">'+esc(l)+'<span class="mono">'+n+'</span></button>'}).join('');
-  return '<section class="hero hero-scene hero-short"><div class="wrap hero-in"><h1 data-hl>'+headline('Writings')+'</h1>'+
-    '<div data-r><p class="hero-sub">Poems, thoughts and journal pages, written over the years in English, Telugu and Hindi.</p></div></div></section>'+
+  return '<section class="seq pseq" id="pseq"><div class="seq-scrim" aria-hidden="true"></div><div class="hero hero-scene hero-short"><div class="wrap hero-in"><h1 data-hl>'+headline('Writings')+'</h1>'+
+    '<div data-r><p class="hero-sub">Poems, thoughts and journal pages, written over the years in English, Telugu and Hindi.</p><p class="hero-cue">'+ic('arrow-d')+'Scroll, and the diary opens.</p></div></div></div></section>'+
     '<div class="after"><section class="wrap"><div class="after-bar"><div class="filters" role="group" aria-label="Filter by language" data-r><span class="f-ind" aria-hidden="true"></span>'+btns+'</div></div>'+
     '<div id="wwrap">'+wCards()+'</div></section></div>';
 }
@@ -307,9 +309,9 @@ function pagePhotos(){
     return '<section class="pgroup" aria-labelledby="pg-'+esc(g.id)+'"><header class="pg-h" data-r><div><h2 id="pg-'+esc(g.id)+'">'+esc(g.name)+'</h2><p>'+esc(g.note||'')+'</p></div>'+
       '<div class="pg-meta"><span class="pg-sw" aria-hidden="true">'+(g.sw||[]).map(function(c){return '<i style="background:'+esc(c)+'"></i>'}).join('')+'</span><span class="mono">'+ps.length+'</span></div></header>'+
       '<div class="pgrid">'+cards+'</div></section>'}).join('');
-  return '<section class="wrap"><div class="p-hero"><div><h1 data-hl>'+headline('Photographs')+'</h1>'+
-    '<p data-r>Streets, buildings and light, as I find them. Grouped by the colour that carries each frame.</p></div></div>'+
-    (P.length?'<div class="pgroups" oncontextmenu="return false">'+body+'</div>':empty)+'</section>';
+  return '<section class="seq pseq" id="pseq"><div class="seq-scrim" aria-hidden="true"></div><div class="hero hero-scene hero-short"><div class="wrap hero-in"><h1 data-hl>'+headline('Photographs')+'</h1>'+
+    '<div data-r><p class="hero-sub">Streets, buildings and light, as I find them. Grouped by the colour that carries each frame.</p><p class="hero-cue">'+ic('arrow-d')+'Scroll, and the camera comes up.</p></div></div></div></section>'+
+    '<div class="after"><section class="wrap">'+(P.length?'<div class="pgroups" oncontextmenu="return false">'+body+'</div>':empty)+'</section></div>';
 }
 
 /* =====================================================================
@@ -446,9 +448,18 @@ function mountSeq(scope,rm){
   cleanups.push(function(){clearTimeout(rt);window.removeEventListener('resize',onR);teardown();if(dev)dev.destroy();seq.classList.remove('seq-live');Stage.seqLive(false);Stage.seqEnd()});
 }
 
+/* Personal pages: the camera pushes into the diary / camera (see assets/personal.js) */
+function mountPersonal(scope,rm){
+  var k=routeKey();if((k!=='writings'&&k!=='photography')||!window.Personal)return;
+  var h=window.Personal.mountSeq(scope,k==='writings'?'writings':'photos',{$:$,$$:$$,esc:esc,ic:ic,SITE:SITE,Spring:Spring,lock:lock,reduced:reduced,rm:rm,ST:ST,LANG:LANG,kindLabel:kindLabel,photoSrc:photoSrc,realPhotos:realPhotos,
+    say:function(t){var l=$('#live');if(l)l.textContent=t}});
+  if(h)cleanups.push(h.destroy);
+}
+
 function enhance(scope){
   var rm=reduced();
   mountSeq(scope,rm);
+  mountPersonal(scope,rm);
   // headlines rise word by word, quickly (the whole line settles in about 0.7s)
   $$('[data-hl]',scope).forEach(function(h){
     var wi=$$('.wi',h);if(!G)return;
@@ -855,8 +866,8 @@ function field(cv){
 $('#yr').textContent=new Date().getFullYear();
 var footReach=null;
 function fillReach(){var h=$('#footReach');h.innerHTML=reachHTML('foot','foot',{pop:true});footReach=initReach($('[data-reach]',h))}
-function start(){fillReach();route()}
+function start(){fillReach();if(window.Boombox)Boombox.init(SITE);route()}
 function fail(){root.classList.remove('js')}   // show the static fallback instead of a blank page
-if(window.fetch){fetch('content.json?v=7',{cache:'no-cache'}).then(function(r){return r.ok?r.json():Promise.reject()}).then(function(d){
+if(window.fetch){fetch('content.json?v=8',{cache:'no-cache'}).then(function(r){return r.ok?r.json():Promise.reject()}).then(function(d){
   if(d&&typeof d==='object'){SITE=d;start()}else fail()}).catch(fail)}else fail();
 })();

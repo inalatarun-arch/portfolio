@@ -1,0 +1,172 @@
+/* ==========================================================================
+   Personal side: the diary shelf (Writings), the camera shelf (Photographs) and the header boombox.
+   Built by assets/personal.js and assets/boombox.js. Same pattern as the Work devices (see "Devices" in styles.css):
+   a flat HTML copy sits exactly over a pixel object in the park scene, then grows into something you can use.
+   Colours inside the diary pages and the camera are deliberately independent of the site theme (they are objects, not UI).
+   ========================================================================== */
+
+/* ---------- hero cue under the Writings / Photographs headline ---------- */
+.hero-cue{display:inline-flex;align-items:center;gap:.5rem;margin-top:1.25rem;font-family:var(--mono);font-size:.8125rem;font-weight:500;letter-spacing:.05em;text-transform:uppercase;color:var(--fg)}
+.hero-cue .ic{width:1rem;height:1rem;color:var(--accent)}
+@media (prefers-reduced-motion:no-preference){.hero-cue .ic{animation:cueBob 1.8s ease-in-out infinite}}
+@keyframes cueBob{0%,100%{transform:translateY(0)}50%{transform:translateY(.25rem)}}
+.seq:not(.seq-live) .hero-cue{display:none}
+
+/* ---------- the overlay ---------- */
+.ps{display:none;position:absolute;inset:0;z-index:4;pointer-events:none;overflow:hidden}
+.seq-live .ps{display:block}
+.ps-dim{position:absolute;inset:0;display:none;opacity:0;background:radial-gradient(120% 90% at 50% 45%,rgba(8,10,20,.5),rgba(4,5,12,.9))}
+.ps-shelf{position:absolute;left:0;top:0;transform-origin:0 0;visibility:hidden;will-change:transform,opacity}
+.ps-sheet{position:absolute;inset:0;border-radius:18px}
+.ps-sb{box-shadow:0 0 0 1px rgba(255,255,255,.1),0 40px 90px -30px rgba(0,0,0,.75);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+/* invisible copy of the layout: the slots tell personal.js where each tile belongs */
+.ps-grid{position:absolute;left:0;top:0;visibility:hidden;pointer-events:none;display:grid;justify-items:center;align-content:start;grid-template-columns:repeat(3,1fr)}
+.ps-photos .ps-grid{grid-template-columns:repeat(5,1fr)}
+.seq-narrow .ps-photos .ps-grid{grid-template-columns:repeat(2,1fr)}
+.ps-slot{flex:none}
+
+.ps-cap{position:absolute;transform:translateX(-50%);display:inline-flex;align-items:center;gap:10px;padding:7px 16px 7px 12px;border-radius:999px;opacity:0;white-space:nowrap;
+  background:rgba(10,14,28,.62);border:1px solid rgba(255,255,255,.18);color:#e9eefc;font-size:13px;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.ps-cap::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--accent)}
+.ps.is-open .ps-cap{opacity:0!important;transition:opacity .2s}
+.ps-cap span{font:600 11.5px var(--mono);letter-spacing:.07em;text-transform:uppercase;color:#ffb596}
+
+/* ---------- one tile: a diary or a camera ---------- */
+.pit{position:absolute;left:0;top:0;visibility:hidden;color:#f6efe3;-webkit-tap-highlight-color:transparent}
+.pit.is-front{z-index:20;pointer-events:auto}
+.pit-open{position:absolute;inset:-6px -6px -2px;z-index:6;padding:0;border:0;border-radius:12px;background:transparent;cursor:pointer;pointer-events:none}
+.ps.is-live .pit-open{pointer-events:auto}
+.pit.is-front .pit-open{pointer-events:none}
+.pit-open:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.pit-lab{position:absolute;left:-10%;right:-10%;top:100%;margin-top:12px;text-align:center;line-height:1.25;pointer-events:none}
+.pit-lab b{display:block;font:650 1.0625rem/1.2 var(--serif);letter-spacing:-.01em}
+.pit-lab span{display:block;margin-top:3px;font:500 .75rem var(--mono);letter-spacing:.05em;text-transform:uppercase;color:rgba(246,239,227,.68)}
+.pit canvas{display:block;width:100%;height:100%;image-rendering:pixelated;image-rendering:crisp-edges;image-rendering:pixelated}
+/* the lift on hover / on the ghost pointer's visit is the independent `translate` property, so it never fights the scroll tweens on `transform` */
+.bk-3d,.cm-3d{translate:0 0;transition:translate .35s cubic-bezier(.2,.8,.2,1),filter .35s}
+.pit.is-hint .bk-3d,.pit.is-hint .cm-3d{translate:0 -8px;filter:drop-shadow(0 12px 18px rgba(0,0,0,.45))}
+@media (hover:hover){.ps.is-live .pit:not(.is-front):hover .bk-3d,.ps.is-live .pit:not(.is-front):hover .cm-3d{translate:0 -8px;filter:drop-shadow(0 12px 18px rgba(0,0,0,.45))}}
+.pit.is-front .bk-3d,.pit.is-front .cm-3d{translate:0 0;filter:none}
+
+/* ---------- diary ---------- */
+.bk-3d{position:absolute;inset:0;perspective:1800px;transform-style:preserve-3d}
+.bk-cover{position:absolute;inset:0;transform-origin:0 50%;transform-style:preserve-3d;will-change:transform,opacity}
+.cf{position:absolute;inset:0;-webkit-backface-visibility:hidden;backface-visibility:hidden;border-radius:2px 6px 6px 2px;overflow:hidden}
+.cf-f canvas{border-radius:inherit}
+.cf-b{transform:rotateY(180deg);background:linear-gradient(90deg,var(--bkd),var(--bk) 14%,var(--bk));box-shadow:inset 0 0 0 3px var(--bkt)}
+.bk-full{position:absolute;inset:0;opacity:0;will-change:opacity}
+.bk-frame{position:absolute;inset:0;display:flex;flex-direction:column;border-radius:4px 14px 14px 4px;overflow:hidden;background:#f4ead6;color:#2a2118;
+  box-shadow:0 0 0 clamp(5px,1.1vw,9px) var(--bk),0 0 0 clamp(6px,1.2vw,10px) var(--bkd),0 40px 80px -24px rgba(0,0,0,.7)}
+.bk-frame::before{content:"";position:absolute;left:0;top:0;bottom:0;width:clamp(14px,2.4vw,24px);z-index:4;pointer-events:none;background:linear-gradient(90deg,rgba(60,38,14,.34),rgba(60,38,14,0))}
+.bk-bar{position:relative;z-index:5;flex:none;display:flex;align-items:center;gap:.75rem;padding:.625rem .875rem .625rem clamp(1.25rem,3vw,2rem);border-bottom:1px solid rgba(60,38,14,.16);background:linear-gradient(#efe2c8,#f4ead6)}
+.bk-ttl{margin-right:auto;font:650 .9375rem/1 var(--serif);letter-spacing:-.01em;color:#2a2118}
+.bk-pos{font:600 .75rem var(--mono);letter-spacing:.06em;color:#6b5a44}
+.bk-x,.cm-x{position:relative;flex:none;display:grid;place-items:center;width:2.25rem;height:2.25rem;padding:0;border:1px solid rgba(60,38,14,.28);border-radius:50%;background:#fbf6ea;color:#2a2118;cursor:pointer;transition:transform .2s,background .2s}
+.bk-x::after,.cm-x::after{content:"";position:absolute;inset:-.4rem}
+.bk-x i,.cm-x i{position:relative;width:.875rem;height:.875rem;display:block}
+.bk-x i::before,.bk-x i::after,.cm-x i::before,.cm-x i::after{content:"";position:absolute;left:50%;top:50%;width:1rem;height:2px;margin:-1px 0 0 -.5rem;border-radius:1px;background:currentColor;transform:rotate(45deg)}
+.bk-x i::after,.cm-x i::after{transform:rotate(-45deg)}
+.bk-x:hover,.cm-x:hover{background:#fff}
+.bk-x:active,.cm-x:active{transform:scale(.92)}
+.bk-x:focus-visible,.cm-x:focus-visible,.bk-btn:focus-visible,.pg-in:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.bk-stage{position:relative;flex:1;min-height:0;perspective:2000px;overflow:hidden;background:#f4ead6}
+.pg{position:absolute;inset:0;transform-origin:0 50%;-webkit-backface-visibility:hidden;backface-visibility:hidden;background:#f4ead6;will-change:transform,opacity}
+.pg-b{opacity:0}
+.pg-in{position:absolute;inset:0 0 2rem 0;overflow-y:auto;overscroll-behavior:contain;padding:clamp(1.25rem,3vw,2rem) clamp(1.25rem,4vw,2.5rem) 1rem clamp(1.75rem,4.5vw,3rem);
+  background-image:repeating-linear-gradient(transparent 0 1.6em,rgba(110,80,40,.07) 1.6em calc(1.6em + 1px))}
+.pg-meta{display:flex;gap:.75rem;margin-bottom:.875rem;font:600 .6875rem var(--mono);letter-spacing:.09em;text-transform:uppercase;color:#8a6f4c}
+.pg-meta span+span::before{content:"";display:inline-block;width:.3125rem;height:.3125rem;margin-right:.75rem;vertical-align:middle;border-radius:50%;background:var(--accent)}
+.pg-h{margin:0 0 1rem;font:700 clamp(1.375rem,3.2vw,2rem)/1.15 var(--serif);letter-spacing:-.02em;color:#1d150d}
+.pg-verse{font:400 clamp(1rem,1.9vw,1.1875rem)/1.75 var(--serif);color:#2a2118;white-space:normal}
+.pg-verse p{margin:0}
+.pg-verse .gap{height:1.1em}
+.pg-in[lang="te"] .pg-verse,.pg-in[lang="hi"] .pg-verse{line-height:1.9}
+.pg-fo{position:absolute;left:0;right:0;bottom:.5rem;text-align:center;font:600 .75rem var(--mono);color:#8a6f4c;pointer-events:none}
+.pg-sh{position:absolute;inset:0;pointer-events:none;opacity:0;background:linear-gradient(90deg,rgba(40,24,6,.55),rgba(40,24,6,0) 70%)}
+.bk-nav{position:relative;z-index:5;flex:none;display:flex;align-items:center;justify-content:space-between;gap:.75rem;padding:.625rem .875rem .625rem clamp(1.25rem,3vw,2rem);border-top:1px solid rgba(60,38,14,.16);background:linear-gradient(#f4ead6,#efe2c8)}
+.bk-hint{font:500 .6875rem var(--mono);letter-spacing:.07em;text-transform:uppercase;color:#8a6f4c}
+.bk-btn{display:inline-flex;align-items:center;gap:.5rem;min-height:2.75rem;padding:0 1.125rem;border:1px solid rgba(60,38,14,.3);border-radius:999px;background:#fbf6ea;color:#2a2118;font:600 .9375rem var(--sans);cursor:pointer;transition:transform .15s,background .2s,opacity .2s}
+.bk-btn .ic{width:1.0625rem;height:1.0625rem}
+.bk-btn:hover:not(:disabled){background:#fff}
+.bk-btn:active:not(:disabled){transform:scale(.95)}
+.bk-btn:disabled{opacity:.35;cursor:default}
+.bk-btn[data-next]{background:var(--bk);border-color:var(--bkd);color:#fff}
+.bk-btn[data-next]:hover:not(:disabled){background:var(--bkl)}
+@media (max-width:40rem){.bk-hint{display:none}.bk-btn{padding:0 1rem}}
+
+/* ---------- camera ---------- */
+.cm-3d{position:absolute;inset:0;perspective:1600px;transform:translateY(var(--lift,0))}
+.cm-flip{position:absolute;inset:0;transform-style:preserve-3d;will-change:transform}
+.cm-face{position:absolute;inset:0;-webkit-backface-visibility:hidden;backface-visibility:hidden}
+.cm-bk{transform:rotateY(180deg)}
+.cm-lcd{position:absolute;overflow:hidden;background:#05070a;container-type:size}
+.cm-scr{position:absolute;inset:0;opacity:0}
+.cm-scr img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;will-change:transform,opacity,filter;user-select:none;-webkit-user-drag:none}
+.cm-grid{position:absolute;inset:0;pointer-events:none;opacity:.22;
+  background:linear-gradient(90deg,transparent calc(33.33% - .5px),#fff calc(33.33% - .5px) calc(33.33% + .5px),transparent calc(33.33% + .5px) calc(66.66% - .5px),#fff calc(66.66% - .5px) calc(66.66% + .5px),transparent calc(66.66% + .5px)),
+  linear-gradient(transparent calc(33.33% - .5px),#fff calc(33.33% - .5px) calc(33.33% + .5px),transparent calc(33.33% + .5px) calc(66.66% - .5px),#fff calc(66.66% - .5px) calc(66.66% + .5px),transparent calc(66.66% + .5px))}
+.cm-flash{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none}
+.cm-osd{position:absolute;left:0;right:0;bottom:0;display:flex;justify-content:space-between;gap:.5em;padding:1.6em .6em .4em;font:600 clamp(7px,4.4cqw,12px)/1 var(--mono);letter-spacing:.06em;color:#fff;text-transform:uppercase;pointer-events:none;
+  background:linear-gradient(transparent,rgba(0,0,0,.65));text-shadow:0 1px 2px rgba(0,0,0,.6)}
+.cm-g{overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.cm-b{position:absolute;padding:0;border:0;background:transparent;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.cm-b::after{content:"";position:absolute;inset:-.5rem -.2rem}
+.cm-b i{position:absolute;inset:-2px;border-radius:2px;transition:background .15s,box-shadow .15s}
+.cm-b:hover i{box-shadow:0 0 0 2px rgba(255,255,255,.55)}
+.cm-b.dn i{background:rgba(0,0,0,.4)}
+.cm-b:disabled{cursor:default;opacity:.4}
+.cm-b:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.cm-x{position:absolute;left:50%;top:100%;margin:1rem 0 0 -1.125rem;width:2.5rem;height:2.5rem;opacity:0;pointer-events:none;border-color:rgba(255,255,255,.4);background:rgba(251,246,234,.96)}
+
+/* ---------- reduced transparency / contrast ---------- */
+@media (prefers-reduced-transparency:reduce){.ps-sb{-webkit-backdrop-filter:none;backdrop-filter:none}.ps-cap{-webkit-backdrop-filter:none;backdrop-filter:none;background:#0a0e1c}}
+@media (prefers-contrast:more){.ps-cap{background:#0a0e1c;border-color:#fff}.pit-lab span{color:#fff}}
+@media (prefers-reduced-motion:reduce){.bk-3d,.cm-3d{transition:none}}
+
+/* ==========================================================================
+   Boombox (header). The canvas is 72x34 pixels drawn by boombox.js; the HTML buttons sit exactly over the pixel buttons.
+   ========================================================================== */
+.bb{--k:2;position:relative;flex:none;display:flex;align-items:center;gap:.75rem;margin-left:.75rem;margin-right:auto}
+.bb[hidden]{display:none}
+body.has-bb .hdr-row .brand{margin-right:0}
+.bb-box{position:relative;width:calc(72px*var(--k));height:calc(34px*var(--k));flex:none;margin-top:2px}
+#bbCv{display:block;width:100%;height:100%;image-rendering:pixelated;image-rendering:crisp-edges;image-rendering:pixelated}
+.bb-b{position:absolute;top:calc(24px*var(--k));width:calc(6px*var(--k));height:calc(5px*var(--k));padding:0;border:0;border-radius:1px;background:transparent;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.bb-prev{left:calc(27px*var(--k))}.bb-play{left:calc(34px*var(--k))}.bb-next{left:calc(41px*var(--k))}
+.bb-b::after{content:"";position:absolute;inset:-.4rem -1px}
+.bb-b:hover{box-shadow:0 0 0 2px color-mix(in srgb,var(--accent) 80%,#fff)}
+.bb-b:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.bb-np{position:absolute;left:0;top:calc(100% - 2px);z-index:3;max-width:min(20rem,70vw);margin:0;padding:.3125rem .75rem;border-radius:var(--pill);border:.0625rem solid var(--line-2);
+  background:color-mix(in srgb,var(--bg) 92%,transparent);-webkit-backdrop-filter:blur(.75rem);backdrop-filter:blur(.75rem);color:var(--fg);font:500 .8125rem/1.3 var(--sans);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  opacity:0;transform:translateY(-.25rem);pointer-events:none;transition:opacity .25s,transform .25s}
+.bb.np-on .bb-np,.bb[data-state="blocked"] .bb-np,.bb[data-state="error"] .bb-np,.bb:hover .bb-np:not(:empty),.bb:focus-within .bb-np:not(:empty){opacity:1;transform:none}
+.bb[data-state="loading"] .bb-np:empty{display:none}
+@media (prefers-reduced-motion:no-preference){
+  .bb[data-state="blocked"] .bb-box{animation:bbNudge 2.4s ease-in-out infinite}
+}
+@keyframes bbNudge{0%,86%,100%{transform:none}90%{transform:translateY(-3px)}94%{transform:translateY(0)}97%{transform:translateY(-1.5px)}}
+
+/* the cassette: a pixel tape that is plainly a button */
+.bb-tape{position:relative;flex:none;display:inline-flex;align-items:center;gap:.5rem;min-height:2.75rem;padding:.1875rem .875rem .1875rem .375rem;border-radius:var(--pill);
+  border:.09375rem dashed color-mix(in srgb,var(--fg) 45%,transparent);background:color-mix(in srgb,var(--bg) 82%,transparent);-webkit-backdrop-filter:blur(.75rem);backdrop-filter:blur(.75rem);color:var(--fg);
+  transition:border-color .2s,background .2s,translate .25s cubic-bezier(.2,.8,.2,1)}
+.bb-tape canvas{display:block;width:calc(26px*var(--k));height:calc(18px*var(--k));image-rendering:pixelated;image-rendering:crisp-edges;image-rendering:pixelated;filter:drop-shadow(0 2px 0 rgba(0,0,0,.25))}
+.bb-tl{display:inline-flex;align-items:center;gap:.3125rem;font:600 .8125rem/1.1 var(--sans);white-space:nowrap}
+.bb-tip{position:absolute;right:0;top:calc(100% + .375rem);z-index:3;padding:.3125rem .75rem;border-radius:var(--pill);background:var(--blk);color:var(--on-blk);font:500 .8125rem/1.3 var(--sans);white-space:nowrap;
+  opacity:0;transform:translateY(-.25rem);pointer-events:none;transition:opacity .2s,transform .2s}
+.bb.tape-on .bb-tip{opacity:1;transform:none}
+.bb-tape:hover,.bb-tape:focus-visible{border-style:solid;border-color:var(--accent);background:color-mix(in srgb,var(--bg) 94%,transparent);translate:0 -1px}
+.bb-tape:active{translate:0 1px;transition-duration:.08s}
+.bb-tape:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.bb-yt{position:absolute;left:-400px;top:0;width:200px;height:200px;overflow:hidden;opacity:.01;pointer-events:none}
+
+/* narrower headers: the name gives way to the mark, then the tape loses its label */
+@media (max-width:67.5rem){.bb-tl{display:none}.bb-tape{padding:.1875rem .375rem}}
+@media (max-width:53.75rem){
+  body.has-bb .brand-name{display:none}
+  body.landing.has-bb .brand{padding:.25rem}
+  .bb{margin-left:.5rem;gap:.5rem}
+  .bb-tip{right:auto;left:0}
+}
+@media (max-width:26.25rem){.bb{--k:1.5}.bb-tape{padding:.1875rem .25rem}}
+@media (prefers-reduced-motion:reduce){.bb-tape,.bb-np,.bb-tip{transition:none}}

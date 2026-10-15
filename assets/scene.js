@@ -305,7 +305,7 @@ function buildOffice(W,H){
       ctx.restore();
     }};
 }
-var j2=0,P_OFFICE={x:-34,y:0};
+var j2=0,P_OFFICE={x:-34,y:0},PARK_MODE=null;
 
 /* ===================================================================== PARK (Personal) */
 function ease(t){t=clamp(t,0,1);return t*t*(3-2*t)}
@@ -406,6 +406,9 @@ function buildPark(W,H){
 
   var T=9;
   function phase(t){var s=t%T,e=0,fl=0,up=0;
+    /* Personal pages pin the pose: Writings keeps him writing, Photographs keeps the camera at his eye with a flash now and then */
+    if(PARK_MODE==='diary')return {s:t%3.6,e:0,flash:0};
+    if(PARK_MODE==='camera'){var cs=t%4;return {s:5.2,e:1,flash:cs<.5?1-cs/.5:0}}
     if(s<3.6)e=0;else if(s<4.3)e=ease((s-3.6)/.7);else if(s<5.9)e=1;else if(s<6.6)e=1-ease((s-5.9)/.7);
     if(s>5.0&&s<5.5)fl=1-(s-5.0)/.5;
     return {s:s,e:e,flash:fl}}
@@ -441,7 +444,7 @@ function buildPark(W,H){
         for(k=1;k<=3;k++)if(i%2===0)P1(ctx,HX-i,yt+k*1.5|0,'#d9cfb8')}
       R(ctx,HX-d0,-9,1,8,'#a2481c');R(ctx,HX-d1,-13,1,8,'#a2481c');R(ctx,HX-17,-11,1,8,'#c9b88e');
       /* ink: earlier lines complete, current line grows with the pen; fades out before the loop restarts */
-      var fade=ph.s>8.6?clamp(1-(ph.s-8.6)/.4,0,1):1;ctx.globalAlpha=fade;
+      var fade=PARK_MODE==='diary'?(ph.s>3.2?clamp(1-(ph.s-3.2)/.4,0,1):1):(ph.s>8.6?clamp(1-(ph.s-8.6)/.4,0,1):1);ctx.globalAlpha=fade;
       for(var ln=0;ln<=line;ln++){var len=ln<line?15:Math.floor(lp*15);
         for(k=0;k<len;k++){var uu=d0+1+k,ff=(uu-d0)/(d1-d0),yy=Math.round(lerp(-9,-13,ff))+1+ln*2+((k*7+ln*3)%5<2?1:0)-0;
           if((k%4)!==3)P1(ctx,HX-uu,Math.min(yy,Math.round(lerp(-3,-7,ff))),'#2b3a7a')}}
@@ -826,9 +829,28 @@ var Stage=(function(){
   function seqLive(on){live=!!on}
   function seqEnd(){live=false;if(desk){desk.d.style.display='none';desk.d.style.opacity=0}
     if(geo&&panels.office&&(mode==='work'))put('office',geo.H)}
+  /* ---- Personal: the camera pushes into the diary on his lap (Writings) or the camera at his eye (Photographs).
+     World points are art pixels from the park origin before the scene is mirrored: a world x lands on screen at
+     fx*vw-(3+x)*k and a world y at fy*vh+y*k.  x,y,w,h is the thing's quad (top-left on screen); shy is how far the right edge sits
+     below the left edge (the diary page is seen slightly from above, so its right side is higher). */
+  var PT={diary:{cx:-21.5,cy:-6,x:-13,y:-9,w:17,h:6,shy:-4},camera:{cx:-19,cy:-38.5,x:-11,y:-43,w:16,h:9,shy:0}};
+  function parkK(kind){var vw=geo.vw,vh=geo.vh,T=PT[kind];
+    return kind==='camera'?q(Math.max(4,Math.min(vw*(geo.narrow?.7:.36)/T.w,vh*.5/T.h))):q(Math.max(4,Math.min(vw*(geo.narrow?.8:.44)/T.w,vh*.62/10)))}
+  function parkBegin(){init();return !!(el&&geo&&panels.park)}
+  function parkApply(z,kind){if(!geo||!panels.park)return;
+    var T=PT[kind],Hp=geo.Hp,vw=geo.vw,vh=geo.vh,kT=parkK(kind),zz=sm(z),k=zz<=0?Hp.k:(zz>=1?kT:Hp.k*Math.pow(kT/Hp.k,zz));
+    var p0x=Hp.fx*vw-(3+T.cx)*Hp.k,p0y=Hp.fy*vh+T.cy*Hp.k,px=lerp(p0x,vw/2,zz),py=lerp(p0y,devTy(),zz);
+    put('park',{fx:(px+(3+T.cx)*k)/vw,fy:(py-T.cy*k)/vh,k:k})}
+  function parkRects(kind){if(!geo||!panels.park)return null;var T=PT[kind],s=panels.park.s,k=s.k,cx=s.fx*geo.vw,cy=s.fy*geo.vh;
+    return {x:cx-(3+T.x)*k,y:cy+T.y*k,w:T.w*k,h:T.h*k,shy:T.shy*k,k:k}}
+  function parkEnd(){live=false;if(geo&&panels.park&&mode==='personal')put('park',geo.Hp)}
+  function parkMode(m){PARK_MODE=m||null}
   function hand(cv){return makeHand(cv)}
   function info(){return geo}
-  return {set:set,zoom:zoom,info:info,init:init,seqBegin:seqBegin,seqApply:seqApply,seqLive:seqLive,seqEnd:seqEnd,hand:hand,devRects:devRects};
+  return {set:set,zoom:zoom,info:info,init:init,seqBegin:seqBegin,seqApply:seqApply,seqLive:seqLive,seqEnd:seqEnd,hand:hand,devRects:devRects,
+    parkBegin:parkBegin,parkApply:parkApply,parkRects:parkRects,parkEnd:parkEnd,parkMode:parkMode,parkK:parkK};
 })();
 window.Stage=Stage;
+/* helpers for the Personal overlays (diaries, cameras, boombox): same palette and drawing primitives as the scenes */
+window.PX={mk:mk,R:R,P1:P1,LN:LN,ell:ell,rng:rng,outline:outline,bay:bay,lerp:lerp,clamp:clamp,sprite:sprite,C:C,sceneNight:sceneNight};
 })();
