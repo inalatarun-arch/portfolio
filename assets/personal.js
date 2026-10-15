@@ -65,10 +65,13 @@ function mount(seq,D,kind){
   root.innerHTML='<div class="ps-dim"></div><div class="ps-shelf"><div class="ps-sheet ps-sa"></div><div class="ps-sheet ps-sb"></div>'+
     '<div class="ps-grid">'+items.map(function(){return '<div class="ps-slot"></div>'}).join('')+'</div>'+
     items.map(isW?bookHTML:camHTML).join('')+'</div>'+
-    '<div class="photo-lightbox" aria-hidden="true" inert><button class="photo-lightbox-x" type="button" aria-label="Close full-screen photograph">×</button><button class="photo-lightbox-prev" type="button" aria-label="Previous photograph">‹</button><figure><img alt=""><figcaption></figcaption></figure><button class="photo-lightbox-next" type="button" aria-label="Next photograph">›</button><span class="photo-lightbox-count" aria-live="polite"></span></div>'+
-    '<p class="ps-cap" aria-hidden="true"><span>'+(isW?'Writings':'Photographs')+'</span> '+(isW?'Open a diary and turn its pages.':'Pick up a camera and look through it.')+'</p>'+
+        '<p class="ps-cap" aria-hidden="true"><span>'+(isW?'Writings':'Photographs')+'</span> '+(isW?'Open a diary and turn its pages.':'Pick up a camera and look through it.')+'</p>'+
     '<span class="dv-cur" aria-hidden="true"><i class="cur-rip"></i><svg viewBox="0 0 20 24"><path d="M2 1.5v18l4.6-4.3 3.1 7 3-1.4-3.1-6.9H16Z" fill="#fff" stroke="#111" stroke-width="1.6" stroke-linejoin="round"/></svg></span>';
   seq.appendChild(root);
+  var lightbox=null;
+  if(!isW){lightbox=document.createElement('div');lightbox.className='photo-lightbox';lightbox.setAttribute('role','dialog');lightbox.setAttribute('aria-modal','true');lightbox.setAttribute('aria-label','Photograph, full screen');lightbox.setAttribute('aria-hidden','true');lightbox.inert=true;
+    lightbox.innerHTML='<button class="photo-lightbox-x" type="button" aria-label="Close full-screen photograph">'+D.ic('x')+'</button><button class="photo-lightbox-prev" type="button" aria-label="Previous photograph">'+D.ic('arrow-l')+'</button><figure><img alt="" draggable="false"><figcaption></figcaption></figure><button class="photo-lightbox-next" type="button" aria-label="Next photograph">'+D.ic('arrow-r')+'</button><span class="photo-lightbox-count" aria-live="polite"></span>';
+    document.body.appendChild(lightbox)}
 
   var dim=$('.ps-dim',root),shelf=$('.ps-shelf',root),sa=$('.ps-sa',root),sb=$('.ps-sb',root),grid=$('.ps-grid',root),slots=$$('.ps-slot',root),cap=$('.ps-cap',root),
       curEl=$('.dv-cur',root),ripEl=$('.cur-rip',root);
@@ -218,29 +221,34 @@ function mount(seq,D,kind){
     G.fromTo(scr,{opacity:0,clipPath:'inset(49% 0% 49% 0%)'},{opacity:1,clipPath:'inset(0% 0% 0% 0%)',duration:.55,ease:'power3.out',overwrite:true,clearProps:'clipPath'});
     G.fromTo(imgs[w.vis],{filter:'brightness(2.2)'},{filter:'brightness(1)',duration:.6,ease:'power2.out'})}
 
-  /* Full-screen photograph viewer: the camera stays behind a soft, blurred scrim. */
-  var lightbox=$('.photo-lightbox',root),lightboxImg=$('figure img',lightbox),lightboxCaption=$('figcaption',lightbox),lightboxCount=$('.photo-lightbox-count',lightbox),lightboxOwner=null;
-  function paintLightbox(){
+  /* Full-screen photograph viewer: the camera stays behind a soft, blurred scrim. It opens from the camera's screen, steps with a
+     slide + fade, follows a swipe, keeps Tab inside, and hands focus back to the screen it came from. */
+  var lightboxImg=lightbox&&$('figure img',lightbox),lightboxCaption=lightbox&&$('figcaption',lightbox),lightboxCount=lightbox&&$('.photo-lightbox-count',lightbox),lightboxOwner=null,lbStep=0;
+  function paintLightbox(dir){
     if(!lightboxOwner)return;
-    var p=lightboxOwner.d.list[lightboxOwner.idx];
-    lightboxImg.src=photoSrc(p);lightboxImg.alt='Photograph '+(lightboxOwner.idx+1)+' of '+lightboxOwner.d.list.length+' in '+lightboxOwner.d.label;
-    lightboxCaption.textContent=lightboxOwner.d.label;
-    lightboxCount.textContent=(lightboxOwner.idx+1)+' / '+lightboxOwner.d.list.length;
-    $('.photo-lightbox-prev',lightbox).disabled=lightboxOwner.idx<=0;
-    $('.photo-lightbox-next',lightbox).disabled=lightboxOwner.idx>=lightboxOwner.d.list.length-1;
-  }
+    var w=lightboxOwner,p=w.d.list[w.idx],src=photoSrc(p),n=++lbStep;
+    var swap=function(){lightboxImg.src=p.thumb||src;lightboxImg.alt='Photograph '+(w.idx+1)+' of '+w.d.list.length+' in '+w.d.label;
+      var big=new Image();big.onload=function(){if(lbStep===n)lightboxImg.src=src};big.src=src;
+      if(G&&!reduced()&&dir)G.fromTo(lightboxImg,{x:dir*36,opacity:0},{x:0,opacity:1,duration:.4,ease:'power3.out',overwrite:true})};
+    lightboxCaption.textContent=w.d.label;lightboxCount.textContent=(w.idx+1)+' / '+w.d.list.length;
+    $('.photo-lightbox-prev',lightbox).disabled=w.idx<=0;$('.photo-lightbox-next',lightbox).disabled=w.idx>=w.d.list.length-1;
+    if(G&&!reduced()&&dir)G.to(lightboxImg,{x:-dir*36,opacity:0,duration:.14,ease:'power2.in',overwrite:true,onComplete:swap});else swap()}
   function openLightbox(w){
-    if(isW||cur!==w.i)return;
-    lightboxOwner=w;paintLightbox();lightbox.classList.add('is-visible');lightbox.inert=false;lightbox.setAttribute('aria-hidden','false');
-    root.classList.add('has-lightbox');D.lock(true);$('.photo-lightbox-x',lightbox).focus({preventScroll:true});
-  }
+    if(isW||cur!==w.i||lightboxOwner)return;
+    lightboxOwner=w;paintLightbox(0);lightbox.inert=false;lightbox.setAttribute('aria-hidden','false');lightbox.classList.add('is-visible');
+    root.classList.add('has-lightbox');D.lock(true);
+    if(G&&!reduced()){lightbox.classList.add('lb-anim');
+      G.to(lightbox,{opacity:1,duration:.28,ease:'power2.out',overwrite:true});
+      G.fromTo(lightboxImg,{scale:.92,y:14,opacity:0},{scale:1,y:0,opacity:1,duration:.6,ease:'expo.out',overwrite:true,clearProps:'scale,y'});
+      G.fromTo($$('.photo-lightbox button,.photo-lightbox-count',lightbox),{opacity:0},{opacity:1,duration:.35,delay:.15,clearProps:'opacity'})}
+    $('.photo-lightbox-x',lightbox).focus({preventScroll:true})}
   function closeLightbox(){
     if(!lightboxOwner)return;
-    lightbox.classList.remove('is-visible');lightbox.inert=true;lightbox.setAttribute('aria-hidden','true');root.classList.remove('has-lightbox');
-    var w=lightboxOwner;lightboxOwner=null;D.lock(cur>=0);
-    var lcd=$('.cm-lcd',w.el);if(lcd)lcd.focus({preventScroll:true});
-  }
-  function lightboxStep(d){if(!lightboxOwner)return;var w=lightboxOwner,to=w.idx+d;if(to<0||to>=w.d.list.length)return;show(w,to,d);paintLightbox()}
+    var w=lightboxOwner;lightboxOwner=null;lbStep++;
+    var done=function(){lightbox.classList.remove('is-visible','lb-anim');lightbox.inert=true;lightbox.setAttribute('aria-hidden','true');if(G)G.set(lightbox,{clearProps:'opacity'});root.classList.remove('has-lightbox');D.lock(cur>=0)};
+    if(G&&!reduced()){G.to(lightboxImg,{scale:.94,opacity:0,duration:.2,ease:'power2.in',overwrite:true});G.to(lightbox,{opacity:0,duration:.26,ease:'power2.in',overwrite:true,onComplete:done})}else done();
+    var lcd=$('.cm-lcd',w.el);if(lcd)lcd.focus({preventScroll:true})}
+  function lightboxStep(d){if(!lightboxOwner)return;var w=lightboxOwner,to=w.idx+d;if(to<0||to>=w.d.list.length)return;show(w,to,d);paintLightbox(d)}
   /* ---------------------------------------------------------------- input */
   function go(w,d){if(isW)turn(w,w.idx+d);else{if(w.idx+d<0||w.idx+d>=w.d.list.length)return;show(w,w.idx+d,d)}}
   function bind(){
@@ -270,19 +278,27 @@ function mount(seq,D,kind){
       tgt.addEventListener('pointerup',function(e){if(e.pointerId!==id)return;id=null;var dx=e.clientX-sx,dy=e.clientY-sy;
         if(Math.abs(dx)>46&&Math.abs(dx)>Math.abs(dy)*1.5)go(w,dx<0?1:-1)});
     });
-    $('.photo-lightbox-x',lightbox).addEventListener('click',closeLightbox);
-    $('.photo-lightbox-prev',lightbox).addEventListener('click',function(){lightboxStep(-1)});
-    $('.photo-lightbox-next',lightbox).addEventListener('click',function(){lightboxStep(1)});
-    lightbox.addEventListener('click',function(e){if(e.target===lightbox)closeLightbox()});
-    lightbox.addEventListener('keydown',function(e){if(e.key==='Escape'){e.stopPropagation();closeLightbox()}else if(e.key==='ArrowLeft')lightboxStep(-1);else if(e.key==='ArrowRight')lightboxStep(1)});
+    if(lightbox){
+      $('.photo-lightbox-x',lightbox).addEventListener('click',closeLightbox);
+      $('.photo-lightbox-prev',lightbox).addEventListener('click',function(){lightboxStep(-1)});
+      $('.photo-lightbox-next',lightbox).addEventListener('click',function(){lightboxStep(1)});
+      lightbox.addEventListener('click',function(e){if(e.target===lightbox||e.target.tagName==='FIGURE')closeLightbox()});
+      lightbox.addEventListener('keydown',function(e){
+        if(e.key==='Escape'){e.stopPropagation();closeLightbox()}else if(e.key==='ArrowLeft'){e.stopPropagation();lightboxStep(-1)}else if(e.key==='ArrowRight'){e.stopPropagation();lightboxStep(1)}
+        else if(e.key==='Tab'){var f=$$('button:not([disabled])',lightbox);if(!f.length)return;var a=f[0],z=f[f.length-1];
+          if(e.shiftKey&&document.activeElement===a){e.preventDefault();z.focus()}else if(!e.shiftKey&&document.activeElement===z){e.preventDefault();a.focus()}}});
+      /* swipe the photograph */
+      var lx=0,ly=0,lid=null;
+      lightbox.addEventListener('pointerdown',function(e){if(e.pointerType==='mouse'||e.target.closest('button'))return;lx=e.clientX;ly=e.clientY;lid=e.pointerId});
+      lightbox.addEventListener('pointerup',function(e){if(e.pointerId!==lid)return;lid=null;var dx=e.clientX-lx,dy=e.clientY-ly;if(Math.abs(dx)>46&&Math.abs(dx)>Math.abs(dy)*1.5)lightboxStep(dx<0?1:-1)});
+    }
     root.addEventListener('keydown',function(e){
-      if(lightboxOwner){if(e.key==='Escape'){e.stopPropagation();closeLightbox()}else if(e.key==='ArrowRight')lightboxStep(1);else if(e.key==='ArrowLeft')lightboxStep(-1);return}
       if(cur<0)return;
       if(e.key==='Escape'){e.stopPropagation();closeIt()}
       else if(e.key==='ArrowRight'){go(its[cur],1)}else if(e.key==='ArrowLeft'){go(its[cur],-1)}});
     document.addEventListener('keydown',docKey);
   }
-  function docKey(e){if(cur<0||!live)return;if(root.contains(document.activeElement))return;
+  function docKey(e){if(cur<0||!live||lightboxOwner)return;if(root.contains(document.activeElement))return;
     if(e.key==='Escape')closeIt();else if(e.key==='ArrowRight')go(its[cur],1);else if(e.key==='ArrowLeft')go(its[cur],-1)}
   bind();
 
@@ -332,7 +348,7 @@ function mount(seq,D,kind){
     cap.style.opacity=clamp(S.cap,0,1).toFixed(3);
     setLive(u>.995&&S.dim>.97)}
 
-  function destroy(){document.removeEventListener('keydown',docKey);stopHint(true);if(cur>=0)closeNow();D.lock(false);
+  function destroy(){document.removeEventListener('keydown',docKey);stopHint(true);if(lightbox&&lightbox.parentNode)lightbox.parentNode.removeChild(lightbox);if(cur>=0)closeNow();D.lock(false);
     its.forEach(function(w){w.sp.stop();if(w.tl)w.tl.kill()});if(root.parentNode)root.parentNode.removeChild(root)}
 
   return {root:root,items:its.map(function(w){return w.el}),layout:layout,update:update,setLive:setLive,destroy:destroy,isOpen:function(){return cur>=0}};
@@ -342,7 +358,9 @@ function mount(seq,D,kind){
    Hero text lets go, the camera pushes into the pixel diary / camera, the glass of it spreads into the shelf, and the items arrive
    one after another. Scrubbed by scroll, so it reverses cleanly. */
 function mountSeq(scope,kind,D){
-  var seq=D.$('#pseq',scope);if(!seq||!G||!D.ST||D.rm||!window.Stage||!window.PX||!A)return null;
+  var seq=D.$('#pseq',scope);if(!seq||!G||!window.Stage||!window.PX||!A)return null;
+  /* With reduced motion (or no ScrollTrigger) there is no pinned journey: the page opens straight onto the finished shelf. */
+  var still=!!D.rm||!D.ST;
   var sk=kind==='writings'?'diary':'camera',hin=D.$('.hero-in',seq),scrim=D.$('.seq-scrim',seq),mc=null,rt=0,dims=[innerWidth,innerHeight],ov=null,dead=false;
   if(!Stage.parkBegin())return null;
   ov=mount(seq,D,kind);if(!ov)return null;
@@ -353,8 +371,10 @@ function mountSeq(scope,kind,D){
     ov.layout(vw,vh,narrow,(hdrEl&&hdrEl.offsetHeight)||72);
     Stage.seqLive(true);
     var S={z:0,dim:0,u:0,cap:0},TT=54,L=Math.round(vh*7*TT/112);
-    G.set(hin,{autoAlpha:1,y:0});G.set(scrim,{opacity:1});
     function sync(){Stage.parkApply(S.z,sk);ov.update(S,Stage.parkRects(sk))}
+    if(still){S.z=1;S.dim=1;S.u=1;S.cap=1;hin.style.opacity='0';hin.style.pointerEvents='none';G.set(scrim,{opacity:0});
+      ov.items.forEach(function(el){el.style.visibility='visible';el.style.opacity='1'});sync();return}
+    G.set(hin,{autoAlpha:1,y:0});G.set(scrim,{opacity:1});
     mc=G.context(function(){
       var tl=G.timeline({defaults:{ease:'none'},onUpdate:sync,
         scrollTrigger:{trigger:seq,start:'top top',end:'+='+L,pin:true,scrub:.6,anticipatePin:1,invalidateOnRefresh:true}});
@@ -371,7 +391,7 @@ function mountSeq(scope,kind,D){
     },seq);
     sync()}
   function teardown(){if(mc){try{mc.revert()}catch(e){}mc=null}}
-  function rebuild(){var y=scrollY;teardown();build();window.scrollTo(0,y);D.ST.refresh()}
+  function rebuild(){var y=scrollY;teardown();build();window.scrollTo(0,y);if(D.ST)D.ST.refresh()}
   function onR(){clearTimeout(rt);rt=setTimeout(function(){var w=innerWidth,h=innerHeight;if(dead||(w===dims[0]&&Math.abs(h-dims[1])<130))return;dims=[w,h];rebuild()},260)}
   build();window.addEventListener('resize',onR);
 
