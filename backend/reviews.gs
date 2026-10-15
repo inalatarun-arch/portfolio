@@ -44,7 +44,7 @@ function doGet(e) {
     for (var i = rows.length - 1; i >= 0 && items.length < LIST_LIMIT; i--) {
       var r = rows[i];
       if (r[5] === true || String(r[5]).toUpperCase() === 'TRUE' || !r[4]) continue;
-      items.push({ id: String(r[0]), ts: new Date(r[1]).getTime(), name: String(r[2] || 'A visitor'), rating: Number(r[3]) || 0, text: String(r[4]) });
+      items.push({ id: String(r[0]), ts: (typeof r[1] === 'number' ? r[1] : new Date(r[1]).getTime()), name: String(r[2] || 'A visitor'), rating: Number(r[3]) || 0, text: String(r[4]) });
     }
     return json_({ ok: true, items: items });
   } catch (err) {
@@ -89,7 +89,7 @@ function doPost(e) {
 
     var id = Utilities.getUuid().slice(0, 8);
     var ts = new Date();
-    sheet_().appendRow([id, ts, safeCell_(name), rating, safeCell_(text), '']);
+    sheet_().appendRow([id, ts.getTime(), safeCell_(name), rating, safeCell_(text), '']);
     return json_({ ok: true, item: { id: id, ts: ts.getTime(), name: name, rating: rating, text: text } });
   } catch (err) {
     return json_({ ok: false, error: 'server' });
