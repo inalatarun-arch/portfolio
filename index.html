@@ -20,7 +20,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='32' fill='%23D5360C'/%3E%3Ctext x='32' y='42' font-family='Georgia,serif' font-size='30' font-weight='700' fill='%23101010' text-anchor='middle'%3ETI%3C/text%3E%3C/svg%3E">
 <link rel="preload" href="content.json?v=8" as="fetch" crossorigin>
 <link rel="stylesheet" href="assets/styles.css?v=14">
-<link rel="stylesheet" href="assets/personal.css?v=2">
+<link rel="stylesheet" href="assets/personal.css?v=3">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Tarun Inala","jobTitle":"Senior Business Analyst and Functional Lead","address":{"@type":"PostalAddress","addressLocality":"Hyderabad","addressCountry":"IN"},"url":"https://inalatarun.co.in/","sameAs":["https://www.linkedin.com/in/tarunksai/"],"knowsAbout":["Business analysis","Generative AI","Clinical trial payments","ERP delivery","Product ownership"]}</script>
 <script>
 /* Runs before first paint: restore the saved theme, flag JS so the static fallback hides. */
@@ -75,11 +75,13 @@ try{var t=localStorage.getItem('inala-theme');if(t==='light'||t==='dark')d.setAt
   <div class="wrap hdr-row">
     <a class="brand" id="brand" href="#/" aria-label="Tarun Inala, home"><span class="brand-mark" aria-hidden="true">TI</span><span class="brand-name">Tarun Inala</span></a>
     <div class="bb" id="bb" data-state="loading" hidden>
+      <label class="bb-volume" title="Volume"><span class="sr-only">Volume</span><input id="bbVolume" type="range" min="0" max="100" value="80" aria-label="Music volume"></label>
       <div class="bb-box" role="group" aria-label="Music player">
         <canvas id="bbCv" width="72" height="34" aria-hidden="true"></canvas>
         <button class="bb-b bb-prev" type="button" aria-label="Previous track"></button>
         <button class="bb-b bb-play" type="button" aria-label="Play music" aria-pressed="false"></button>
         <button class="bb-b bb-next" type="button" aria-label="Next track"></button>
+        <button class="bb-shuffle" id="bbShuffle" type="button" aria-label="Shuffle off" aria-pressed="false" title="Shuffle"><span aria-hidden="true">↝</span></button>
       </div>
       <a class="bb-tape" id="bbTape" href="https://www.youtube.com/playlist?list=PLNKsHcEBNWDg" target="_blank" rel="noopener" aria-label="Open Tarun's favourite tracks playlist on YouTube (opens in a new tab)"><canvas width="26" height="18" aria-hidden="true"></canvas><span class="bb-tl">Favourite tracks</span><span class="bb-tip" aria-hidden="true">Open my playlist on YouTube</span></a>
       <p class="bb-np" role="status" aria-live="polite"></p>
@@ -145,8 +147,8 @@ try{var t=localStorage.getItem('inala-theme');if(t==='light'||t==='dark')d.setAt
 <script src="assets/scene.js?v=10"></script>
 <script src="assets/devices.js?v=3"></script>
 <script src="assets/personal-art.js?v=1"></script>
-<script src="assets/personal.js?v=1"></script>
-<script src="assets/boombox.js?v=1"></script>
-<script src="assets/app.js?v=19"></script>
+<script src="assets/personal.js?v=2"></script>
+<script src="assets/boombox.js?v=2"></script>
+<script src="assets/app.js?v=20"></script>
 </body>
 </html>

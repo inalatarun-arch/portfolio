@@ -65,6 +65,7 @@ function mount(seq,D,kind){
   root.innerHTML='<div class="ps-dim"></div><div class="ps-shelf"><div class="ps-sheet ps-sa"></div><div class="ps-sheet ps-sb"></div>'+
     '<div class="ps-grid">'+items.map(function(){return '<div class="ps-slot"></div>'}).join('')+'</div>'+
     items.map(isW?bookHTML:camHTML).join('')+'</div>'+
+    '<div class="photo-lightbox" aria-hidden="true" inert><button class="photo-lightbox-x" type="button" aria-label="Close full-screen photograph">×</button><button class="photo-lightbox-prev" type="button" aria-label="Previous photograph">‹</button><figure><img alt=""><figcaption></figcaption></figure><button class="photo-lightbox-next" type="button" aria-label="Next photograph">›</button><span class="photo-lightbox-count" aria-live="polite"></span></div>'+
     '<p class="ps-cap" aria-hidden="true"><span>'+(isW?'Writings':'Photographs')+'</span> '+(isW?'Open a diary and turn its pages.':'Pick up a camera and look through it.')+'</p>'+
     '<span class="dv-cur" aria-hidden="true"><i class="cur-rip"></i><svg viewBox="0 0 20 24"><path d="M2 1.5v18l4.6-4.3 3.1 7 3-1.4-3.1-6.9H16Z" fill="#fff" stroke="#111" stroke-width="1.6" stroke-linejoin="round"/></svg></span>';
   seq.appendChild(root);
@@ -144,7 +145,7 @@ function mount(seq,D,kind){
     w.sp.to(1,{response:.62,damping:.84});
     D.say('Opened the '+w.d.label+(isW?' diary':' camera'));
   }
-  function closeIt(then){var w=its[cur];if(!w)return;closing=then||null;w.focused=false;w.on=false;
+  function closeIt(then){var w=its[cur];if(!w)return;if(lightboxOwner)closeLightbox();closing=then||null;w.focused=false;w.on=false;
     if(!isW){var scr=$('.cm-scr',w.el);G&&G.killTweensOf(scr);scr.style.opacity=0}
     w.sp.to(0,{response:.5,damping:.92})}
   function finishClose(w){
@@ -152,7 +153,7 @@ function mount(seq,D,kind){
     if(isW)$('.bk-full',w.el).inert=true;else $('.cm-bk',w.el).inert=true;
     its.forEach(function(x){x.el.inert=false;x.el.style.opacity=''});$('.pit-open',w.el).tabIndex=0;
     D.lock(false);var b=$('.pit-open',w.el);if(b&&live)b.focus({preventScroll:true})}
-  function closeNow(){var w=its[cur];if(!w)return;w.sp.set(0);paint(w,0);finishClose(w)}
+  function closeNow(){var w=its[cur];if(!w)return;if(lightboxOwner)closeLightbox();w.sp.set(0);paint(w,0);finishClose(w)}
 
   /* ---------------------------------------------------------------- diary: pages and the page turn */
   function pageHTML(w,i,n){
@@ -217,6 +218,29 @@ function mount(seq,D,kind){
     G.fromTo(scr,{opacity:0,clipPath:'inset(49% 0% 49% 0%)'},{opacity:1,clipPath:'inset(0% 0% 0% 0%)',duration:.55,ease:'power3.out',overwrite:true,clearProps:'clipPath'});
     G.fromTo(imgs[w.vis],{filter:'brightness(2.2)'},{filter:'brightness(1)',duration:.6,ease:'power2.out'})}
 
+  /* Full-screen photograph viewer: the camera stays behind a soft, blurred scrim. */
+  var lightbox=$('.photo-lightbox',root),lightboxImg=$('figure img',lightbox),lightboxCaption=$('figcaption',lightbox),lightboxCount=$('.photo-lightbox-count',lightbox),lightboxOwner=null;
+  function paintLightbox(){
+    if(!lightboxOwner)return;
+    var p=lightboxOwner.d.list[lightboxOwner.idx];
+    lightboxImg.src=photoSrc(p);lightboxImg.alt='Photograph '+(lightboxOwner.idx+1)+' of '+lightboxOwner.d.list.length+' in '+lightboxOwner.d.label;
+    lightboxCaption.textContent=lightboxOwner.d.label;
+    lightboxCount.textContent=(lightboxOwner.idx+1)+' / '+lightboxOwner.d.list.length;
+    $('.photo-lightbox-prev',lightbox).disabled=lightboxOwner.idx<=0;
+    $('.photo-lightbox-next',lightbox).disabled=lightboxOwner.idx>=lightboxOwner.d.list.length-1;
+  }
+  function openLightbox(w){
+    if(isW||cur!==w.i)return;
+    lightboxOwner=w;paintLightbox();lightbox.classList.add('is-visible');lightbox.inert=false;lightbox.setAttribute('aria-hidden','false');
+    root.classList.add('has-lightbox');D.lock(true);$('.photo-lightbox-x',lightbox).focus({preventScroll:true});
+  }
+  function closeLightbox(){
+    if(!lightboxOwner)return;
+    lightbox.classList.remove('is-visible');lightbox.inert=true;lightbox.setAttribute('aria-hidden','true');root.classList.remove('has-lightbox');
+    var w=lightboxOwner;lightboxOwner=null;D.lock(cur>=0);
+    var lcd=$('.cm-lcd',w.el);if(lcd)lcd.focus({preventScroll:true});
+  }
+  function lightboxStep(d){if(!lightboxOwner)return;var w=lightboxOwner,to=w.idx+d;if(to<0||to>=w.d.list.length)return;show(w,to,d);paintLightbox()}
   /* ---------------------------------------------------------------- input */
   function go(w,d){if(isW)turn(w,w.idx+d);else{if(w.idx+d<0||w.idx+d>=w.d.list.length)return;show(w,w.idx+d,d)}}
   function bind(){
@@ -233,13 +257,26 @@ function mount(seq,D,kind){
       if(!isW)$$('.cm-b',w.el).forEach(function(b){
         b.addEventListener('pointerdown',function(){b.classList.add('dn')});
         var rel=function(){b.classList.remove('dn')};b.addEventListener('pointerup',rel);b.addEventListener('pointerleave',rel);b.addEventListener('pointercancel',rel)});
+      if(!isW){
+        $('.cm-lcd',w.el).setAttribute('role','button');
+        $('.cm-lcd',w.el).setAttribute('tabindex','0');
+        $('.cm-lcd',w.el).setAttribute('aria-label','View photograph full screen');
+        $('.cm-lcd',w.el).addEventListener('click',function(e){if(e.target.closest('.cm-b'))return;openLightbox(w)});
+        $('.cm-lcd',w.el).addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();openLightbox(w)}});
+      }
       /* swipe the page / the screen on touch */
       var sx=0,sy=0,id=null,tgt=isW?$('.bk-stage',w.el):$('.cm-lcd',w.el);
       tgt.addEventListener('pointerdown',function(e){if(e.pointerType==='mouse')return;sx=e.clientX;sy=e.clientY;id=e.pointerId});
       tgt.addEventListener('pointerup',function(e){if(e.pointerId!==id)return;id=null;var dx=e.clientX-sx,dy=e.clientY-sy;
         if(Math.abs(dx)>46&&Math.abs(dx)>Math.abs(dy)*1.5)go(w,dx<0?1:-1)});
     });
+    $('.photo-lightbox-x',lightbox).addEventListener('click',closeLightbox);
+    $('.photo-lightbox-prev',lightbox).addEventListener('click',function(){lightboxStep(-1)});
+    $('.photo-lightbox-next',lightbox).addEventListener('click',function(){lightboxStep(1)});
+    lightbox.addEventListener('click',function(e){if(e.target===lightbox)closeLightbox()});
+    lightbox.addEventListener('keydown',function(e){if(e.key==='Escape'){e.stopPropagation();closeLightbox()}else if(e.key==='ArrowLeft')lightboxStep(-1);else if(e.key==='ArrowRight')lightboxStep(1)});
     root.addEventListener('keydown',function(e){
+      if(lightboxOwner){if(e.key==='Escape'){e.stopPropagation();closeLightbox()}else if(e.key==='ArrowRight')lightboxStep(1);else if(e.key==='ArrowLeft')lightboxStep(-1);return}
       if(cur<0)return;
       if(e.key==='Escape'){e.stopPropagation();closeIt()}
       else if(e.key==='ArrowRight'){go(its[cur],1)}else if(e.key==='ArrowLeft'){go(its[cur],-1)}});
