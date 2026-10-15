@@ -172,14 +172,18 @@ function drawPerson(o,pose){
   x.drawImage(headSprite(),hxp,hyp);
   var ex=hxp+15,ey=hyp+9;
   if(pose.blink){P1(x,ex,ey+1,'#2a1a12')}else{R(x,ex,ey,1,2,'#120c09');P1(x,ex-1,ey,C.skinL)}
-  /* over-ear headphones, in the same crisp pixel-art style */
+  /* unmistakable over-ear headphones: padded headband above the hair, large earcups at both sides */
   if(pose.headphones){
-    LN(x,hxp+4,hyp+7,hxp+5,hyp+3,2,'#202431');
-    LN(x,hxp+5,hyp+3,hxp+8,hyp+1,2,'#202431');
-    LN(x,hxp+8,hyp+1,hxp+12,hyp+2,2,'#202431');
-    LN(x,hxp+12,hyp+2,hxp+14,hyp+6,2,'#202431');
-    R(x,hxp+12,hyp+5,4,7,'#202431');R(x,hxp+13,hyp+6,2,5,'#5d86b9');
-    P1(x,hxp+13,hyp+7,'#a9c8ed');R(x,hxp+11,hyp+8,1,3,'#202431');
+    /* curved padded band */
+    LN(x,hxp+2,hyp+7,hxp+2,hyp+3,2,'#171c27');
+    LN(x,hxp+2,hyp+3,hxp+5,hyp,2,'#171c27');
+    LN(x,hxp+5,hyp,hxp+10,hyp,2,'#171c27');
+    LN(x,hxp+10,hyp,hxp+13,hyp+3,2,'#171c27');
+    LN(x,hxp+13,hyp+3,hxp+13,hyp+7,2,'#171c27');
+    /* left and right cushioned earcups, clearly larger than glasses arms */
+    R(x,hxp+1,hyp+6,4,8,'#171c27');R(x,hxp+2,hyp+7,2,6,'#527aa9');
+    R(x,hxp+13,hyp+6,4,8,'#171c27');R(x,hxp+14,hyp+7,2,6,'#527aa9');
+    P1(x,hxp+3,hyp+9,'#a9c8ed');P1(x,hxp+15,hyp+9,'#a9c8ed');
   }
   /* camera hanging on a strap */
   if(pose.cam){camera(x,hxp+pose.cam.x,hyp+pose.cam.y)}
