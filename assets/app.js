@@ -144,6 +144,7 @@ function render(k,first){
   if(window.Stage){Stage.parkMode(k==='photography'?'camera':(k==='writings'?'diary':null));
     Stage.set({welcome:'landing',work:'work',writings:'personal',photography:'personal'}[k]||'off',{first:first})}
   if(window.Boombox)Boombox.setMode(mode==='work'?'work':(mode==='personal'?'personal':'landing'));
+  if(window.Reviews)Reviews.setRoute(k);
   var links=mode?MODES[mode].map(function(r){var on=r===k;return '<a href="#/'+r+'"'+(on?' class="on" aria-current="page"':'')+'>'+ROUTES[r].l+'</a>'}).join(''):'';
   $('#nav').innerHTML=links;
   var mm=mode?MODES[mode]:MODES.work;
@@ -849,8 +850,8 @@ function field(cv){
 $('#yr').textContent=new Date().getFullYear();
 var footReach=null;
 function fillReach(){var h=$('#footReach');h.innerHTML=reachHTML('foot','foot',{pop:true});footReach=initReach($('[data-reach]',h))}
-function start(){fillReach();if(window.Boombox)Boombox.init(SITE);route()}
+function start(){fillReach();if(window.Boombox)Boombox.init(SITE);route();if(window.Reviews)Reviews.init(SITE)}
 function fail(){root.classList.remove('js')}   // show the static fallback instead of a blank page
-if(window.fetch){fetch('content.json?v=8',{cache:'no-cache'}).then(function(r){return r.ok?r.json():Promise.reject()}).then(function(d){
+if(window.fetch){fetch('content.json?v=9',{cache:'no-cache'}).then(function(r){return r.ok?r.json():Promise.reject()}).then(function(d){
   if(d&&typeof d==='object'){SITE=d;start()}else fail()}).catch(fail)}else fail();
 })();

@@ -199,7 +199,7 @@ body.has-bb .hdr-row .brand{margin-right:0}
 
 /* ---------- header fit: the cluster gives way in steps so the nav, the Work / Personal switch and the menu button always have room ---------- */
 body.has-bb .hdr-row{gap:1rem}
-body.has-bb .brand-name{white-space:nowrap}
+body.has-bb .brand-name,body.has-bb .nav a{white-space:nowrap}
 @media (max-width:90rem){.bb-zen-label{display:none}.bb-zen{padding:0}}
 @media (max-width:88rem){body.has-bb .brand-name{display:none}body.landing.has-bb .brand{padding:.25rem}}
 @media (max-width:80rem){.bb-tl{display:none}.bb-tape{padding:.1875rem .375rem}}
