@@ -272,7 +272,7 @@ function buildOffice(W,H){
     draw:function(ctx,t,fast){
       ctx.save();ctx.translate(ox,oy);
       ctx.drawImage(winSky.c,-62,-96);
-      if(night)nightSkyMarks(ctx,84,64,17);
+      if(night){ctx.save();ctx.translate(-62,-96);nightSkyMarks(ctx,84,64,17);ctx.restore();}
       for(i=0;i<clouds.length;i++){var c=clouds[i],span=84+c.img.width+20,px=((c.x+t*c.v)%span+span)%span-c.img.width;ctx.drawImage(c.img,-62+Math.round(px),-96+c.y)}
       ctx.drawImage(cityFar.c,-62,-96+64-26);ctx.drawImage(cityNear.c,-62,-96+64-20);
       ctx.restore();
@@ -396,6 +396,7 @@ function buildPark(W,H){
   var cf=[];for(k=0;k<12;k++){var a2=k/12*Math.PI*2;cf.push([60+Math.cos(a2)*(24+rr()*6)-3,28+Math.sin(a2)*(14+rr()*8)-4,7+rr()*6])}
   cf.sort(function(a,b){return a[1]-b[1]});
   var canFront=canopyLayer(130,80,3,cf,palB);
+  if(night){tintCanvas(canBack,'rgba(8,15,42,.5)');tintCanvas(canMid,'rgba(8,15,42,.5)');tintCanvas(canFront,'rgba(8,15,42,.42)')}
   /* sprites */
   var person=newPerson(),leaves=[],bflies=[];
   for(i=0;i<7;i++)leaves.push({x:-135+r()*80,y:-60+r()*80,v:4+r()*4,p:r()*6,c:i%3===0?'#e9a43c':(i%2?'#58b45e':'#2f8a45')});
