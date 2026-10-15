@@ -240,10 +240,6 @@ function pageWelcome(){
 
 function pageWork(){
   var W=SITE.work||{};
-  var hon=(W.honours||[]).map(function(h){var cert=/certif|essentials/i.test(h.t);return '<div class="award" data-r>'+ic(cert?'cert':'medal')+
-    '<div><b>'+esc(h.t)+'</b><span>'+esc(h.s)+'</span></div><span class="y">'+esc(h.y)+'</span></div>'}).join('');
-  var sk=[];Object.keys(W.skills||{}).forEach(function(g){(W.skills[g]||[]).forEach(function(s){sk.push(s)})});
-  var skH=sk.map(function(s){return '<span class="chip">'+esc(s)+'</span>'}).join('');
   var SCR=['TBD','see email','FINAL_v3','who owns this?','UAT??','v2 (copy)'];
   var bayH=(W.roles||[]).length?'<div class="bay"><h2 class="bay-eyebrow">Experience</h2><div class="bay-cam" role="list">'+
     (W.roles||[]).map(function(r){return '<article class="bay-card" role="listitem"><div class="bc-top"><span class="bc-yrs">'+esc(r.yrs)+'</span>'+(r.tag?'<span class="bc-tag">'+esc(r.tag)+'</span>':'')+'</div>'+
@@ -258,10 +254,6 @@ function pageWork(){
       '<div class="hero-cta"><a class="btn btn-primary" data-feel data-magnet href="'+esc(resumeHref())+'" download>Download resume<span class="dot">'+ic('down')+'</span></a></div></div>'+
   '</div></div>'+bayH+'</section>'+
   '<div class="after">'+
-  '<section class="sec"><div class="wrap"><p class="eyebrow" data-r>Recognition</p><h2 class="sec-h" data-r>Awards and certifications.</h2>'+
-    '<div class="rec">'+hon+'</div>'+
-    '<div class="marq-wrap" data-r><div class="marq-bar"><h3>Tools and methods</h3><button class="icon-btn" type="button" id="marqBtn" aria-pressed="false" aria-label="Pause the moving skills list">'+ic('pause')+'</button></div>'+
-    '<div class="marq" role="group" aria-label="Skills"><div class="marq-t">'+skH+'<span aria-hidden="true" style="display:contents">'+skH+'</span></div></div></div></div></section>'+
   '</div>';
 }
 
