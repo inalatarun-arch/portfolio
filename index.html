@@ -20,7 +20,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='32' fill='%23D5360C'/%3E%3Ctext x='32' y='42' font-family='Georgia,serif' font-size='30' font-weight='700' fill='%23101010' text-anchor='middle'%3ETI%3C/text%3E%3C/svg%3E">
 <link rel="preload" href="content.json?v=8" as="fetch" crossorigin>
 <link rel="stylesheet" href="assets/styles.css?v=14">
-<link rel="stylesheet" href="assets/personal.css?v=5">
+<link rel="stylesheet" href="assets/personal.css?v=10">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Tarun Inala","jobTitle":"Senior Business Analyst and Functional Lead","address":{"@type":"PostalAddress","addressLocality":"Hyderabad","addressCountry":"IN"},"url":"https://inalatarun.co.in/","sameAs":["https://www.linkedin.com/in/tarunksai/"],"knowsAbout":["Business analysis","Generative AI","Clinical trial payments","ERP delivery","Product ownership"]}</script>
 <script>
 /* Runs before first paint: restore the saved theme, flag JS so the static fallback hides. */
@@ -65,6 +65,10 @@ try{var t=localStorage.getItem('inala-theme');if(t==='light'||t==='dark')d.setAt
     <symbol id="i-medal" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"><circle cx="12" cy="15" r="5"/><path d="m9 3 3 6 3-6M12 12.5v5"/></g></symbol>
     <symbol id="i-cert" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"><rect x="3" y="4" width="18" height="13" rx="3"/><path d="M7.5 9h9M7.5 12.5h5M9 17v4l3-1.5L15 21v-4"/></g></symbol>
     <symbol id="i-star" viewBox="0 0 24 24"><path d="m12 3.5 2.6 5.4 5.9.8-4.3 4.1 1 5.9L12 17l-5.2 2.7 1-5.9L3.5 9.7l5.9-.8Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></symbol>
+    <symbol id="i-prev" viewBox="0 0 24 24"><path d="M6 5v14M19 5.5v13L9 12Z" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-next" viewBox="0 0 24 24"><path d="M18 5v14M5 5.5v13L15 12Z" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-shuffle" viewBox="0 0 24 24"><path d="M3 7h3.5c5 0 5 10 10.5 10H21M3 17h3.5c1.6 0 2.8-.6 3.8-1.6M13.6 8.6C14.6 7.6 15.8 7 17.5 7H21M18.5 4.5 21 7l-2.5 2.5M18.5 14.5 21 17l-2.5 2.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-zen" viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
   </defs>
 </svg>
 
@@ -75,18 +79,35 @@ try{var t=localStorage.getItem('inala-theme');if(t==='light'||t==='dark')d.setAt
   <div class="wrap hdr-row">
     <a class="brand" id="brand" href="#/" aria-label="Tarun Inala, home"><span class="brand-mark" aria-hidden="true">TI</span><span class="brand-name">Tarun Inala</span></a>
     <div class="bb" id="bb" data-state="loading" hidden>
-      <div class="bb-volume" title="Volume"><span class="sr-only">Volume</span><button id="bbVolumeKnob" class="bb-volume-knob" type="button" role="slider" aria-label="Music volume" aria-valuemin="0" aria-valuemax="100" aria-valuenow="80"><span class="bb-volume-notch" aria-hidden="true"></span></button><span class="bb-volume-value" id="bbVolumeValue" aria-hidden="true">80</span></div>
+      <div class="bb-volume"><button id="bbVolumeKnob" class="bb-volume-knob" type="button" role="slider" aria-label="Music volume" aria-valuemin="0" aria-valuemax="100" aria-valuenow="80"><span class="bb-volume-notch" aria-hidden="true"></span></button><span class="bb-volume-value" id="bbVolumeValue" aria-hidden="true">80</span></div>
       <div class="bb-box" role="group" aria-label="Music player">
         <canvas id="bbCv" width="72" height="34" aria-hidden="true"></canvas>
         <button class="bb-b bb-prev" type="button" aria-label="Previous track"></button>
         <button class="bb-b bb-play" type="button" aria-label="Play music" aria-pressed="false"></button>
         <button class="bb-b bb-next" type="button" aria-label="Next track"></button>
-        <button class="bb-shuffle" id="bbShuffle" type="button" aria-label="Shuffle off" aria-pressed="false" title="Shuffle">SHUFFLE</button>
+        <button class="bb-b bb-shuffle" id="bbShuffle" type="button" aria-label="Shuffle off" aria-pressed="false"></button>
       </div>
       <a class="bb-tape" id="bbTape" href="https://www.youtube.com/playlist?list=PLNKsHcEBNWDg" target="_blank" rel="noopener" aria-label="Open Tarun's favourite tracks playlist on YouTube (opens in a new tab)"><canvas width="26" height="18" aria-hidden="true"></canvas><span class="bb-tl">Favourite tracks</span><span class="bb-tip" aria-hidden="true">Open my playlist on YouTube</span></a>
-      <button class="bb-zen" id="bbZen" type="button" aria-haspopup="dialog" aria-controls="bbZenMode" title="Enter Zen Mode — settle in and enjoy my personally curated playlist"><span aria-hidden="true">⛶</span><span class="bb-zen-label">Zen mode</span><span class="bb-zen-tip">Enter Zen Mode — settle in and enjoy my personally curated playlist.</span></button>
-      <p class="bb-np" role="status" aria-live="polite"></p><div class="bb-yt" aria-hidden="true"><div id="bbYT"></div></div>
-      <section class="bb-zen-mode" id="bbZenMode" role="dialog" aria-modal="true" aria-labelledby="bbZenHeading" aria-hidden="true"><button class="bb-zen-close" id="bbZenClose" type="button" aria-label="Exit Zen Mode">× <span>Exit Zen Mode</span></button><div class="bb-zen-content"><p class="bb-zen-eyebrow">TARUN'S PERSONAL MIXTAPE</p><h2 id="bbZenHeading">A little space to listen.</h2><div class="bb-pixel-display" aria-live="polite"><span class="bb-pixel-led" aria-hidden="true"></span><span id="bbZenTrack">CHOOSE A TRACK TO BEGIN</span></div><div class="bb-zen-deck"><div class="bb-zen-speaker" aria-hidden="true"></div><div class="bb-zen-cassette" id="bbZenCassette" aria-hidden="true"><span class="bb-zen-reel"></span><span class="bb-zen-reel"></span><span class="bb-zen-tape-label">SIDE A</span></div><div class="bb-zen-speaker" aria-hidden="true"></div></div><div class="bb-zen-controls" role="group" aria-label="Zen music controls"><button type="button" id="bbZenShuffle" class="bb-zen-shuffle" aria-label="Shuffle off" aria-pressed="false">SHUFFLE</button><button type="button" id="bbZenPrev" aria-label="Previous track">|◀</button><button type="button" id="bbZenPlay" aria-label="Play music" aria-pressed="false">▶</button><button type="button" id="bbZenNext" aria-label="Next track">▶|</button><label class="bb-zen-volume"><span>VOLUME</span><input id="bbZenVolume" type="range" min="0" max="100" value="80" aria-label="Zen mode volume"></label></div><p class="bb-zen-note">Music streams from YouTube. Playback is subject to YouTube and browser restrictions.</p></div></section>
+      <button class="bb-zen" id="bbZen" type="button" aria-haspopup="dialog" aria-controls="bbZenMode" aria-label="Zen mode"><svg class="ic" aria-hidden="true"><use href="#i-zen"/></svg><span class="bb-zen-label" aria-hidden="true">Zen mode</span><span class="bb-zen-tip" aria-hidden="true">Enter Zen Mode: settle in and enjoy my personally curated playlist.</span></button>
+      <p class="bb-np" role="status" aria-live="polite"></p>
+      <div class="bb-yt" aria-hidden="true"><div id="bbYT"></div></div>
+      <section class="bb-zen-mode" id="bbZenMode" role="dialog" aria-modal="true" aria-labelledby="bbZenHeading" aria-hidden="true">
+        <button class="bb-zen-close" id="bbZenClose" type="button" aria-label="Exit Zen Mode"><svg class="ic" aria-hidden="true"><use href="#i-x"/></svg><span>Exit Zen Mode</span></button>
+        <div class="bb-zen-content">
+          <p class="bb-zen-eyebrow">TARUN'S PERSONAL MIXTAPE</p>
+          <h2 id="bbZenHeading">A little space to listen.</h2>
+          <div class="bb-pixel-display" aria-live="polite"><span class="bb-pixel-led" aria-hidden="true"></span><span id="bbZenTrack">TUNING IN…</span></div>
+          <div class="bb-zen-deck"><div class="bb-zen-speaker" aria-hidden="true"></div><div class="bb-zen-cassette" id="bbZenCassette" aria-hidden="true"><span class="bb-zen-reel"></span><span class="bb-zen-reel"></span><span class="bb-zen-tape-label">SIDE A</span></div><div class="bb-zen-speaker" aria-hidden="true"></div></div>
+          <div class="bb-zen-controls" role="group" aria-label="Zen music controls">
+            <button type="button" id="bbZenShuffle" class="bb-zen-shuffle" aria-label="Shuffle off" aria-pressed="false"><svg class="ic" aria-hidden="true"><use href="#i-shuffle"/></svg><span>Shuffle</span></button>
+            <button type="button" id="bbZenPrev" aria-label="Previous track"><svg class="ic" aria-hidden="true"><use href="#i-prev"/></svg></button>
+            <button type="button" id="bbZenPlay" aria-label="Play music" aria-pressed="false"><svg class="ic" aria-hidden="true"><use href="#i-play"/></svg></button>
+            <button type="button" id="bbZenNext" aria-label="Next track"><svg class="ic" aria-hidden="true"><use href="#i-next"/></svg></button>
+            <label class="bb-zen-volume"><span>VOLUME</span><input id="bbZenVolume" type="range" min="0" max="100" value="80" aria-label="Zen mode volume"></label>
+          </div>
+          <p class="bb-zen-note">Music streams from YouTube. Playback is subject to YouTube and browser restrictions.</p>
+        </div>
+      </section>
     </div>
     <nav class="nav" id="nav" aria-label="Primary"></nav>
     <div class="hdr-tools">
@@ -148,8 +169,8 @@ try{var t=localStorage.getItem('inala-theme');if(t==='light'||t==='dark')d.setAt
 <script src="assets/scene.js?v=10"></script>
 <script src="assets/devices.js?v=3"></script>
 <script src="assets/personal-art.js?v=1"></script>
-<script src="assets/personal.js?v=2"></script>
-<script src="assets/boombox.js?v=2"></script>
+<script src="assets/personal.js?v=3"></script>
+<script src="assets/boombox.js?v=3"></script>
 <script src="assets/app.js?v=20"></script>
 </body>
 </html>
