@@ -234,7 +234,7 @@ function pageWelcome(){
     '<a class="pdoor pdoor-work" href="#/work" data-door="office"><span class="pdoor-in"><span class="pdoor-k"><span>Work</span><span class="door-arrow">'+ic('arrow-ur')+'</span></span>'+
       '<span class="pdoor-s">Case studies in Generative AI, payments platforms and ERP delivery.</span></span></a>'+
     '<a class="pdoor pdoor-pers" href="#/writings" data-door="park"><span class="pdoor-in"><span class="pdoor-k"><span>Personal</span><span class="door-arrow">'+ic('arrow-ur')+'</span></span>'+
-      '<span class="pdoor-s">Writings in English, Telugu and Hindi, photographs on the way, and an audiophile at heart.</span></span></a>'+
+      '<span class="pdoor-s">Poems and journal pages in English, Telugu and Hindi. Photographs coming soon, with good music playing.</span></span></a>'+
   '</section>';
 }
 

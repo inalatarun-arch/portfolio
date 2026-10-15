@@ -457,20 +457,44 @@ function buildPark(W,H){
         fh:{x:Math.round(lerp(22,17,e)),y:Math.round(lerp(-10,-34,e))},
         strap:e<.02?{x:3,y:-9}:null,cam:e<.02?null:{x:camPos.x,y:camPos.y}};
       var info=drawPerson(person,pose);
-      /* portable stereo cassette player beside the seated character */
-      R(person.x,30,1,22,16,'#222735');
-      R(person.x,31,2,20,14,'#657487');
-      R(person.x,32,3,18,12,'#aeb9c5');
-      R(person.x,34,4,14,5,'#30394a');
-      R(person.x,35,5,4,3,'#101722');R(person.x,43,5,4,3,'#101722');
-      P1(person.x,36,5,'#7fa6d2');P1(person.x,44,5,'#7fa6d2');
-      R(person.x,34,10,3,2,'#d5dce3');R(person.x,39,10,3,2,'#d5dce3');
-      R(person.x,44,10,4,2,'#3a4659');
-
       /* pen */
       if(e<.5){var hh=info.nj;LN(person.x,hh.hx,hh.hy,hh.hx+3,hh.hy+3,1,'#d5360c');P1(person.x,hh.hx+3,hh.hy+3,'#1b1730')}
       outline(person,C.ink);
       blit(ctx,person.c,HX-person.w+1+person.hx,-person.hy,true);
+      /* portable stereo on the grass beside the bench: bobs on the beat, cones pump, reels spin, notes and sound arcs drift out */
+      (function(){
+        var sx=-57,gy=30,beat=Math.pow(Math.max(0,Math.sin(t*7.4)),3),beat2=Math.pow(Math.max(0,Math.sin(t*7.4+1.6)),4),
+            bob=beat>.55?1:0,y0=gy-17-bob,ii,jj,col;
+        function disc(cx,cy,r,c){for(var yy=-r;yy<=r;yy++){var w=Math.round(Math.sqrt(r*r-yy*yy+.25));R(ctx,cx-w,cy+yy,w*2+1,1,c)}}
+        ctx.fillStyle='rgba(24,70,48,.3)';for(jj=-1;jj<=1;jj++){var rw=Math.round(15*Math.sqrt(1-jj*jj/3));ctx.fillRect(sx-rw,gy+jj,rw*2+1,1)}
+        /* glow pulses on the grass in time with the bass */
+        ctx.fillStyle='rgba(255,214,120,'+(.05+.1*beat).toFixed(3)+')';for(jj=-2;jj<=2;jj++){var gw=Math.round((19+beat*4)*Math.sqrt(1-jj*jj/6));ctx.fillRect(sx-gw,gy+jj,gw*2+1,1)}
+        /* feet */
+        R(ctx,sx-12,gy-2,3,2,'#171c27');R(ctx,sx+10,gy-2,3,2,'#171c27');
+        /* handle */
+        R(ctx,sx-9,y0-4,19,1,'#171c27');R(ctx,sx-9,y0-3,2,3,'#171c27');R(ctx,sx+8,y0-3,2,3,'#171c27');R(ctx,sx-8,y0-4,17,1,'#59657a');
+        /* body */
+        R(ctx,sx-14,y0,29,15,'#171c27');R(ctx,sx-13,y0+1,27,13,'#8795a8');R(ctx,sx-13,y0+1,27,1,'#c5d0dc');R(ctx,sx-13,y0+13,27,1,'#5a687c');
+        /* cassette deck */
+        R(ctx,sx-6,y0+2,13,6,'#1d2433');R(ctx,sx-5,y0+3,11,4,'#0f1420');
+        var rot=Math.floor(t*6)%4;
+        for(ii=0;ii<2;ii++){var rx=sx-3+ii*6;R(ctx,rx-1,y0+4,3,3,'#d9dfe6');P1(ctx,rx,y0+5,'#0f1420');
+          if(rot===0)P1(ctx,rx-1,y0+4,'#0f1420');else if(rot===1)P1(ctx,rx+1,y0+4,'#0f1420');else if(rot===2)P1(ctx,rx+1,y0+6,'#0f1420');else P1(ctx,rx-1,y0+6,'#0f1420')}
+        /* level meter */
+        for(ii=0;ii<5;ii++){var lv=Math.round(1+3*Math.abs(Math.sin(t*5.3+ii*1.7))*(.5+.5*beat2+.3*beat));col=ii>3?'#ff5a3c':'#4fe08a';
+          for(jj=0;jj<4;jj++)P1(ctx,sx-5+ii*2,y0+11-jj,jj<lv?col:'#2a3342')}
+        P1(ctx,sx+8,y0+10,(t*2%1)<.5?'#ff5a3c':'#6a2a22');
+        /* speakers: cones pump with the bass */
+        for(ii=-1;ii<=1;ii+=2){var cx=sx+ii*10;disc(cx,y0+6,4,'#171c27');disc(cx,y0+6,3,'#3a4659');disc(cx,y0+6,2+(beat>.35?1:0)-0,'#202838');disc(cx,y0+6,1,beat>.35?'#aebccd':'#7f8da0');P1(ctx,cx-2,y0+4,'#6b7a90')}
+        /* sound arcs fanning out from both speakers */
+        for(ii=0;ii<3;ii++){var ph2=((t*1.1+ii/3)%1),rr=5+ph2*13,al=(1-ph2)*.55;ctx.fillStyle='rgba(255,236,170,'+al.toFixed(2)+')';
+          for(var sd=-1;sd<=1;sd+=2)for(var an=-1;an<=1;an+=.34){var ax=Math.round(sx+sd*(10+Math.cos(an)*rr)),ay=Math.round(y0+6+Math.sin(an)*rr*.9);ctx.fillRect(ax,ay,1,1)}}
+        /* notes rising and swaying */
+        var nc=['#ff7f93','#ffd25a','#8fd0ff','#c7a6ff','#7fe3a0'];
+        for(ii=0;ii<5;ii++){var u=((t*.32+ii/5)%1),nx=Math.round(sx-14+ii*7+Math.sin(t*2+ii*2.1)*5+u*4),ny=Math.round(y0-6-u*34),na=Math.sin(u*Math.PI);
+          if(na<.12)continue;ctx.globalAlpha=Math.min(1,na*1.4);col=nc[ii];
+          R(ctx,nx,ny+3,2,2,col);R(ctx,nx+2,ny-2,1,6,col);if(ii%2===0){R(ctx,nx+2,ny-2,3,1,col);P1(ctx,nx+4,ny-1,col)}ctx.globalAlpha=1}
+      })();
       /* flash from the lens */
       if(ph.flash>0){
         var lensX=HX-(info.head.x+20+9-person.hx)-1,lensY=-person.hy+info.head.y+10;
