@@ -130,12 +130,36 @@ function init(site){
       if(S.error){say('The playlist didn’t load. Try the tapes button.',3200);return}
       if(i===1){if(S.playing)pause(true);else{if(S.cleanupGate)S.cleanupGate();play()}}
       else{flipTape();if(!S.ready){loadApi();return}S.userPaused=false;S.want=true;try{i===0?S.player.previousVideo():S.player.nextVideo()}catch(e){}if(!S.playing)try{S.player.playVideo()}catch(e){}}})});
-  /* The physical-style volume control stays to the left of the stereo. */
-  var volume=$('#bbVolume');
+  /* Pixel volume knob: drag vertically or use arrow/page/home/end keys. */
+  var volume=$('#bbVolumeKnob'),volumeValue=$('#bbVolumeValue'),volumeWrap=$('.bb-volume',S.el),volumeDrag=false;
+  function updateVolumeControl(){
+    if(!volume)return;
+    volume.setAttribute('aria-valuenow',String(S.vol));
+    volume.style.setProperty('--knob-angle',(-135+(S.vol/100)*270)+'deg');
+    if(volumeValue)volumeValue.textContent=String(S.vol);
+  }
+  function setVolume(value){
+    S.vol=Math.max(0,Math.min(100,Math.round(value)));
+    updateVolumeControl();
+    try{if(S.player&&S.ready)S.player.setVolume(S.vol)}catch(e){}
+    syncZen();
+  }
   if(volume){
-    volume.value=String(S.vol);
-    volume.addEventListener('input',function(){S.vol=Number(volume.value);try{if(S.player&&S.ready)S.player.setVolume(S.vol)}catch(e){}});
-    volume.addEventListener('keydown',function(e){if(e.key==='ArrowUp'||e.key==='ArrowRight'){S.vol=Math.min(100,S.vol+5);volume.value=S.vol;try{S.player&&S.ready&&S.player.setVolume(S.vol)}catch(x){}e.preventDefault()}else if(e.key==='ArrowDown'||e.key==='ArrowLeft'){S.vol=Math.max(0,S.vol-5);volume.value=S.vol;try{S.player&&S.ready&&S.player.setVolume(S.vol)}catch(x){}e.preventDefault()}});
+    updateVolumeControl();
+    volume.addEventListener('pointerdown',function(e){volumeDrag=true;try{volume.setPointerCapture(e.pointerId)}catch(x){}volume.focus();setVolume((volume.getBoundingClientRect().bottom-e.clientY)/Math.max(1,volume.getBoundingClientRect().height)*100);e.preventDefault()});
+    volume.addEventListener('pointermove',function(e){if(!volumeDrag)return;var r=volume.getBoundingClientRect();setVolume((r.bottom-e.clientY)/Math.max(1,r.height)*100)});
+    var stopVolumeDrag=function(){volumeDrag=false};
+    volume.addEventListener('pointerup',stopVolumeDrag);volume.addEventListener('pointercancel',stopVolumeDrag);volume.addEventListener('lostpointercapture',stopVolumeDrag);
+    volume.addEventListener('keydown',function(e){
+      if(e.key==='ArrowUp'||e.key==='ArrowRight')setVolume(S.vol+5);
+      else if(e.key==='ArrowDown'||e.key==='ArrowLeft')setVolume(S.vol-5);
+      else if(e.key==='PageUp')setVolume(S.vol+10);
+      else if(e.key==='PageDown')setVolume(S.vol-10);
+      else if(e.key==='Home')setVolume(0);
+      else if(e.key==='End')setVolume(100);
+      else return;
+      e.preventDefault();
+    });
   }
   var shuffle=$('#bbShuffle',S.el);
   if(shuffle)shuffle.addEventListener('click',function(){
@@ -157,12 +181,12 @@ function init(site){
   window.addEventListener('themechange',function(){frame(performance.now())});
   setState();loop();
   var zen=$('#bbZen'),zm=$('#bbZenMode'),zc=$('#bbZenClose'),zt=$('#bbZenTrack'),cass=$('#bbZenCassette'),zp=$('#bbZenPlay'),zs=$('#bbZenShuffle'),zv=$('#bbZenVolume');
-  function syncZen(){if(zt)zt.textContent=(S.title||'CHOOSE A TRACK TO BEGIN').toLocaleUpperCase();if(zp){zp.textContent=S.playing?'Ⅱ':'▶';zp.setAttribute('aria-label',S.playing?'Pause music':'Play music');zp.setAttribute('aria-pressed',String(S.playing))}if(zs){zs.setAttribute('aria-pressed',String(S.shuffle));zs.setAttribute('aria-label',S.shuffle?'Shuffle on':'Shuffle off')}if(zv&&+zv.value!==S.vol)zv.value=S.vol;if(cass)cass.classList.toggle('is-spinning',S.playing)}
+  function syncZen(){if(zt)zt.textContent=(S.title||'CHOOSE A TRACK TO BEGIN').toLocaleUpperCase();if(zp){zp.textContent=S.playing?'Ⅱ':'▶';zp.setAttribute('aria-label',S.playing?'Pause music':'Play music');zp.setAttribute('aria-pressed',String(S.playing))}if(zs){zs.setAttribute('aria-pressed',String(S.shuffle));zs.setAttribute('aria-label',S.shuffle?'Shuffle on':'Shuffle off')}if(zv&&+zv.value!==S.vol)zv.value=S.vol;updateVolumeControl();if(cass)cass.classList.toggle('is-spinning',S.playing)}
   function enterZen(){S.zen=true;zm.classList.add('is-open');zm.setAttribute('aria-hidden','false');document.body.classList.add('zen-mode-open');zen.setAttribute('aria-expanded','true');if(S.cleanupGate)S.cleanupGate();syncZen();if(!S.apiAsked&&!S.player)loadApi();try{if(S.player&&S.ready)S.player.setSize(Math.min(innerWidth-48,900),Math.min(Math.round((innerWidth-48)*.5625),506))}catch(e){}zc.focus()}
   function exitZen(){S.zen=false;zm.classList.remove('is-open');zm.setAttribute('aria-hidden','true');document.body.classList.remove('zen-mode-open');zen.setAttribute('aria-expanded','false');try{if(S.player&&S.ready)S.player.setSize(200,200)}catch(e){}zen.focus()}
   zen.setAttribute('aria-expanded','false');zen.addEventListener('click',enterZen);zc.addEventListener('click',exitZen);zm.addEventListener('click',function(e){if(e.target===zm)exitZen()});document.addEventListener('keydown',function(e){if(S.zen&&e.key==='Escape')exitZen()});
   function flipZenTape(){cass.classList.remove('is-flipping');void cass.offsetWidth;cass.classList.add('is-flipping')}
-  $('#bbZenPrev').addEventListener('click',function(){flipZenTape();$('.bb-prev',S.el).click()});$('#bbZenNext').addEventListener('click',function(){flipZenTape();$('.bb-next',S.el).click()});zp.addEventListener('click',function(){$('.bb-play',S.el).click()});zs.addEventListener('click',function(){$('#bbShuffle',S.el).click()});zv.addEventListener('input',function(){S.vol=+zv.value;if(volume)volume.value=zv.value;try{if(S.player&&S.ready)S.player.setVolume(S.vol)}catch(e){}});
+  $('#bbZenPrev').addEventListener('click',function(){flipZenTape();$('.bb-prev',S.el).click()});$('#bbZenNext').addEventListener('click',function(){flipZenTape();$('.bb-next',S.el).click()});zp.addEventListener('click',function(){$('.bb-play',S.el).click()});zs.addEventListener('click',function(){$('#bbShuffle',S.el).click()});zv.addEventListener('input',function(){setVolume(+zv.value)});
   window.addEventListener('resize',function(){if(S.zen)try{S.player&&S.ready&&S.player.setSize(Math.min(innerWidth-48,900),Math.min(Math.round((innerWidth-48)*.5625),506))}catch(e){}});
   /* Prepare the YouTube player without starting playback. */
   (window.requestIdleCallback||function(f){setTimeout(f,900)})(function(){loadApi()},{timeout:2500});
