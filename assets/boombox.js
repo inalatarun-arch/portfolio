@@ -13,7 +13,7 @@ var CW=72,CH=34,BX=6,BY=13;
 var $=function(s,r){return (r||document).querySelector(s)};
 var RMQ=window.matchMedia('(prefers-reduced-motion: reduce)');
 var S={list:DEFAULT_LIST,ready:false,player:null,playing:false,want:true,userPaused:false,blocked:false,error:false,mode:'landing',resume:false,
-  el:null,cv:null,x:null,ticking:false,last:0,t0:performance.now(),t:0,press:-1,title:'',apiAsked:false,gate:false,stateName:'idle'};
+  el:null,cv:null,x:null,ticking:false,last:0,t0:performance.now(),t:0,press:-1,title:'',apiAsked:false,gate:false,stateName:'idle',shuffle:false,vol:80};
 
 /* ------------------------------------------------------------------ drawing: the stereo from the park scene, re-laid for a header */
 function disc(x,cx,cy,r,c){for(var yy=-r;yy<=r;yy++){var w=Math.round(Math.sqrt(r*r-yy*yy+.25));PX.R(x,cx-w,cy+yy,w*2+1,1,c)}}
@@ -71,6 +71,7 @@ function setState(){
   var name=S.error?'error':(S.playing?'playing':(S.blocked?'blocked':(S.ready?'paused':'loading')));S.stateName=name;
   if(!S.el)return;S.el.setAttribute('data-state',name);
   var pb=$('.bb-play',S.el);pb.setAttribute('aria-label',S.playing?'Pause music':'Play music');pb.setAttribute('aria-pressed',String(S.playing));
+  var sh=$('#bbShuffle',S.el);if(sh){sh.setAttribute('aria-pressed',String(S.shuffle));sh.setAttribute('aria-label',S.shuffle?'Shuffle on':'Shuffle off');sh.classList.toggle('is-on',S.shuffle)}
   var np=$('.bb-np',S.el);
   if(S.error)np.textContent='Couldn’t load the playlist';
   else if(S.blocked&&!S.playing)np.textContent='Tap play for music';
@@ -88,7 +89,7 @@ function makePlayer(){
   if(S.player)return;
   S.player=new YT.Player('bbYT',{width:'200',height:'200',playerVars:{listType:'playlist',list:S.list,controls:0,disablekb:1,fs:0,playsinline:1,rel:0,modestbranding:1,iv_load_policy:3,origin:location.origin},
     events:{onReady:onReady,onStateChange:onState,onError:onError}})}
-function onReady(){S.ready=true;try{S.player.setLoop(true);S.player.setVolume(80)}catch(e){}
+function onReady(){S.ready=true;try{S.player.setLoop(true);S.player.setVolume(S.vol)}catch(e){}
   setState();if(S.want&&S.mode!=='work'&&!S.userPaused)tryAutoplay()}
 function tryAutoplay(){
   try{S.player.playVideo()}catch(e){}
@@ -128,7 +129,24 @@ function init(site){
     b.addEventListener('click',function(){
       if(S.error){say('The playlist didn’t load. Try the tapes button.',3200);return}
       if(i===1){if(S.playing)pause(true);else{if(S.cleanupGate)S.cleanupGate();play()}}
-      else{if(!S.ready){loadApi();return}S.userPaused=false;S.want=true;try{i===0?S.player.previousVideo():S.player.nextVideo()}catch(e){}if(!S.playing)try{S.player.playVideo()}catch(e){}}})});
+      else{flipTape();if(!S.ready){loadApi();return}S.userPaused=false;S.want=true;try{i===0?S.player.previousVideo():S.player.nextVideo()}catch(e){}if(!S.playing)try{S.player.playVideo()}catch(e){}}})});
+  /* The physical-style volume control stays to the left of the stereo. */
+  var volume=$('#bbVolume');
+  if(volume){
+    volume.value=String(S.vol);
+    volume.addEventListener('input',function(){S.vol=Number(volume.value);try{if(S.player&&S.ready)S.player.setVolume(S.vol)}catch(e){}});
+    volume.addEventListener('keydown',function(e){if(e.key==='ArrowUp'||e.key==='ArrowRight'){S.vol=Math.min(100,S.vol+5);volume.value=S.vol;try{S.player&&S.ready&&S.player.setVolume(S.vol)}catch(x){}e.preventDefault()}else if(e.key==='ArrowDown'||e.key==='ArrowLeft'){S.vol=Math.max(0,S.vol-5);volume.value=S.vol;try{S.player&&S.ready&&S.player.setVolume(S.vol)}catch(x){}e.preventDefault()}});
+  }
+  var shuffle=$('#bbShuffle',S.el);
+  if(shuffle)shuffle.addEventListener('click',function(){
+    S.shuffle=!S.shuffle;
+    try{if(S.player&&S.ready)S.player.setShuffle(S.shuffle)}catch(e){}
+    setState();say(S.shuffle?'Shuffle on':'Shuffle off',1800);
+  });
+  /* The cassette rocks and flips when the visitor changes tracks. */
+  var flipTape=function(){
+    if(G&&!RMQ.matches){G.fromTo(tape,{rotationY:0,scale:1},{keyframes:[{rotationY:90,scale:.9,duration:.16,ease:'power2.in'},{rotationY:180,scale:1,duration:.2,ease:'power2.out'},{rotationY:360,scale:1,duration:.3,ease:'power2.out'}],overwrite:true})}
+  };
   /* the cassette: obviously a button */
   if(G&&!RMQ.matches){
     var wig=function(){if(S.mode==='work'||document.hidden)return;G.fromTo(tape,{rotation:0,y:0},{keyframes:[{y:-5,rotation:-5,duration:.16,ease:'power2.out'},{y:0,rotation:3,duration:.2,ease:'power2.in'},{rotation:-2,duration:.14},{rotation:0,duration:.3,ease:'elastic.out(1,.5)'}],overwrite:true})};
