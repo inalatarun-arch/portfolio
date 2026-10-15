@@ -172,3 +172,26 @@ body.has-bb .hdr-row .brand{margin-right:0}
 }
 @media (max-width:26.25rem){.bb{--k:1.5}.bb-tape{padding:.1875rem .25rem}}
 @media (prefers-reduced-motion:reduce){.bb-tape,.bb-np,.bb-tip{transition:none}}
+
+
+/* Full-screen camera viewer: restrained blur keeps the photography in focus. */
+.photo-lightbox{position:fixed;inset:0;z-index:1200;display:flex;align-items:center;justify-content:center;gap:clamp(.5rem,3vw,2rem);padding:clamp(1rem,4vw,3rem);background:rgba(8,9,12,.72);-webkit-backdrop-filter:blur(9px);backdrop-filter:blur(9px);opacity:0;visibility:hidden;pointer-events:none;transition:opacity .24s ease,visibility .24s}
+.photo-lightbox.is-visible{opacity:1;visibility:visible;pointer-events:auto}
+.photo-lightbox figure{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.75rem;width:min(84vw,1100px);height:100%;margin:0;min-width:0}
+.photo-lightbox figure img{display:block;max-width:100%;max-height:calc(100dvh - 6rem);width:auto;height:auto;object-fit:contain;box-shadow:0 1rem 4rem rgba(0,0,0,.32);image-rendering:auto}
+.photo-lightbox figcaption,.photo-lightbox-count{color:#f8f5ed;font:500 .8rem/1.4 var(--mono);letter-spacing:.04em}
+.photo-lightbox-count{position:absolute;bottom:1rem;left:50%;transform:translateX(-50%)}
+.photo-lightbox button{display:grid;place-items:center;flex:none;width:2.75rem;height:2.75rem;border:1px solid rgba(255,255,255,.36);border-radius:50%;background:rgba(12,12,14,.48);color:#fff;font:400 2rem/1 var(--sans);cursor:pointer;transition:background .18s,transform .18s}
+.photo-lightbox button:hover{background:rgba(255,255,255,.16);transform:scale(1.05)}
+.photo-lightbox button:disabled{opacity:.3;cursor:default;transform:none}
+.photo-lightbox .photo-lightbox-x{position:absolute;top:1.25rem;right:1.25rem;font-size:1.8rem}
+.cm-lcd[role=button]{cursor:zoom-in}
+.ps.has-lightbox .ps-dim{opacity:.12!important}
+@media(max-width:600px){
+ .photo-lightbox{gap:.35rem;padding:3.5rem .35rem 2.5rem}
+ .photo-lightbox figure{width:calc(100vw - 5rem)}
+ .photo-lightbox figure img{max-width:100%;max-height:calc(100dvh - 7rem)}
+ .photo-lightbox button{width:2.25rem;height:2.25rem;font-size:1.6rem}
+ .photo-lightbox .photo-lightbox-x{top:.6rem;right:.6rem}
+}
+@media(prefers-reduced-motion:reduce){.photo-lightbox{transition:none}}
