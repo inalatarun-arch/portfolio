@@ -7,6 +7,22 @@
 var G=window.gsap;
 var RMQ=window.matchMedia('(prefers-reduced-motion: reduce)');
 var reduced=function(){return RMQ.matches||!G};
+function sceneNight(){
+  var t=document.documentElement.getAttribute('data-theme');
+  return t==='dark'||(!t&&window.matchMedia('(prefers-color-scheme: dark)').matches);
+}
+function tintCanvas(cv,colour){
+  var x=cv.getContext('2d');x.save();x.globalCompositeOperation='source-atop';x.fillStyle=colour;x.fillRect(0,0,cv.width,cv.height);x.restore();return cv;
+}
+function nightSkyMarks(ctx,W,H,seed){
+  var r=rng(seed||29),i,x,y;
+  ctx.save();ctx.fillStyle='#dbe7ff';
+  for(i=0;i<Math.max(12,Math.floor(W*H/1700));i++){x=Math.floor(r()*W);y=Math.floor(r()*H*.76);ctx.fillRect(x,y,1,1);if(i%7===0)ctx.fillRect(x+1,y,1,1)}
+  var mx=Math.round(W*.79),my=Math.round(H*.2),mr=Math.max(3,Math.round(Math.min(W,H)*.035));
+  ctx.fillStyle='#f4e9bd';ctx.beginPath();ctx.arc(mx,my,mr,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='#15213c';ctx.beginPath();ctx.arc(mx+Math.max(2,Math.round(mr*.45)),my-Math.max(1,Math.round(mr*.2)),mr,0,Math.PI*2);ctx.fill();
+  ctx.restore();
+}
 
 /* ---------------------------------------------------------------- palette */
 var C={
@@ -171,7 +187,7 @@ function camera(x,X,Y){R(x,X-5,Y-3,11,7,'#272733');R(x,X-5,Y-3,11,1,'#4c4c5e');R
 function ell(x,cx,cy,rx,ry,col){var i,j;x.fillStyle=col;for(j=-ry;j<=ry;j++){var w=Math.round(rx*Math.sqrt(Math.max(0,1-(j*j)/(ry*ry+.01))));x.fillRect(Math.round(cx-w),Math.round(cy+j),w*2+1,1)}}
 
 function buildOffice(W,H){
-  var ox=Math.floor(W/2),oy=Math.floor(H/2)+8,FLR=14,FEET=26,top=-oy,left=-ox,right=W-ox,bottom=H-oy,i,j,k,r=rng(7);
+  var night=sceneNight(),ox=Math.floor(W/2),oy=Math.floor(H/2)+8,FLR=14,FEET=26,top=-oy,left=-ox,right=W-ox,bottom=H-oy,i,j,k,r=rng(7);
   var bg=mk(W,H),x=bg.x;x.translate(ox,oy);
   /* wall, panels, wainscot, skirting */
   R(x,left,top,W,FLR-top,C.wall);
@@ -236,9 +252,10 @@ function buildOffice(W,H){
   vignette(bg,.6);
 
   /* live window content */
-  var winSky=skyCanvas(84,64,[[0,[40,108,214]],[.5,[96,168,238]],[1,[196,228,248]]],6);
-  var cityFar=skylineCanvas(84,26,11,'#8fb2d8','#7fa3cc','#d9ecff',.3),cityNear=skylineCanvas(84,20,23,'#4f7aa8','#436b96','#cfe6ff',null);
-  var clouds=[{img:cloudSprite(34,15,3),x:6,y:6,v:2.2},{img:cloudSprite(26,12,9),x:50,y:22,v:1.5},{img:cloudSprite(40,16,14),x:90,y:2,v:1.1},{img:cloudSprite(22,10,5),x:130,y:20,v:3}];
+  var winSky=skyCanvas(84,64,night?[[0,[9,18,48]],[.5,[22,39,79]],[1,[49,67,105]]]:[[0,[40,108,214]],[.5,[96,168,238]],[1,[196,228,248]]],6);
+  var cityFar=night?skylineCanvas(84,26,11,'#465577','#303e60','#f1dba0',.3):skylineCanvas(84,26,11,'#8fb2d8','#7fa3cc','#d9ecff',.3);
+  var cityNear=night?skylineCanvas(84,20,23,'#283958','#1b2948','#f8d78a',null):skylineCanvas(84,20,23,'#4f7aa8','#436b96','#cfe6ff',null);
+  var clouds=night?[]:[{img:cloudSprite(34,15,3),x:6,y:6,v:2.2},{img:cloudSprite(26,12,9),x:50,y:22,v:1.5},{img:cloudSprite(40,16,14),x:90,y:2,v:1.1},{img:cloudSprite(22,10,5),x:130,y:20,v:3}];
   var person=newPerson(),dust=[];for(i=0;i<16;i++)dust.push({x:-60+r()*100,y:-60+r()*90,s:.5+r()*1.5,p:r()*6});
 
   function screen(ctx,t){
@@ -255,6 +272,7 @@ function buildOffice(W,H){
     draw:function(ctx,t,fast){
       ctx.save();ctx.translate(ox,oy);
       ctx.drawImage(winSky.c,-62,-96);
+      if(night)nightSkyMarks(ctx,84,64,17);
       for(i=0;i<clouds.length;i++){var c=clouds[i],span=84+c.img.width+20,px=((c.x+t*c.v)%span+span)%span-c.img.width;ctx.drawImage(c.img,-62+Math.round(px),-96+c.y)}
       ctx.drawImage(cityFar.c,-62,-96+64-26);ctx.drawImage(cityNear.c,-62,-96+64-20);
       ctx.restore();
@@ -306,22 +324,23 @@ function canopyLayer(w,h,seed,circles,pal){
   x.putImageData(id,0,0);return o.c}
 
 function buildPark(W,H){
-  var ox=Math.floor(W/2),oy=Math.floor(H/2)+8,HOR=-8,top=-oy,left=-ox,right=W-ox,bottom=H-oy,i,j,k,r=rng(21);
+  var night=sceneNight(),ox=Math.floor(W/2),oy=Math.floor(H/2)+8,HOR=-8,top=-oy,left=-ox,right=W-ox,bottom=H-oy,i,j,k,r=rng(21);
   var HX=-4;   /* world x of the hip */
   /* --- sky + clouds (live) */
-  var sky=skyCanvas(W,oy+HOR+2,[[0,[44,120,222]],[.5,[104,178,240]],[1,[206,234,250]]],7);
-  var clouds=[{img:cloudSprite(60,24,31),x:110,y:top+18,v:2.4},{img:cloudSprite(44,18,12),x:230,y:top+46,v:1.6},{img:cloudSprite(76,28,5),x:20,y:top+8,v:1.1},{img:cloudSprite(36,15,44),x:330,y:top+60,v:3.1}];
+  var sky=skyCanvas(W,oy+HOR+2,night?[[0,[7,15,40]],[.5,[19,32,65]],[1,[38,52,82]]]:[[0,[44,120,222]],[.5,[104,178,240]],[1,[206,234,250]]],7);
+  var clouds=night?[]:[{img:cloudSprite(60,24,31),x:110,y:top+18,v:2.4},{img:cloudSprite(44,18,12),x:230,y:top+46,v:1.6},{img:cloudSprite(76,28,5),x:20,y:top+8,v:1.1},{img:cloudSprite(36,15,44),x:330,y:top+60,v:3.1}];
   /* --- far layer: skyline + two hills */
   var far=mk(W,H),fx=far.x;fx.translate(ox,oy);
-  var sk1=skylineCanvas(W,30,5,'#9dbbdd','#8aa9d0','#e2f0ff',.78),sk2=skylineCanvas(W,20,17,'#7da3cb','#6c92bd','#d4e8ff',null);
+  var sk1=night?skylineCanvas(W,30,5,'#34415f','#26324e','#f3d99a',.78):skylineCanvas(W,30,5,'#9dbbdd','#8aa9d0','#e2f0ff',.78);
+  var sk2=night?skylineCanvas(W,20,17,'#222e49','#18243b','#f8d78a',null):skylineCanvas(W,20,17,'#7da3cb','#6c92bd','#d4e8ff',null);
   fx.drawImage(sk1.c,left,HOR-26);fx.drawImage(sk2.c,left,HOR-14);
   function hill(base,amp,f1,f2,ph,col,colL,bandPx){var xx,hh,yy;for(xx=left;xx<right;xx++){hh=base-amp*(.55+.45*Math.sin(xx*f1+ph))-amp*.35*Math.sin(xx*f2+ph*2);
     for(yy=Math.round(hh);yy<=HOR+2;yy++){P1(fx,xx,yy,(yy-Math.round(hh)<bandPx&&bay(xx,yy)<.5)?colL:col)}}}
-  hill(HOR-9,9,.021,.07,1.1,'#7fb48f','#97c8a2',3);
-  hill(HOR-1,6,.034,.09,.3,'#5faa57','#7cc468',3);
+  hill(HOR-9,9,.021,.07,1.1,night?'#263c42':'#7fb48f',night?'#344b50':'#97c8a2',3);
+  hill(HOR-1,6,.034,.09,.3,night?'#1a302f':'#5faa57',night?'#29403a':'#7cc468',3);
   /* --- ground (static) */
   var gr=mk(W,H),g=gr.x;g.translate(ox,oy);
-  var gp=[[121,194,86],[98,176,74],[78,155,68],[60,133,62]],id,d;
+  var gp=night?[[39,69,59],[31,57,51],[24,45,45],[17,34,38]]:[[121,194,86],[98,176,74],[78,155,68],[60,133,62]],id,d;
   for(j=HOR;j<bottom;j++){var t=(j-HOR)/(bottom-HOR);for(i=left;i<right;i++){var b=clamp(Math.floor(t*3.4+bay(i+ox,j+oy)-.5),0,3),c=gp[b];g.fillStyle='rgb('+c[0]+','+c[1]+','+c[2]+')';g.fillRect(i,j,1,1)}}
   /* path: a winding stone path into the distance */
   function pcx(y){var u=(y-HOR)/(bottom-HOR);return lerp(-100,-58,u)+Math.sin(u*3.4)*8}
@@ -393,6 +412,7 @@ function buildPark(W,H){
     draw:function(ctx,t){
       var ph=phase(t),e=ph.e,f;
       ctx.drawImage(sky.c,0,0);
+      if(night)nightSkyMarks(ctx,W,oy+HOR+2,31);
       ctx.save();ctx.translate(ox,oy);
       /* clouds */
       for(i=0;i<clouds.length;i++){var cl=clouds[i],span=W+cl.img.width+30,px=((cl.x+t*cl.v)%span+span)%span-cl.img.width;ctx.drawImage(cl.img,left+Math.round(px),cl.y)}
@@ -624,6 +644,16 @@ var Stage=(function(){
   function build(name){var p=panels[name],K=KIND[name];
     p.scene=K.build(geo.W,geo.Hh);p.c.width=geo.W;p.c.height=geo.Hh;p.x=p.c.getContext('2d');p.x.imageSmoothingEnabled=false;
     p.ox=ox(geo.W);p.oy=oyy(geo.Hh)}
+  function repaintForTheme(){
+    if(!el||!geo)return;
+    Object.keys(panels).forEach(function(n){
+      var p=panels[n],K=KIND[n];
+      if(!p.scene||!K)return;
+      p.scene=K.build(geo.W,geo.Hh);
+      if(p.on)mdraw(p,(performance.now()-t0)/1000);
+    });
+    if(shown&&reduced())drawStill();
+  }
   function mkPanel(name){
     var d=document.createElement('div'),c=document.createElement('canvas');d.className='stage-p stage-'+name;d.appendChild(c);el.appendChild(d);
     panels[name]={d:d,c:c,scene:null,s:{t:0,r:0,b:0,l:0,fx:.5,fy:.5,k:1},on:false};return panels[name]}
@@ -658,7 +688,8 @@ var Stage=(function(){
   function ensure(name){if(!panels[name])mkPanel(name);if(!panels[name].scene)build(name)}
   function init(){if(el)return;el=document.getElementById('stage');if(!el)return;measure();
     var rz=0;window.addEventListener('resize',function(){clearTimeout(rt);rt=setTimeout(onResize,220)});
-    if(RMQ.addEventListener)RMQ.addEventListener('change',run)}
+    if(RMQ.addEventListener)RMQ.addEventListener('change',run);
+    window.addEventListener('themechange',repaintForTheme)}
   function onResize(){var w=el.clientWidth,h=el.clientHeight;if(geo&&w===geo.vw&&Math.abs(h-geo.vh)<130&&dpr===Math.min(window.devicePixelRatio||1,3)){geo.vh=h;rest(true);return}
     measure();Object.keys(panels).forEach(function(n){kill(n);panels[n].scene=null;ensure(n)});rest(true)}
   /* snap every panel to the resting state of the current mode */
