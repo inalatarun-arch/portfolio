@@ -240,39 +240,6 @@ function pageWelcome(){
 
 function pageWork(){
   var W=SITE.work||{};
-  var stats=(W.stats||[]).map(function(s){return '<div class="stat" data-r><div class="stat-v"><span data-count="'+esc(s.v)+'">'+esc(s.v)+'</span>'+(s.u?'<small>'+esc(s.u)+'</small>':'')+'</div>'+
-    '<div class="stat-k">'+esc(s.k)+'</div><div class="stat-d">'+esc(s.d)+'</div></div>'}).join('');
-  var F=W.featured||[],f0=F[0],flag='';
-  if(f0){
-    flag='<section class="sec" id="featured"><div class="wrap">'+
-      '<p class="eyebrow" data-r>Selected work</p><h2 class="sec-h" data-r>Three problems I took from messy to measurable.</h2>'+
-      '<div class="flag"><div class="flag-l" data-r>'+
-        '<h3>'+esc(f0.title)+'</h3><p>'+esc(f0.desc)+'</p>'+
-        '<div class="mets">'+(f0.mets||[]).map(function(m){return '<div class="met"><b>'+esc(m[1])+'</b><span>'+esc(m[0])+'</span></div>'}).join('')+'</div>'+
-        '<div class="chips">'+(f0.chips||[]).map(function(c){return '<span class="chip">'+esc(c)+'</span>'}).join('')+'</div>'+
-        (f0.case?'<button class="btn btn-ghost" type="button" data-case="0" data-feel>Read the case study'+ic('arrow-ur')+'</button>':'')+
-      '</div><div class="steps">'+(f0.steps||[]).map(function(s,i){return '<div class="step" data-step><span class="step-n">0'+(i+1)+'</span><span class="step-ic">'+ic(STEP_IC[i%3])+'</span>'+
-        '<div><h4>'+esc(s[0])+'</h4><p>'+esc(s[1])+'</p><div class="step-bar"><i></i></div></div></div>'}).join('')+'</div></div>';
-    var rest=F.slice(1,3);
-    if(rest.length){
-      flag+='<div class="duo">'+rest.map(function(a,i){var n=i+1;return '<article class="ach '+(i===0?'ach-a':'ach-b')+'" data-r>'+
-        '<div class="ach-top"><span class="ach-ic">'+ic(ILL[a.ill]||'star')+'</span><div><div class="ach-big">'+esc(a.big||'')+'</div><div class="ach-bl">'+esc(a.bigLabel||'')+'</div></div></div>'+
-        '<div class="ach-body"><div class="ach-tag">'+esc(String(a.tag||'').replace(/^.*?·\s*/,''))+'</div><h3>'+esc(a.title)+'</h3><p>'+esc(a.desc)+'</p>'+
-        '<div class="chips">'+(a.chips||[]).map(function(c){return '<span class="chip">'+esc(c)+'</span>'}).join('')+'</div>'+
-        (a.case?'<button class="btn btn-ghost" type="button" data-case="'+n+'" data-feel>'+esc(a.link||'Read the case study')+ic('arrow-ur')+'</button>':'')+
-      '</div></article>'}).join('')+'</div>';
-    }
-    flag+='</div></section>';
-  }
-  var more=(W.more||[]).map(function(m,i){var feat=i===0&&m.big;
-    return '<article class="cell c'+(i+1)+'" data-r>'+
-      (feat?'<div class="cell-feat"><span class="cell-ic">'+ic(ILL[m.ill]||'star')+'</span><div><div class="big">'+esc(m.big)+'</div><div class="big-l">'+esc(m.bigLabel||'')+'</div></div></div>'
-           :'<div class="cell-top"><span class="cell-ic">'+ic(ILL[m.ill]||'star')+'</span></div>')+
-      '<div class="cell-body"><h3>'+esc(m.k)+'</h3><div class="t">'+esc(m.t)+'</div><p class="d">'+esc(m.d)+'</p>'+(feat?'':'<div class="m">'+esc(m.m)+'</div>')+'</div></article>'}).join('');
-  var hon=(W.honours||[]).map(function(h){var cert=/certif|essentials/i.test(h.t);return '<div class="award" data-r>'+ic(cert?'cert':'medal')+
-    '<div><b>'+esc(h.t)+'</b><span>'+esc(h.s)+'</span></div><span class="y">'+esc(h.y)+'</span></div>'}).join('');
-  var sk=[];Object.keys(W.skills||{}).forEach(function(g){(W.skills[g]||[]).forEach(function(s){sk.push(s)})});
-  var skH=sk.map(function(s){return '<span class="chip">'+esc(s)+'</span>'}).join('');
   var SCR=['TBD','see email','FINAL_v3','who owns this?','UAT??','v2 (copy)'];
   var bayH=(W.roles||[]).length?'<div class="bay"><h2 class="bay-eyebrow">Experience</h2><div class="bay-cam" role="list">'+
     (W.roles||[]).map(function(r){return '<article class="bay-card" role="listitem"><div class="bc-top"><span class="bc-yrs">'+esc(r.yrs)+'</span>'+(r.tag?'<span class="bc-tag">'+esc(r.tag)+'</span>':'')+'</div>'+
@@ -284,22 +251,8 @@ function pageWork(){
     (W.status?'<div class="pill" data-r>'+esc(W.status)+'</div>':'')+
     '<h1 data-hl>'+headline(rich(W.headline||''))+'</h1>'+
     '<div data-r><p class="hero-sub">'+esc(W.sub||'')+' '+esc('Five years taking products from first problem to shipped release.')+'</p>'+
-      '<div class="hero-cta"><a class="btn btn-primary" data-feel data-magnet href="'+esc(resumeHref())+'" download>Download resume<span class="dot">'+ic('down')+'</span></a>'+
-      '<button class="btn btn-ghost" type="button" data-feel data-scroll="#featured">See the work'+ic('arrow-d')+'</button></div></div>'+
-  '</div></div>'+bayH+'</section>'+
-  '<div class="after">'+
-  '<div class="wrap"><div class="stats">'+stats+'</div></div>'+
-  (W.lede?'<section class="statement"><div class="wrap"><p data-words>'+words(W.lede)+'</p></div></section>':'')+
-  '<div class="wrap"><div class="viz" data-r><canvas data-field="structure" role="img" aria-label="Animated graphic: scattered fragments of a document assemble into an ordered table, the idea behind the contract extraction engine."></canvas></div></div>'+
-  flag+
-  '<section class="sec"><div class="wrap"><h2 class="sec-h" data-r>More across the platform.</h2><div class="bento">'+more+'</div></div></section>'+
-  '<section class="sec"><div class="wrap"><p class="eyebrow" data-r>Recognition</p><h2 class="sec-h" data-r>Awards and certifications.</h2>'+
-    '<div class="rec">'+hon+'</div>'+
-    '<div class="marq-wrap" data-r><div class="marq-bar"><h3>Tools and methods</h3><button class="icon-btn" type="button" id="marqBtn" aria-pressed="false" aria-label="Pause the moving skills list">'+ic('pause')+'</button></div>'+
-    '<div class="marq" role="group" aria-label="Skills"><div class="marq-t">'+skH+'<span aria-hidden="true" style="display:contents">'+skH+'</span></div></div></div></div></section>'+
-  '<section class="close"><div class="wrap"><h2 data-hl>'+headline('Have a product that needs <em>clear thinking?</em>')+'</h2>'+
-    '<div class="reach-slot" data-r>'+reachHTML('work','close')+'</div></div></section>'+
-  '</div>';
+      '<div class="hero-cta"><a class="btn btn-primary" data-feel data-magnet href="'+esc(resumeHref())+'" download>Download resume<span class="dot">'+ic('down')+'</span></a></div></div>'+
+  '</div></div>'+bayH+'</section>';
 }
 
 function pageContact(mode){

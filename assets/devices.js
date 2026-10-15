@@ -59,8 +59,11 @@ function mount(seq,D){
       '<section class="wf-case">'+(f.case||[]).map(function(c,i){return '<div class="wf-row"><span class="wf-n">0'+(i+1)+'</span><div><h3>'+esc(c[0])+'</h3><p>'+esc(c[1])+'</p></div></div>'}).join('')+
       (f.steps?'<ol class="wf-flow">'+f.steps.map(function(s){return '<li><b>'+esc(s[0])+'</b><span>'+esc(s[1])+'</span></li>'}).join('')+'</ol>':'')+'</section></div>'}
   function fullNotes(a){
-    return '<div class="wf-grid wf-grid-n"><section class="wf-lead"><p class="wf-tag">More across the platform</p><h2>Five more things I owned.</h2><p class="wf-desc">Smaller in scope, same approach: understand the problem, align the people, ship, measure.</p></section>'+
-      '<section class="wf-case">'+a.m.map(function(m,i){return '<div class="wf-row"><span class="wf-n wf-ic">'+ic((D.ILL||{})[m.ill]||'star')+'</span><div><h3>'+esc(m.k)+' <small>'+esc(m.t)+'</small></h3><p>'+esc(m.d)+'</p><p class="wf-m">'+esc(m.m||'')+'</p></div></div>'}).join('')+'</section></div>'}
+    var honors=W.honours||[],skills=W.skills||{},skillGroups=Object.keys(skills);
+    return '<div class="wf-grid wf-grid-n"><section class="wf-lead"><p class="wf-tag">Beyond the flagship work</p><h2>More delivery, recognition &amp; toolkit.</h2><p class="wf-desc">The supporting work behind the outcomes: platform improvements, team delivery, professional recognition and the methods used to get work shipped.</p>'+
+      '<h3>Recognition</h3><div class="wf-mini-list">'+honors.map(function(h){return '<div class="wf-mini"><b>'+esc(h.t)+'</b><span>'+esc(h.s)+' · '+esc(h.y)+'</span></div>'}).join('')+'</div></section>'+
+      '<section class="wf-case"><h3>More across the platform</h3>'+a.m.map(function(m){return '<div class="wf-row"><span class="wf-n wf-ic">'+ic((D.ILL||{})[m.ill]||'star')+'</span><div><h3>'+esc(m.k)+' <small>'+esc(m.t)+'</small></h3><p>'+esc(m.d)+'</p><p class="wf-m">'+esc(m.m||'')+'</p></div></div>'}).join('')+
+      '<h3>Tools &amp; methods</h3>'+skillGroups.map(function(g){return '<div class="wf-mini"><b>'+esc(g)+'</b><span>'+skills[g].map(esc).join(' · ')+'</span></div>'}).join('')+'</section></div>'}
 
   function winHTML(a,i){
     var isCase=a.kind==='case',pv=isCase?[pvExt(a.f),pvLed(),pvPay()][a.n]||'':'';
