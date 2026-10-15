@@ -74,11 +74,11 @@ function mount(seq,D){
         '<span class="wf-pos">'+(i+1)+' of '+apps.length+'</span><button class="wf-next" type="button" data-next>'+(i+1<apps.length?'Next: '+esc(apps[i+1].name):'Back to start')+ic('arrow-r')+'</button></header>'+
         '<div class="wf-body" tabindex="-1">'+(isCase?fullCase(a):fullNotes(a))+'<p class="wf-foot">Screens in this window are illustrative mock-ups made for this site. They contain no client data.</p></div></div></div></article>'}
 
-  var status=W.status||'Open to Product Owner and Lead BA roles';
+  var status=D.showOpen?(W.status||''):'';
   var root=document.createElement('div');root.className='dv';
   root.innerHTML=defs()+'<div class="dv-dim"></div>'+
     '<div class="lap"><div class="lap-screen os os-wide" inert><div class="os-boot"></div><div class="os-desk">'+
-      '<div class="os-bar"><span class="os-mark">TI</span><b class="os-app">Case studies</b><span class="os-st"><i></i>'+esc(status)+'</span></div>'+
+      '<div class="os-bar"><span class="os-mark">TI</span><b class="os-app">Case studies</b>'+(status?'<span class="os-st"><i></i>'+esc(status)+'</span>':'')+'</div>'+
       '<div class="os-area"><div class="os-grid">'+cases.map(function(a,i){return '<div class="os-slot s'+(i+1)+'"></div>'}).join('')+'</div></div>'+
       apps.map(winHTML).join('')+
       '<nav class="dock" aria-label="Apps">'+apps.map(function(a,i){return '<button class="dk" type="button" data-dock="'+i+'" aria-label="Open '+esc(a.name)+'"><span class="dk-t">'+esc(a.name)+'</span>'+icon(a.id)+'<i class="dk-dot"></i></button>'}).join('')+'</nav>'+

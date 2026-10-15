@@ -123,6 +123,7 @@ var ROUTES={
 };
 var MODES={work:['work','built','contact'],personal:['writings','photography','hello']};
 var FOOT={work:'Business analysis and product delivery. Clear requirements, shipped outcomes.',personal:'Writings and photographs, kept in one quiet place.'};
+var SHOW_OPEN=false; /* temporarily hides the "Open to ... roles" status pill and laptop status; set true to restore */
 var TITLES={welcome:'Tarun Inala – Senior Business Analyst, open to Product Owner roles'};
 function routeKey(){var k=location.hash.replace(/^#\/?/,'').split(/[/?]/)[0];if(k==='poetry'){k='writings';try{history.replaceState(null,'','#/writings')}catch(e){}}return ROUTES[k]?k:'welcome'}
 
@@ -235,7 +236,7 @@ function pageWelcome(){
     '<a class="pdoor pdoor-work" href="#/work" data-door="office"><span class="pdoor-in"><span class="pdoor-k"><span>Work</span><span class="door-arrow">'+ic('arrow-ur')+'</span></span>'+
       '<span class="pdoor-s">Case studies in Generative AI, payments platforms and ERP delivery.</span></span></a>'+
     '<a class="pdoor pdoor-pers" href="#/writings" data-door="park"><span class="pdoor-in"><span class="pdoor-k"><span>Personal</span><span class="door-arrow">'+ic('arrow-ur')+'</span></span>'+
-      '<span class="pdoor-s">Poems and journal pages in English, Telugu and Hindi, street photographs, and good music always playing.</span></span></a>'+
+      '<span class="pdoor-s">Poems and journal pages in English, Telugu and Hindi, street photographs and an audiophile’s love of good sound.</span></span></a>'+
   '</section>';
 }
 
@@ -249,7 +250,7 @@ function pageWork(){
     '</div><canvas class="bay-hand" aria-hidden="true"></canvas></div>':'';
   return ''+
   '<section class="seq" id="seq"><div class="seq-scrim" aria-hidden="true"></div><div class="hero hero-scene"><div class="wrap hero-in">'+
-    (W.status?'<div class="pill" data-r>'+esc(W.status)+'</div>':'')+
+    (SHOW_OPEN&&W.status?'<div class="pill" data-r>'+esc(W.status)+'</div>':'')+
     '<h1 data-hl>'+headline(rich(W.headline||''))+'</h1>'+
     '<div data-r><p class="hero-sub">'+esc(W.sub||'')+' '+esc('Five years taking products from first problem to shipped release.')+'</p>'+
       '<div class="hero-cta"><a class="btn btn-primary" data-feel data-magnet href="'+esc(resumeHref())+'" download>Download resume<span class="dot">'+ic('down')+'</span></a></div></div>'+
@@ -329,7 +330,7 @@ function mountSeq(scope,rm){
   if(!cam||!cards.length||!hand)return;
   Stage.hand(hand);
   /* devices: laptop with one app per case study, then the phone with the contact widget (see assets/devices.js) */
-  var dev=window.Devices?window.Devices.mount(seq,{$:$,$$:$$,esc:esc,ic:ic,SITE:SITE,ILL:ILL,Spring:Spring,reachHTML:reachHTML,initReach:initReach,lock:lock,reduced:reduced,
+  var dev=window.Devices?window.Devices.mount(seq,{showOpen:SHOW_OPEN,$:$,$$:$$,esc:esc,ic:ic,SITE:SITE,ILL:ILL,Spring:Spring,reachHTML:reachHTML,initReach:initReach,lock:lock,reduced:reduced,
     say:function(t){var l=$('#live');if(l)l.textContent=t}}):null;
   var HI='0 1.7rem 2.4rem 0 rgba(30,14,0,.40)',LO='0 .125rem .4rem 0 rgba(30,14,0,.34)',MID='0 .75rem 1.2rem 0 rgba(30,14,0,.36)';
   var POSE=[[-.13,-.06,-15],[.12,-.01,17],[-.055,.03,-22],[.075,-.07,9]];
