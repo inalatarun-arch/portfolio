@@ -220,3 +220,18 @@ body.zen-mode-open .bb-yt{position:fixed;display:block;left:50%;top:50%;z-index:
  .bb-volume input{width:1.7rem}
  .bb{gap:.35rem;margin-left:.35rem}
 }
+
+
+/* Pixel mixer controls: a compact stepped volume knob and readable shuffle labels. */
+.bb-volume{position:relative;width:3.5rem;height:2.5rem;gap:.25rem;border:0;border-radius:0;background:transparent;padding:0;display:flex;align-items:center;justify-content:center;flex-direction:column}
+.bb-volume-knob{--knob-angle:30deg;position:relative;display:grid;place-items:center;width:2rem;height:2rem;flex:none;padding:0;border:3px solid #171c27;border-radius:2px;background:repeating-linear-gradient(0deg,#b6b09b 0 4px,#9a947e 4px 8px);box-shadow:inset 0 0 0 2px #d7ceb2,3px 3px 0 #171c27;cursor:ns-resize;touch-action:none;transform:translateZ(0)}
+.bb-volume-knob::before{content:"";position:absolute;inset:3px;border:2px solid #4b493d;background:#393a32;box-shadow:inset 0 0 0 2px #68634f}
+.bb-volume-notch{position:absolute;z-index:1;top:4px;left:calc(50% - 2px);width:4px;height:7px;background:#ffe4a2;border:1px solid #171c27;transform-origin:2px 8px;transform:rotate(var(--knob-angle));image-rendering:pixelated}
+.bb-volume-value{font:700 .48rem/1 var(--mono);letter-spacing:.03em;color:var(--fg);font-variant-numeric:tabular-nums}
+.bb-volume:focus-within .bb-volume-knob,.bb-volume-knob:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.bb-shuffle{width:calc(42px*var(--k));height:calc(10px*var(--k));right:calc(1px*var(--k));top:calc(1px*var(--k));padding:0 2px;background:#202838;border:1px solid #171c27;box-shadow:1px 1px 0 #171c27;color:#ffe4a2;font:700 calc(5px*var(--k))/1 var(--mono);letter-spacing:-.06em;white-space:nowrap}
+.bb-shuffle:hover,.bb-shuffle.is-on{background:#e9d4a4;color:#171c27}
+.bb-shuffle.is-on::after{inset:-2px;border:1px solid #fff4c8}
+.bb-zen-controls>.bb-zen-shuffle{width:auto;min-width:5.6rem;height:2.8rem;padding:0 .65rem;border-radius:2px;font:700 .7rem/1 var(--mono);letter-spacing:.04em;image-rendering:pixelated}
+.bb-zen-controls>.bb-zen-shuffle[aria-pressed="true"]{background:#e7a84e;color:#17140e;box-shadow:inset 0 0 0 2px #17140e}
+@media(max-width:860px){.bb-volume{width:2.8rem;height:2.2rem}.bb-volume-knob{width:1.65rem;height:1.65rem}.bb-volume-value{font-size:.42rem}.bb-shuffle{width:calc(42px*var(--k));font-size:calc(5px*var(--k))}}
