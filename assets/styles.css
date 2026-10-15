@@ -799,3 +799,15 @@ main:focus{outline:none}
 .dk.is-hint .dk-t{opacity:1;transform:translate(-50%,0)}
 @media (hover:none){.dv-cur{display:none}}
 @media (prefers-reduced-motion:reduce){.dv-cur{display:none}}
+
+/* Built page: projects made with Claude */
+.built{padding-top:calc(var(--hdr) + clamp(1.5rem,6vh,4rem));padding-bottom:clamp(4rem,12vh,9rem)}
+.built-hero h1{font-size:clamp(2.75rem,8vw,6.5rem);letter-spacing:-.05em;line-height:.92;max-width:14ch}
+.built-hero .lede{margin-top:1.25rem;max-width:44rem;color:var(--muted);font-size:clamp(1.0625rem,2.2vw,1.3125rem);line-height:1.55}
+.built-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;margin-top:clamp(2rem,6vh,3.5rem)}
+.mk-card{padding:1.625rem 1.5rem 1.5rem;border-radius:var(--r-lg);border:.0625rem solid var(--line);background:var(--surface)}
+.mk-top{margin-bottom:1rem}
+.mk-tag{display:inline-block;padding:.125rem .625rem;border-radius:var(--pill);border:.09375rem solid var(--line-2);font-size:.8125rem;font-weight:600}
+.mk-card h2{font-size:1.625rem;letter-spacing:-.02em;line-height:1.15}
+.mk-card p{margin-top:.75rem;color:var(--muted);font-size:1rem;line-height:1.65}
+@media (max-width:53.75rem){.built-grid{grid-template-columns:1fr}}

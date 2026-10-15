@@ -115,12 +115,13 @@ paintTheme();
 var ROUTES={
   welcome:{m:'',l:'Home',f:pageWelcome},
   work:{m:'work',l:'Work',f:pageWork},
+  built:{m:'work',l:'Built',f:pageBuilt},
   contact:{m:'work',l:'Contact',f:function(){return pageContact('work')}},
   writings:{m:'personal',l:'Writings',f:pageWritings},
   photography:{m:'personal',l:'Photographs',f:pagePhotos},
   hello:{m:'personal',l:'Say hello',f:function(){return pageContact('personal')}}
 };
-var MODES={work:['work','contact'],personal:['writings','photography','hello']};
+var MODES={work:['work','built','contact'],personal:['writings','photography','hello']};
 var FOOT={work:'Business analysis and product delivery. Clear requirements, shipped outcomes.',personal:'Writings and photographs, kept in one quiet place.'};
 var TITLES={welcome:'Tarun Inala – Senior Business Analyst, open to Product Owner roles'};
 function routeKey(){var k=location.hash.replace(/^#\/?/,'').split(/[/?]/)[0];if(k==='poetry'){k='writings';try{history.replaceState(null,'','#/writings')}catch(e){}}return ROUTES[k]?k:'welcome'}
@@ -253,6 +254,14 @@ function pageWork(){
     '<div data-r><p class="hero-sub">'+esc(W.sub||'')+' '+esc('Five years taking products from first problem to shipped release.')+'</p>'+
       '<div class="hero-cta"><a class="btn btn-primary" data-feel data-magnet href="'+esc(resumeHref())+'" download>Download resume<span class="dot">'+ic('down')+'</span></a></div></div>'+
   '</div></div>'+bayH+'</section>';
+}
+
+function pageBuilt(){
+  var B=SITE.built||{},items=B.items||[];
+  return '<section class="wrap built"><div class="built-hero"><h1 data-hl>'+headline(rich(B.headline||'Things I’ve <em>built</em>.'))+'</h1>'+
+    '<p class="lede" data-r>'+esc(B.intro||'')+'</p></div>'+
+    '<div class="built-grid">'+items.map(function(it){
+      return '<article class="mk-card" data-r><div class="mk-top"><span class="mk-tag">'+esc(it.tag||'')+'</span></div><h2>'+esc(it.title)+'</h2><p>'+esc(it.desc)+'</p></article>'}).join('')+'</div></section>';
 }
 
 function pageContact(mode){
@@ -847,6 +856,6 @@ var footReach=null;
 function fillReach(){var h=$('#footReach');h.innerHTML=reachHTML('foot','foot',{pop:true});footReach=initReach($('[data-reach]',h))}
 function start(){fillReach();route()}
 function fail(){root.classList.remove('js')}   // show the static fallback instead of a blank page
-if(window.fetch){fetch('content.json?v=6',{cache:'no-cache'}).then(function(r){return r.ok?r.json():Promise.reject()}).then(function(d){
+if(window.fetch){fetch('content.json?v=7',{cache:'no-cache'}).then(function(r){return r.ok?r.json():Promise.reject()}).then(function(d){
   if(d&&typeof d==='object'){SITE=d;start()}else fail()}).catch(fail)}else fail();
 })();

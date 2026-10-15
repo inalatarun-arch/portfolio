@@ -3217,5 +3217,31 @@
     "#1c1b17"
    ]
   }
- ]
+ ],
+ "built": {
+  "headline": "Things I’ve <em>built</em> with Claude.",
+  "intro": "I’m a business analyst, not a developer. I build tools I wish existed by working with Claude: I write the requirements, make the design calls, test everything, and send it back until it works. Claude writes the code.",
+  "items": [
+   {
+    "tag": "Live",
+    "title": "This portfolio site",
+    "desc": "A landing page that splits work from personal, light and dark themes, a resume download, and writings in English, Telugu and Hindi. The content lives in its own file, apart from the layout, so I can change text without touching the design. Hosted on GitHub Pages at inalatarun.co.in."
+   },
+   {
+    "tag": "In progress",
+    "title": "DocDeck",
+    "desc": "A personal experiment to see whether I could rebuild the core of Adobe Acrobat, one feature at a time, working only through Claude. About 70% of the functionality works today. I still need to test it and check the quality of its output. The Mac version is being built now, and Windows comes next."
+   },
+   {
+    "tag": "Side project",
+    "title": "Phone macro deck",
+    "desc": "A macro board for old phones. Plug in a spare Android phone or iPhone and it becomes a deck of shortcut buttons for your computer, with no setup beyond plugging it in."
+   },
+   {
+    "tag": "Prototype",
+    "title": "Kindle desk dashboard",
+    "desc": "I turned an old Kindle into a desk display. I email myself a task tagged #dash, Make.com passes it to Gemini to pull out the title, date and category, and it lands in a Notion database that feeds a page the Kindle’s browser shows. It runs in portrait only because the Kindle browser won’t rotate."
+   }
+  ]
+ }
 }
