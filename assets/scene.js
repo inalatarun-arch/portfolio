@@ -172,6 +172,15 @@ function drawPerson(o,pose){
   x.drawImage(headSprite(),hxp,hyp);
   var ex=hxp+15,ey=hyp+9;
   if(pose.blink){P1(x,ex,ey+1,'#2a1a12')}else{R(x,ex,ey,1,2,'#120c09');P1(x,ex-1,ey,C.skinL)}
+  /* over-ear headphones, in the same crisp pixel-art style */
+  if(pose.headphones){
+    LN(x,hxp+4,hyp+7,hxp+5,hyp+3,2,'#202431');
+    LN(x,hxp+5,hyp+3,hxp+8,hyp+1,2,'#202431');
+    LN(x,hxp+8,hyp+1,hxp+12,hyp+2,2,'#202431');
+    LN(x,hxp+12,hyp+2,hxp+14,hyp+6,2,'#202431');
+    R(x,hxp+12,hyp+5,4,7,'#202431');R(x,hxp+13,hyp+6,2,5,'#5d86b9');
+    P1(x,hxp+13,hyp+7,'#a9c8ed');R(x,hxp+11,hyp+8,1,3,'#202431');
+  }
   /* camera hanging on a strap */
   if(pose.cam){camera(x,hxp+pose.cam.x,hyp+pose.cam.y)}
   return {head:{x:hxp,y:hyp},sh:{x:sx,y:sy},nj:nj}}
@@ -450,7 +459,7 @@ function buildPark(W,H){
       var tipU=d0+2+Math.floor(lp*30)/2+(Math.sin(t*26)>0?0:.5),tipF=(tipU-d0)/(d1-d0),
           pen={x:Math.round(tipU)-2,y:Math.round(lerp(-9,-13,tipF))+1+line*2-3+(Math.sin(t*26)>.2?1:0)};
       var camPos={x:lerp(5,20,e),y:lerp(29,10,e)};
-      var pose={lean:Math.round(lerp(2,0,e)),head:{dx:Math.round(lerp(2,1,e)),dy:Math.round(lerp(2,-1,e))},blink:(t%3.4)<.13||(ph.s>5.0&&ph.s<5.3),dir:1,
+      var pose={lean:Math.round(lerp(2,0,e)),head:{dx:Math.round(lerp(2,1,e)),dy:Math.round(lerp(2,-1,e)+Math.sin(t*4.2)*1.2)},headphones:true,blink:(t%3.4)<.13||(ph.s>5.0&&ph.s<5.3),dir:1,
         legs:{kx:21,ky:0,ax:23,ay:22,foot:'hang'},
         nh:{x:Math.round(lerp(pen.x,11,e)),y:Math.round(lerp(pen.y,-33,e))},
         fh:{x:Math.round(lerp(22,17,e)),y:Math.round(lerp(-10,-34,e))},
