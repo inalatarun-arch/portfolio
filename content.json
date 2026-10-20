@@ -3233,6 +3233,11 @@
     "desc": "A personal experiment to see whether I could rebuild the core of Adobe Acrobat, one feature at a time, working only through Claude. About 70% of the functionality works today. I still need to test it and check the quality of its output. The Mac version is being built now, and Windows comes next."
    },
    {
+    "tag": "In progress",
+    "title": "Widgets app",
+    "desc": "A widgets app I\u2019m building with Claude. It\u2019s still early: I\u2019m shaping the requirements and design as I go, and I\u2019ll add more here as it takes form."
+   },
+   {
     "tag": "Side project",
     "title": "Phone macro deck",
     "desc": "A macro board for old phones. Plug in a spare Android phone or iPhone and it becomes a deck of shortcut buttons for your computer, with no setup beyond plugging it in."
