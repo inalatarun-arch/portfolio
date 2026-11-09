@@ -1,5 +1,5 @@
-import { GuestSession, HostSession, normalizeCode } from './session.js?v=1';
-import { loadProfile, refund, settle } from './profile.js?v=1';
+import { GuestSession, HostSession, LocalSession, normalizeCode } from './session.js?v=2';
+import { loadProfile, refund, settle } from './profile.js?v=2';
 
 /**
  * The one live room for this browser tab. It lives outside any page, so moving to another page of the site and
@@ -73,6 +73,14 @@ export async function joinRoom(rawCode, name) {
   const me = loadProfile();
   install(await GuestSession.join(code, name, { pid: me.pid, coins: me.coins }));
   rememberRoom(code);
+}
+
+/** Start a game against the computer: `opponents` computer players (2 to 5) all playing at `level`. */
+export function playComputer(name, level, opponents) {
+  saveName(name);
+  const me = loadProfile();
+  install(new LocalSession(name, { pid: me.pid, coins: me.coins }, level, opponents));
+  rememberRoom(null);
 }
 
 export function leaveRoom() {

@@ -81,7 +81,30 @@ export function loadBoard(store = browserStore()) {
 export function rankBoard(entries) {
     return entries.slice().sort((a, b) => b.wins - a.wins || b.wins / Math.max(1, b.games) - a.wins / Math.max(1, a.games) || a.points / Math.max(1, a.games) - b.points / Math.max(1, b.games));
 }
+const VS_KEY = 'games.rummy.vsComputer.v1';
+/** Your record against the computer, per level: { easy: {games, wins}, ... }. */
+export function loadVsComputer(store = browserStore()) {
+    try {
+        const raw = store?.getItem(VS_KEY);
+        const o = raw ? JSON.parse(raw) : {};
+        return o && typeof o === 'object' ? o : {};
+    } catch { return {}; }
+}
+function recordVsComputer(view, store) {
+    const bot = view.players.find((p) => p.bot);
+    const me = view.players.find((p) => p.id === view.you);
+    if (!bot || !me) return;
+    const best = Math.min(...view.players.map((p) => p.total));
+    const rec = loadVsComputer(store);
+    const r = rec[bot.level] || { games: 0, wins: 0 };
+    r.games += 1;
+    if (me.total === best) r.wins += 1;
+    rec[bot.level] = r;
+    try { store?.setItem(VS_KEY, JSON.stringify(rec)); } catch { /* ignore */ }
+}
 function recordGame(view, store) {
+    // A game against the computer is not part of the friends leaderboard: it has its own record by level.
+    if (view.players.some((p) => p.bot)) { recordVsComputer(view, store); return; }
     const best = Math.min(...view.players.map((p) => p.total));
     const board = loadBoard(store);
     for (const pl of view.players) {

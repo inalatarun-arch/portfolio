@@ -1,4 +1,5 @@
-import { DEFAULT_RULES, MAX_PLAYERS, MIN_PLAYERS, arrangeHand, sanitizeRules, declare, discardCard, drawFromDiscard, drawFromStock, dropPlayer, handCards, newGame, nextRound, viewFor, } from './engine.js?v=1';
+import { arrangeBot, createMemory, levelInfo, observe, runBotTurn } from './bot.js?v=2';
+import { DEFAULT_RULES, MAX_PLAYERS, MIN_PLAYERS, arrangeHand, sanitizeRules, declare, discardCard, drawFromDiscard, drawFromStock, dropPlayer, handCards, newGame, nextRound, viewFor, } from './engine.js?v=2';
 export const DEFAULT_COINS = 1000;
 /** How long a disconnected player's turn is held before the host plays it for them. */
 export const ABSENT_TURN_MS = 30_000;
@@ -15,8 +16,25 @@ export class RoomHost {
     timer = null;
     listeners = new Set();
     hostId = '';
-    constructor(absentMs = ABSENT_TURN_MS) {
+    botTimer = null;
+    botDelay;
+    noBets;
+    dead = false;
+    /**
+     * options.botDelay(level) -> ms a computer player "thinks" before each move (tests pass 0);
+     * options.noBets: no entry bet (a game against the computer is for fun, so nobody can farm coins from it).
+     */
+    constructor(absentMs = ABSENT_TURN_MS, options = {}) {
         this.absentMs = absentMs;
+        this.noBets = !!options.noBets;
+        this.botDelay = options.botDelay || ((level) => levelInfo(level).think * (0.7 + Math.random() * 0.6));
+        if (this.noBets) this.rules = { ...DEFAULT_RULES, bet: 0 };
+    }
+    /** Seat a computer player. Its moves are made by the host, from that seat's own view only. */
+    addBot(level, name) {
+        const seat = this.addSeat(`bot:${this.nextSeat}`, name, { pid: `bot:${this.nextSeat}`, coins: 0 }, null, false);
+        seat.bot = { level, mem: createMemory() };
+        return seat.id;
     }
     /** The host's own seat. Its updates reach the UI through `subscribeLocal`. */
     addLocal(key, name, profile = { pid: key, coins: DEFAULT_COINS }) {
@@ -80,9 +98,13 @@ export class RoomHost {
     }
     /** The host closed the room. */
     shutdown(message = 'The host closed the room.') {
+        this.dead = true;
         if (this.timer)
             clearTimeout(this.timer);
         this.timer = null;
+        if (this.botTimer)
+            clearTimeout(this.botTimer);
+        this.botTimer = null;
         for (const s of this.seats) {
             s.channel?.send({ t: 'closed', message });
             s.channel?.close();
@@ -110,6 +132,8 @@ export class RoomHost {
                 if (!isHost || g)
                     return 'Only the host can change the rules, before the game starts.';
                 this.rules = sanitizeRules(action.rules ?? {}, this.rules);
+                if (this.noBets)
+                    this.rules = { ...this.rules, bet: 0 };
                 return null;
             case 'start':
                 if (!isHost)
@@ -118,14 +142,15 @@ export class RoomHost {
                     return 'The game has already started.';
                 if (this.seats.length < MIN_PLAYERS)
                     return `You need at least ${MIN_PLAYERS} players to start.`;
-                if (this.seats.some((s) => !s.local && !s.channel))
+                if (this.seats.some((s) => !s.local && !s.bot && !s.channel))
                     return 'Wait for everyone to be connected, or remove the player who left.';
                 {
                     const broke = this.seats.find((s) => s.coins < this.rules.bet);
                     if (broke)
                         return `${broke.name} does not have enough coins for the ${this.rules.bet}-coin bet. Lower the bet or let them top up.`;
                 }
-                this.game = newGame(this.seats.map((s) => ({ id: s.id, name: s.name, pid: s.pid })), this.rules);
+                this.game = newGame(this.seats.map((s) => ({ id: s.id, name: s.name, pid: s.pid, bot: !!s.bot, level: s.bot?.level })), this.rules);
+                this.arrangeBots();
                 return null;
             case 'kick': {
                 if (!isHost || g)
@@ -151,7 +176,12 @@ export class RoomHost {
             case 'next':
                 if (!isHost)
                     return 'Only the host can start the next round.';
-                return result(nextRound(g));
+                {
+                    const r = result(nextRound(g));
+                    if (!r)
+                        this.arrangeBots();
+                    return r;
+                }
             case 'dropAbsent': {
                 if (!isHost)
                     return 'Only the host can do that.';
@@ -165,7 +195,7 @@ export class RoomHost {
     }
     isConnected(id) {
         const s = this.seats.find((x) => x.id === id);
-        return !!s && (s.local || !!s.channel);
+        return !!s && (s.local || !!s.bot || !!s.channel);
     }
     /** Make the current (disconnected) player's move: drop before drawing, otherwise throw back what they just drew. */
     playForAbsent() {
@@ -205,7 +235,7 @@ export class RoomHost {
         return {
             you: forId,
             host: this.hostId,
-            players: this.seats.map((s) => ({ id: s.id, name: s.name, connected: s.local || !!s.channel, coins: s.coins })),
+            players: this.seats.map((s) => ({ id: s.id, name: s.name, connected: s.local || !!s.bot || !!s.channel, coins: s.coins, bot: !!s.bot, level: s.bot?.level })),
             rules: this.rules,
         };
     }
@@ -232,12 +262,53 @@ export class RoomHost {
         this.localError = null;
         return e;
     }
+    /** Computer players lay their hand out as the best grouping, so a lost round scores only what it must. */
+    arrangeBots() {
+        if (!this.game)
+            return;
+        for (const s of this.seats)
+            if (s.bot)
+                arrangeBot(this.game, s.id);
+    }
+    /** If it is a computer player's turn, make its next move after a short pause. One move per pause. */
+    scheduleBot() {
+        if (this.dead || this.botTimer)
+            return;
+        const g = this.game;
+        if (!g || g.phase !== 'playing')
+            return;
+        const cur = g.players[g.turn];
+        const seat = this.seats.find((s) => s.id === cur.id);
+        if (!seat || !seat.bot || cur.out)
+            return;
+        this.botTimer = setTimeout(() => {
+            this.botTimer = null;
+            const game = this.game;
+            if (this.dead || !game || game.phase !== 'playing' || game.players[game.turn].id !== seat.id)
+                return;
+            const res = runBotTurn(game, seat.id, seat.bot.level, seat.bot.mem);
+            if (!res.ok) {
+                // Should never happen; if it does, keep the game moving rather than freezing the table.
+                const p = game.players[game.turn];
+                if (game.step === 'draw')
+                    drawFromStock(game, p.id);
+                else
+                    discardCard(game, p.id, handCards(p)[handCards(p).length - 1].id);
+            }
+            this.broadcast();
+        }, Math.max(0, this.botDelay(seat.bot.level)));
+    }
     broadcast() {
         this.watchAbsent();
+        if (this.game)
+            for (const s of this.seats)
+                if (s.bot)
+                    observe(s.bot.mem, viewFor(this.game, s.id, () => true));
         for (const s of this.seats)
             if (s.channel)
                 s.channel.send(this.messageFor(s.id));
         for (const fn of this.listeners)
             fn();
+        this.scheduleBot();
     }
 }

@@ -178,3 +178,12 @@ button.g-card:hover{transform:translateY(-.25rem)}
 .g-dlg .g-row{justify-content:flex-end;margin-top:1.5rem}
 
 @media (prefers-reduced-motion:reduce){.g-card,.g-game{transition:none}}
+
+/* ---------- computer opponents ---------- */
+.g-levels{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.75rem;margin-top:1rem}
+@media (max-width:64rem){.g-levels{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:30rem){.g-levels{grid-template-columns:1fr}}
+.g-levels .g-opt{height:100%}
+.g-chip small+small::before{content:"·";margin-right:.5rem}
+
+.g-topbar{display:flex;justify-content:flex-end;margin-bottom:.75rem}

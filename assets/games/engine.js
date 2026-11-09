@@ -92,7 +92,17 @@ export function buildShoe() {
     }
     return cards;
 }
-export function shuffle(items, rng = Math.random) {
+/**
+ * A uniform random number in [0, 1) from the browser's cryptographic generator. Every shuffle uses this, so the
+ * order of the stock is unpredictable and independent of who is playing, human or computer. (Tests pass a seeded
+ * generator instead.)
+ */
+export function secureRandom() {
+    const c = globalThis.crypto;
+    if (c && c.getRandomValues) return c.getRandomValues(new Uint32Array(1))[0] / 4294967296;
+    return Math.random();
+}
+export function shuffle(items, rng = secureRandom) {
     const a = items.slice();
     for (let i = a.length - 1; i > 0; i--) {
         const j = Math.floor(rng() * (i + 1));
@@ -215,7 +225,7 @@ function note(state, text) {
         state.log.splice(0, state.log.length - 40);
 }
 export function newGame(seats, rules = DEFAULT_RULES, opts = {}) {
-    const rng = opts.rng ?? Math.random;
+    const rng = opts.rng ?? secureRandom;
     if (seats.length < MIN_PLAYERS || seats.length > MAX_PLAYERS) {
         throw new Error(`Rummy needs ${MIN_PLAYERS} to ${MAX_PLAYERS} players.`);
     }
@@ -229,7 +239,7 @@ export function newGame(seats, rules = DEFAULT_RULES, opts = {}) {
         pot: clean.bet * seats.length,
         payouts: null,
         players: seats.map((s) => ({
-            id: s.id, name: s.name, pid: s.pid ?? s.id, sawWild: false, groups: [], out: false, hasDrawn: false, roundPoints: 0, total: 0,
+            id: s.id, name: s.name, pid: s.pid ?? s.id, bot: !!s.bot, level: s.level, sawWild: false, groups: [], out: false, hasDrawn: false, roundPoints: 0, total: 0,
         })),
         dealerIndex: -1,
         turn: 0,
@@ -245,7 +255,7 @@ export function newGame(seats, rules = DEFAULT_RULES, opts = {}) {
     return state;
 }
 /** Shuffle, deal 13 each, cut the wild joker and open the first discard. Dealer rotates each round. */
-export function dealRound(state, rng = Math.random) {
+export function dealRound(state, rng = secureRandom) {
     const n = state.players.length;
     state.round += 1;
     state.phase = 'playing';
@@ -319,7 +329,7 @@ function receive(p, card) {
     p.groups.push([card]);
     p.hasDrawn = true;
 }
-export function drawFromStock(state, id, rng = Math.random) {
+export function drawFromStock(state, id, rng = secureRandom) {
     const check = checkTurn(state, id, 'draw');
     if (!check.ok)
         return check;
@@ -540,7 +550,7 @@ function settlePot(state) {
     return out;
 }
 /** Start the next round after a round-over screen. */
-export function nextRound(state, rng = Math.random) {
+export function nextRound(state, rng = secureRandom) {
     if (state.phase !== 'round-over')
         return fail('There is no round to start.');
     dealRound(state, rng);
@@ -570,6 +580,8 @@ export function viewFor(state, id, connected) {
             id: p.id,
             name: p.name,
             pid: p.pid,
+            bot: p.bot,
+            level: p.level,
             cards: handCards(p).length,
             out: p.out,
             outReason: p.outReason,

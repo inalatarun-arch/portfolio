@@ -1,6 +1,6 @@
 import { describe, expect, it } from './harness.js';
-import { DEFAULT_RULES } from '../assets/games/engine.js?v=1';
-import { loadBoard, loadProfile, profileSnapshot, subscribeProfile, rankBoard, refund, settle, topUp, START_COINS, REFILL_TO } from '../assets/games/profile.js?v=1';
+import { DEFAULT_RULES } from '../assets/games/engine.js?v=2';
+import { loadBoard, loadVsComputer, loadProfile, profileSnapshot, subscribeProfile, rankBoard, refund, settle, topUp, START_COINS, REFILL_TO } from '../assets/games/profile.js?v=2';
 const mem = () => {
     const m = new Map();
     return { getItem: (k) => m.get(k) ?? null, setItem: (k, v) => { m.set(k, v); } };
@@ -117,4 +117,36 @@ describe('leaderboard ranking', () => {
         const ranked = rankBoard([e('a', 4, 1, 100), e('b', 2, 2, 50), e('c', 2, 1, 10), e('d', 4, 2, 100)]).map((x) => x.pid);
         expect(ranked).toEqual(['b', 'd', 'c', 'a']);
     });
+});
+
+describe('games against the computer', () => {
+  const botView = (over = {}) => view({
+    bet: 0, phase: 'game-over', payouts: { p1: 0, p2: 0, p3: 0 },
+    players: [
+      { id: 'p1', pid: 'pid-me', name: 'Me', cards: 13, out: false, total: 0, connected: true },
+      { id: 'p2', pid: 'bot:2', name: 'Aarav', cards: 13, out: false, total: 40, connected: true, bot: true, level: 'hard' },
+      { id: 'p3', pid: 'bot:3', name: 'Diya', cards: 13, out: false, total: 60, connected: true, bot: true, level: 'hard' },
+    ],
+    ...over,
+  });
+
+  it('are not added to the friends leaderboard, and keep a record per level instead', () => {
+    const s = mem();
+    settle(botView({ gameId: 'c1' }), s);
+    expect(loadBoard(s)).toHaveLength(0);
+    expect(loadVsComputer(s)).toEqual({ hard: { games: 1, wins: 1 } });
+  });
+
+  it('record a loss too, once per game however many updates arrive', () => {
+    const s = mem();
+    const lost = botView({ gameId: 'c2', players: botView().players.map((p) => (p.id === 'p1' ? { ...p, total: 90 } : p)) });
+    settle(lost, s); settle(lost, s);
+    expect(loadVsComputer(s)).toEqual({ hard: { games: 1, wins: 0 } });
+  });
+
+  it('never touch the wallet', () => {
+    const s = mem();
+    settle(botView({ gameId: 'c3' }), s);
+    expect(loadProfile(s).coins).toBe(START_COINS);
+  });
 });

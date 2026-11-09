@@ -6,11 +6,12 @@
  */
 import {
   BET_OPTIONS, LAYOUTS, MAX_PLAYERS, MIN_PLAYERS, ROUND_OPTIONS, evaluateHand, layoutOf, rankName, shapeAllowed,
-} from './engine.js?v=1';
-import { autoSort, groupSelected, moveToGroup, reconcile, sortWithinGroups, toIds, ungroup } from './hand.js?v=1';
-import { REFILL_BELOW, REFILL_TO, loadBoard, loadProfile, rankBoard, subscribeProfile, topUp } from './profile.js?v=1';
-import { configure, normalizeCode } from './session.js?v=1';
-import { hostRoom, joinRoom, lastRoom, leaveRoom, savedName, watch } from './store.js?v=1';
+} from './engine.js?v=2';
+import { autoSort, groupSelected, moveToGroup, reconcile, sortWithinGroups, toIds, ungroup } from './hand.js?v=2';
+import { LEVELS, levelInfo } from './bot.js?v=2';
+import { REFILL_BELOW, REFILL_TO, loadBoard, loadProfile, loadVsComputer, rankBoard, subscribeProfile, topUp } from './profile.js?v=2';
+import { configure, normalizeCode } from './session.js?v=2';
+import { hostRoom, joinRoom, lastRoom, leaveRoom, playComputer, savedName, watch } from './store.js?v=2';
 
 // ---------------------------------------------------------------------------------------------------------------
 // tiny DOM helpers
@@ -114,12 +115,32 @@ function walletEl() {
     h('span', { class: 'g-hint', style: 'margin:0' }, 'Play money only: it cannot be bought or cashed out.'));
 }
 
+function vsComputerEl() {
+  const rec = loadVsComputer();
+  const played = LEVELS.filter((l) => rec[l.id] && rec[l.id].games);
+  if (!played.length) return null;
+  const rows = played.map((l) => {
+    const r = rec[l.id];
+    return h('tr', {},
+      h('td', {}, h('b', {}, l.label)),
+      h('td', { class: 'num' }, String(r.games)),
+      h('td', { class: 'num' }, String(r.wins)),
+      h('td', { class: 'num' }, Math.round((r.wins / r.games) * 100) + '%'));
+  });
+  const head = h('tr', {}, h('th', {}, 'Level'), h('th', { class: 'num' }, 'Played'), h('th', { class: 'num' }, 'Won'), h('th', { class: 'num' }, 'Win rate'));
+  return h('div', { style: 'margin-top:1.5rem' },
+    h('span', { class: 'g-eyebrow' }, 'Against the computer'),
+    h('div', { class: 'g-scroll' }, h('table', { class: 'g-table' }, h('thead', {}, head), h('tbody', {}, rows))));
+}
+
 function leaderboardEl() {
   const rows = rankBoard(loadBoard());
   const me = loadProfile().pid;
   const panel = h('section', { class: 'g-panel', 'aria-label': 'Leaderboard' }, h('h2', {}, 'Leaderboard'));
   if (!rows.length) {
     panel.append(h('p', {}, 'No games yet. Finish a game and everyone at the table shows up here, so you can see who is winning over time.'));
+    const vs = vsComputerEl();
+    if (vs) panel.append(vs);
     return panel;
   }
   const head = ['#', 'Player', 'Played', 'Won', 'Win rate', 'Avg points', 'Coins'];
@@ -135,7 +156,8 @@ function leaderboardEl() {
         h('td', { class: 'num' }, String(Math.round(r.points / Math.max(1, r.games)))),
         h('td', { class: 'num' }, (r.coinsNet > 0 ? '+' : r.coinsNet < 0 ? '−' : '') + Math.abs(r.coinsNet)),
       ))))),
-    h('p', { class: 'g-hint' }, 'Stored in this browser. Coins shows net winnings and losses across games you played together.'));
+    h('p', { class: 'g-hint' }, 'Stored in this browser. Coins shows net winnings and losses across games you played together.'),
+    ...[vsComputerEl()].filter(Boolean));
   return panel;
 }
 
@@ -161,7 +183,7 @@ function field(id, label, value, options, onChange, hint) {
     hint && h('p', { class: 'g-hint' }, hint));
 }
 
-function rulesEditor(rules, change) {
+function rulesEditor(rules, change, opts = {}) {
   const n = (v) => Number(v);
   const joker = [
     ['open', 'Open joker', 'The wild joker is visible to everyone from the start.'],
@@ -177,7 +199,7 @@ function rulesEditor(rules, change) {
       field('rule-layout', 'Winning hand shape', rules.layout, LAYOUTS.map((l) => [l.id, l.label]), (v) => change({ layout: v }), 'How the 13 cards must be split into groups to declare.'),
       field('rule-jokers', 'Jokers per group', rules.maxJokers, [[0, 'No limit'], [1, 'At most 1'], [2, 'At most 2']], (v) => change({ maxJokers: n(v) }), 'Limits jokers in impure sequences and sets.'),
       field('rule-rounds', 'Rounds', rules.rounds, ROUND_OPTIONS.map((r) => [r, `${r} ${r === 1 ? 'round' : 'rounds'}`]), (v) => change({ rounds: n(v) })),
-      field('rule-bet', 'Entry bet (virtual coins)', rules.bet, BET_OPTIONS.map((b) => [b, b === 0 ? 'No bet, just for fun' : `${b} coins each`]), (v) => change({ bet: n(v) }), 'Everyone pays in; the winner takes the pot.'),
+      !opts.noBet && field('rule-bet', 'Entry bet (virtual coins)', rules.bet, BET_OPTIONS.map((b) => [b, b === 0 ? 'No bet, just for fun' : `${b} coins each`]), (v) => change({ bet: n(v) }), 'Everyone pays in; the winner takes the pot.'),
       field('rule-first', 'First drop', rules.firstDrop, [0, 10, 20, 25, 30].map((v) => [v, `${v} points`]), (v) => change({ firstDrop: n(v) }), 'Leaving before your first draw.'),
       field('rule-middle', 'Middle drop', rules.middleDrop, [20, 30, 40, 50, 60].map((v) => [v, `${v} points`]), (v) => change({ middleDrop: n(v) }), 'Leaving after you have drawn.'),
       field('rule-wrong', 'Wrong declaration', rules.wrongDeclare, [40, 60, 80, 100, 120].map((v) => [v, `${v} points`]), (v) => change({ wrongDeclare: n(v) })),
@@ -195,6 +217,7 @@ function howToPlay() {
       p('To win, arrange all 13 cards into groups and ', b('declare'), ': select one card as your finishing discard, then press Declare. You need at least ', b('two sequences'), ', and at least one must be ', b('pure'), ' (no joker). Other groups can be sets (3 or 4 cards of one rank, different suits) or sequences. The host can also require a hand shape such as 4+3+3+3 or 5+4+4, and limit jokers per group.'),
       p('Tap cards to select them, then ', h('em', {}, 'Group selected'), '. Use ', h('em', {}, '+ add here'), ' to move selected cards into an existing group. Your groups are labelled so you can see what is valid.'),
       p(b('Scoring:'), " the winner scores 0. Everyone else scores the face value of cards outside valid groups (A, K, Q, J, 10 = 10; jokers = 0), up to the table's cap. No pure sequence means the whole hand counts. Dropping and wrong declarations cost the points the host set. Lowest total after the last round wins."),
+      p(b('Playing the computer:'), ' pick Easy, Medium, Hard or Professional and 2 to 5 computer opponents. They follow the same rules and see only what you would: their own cards, the discard pile and the wild joker if it is open. The deck is shuffled at random, so nobody is dealt a better hand. Computer games use no coins.'),
       p(b('Coins:'), ' if the host sets an entry bet, everyone pays it in and the winner takes the pot (ties split it). Coins are play money kept in your browser: they cannot be bought or cashed out.'),
       p("The host's browser runs the game. If the host closes the page the game ends and entry bets are returned. Players who refresh can rejoin.")));
 }
@@ -208,7 +231,7 @@ export function mount(root, opts = {}) {
   configure(opts.config || {});
   const sub = opts.sub || 'hub';
   const params = opts.params || new URLSearchParams();
-  const form = { name: savedName(), code: normalizeCode(params.get('room') || ''), error: null, busy: null };
+  const form = { name: savedName(), code: normalizeCode(params.get('room') || ''), error: null, busy: null, level: 'medium', opponents: 2 };
   const local = { gameId: null, round: 0, groups: [], selected: new Set(), notice: null, noticeTimer: 0, copied: null };
   let session = null;
   let dead = false;
@@ -275,6 +298,22 @@ export function mount(root, opts = {}) {
         render();
       }
     };
+    const play = () => {
+      if (!form.name.trim()) { form.error = 'Enter your name first.'; render(); return; }
+      form.error = null;
+      playComputer(form.name.trim(), form.level, form.opponents);
+      try { history.replaceState(null, '', '#/games/rummy'); } catch { /* ignore */ }
+    };
+    const computerPanel = h('section', { class: 'g-panel g-span', 'aria-label': 'Play the computer' },
+      h('h2', {}, 'Play the computer'),
+      h('p', {}, 'No friends online? Play on your own against computer players. Pick how well they play.'),
+      h('div', { role: 'radiogroup', 'aria-label': 'Difficulty', class: 'g-levels' }, LEVELS.map((l) =>
+        h('button', { type: 'button', role: 'radio', class: 'g-opt', 'aria-checked': String(form.level === l.id), 'data-fk': 'level-' + l.id, onclick: () => { form.level = l.id; render(); } },
+          h('b', {}, l.label), h('span', {}, l.blurb)))),
+      h('div', { class: 'g-row', style: 'margin-top:1rem;align-items:flex-end' },
+        h('div', { style: 'min-width:12rem' }, field('g-opp', 'Computer opponents', form.opponents, [2, 3, 4, 5].map((v) => [v, `${v} opponents`]), (v) => { form.opponents = Number(v); })),
+        h('button', { class: 'btn btn-primary g-btn', type: 'button', 'data-fk': 'play-computer', onclick: play }, 'Play now')),
+      h('p', { class: 'g-hint' }, 'The deck is shuffled at random for everyone. The computer sees only what a human would: its own cards, the discard pile and the visible wild joker.'));
     const createBtn = h('button', { class: 'btn btn-primary g-btn', type: 'button', 'data-fk': 'create', disabled: form.busy !== null, onclick: () => go('host') }, form.busy === 'host' ? 'Opening…' : 'Create room');
     const joinBtn = h('button', { class: 'btn btn-ghost g-btn', type: 'submit', 'data-fk': 'join', disabled: form.busy !== null || form.code.length !== 5 }, form.busy === 'join' ? 'Joining…' : 'Join room');
 
@@ -284,8 +323,9 @@ export function mount(root, opts = {}) {
           h('label', { class: 'g-label', for: 'g-name' }, 'Your name'), h('div', { style: 'max-width:22rem' }, nameInput),
           h('p', { class: 'g-hint' }, 'Shown to the other players at the table.'),
           h('div', { style: 'margin-top:1rem' }, walletEl())),
+        computerPanel,
         h('div', { class: 'g-panel', style: 'display:flex;flex-direction:column' },
-          h('h2', {}, 'Start a game'),
+          h('h2', {}, 'Play online with friends'),
           h('p', { style: 'flex:1' }, 'Open a room and share the code or link with your friends. You need at least 3 players, up to 6. You choose the rules.'),
           h('div', { style: 'margin-top:1.25rem' }, createBtn)),
         h('form', { class: 'g-panel', onsubmit: (e) => { e.preventDefault(); go('join'); } },
@@ -314,8 +354,15 @@ export function mount(root, opts = {}) {
       } catch { /* clipboard blocked: the code is on screen anyway */ }
     };
     const missing = MIN_PLAYERS - lobby.players.length;
+    const botLevel = (lobby.players.find((p) => p.bot) || {}).level;
+    const isLocal = !!session.isLocal;
     return h('div', { class: 'g-grid lobby' },
-      h('section', { class: 'g-panel' },
+      isLocal ? h('section', { class: 'g-panel' },
+        h('span', { class: 'g-eyebrow' }, 'Against the computer'),
+        h('p', { class: 'g-codebig', style: 'font-family:var(--serif);letter-spacing:-.02em;font-size:clamp(1.75rem,4vw,2.5rem)' }, levelInfo(botLevel).label),
+        h('p', { class: 'g-hint' }, levelInfo(botLevel).blurb),
+        h('p', { class: 'g-hint' }, 'No coins are at stake in a game against the computer.'))
+      : h('section', { class: 'g-panel' },
         h('span', { class: 'g-eyebrow' }, 'Room code'),
         h('p', { class: 'g-codebig', 'aria-label': 'Room code ' + st.code.split('').join(' '), }, st.code),
         h('div', { class: 'g-row', style: 'margin-top:1rem' },
@@ -326,20 +373,21 @@ export function mount(root, opts = {}) {
         h('h2', {}, `Players (${lobby.players.length}/${MAX_PLAYERS})`),
         h('ul', { class: 'g-players' }, lobby.players.map((p) => h('li', {},
           h('span', { class: 'nm' }, p.name, p.id === lobby.you ? h('small', {}, ' (you)') : null),
-          rules.bet > 0 && h('span', { class: 'co' + (p.coins < rules.bet ? ' is-short' : '') }, icon('coins'), String(p.coins)),
+          rules.bet > 0 && !p.bot && h('span', { class: 'co' + (p.coins < rules.bet ? ' is-short' : '') }, icon('coins'), String(p.coins)),
+          p.bot ? h('span', { class: 'g-tag' }, 'Computer') : null,
           p.id === lobby.host && h('span', { class: 'g-tag' }, 'Host'),
-          isHost && p.id !== lobby.host && h('button', { class: 'g-link', type: 'button', 'aria-label': `Remove ${p.name}`, onclick: () => session.act({ a: 'kick', id: p.id }) }, 'Remove')))),
+          isHost && !isLocal && p.id !== lobby.host && h('button', { class: 'g-link', type: 'button', 'aria-label': `Remove ${p.name}`, onclick: () => session.act({ a: 'kick', id: p.id }) }, 'Remove')))),
         isHost
           ? h('div', { style: 'margin-top:1rem' },
             h('button', { class: 'btn btn-primary g-btn', type: 'button', 'data-fk': 'start', disabled: !ready, onclick: () => session.act({ a: 'start' }) }, 'Start game'),
-            missing > 0 && h('p', { class: 'g-hint' }, `Waiting for ${missing} more ${missing === 1 ? 'player' : 'players'} (minimum ${MIN_PLAYERS}).`),
+            missing > 0 && !isLocal && h('p', { class: 'g-hint' }, `Waiting for ${missing} more ${missing === 1 ? 'player' : 'players'} (minimum ${MIN_PLAYERS}).`),
             broke.length > 0 && h('p', { class: 'g-hint', role: 'alert', style: 'color:var(--fg);font-weight:600' },
               `${broke.map((p) => p.name).join(', ')} ${broke.length === 1 ? 'does' : 'do'} not have ${rules.bet} coins. Lower the bet, or ask them to top up and rejoin.`))
           : h('p', {}, 'Waiting for the host to start the game.')),
       h('section', { class: 'g-panel g-span' },
         h('h2', {}, isHost ? 'Table rules' : 'Rules for this table'),
         h('p', { style: 'margin-bottom:1rem' }, isHost ? 'Choose how you want to play. Everyone sees these before the game starts.' : 'Set by the host.'),
-        isHost ? rulesEditor(rules, (patch) => session.act({ a: 'rules', rules: patch })) : rulesSummary(rules)));
+        isHost ? rulesEditor(rules, (patch) => session.act({ a: 'rules', rules: patch }), { noBet: isLocal }) : rulesSummary(rules)));
   }
 
   function tableView(view) {
@@ -361,8 +409,8 @@ export function mount(root, opts = {}) {
     const status = view.phase !== 'playing' ? ''
       : me && me.out ? 'You are out of this round. Watch the others finish.'
         : myTurn ? (view.step === 'draw' ? 'Your turn: draw from the stock or take the top discard.' : 'Select a card to discard, or one finishing card to declare.')
-          : `Waiting for ${current ? current.name : 'the next player'}${current && !current.connected ? ' (disconnected)' : ''}…`;
-    const absentTurn = session.isHost && view.phase === 'playing' && current && !current.connected;
+          : `${current && current.bot ? (current.name + ' is thinking') : 'Waiting for ' + (current ? current.name : 'the next player')}${current && !current.connected ? ' (disconnected)' : ''}…`;
+    const absentTurn = session.isHost && view.phase === 'playing' && current && !current.connected && !current.bot;
 
     const doDiscard = () => { const [id] = [...sel]; local.selected = new Set(); session.act({ a: 'discard', card: id }); render(); };
     const doDeclare = () => { const [card] = [...sel]; const groups = toIds(finishGroups); local.selected = new Set(); session.act({ a: 'declare', card, groups }); render(); };
@@ -374,6 +422,7 @@ export function mount(root, opts = {}) {
       view.players.map((p) => h('div', { class: 'g-chip' + (p.id === view.turn && view.phase === 'playing' ? ' is-turn' : '') + (p.out ? ' is-out' : '') },
         h('span', { class: p.connected ? 'on' : 'off', title: p.connected ? 'Connected' : 'Disconnected' }),
         h('b', {}, p.name + (p.id === view.you ? ' (you)' : '')),
+        p.bot ? h('small', {}, levelInfo(p.level).label) : null,
         h('small', {}, `${p.out ? (p.outReason === 'wrong-declare' ? 'wrong declare' : 'dropped') : p.cards + ' cards'} · ${p.total} pts`))),
       h('div', { class: 'g-meta' }, view.rules.bet > 0 && h('span', {}, 'Pot ', h('b', {}, String(view.pot))), `Round ${view.round} of ${view.totalRounds}`)));
 
@@ -487,9 +536,9 @@ export function mount(root, opts = {}) {
       [{ id: 1, rank: 1, suit: 'S' }, { id: 2, rank: 12, suit: 'H' }, { id: 3, rank: 7, suit: 'D' }, { id: 4, rank: 0, suit: null }].map((c) => cardEl(c)));
     return h('div', { class: 'g-games' },
       h('a', { class: 'g-game', href: '#/games/rummy' }, fan,
-        h('span', { class: 'g-tag' }, '3 to 6 players · online'),
+        h('span', { class: 'g-tag' }, '1 to 6 players · online or vs computer'),
         h('h2', {}, 'Indian Rummy'),
-        h('p', {}, '13-card Points Rummy. Make a pure sequence and a second sequence, group the rest, and declare before your friends do. Open or closed joker, custom hand shapes, and coins to bet.')),
+        h('p', {}, '13-card Points Rummy. Play friends online, or on your own against four levels of computer player. Open or closed joker, custom hand shapes, and coins to bet.')),
       h('div', { class: 'g-game is-soon', 'aria-disabled': 'true' },
         h('span', { class: 'g-tag' }, 'Coming soon'),
         h('h2', {}, 'More games'),
@@ -520,7 +569,24 @@ export function mount(root, opts = {}) {
         entryView());
     }
 
-    const wrap = h('div', {}, local.notice && h('p', { class: 'g-alert', role: 'alert' }, local.notice), view);
+    // A way out while a room or game is live (navigating away would keep it running in the background).
+    let topbar = null;
+    if (sub === 'rummy' && st && (st.status === 'lobby' || st.status === 'game')) {
+      const label = session.isLocal ? 'Leave game' : session.isHost ? 'Close room' : 'Leave room';
+      const doLeave = () => leaveRoom();
+      topbar = h('div', { class: 'g-topbar' }, h('button', {
+        class: 'btn btn-ghost g-btn', type: 'button', 'data-fk': 'leave',
+        onclick: () => (st.status === 'game'
+          ? confirmDialog({
+            title: session.isLocal ? 'Leave this game?' : session.isHost ? 'Close this room?' : 'Leave this room?',
+            body: session.isHost && !session.isLocal ? 'The game ends for everyone and entry bets are returned.' : session.isLocal ? 'The game ends and nothing is saved.' : 'You leave the table and forfeit your entry bet.',
+            confirmLabel: label,
+            onConfirm: doLeave,
+          })
+          : doLeave()),
+      }, label));
+    }
+    const wrap = h('div', {}, topbar, local.notice && h('p', { class: 'g-alert', role: 'alert' }, local.notice), view);
     root.replaceChildren(wrap);
     document.body.classList.toggle('g-live', !!live());
     if (fk) {

@@ -300,7 +300,7 @@ function pageGames(){
   return '<section class="wrap games"><div class="games-hero'+(rummy?' is-compact':'')+'">'+
     (rummy?'<a class="games-back" href="#/games">'+ic('arrow-l')+'All games</a>':'')+
     '<h1 data-hl>'+headline(rummy?'Indian <em>Rummy</em>':'Play <em>cards</em>.')+'</h1>'+
-    '<p class="lede" data-r>'+(rummy?'13-card Points Rummy for 3 to 6 players. Make two sequences, one of them pure, and group the rest.':'Pull up a chair. Open a room, share the code, and play with friends in your browser. No sign-up.')+'</p></div>'+
+    '<p class="lede" data-r>'+(rummy?'13-card Points Rummy for 3 to 6 players, with friends online or against the computer. Make two sequences, one of them pure, and group the rest.':'Pull up a chair. Open a room, share the code, and play with friends in your browser. No sign-up.')+'</p></div>'+
     '<div class="games-root" id="gamesRoot"></div></section>';
 }
 
