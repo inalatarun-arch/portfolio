@@ -18,8 +18,8 @@
  *                 saw you pick up, and folds about a quarter of deals: those with no pure sequence and no joker
  *                 (they average 55 points against 20 for a drop) or one joker and few cards close together
  */
-import { SUITS, cardPoints, isJoker, isPrintedJoker, viewFor, discardCard, declare, drawFromDiscard, drawFromStock, dropPlayer, arrangeHand } from './engine.js?v=2';
-import { bestArrangement, findWinning, solve } from './meld.js?v=2';
+import { SUITS, cardPoints, isJoker, isPrintedJoker, viewFor, discardCard, declare, drawFromDiscard, drawFromStock, dropPlayer, arrangeHand } from './engine.js?v=4';
+import { bestArrangement, findWinning, solve } from './meld.js?v=4';
 
 export const LEVELS = [
   { id: 'easy', label: 'Easy', blurb: 'Plays by feel. Forgets to plan ahead, sometimes throws away good cards and can declare too early.', think: 1100 },

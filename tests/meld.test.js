@@ -1,6 +1,6 @@
 import { describe, expect, it } from './harness.js';
-import { DEFAULT_RULES, buildShoe, evaluateHand, shuffle } from '../assets/games/engine.js?v=2';
-import { bestArrangement, findWinning, solve } from '../assets/games/meld.js?v=2';
+import { DEFAULT_RULES, buildShoe, evaluateHand, shuffle } from '../assets/games/engine.js?v=4';
+import { bestArrangement, findWinning, solve } from '../assets/games/meld.js?v=4';
 
 let id = 1;
 const c = (rank, suit = 'S') => ({ id: id++, rank, suit });

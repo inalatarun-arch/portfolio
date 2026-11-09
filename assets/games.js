@@ -18,7 +18,7 @@ window.Games={
   mount:function(root,opts){
     var dead=false,stop=null;
     root.innerHTML='<p class="g-hint" role="status">Loading…</p>';
-    Promise.all([loadPeer().catch(function(){}),import('./games/ui.js?v=2')]).then(function(r){
+    Promise.all([loadPeer().catch(function(){}),import('./games/ui.js?v=4')]).then(function(r){
       if(!dead)stop=r[1].mount(root,opts);
     }).catch(function(){
       if(!dead)root.innerHTML='<p class="g-alert" role="alert">The games could not load. Check your connection and refresh the page.</p>';

@@ -7,7 +7,7 @@
  * It only ever looks at the cards it is given, so a computer player can only reason about what it can see.
  * Cards are the engine's {id, rank, suit}. A "joker-class" card is a printed joker or a card of the wild rank.
  */
-import { SUITS, cardPoints, classifyGroup, evaluateHand, isJoker, isPrintedJoker, shapeAllowed } from './engine.js?v=2';
+import { SUITS, cardPoints, classifyGroup, evaluateHand, isJoker, isPrintedJoker, shapeAllowed } from './engine.js?v=4';
 
 const INF = 1e9;
 const bit = (i) => 1 << i;

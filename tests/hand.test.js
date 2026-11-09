@@ -1,5 +1,5 @@
 import { describe, expect, it } from './harness.js';
-import { autoSort, groupSelected, moveToGroup, reconcile, toIds, ungroup } from '../assets/games/hand.js?v=2';
+import { autoSort, groupSelected, moveToGroup, reconcile, toIds, ungroup } from '../assets/games/hand.js?v=4';
 const c = (id, rank = 5, suit = 'H') => ({ id, rank, suit });
 describe('hand arrangement helpers', () => {
     it('reconcile keeps the player layout, drops discarded cards and groups new ones apart', () => {

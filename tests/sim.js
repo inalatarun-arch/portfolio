@@ -4,8 +4,8 @@
  *   node tests/sim.js [rounds] [rules-json]
  * Every round uses the engine's own secure shuffle; the players only ever see their own views.
  */
-import { DEFAULT_RULES, newGame, nextRound, viewFor, handCards } from '../assets/games/engine.js?v=2';
-import { createMemory, observe, runBotTurn, LEVELS } from '../assets/games/bot.js?v=2';
+import { DEFAULT_RULES, newGame, nextRound, viewFor, handCards } from '../assets/games/engine.js?v=4';
+import { createMemory, observe, runBotTurn, LEVELS } from '../assets/games/bot.js?v=4';
 
 const MAX_ACTIONS = 900;
 

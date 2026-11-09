@@ -3,15 +3,18 @@
  * cleanup function. All text goes in as text nodes, never as HTML, so player names cannot inject markup.
  *
  * Screens: entry (name, wallet, create/join, leaderboard) -> lobby (players, table rules) -> table -> results.
+ * The Rummy screens fill the whole window (see `.g-app` in games.css) instead of sitting inside the page.
  */
 import {
   BET_OPTIONS, LAYOUTS, MAX_PLAYERS, MIN_PLAYERS, ROUND_OPTIONS, evaluateHand, layoutOf, rankName, shapeAllowed,
-} from './engine.js?v=2';
-import { autoSort, groupSelected, moveToGroup, reconcile, sortWithinGroups, toIds, ungroup } from './hand.js?v=2';
-import { LEVELS, levelInfo } from './bot.js?v=2';
-import { REFILL_BELOW, REFILL_TO, loadBoard, loadProfile, loadVsComputer, rankBoard, subscribeProfile, topUp } from './profile.js?v=2';
-import { configure, normalizeCode } from './session.js?v=2';
-import { hostRoom, joinRoom, lastRoom, leaveRoom, playComputer, savedName, watch } from './store.js?v=2';
+} from './engine.js?v=4';
+import { autoSort, groupSelected, moveToGroup, reconcile, sortWithinGroups, toIds, ungroup } from './hand.js?v=4';
+import { LEVELS, levelInfo } from './bot.js?v=4';
+import { REFILL_BELOW, REFILL_TO, loadBoard, loadProfile, loadVsComputer, rankBoard, subscribeProfile, topUp } from './profile.js?v=4';
+import { cloudEnabled, configureCloud, fetchBoards, fetchRecent, flushOutbox, pidHash } from './cloud.js?v=4';
+import { createGate } from './gate.js?v=4';
+import { configure, normalizeCode } from './session.js?v=4';
+import { hostRoom, joinRoom, lastRoom, leaveRoom, playComputer, savedName, watch } from './store.js?v=4';
 
 // ---------------------------------------------------------------------------------------------------------------
 // tiny DOM helpers
@@ -69,11 +72,32 @@ const RANK = (r) => (r === 1 ? 'A' : r === 11 ? 'J' : r === 12 ? 'Q' : r === 13 
 const SUIT_NAME = { S: 'spades', H: 'hearts', D: 'diamonds', C: 'clubs' };
 const cardLabel = (c) => (c.rank === 0 || !c.suit ? 'Joker' : `${rankName(c.rank)} of ${SUIT_NAME[c.suit]}`);
 
+// Grid presentation of the cards and chrome (see `.g-work` in games.css). Remembered for this tab only.
+const VIEW_KEY = 'ui.v';
+let altView = false;
+try { altView = window.sessionStorage.getItem(VIEW_KEY) === '1'; } catch { /* ignore */ }
+const rememberAltView = () => { try { window.sessionStorage.setItem(VIEW_KEY, altView ? '1' : '0'); } catch { /* ignore */ } };
+const SUIT_LETTER = { S: 'S', H: 'H', D: 'D', C: 'C' };
+
+/** A card as a plain cell of text, for the alternate view. */
+function cellEl(card, o) {
+  const joker = card && (card.rank === 0 || !card.suit);
+  const text = !card ? '' : joker ? 'JK' : RANK(card.rank) + SUIT_LETTER[card.suit];
+  const label = o.label || (card ? cardLabel(card) : 'Face-down card');
+  const cls = ['g-cell', !card && 'is-blank', o.selected && 'is-sel', o.hot && 'is-hot', o.small && 'is-small'].filter(Boolean).join(' ');
+  const el = o.onclick
+    ? h('button', { class: cls, type: 'button', 'aria-label': label, 'data-fk': card ? 'c' + card.id : o.fk, 'aria-pressed': o.toggle ? (o.selected ? 'true' : 'false') : null, onclick: o.onclick })
+    : h('div', { class: cls, role: 'img', 'aria-label': label });
+  el.append(document.createTextNode(card ? text + (o.wild && !joker ? '*' : '') : ''));
+  return el;
+}
+
 /**
  * A playing card: ivory paper, ink and orange, with the site's "TI" mark on the back.
  * opts: wild, selected, toggle (aria-pressed), onclick, label, hot, small.
  */
 function cardEl(card, o = {}) {
+  if (altView) return cellEl(card, o);
   const joker = card && (card.rank === 0 || !card.suit);
   const red = card && (card.suit === 'H' || card.suit === 'D');
   const cls = ['g-card', !card && 'is-back', joker && 'is-joker', red && 'is-red', o.selected && 'is-sel', o.hot && 'is-hot', o.small && 'is-small'].filter(Boolean).join(' ');
@@ -99,7 +123,7 @@ function confirmDialog({ title, body, confirmLabel, onConfirm }) {
       h('button', { class: 'btn btn-ghost g-btn', type: 'button', onclick: () => dlg.close() }, 'Cancel'),
       h('button', { class: 'btn btn-primary g-btn', type: 'button', onclick: () => { dlg.close(); onConfirm(); } }, confirmLabel)));
   dlg.addEventListener('close', () => dlg.remove());
-  document.body.append(dlg);
+  (document.querySelector('.g-app') || document.body).append(dlg);
   dlg.showModal();
 }
 
@@ -222,19 +246,138 @@ function howToPlay() {
       p("The host's browser runs the game. If the host closes the page the game ends and entry bets are returned. Players who refresh can rejoin.")));
 }
 
+const ago = (ts) => {
+  const m = Math.max(0, Math.round((Date.now() - ts) / 60000));
+  return m < 1 ? 'just now' : m < 60 ? `${m}m ago` : m < 1440 ? `${Math.round(m / 60)}h ago` : `${Math.round(m / 1440)}d ago`;
+};
+
+/** The shared leaderboard from the Google Sheet: online players, the best against the computer, and recent games. */
+function sharedBoardEl(lb) {
+  const wrap = h('div', {});
+  if (lb.status === 'loading' || lb.status === 'idle') return h('p', { class: 'g-hint', role: 'status' }, 'Loading the shared leaderboard…');
+  if (lb.status === 'error') return h('p', { class: 'g-hint', role: 'status' }, 'The shared leaderboard could not be loaded just now. Your own results are under "This browser".');
+  const { board, computer } = lb.data;
+  if (!board.length && !computer.length) wrap.append(h('p', {}, 'No finished games yet. Be the first on the board.'));
+  if (board.length) {
+    wrap.append(h('div', { class: 'g-scroll' }, h('table', { class: 'g-table' },
+      h('thead', {}, h('tr', {}, ['#', 'Player', 'Played', 'Won', 'Win rate', 'Avg points / round', 'Coins'].map((t, i) => h('th', { class: i > 1 ? 'num' : '' }, t)))),
+      h('tbody', {}, board.slice(0, 15).map((r, i) => h('tr', { class: r.h === lb.hash ? 'is-me' : '' },
+        h('td', {}, String(i + 1)),
+        h('td', {}, h('b', {}, r.name), r.h === lb.hash ? ' (you)' : ''),
+        h('td', { class: 'num' }, String(r.games)),
+        h('td', { class: 'num' }, String(r.wins)),
+        h('td', { class: 'num' }, Math.round((r.wins / Math.max(1, r.games)) * 100) + '%'),
+        h('td', { class: 'num' }, (r.points / Math.max(1, r.rounds)).toFixed(1)),
+        h('td', { class: 'num' }, (r.coins > 0 ? '+' : r.coins < 0 ? '\u2212' : '') + Math.abs(r.coins)))))))); 
+  }
+  const perLevel = LEVELS.slice().reverse().map((l) => ({ l, rows: computer.filter((c) => c.level === l.id).slice(0, 3) })).filter((x) => x.rows.length);
+  if (perLevel.length) {
+    wrap.append(h('div', { style: 'margin-top:1.5rem' }, h('span', { class: 'g-eyebrow' }, 'Best against the computer'),
+      h('div', { class: 'g-scroll' }, h('table', { class: 'g-table' },
+        h('thead', {}, h('tr', {}, h('th', {}, 'Level'), h('th', {}, 'Player'), h('th', { class: 'num' }, 'Played'), h('th', { class: 'num' }, 'Won'))),
+        h('tbody', {}, perLevel.flatMap(({ l, rows }) => rows.map((r, i) => h('tr', { class: r.h === lb.hash ? 'is-me' : '' },
+          h('td', {}, i === 0 ? h('b', {}, l.label) : ''), h('td', {}, r.name, r.h === lb.hash ? ' (you)' : ''), h('td', { class: 'num' }, String(r.games)), h('td', { class: 'num' }, String(r.wins))))))))));
+  }
+  if (lb.recent && lb.recent.length) {
+    wrap.append(h('div', { style: 'margin-top:1.5rem' }, h('span', { class: 'g-eyebrow' }, 'Recent games'),
+      h('ul', { class: 'g-recent' }, lb.recent.slice(0, 6).map((g) => {
+        const humans = g.players.filter((p) => !p.bot);
+        const lvl = (LEVELS.find((l) => l.id === g.level) || {}).label || g.level;
+        const stats = ` · ${humans.map((p) => `${p.name} ${p.total}`).join(', ')} · ${g.rounds} ${g.rounds === 1 ? 'round' : 'rounds'} · ${ago(g.ts)}`;
+        if (g.mode === 'computer') {
+          const person = humans[0];
+          return h('li', {}, person && person.won ? [h('b', {}, person.name), ` beat the computer (${lvl})`] : [`The computer (${lvl}) beat `, h('b', {}, person ? person.name : 'a player')], h('span', { class: 'g-muted' }, stats));
+        }
+        return h('li', {}, h('b', {}, g.players.filter((p) => p.won).map((p) => p.name).join(' and ') || '-'), ' won', h('span', { class: 'g-muted' }, stats));
+      }))));
+  }
+  return wrap;
+}
+
 // ---------------------------------------------------------------------------------------------------------------
 // the mount
 // ---------------------------------------------------------------------------------------------------------------
 let resumeTried = false;
 
+const FAVICON = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='3' y='3' width='26' height='26' rx='3' fill='%23ffffff' stroke='%23999999' stroke-width='2'/%3E%3Cpath d='M3 12h26M3 21h26M12 3v26M21 3v26' stroke='%23999999' stroke-width='1.5'/%3E%3C/svg%3E";
+const FILE_TITLE = 'Budget_Q3.xlsx';
+
 export function mount(root, opts = {}) {
   configure(opts.config || {});
+  configureCloud(opts.config || {});
+  void flushOutbox();
   const sub = opts.sub || 'hub';
+  const full = sub === 'rummy';
   const params = opts.params || new URLSearchParams();
   const form = { name: savedName(), code: normalizeCode(params.get('room') || ''), error: null, busy: null, level: 'medium', opponents: 2 };
   const local = { gameId: null, round: 0, groups: [], selected: new Set(), notice: null, noticeTimer: 0, copied: null };
   let session = null;
   let dead = false;
+
+  // ---- the full-window shell (Rummy only): an app bar and a scrolling body that cover the whole page ----
+  let host = root; // where the screens are drawn
+  let app = null, appbar = null, rowsGutter = null, chrome = null, fxText = 'Ready';
+  const inerted = [];
+  if (full) {
+    app = h('div', { class: 'g-app', role: 'region', 'aria-label': 'Game' });
+    appbar = h('header', { class: 'g-appbar' });
+    rowsGutter = h('div', { class: 'g-rows', 'aria-hidden': 'true' }, Array.from({ length: 80 }, (_, i) => h('span', {}, String(i + 1))));
+    host = h('div', { class: 'g-content' });
+    app.append(appbar, h('div', { class: 'g-appbody' }, rowsGutter, host));
+    document.body.append(app);
+    document.body.classList.add('g-full');
+    // the page underneath stays put but out of reach, so Tab and screen readers stay inside the game
+    for (const el of document.querySelectorAll('body > *')) if (el !== app && el.tagName !== 'SCRIPT' && el.tagName !== 'DIALOG' && !el.inert) { el.inert = true; inerted.push(el); }
+  }
+
+  let savedTitle = null, savedIcon = null;
+  function applyTitle() {
+    if (!full) return;
+    const link = document.querySelector('link[rel~="icon"]');
+    if (altView) {
+      if (savedTitle === null) { savedTitle = document.title; savedIcon = link ? link.getAttribute('href') : null; }
+      document.title = FILE_TITLE;
+      if (link) link.setAttribute('href', FAVICON);
+    } else if (savedTitle !== null) {
+      document.title = savedTitle;
+      if (link && savedIcon) link.setAttribute('href', savedIcon);
+      savedTitle = null;
+    }
+  }
+
+  /** The grid frame around the screens, for the grid presentation only. */
+  function setChrome() {
+    if (!full) return;
+    app.classList.toggle('g-work', altView);
+    if (altView && !chrome) {
+      chrome = {
+        menu: h('div', { class: 'g-menu', 'aria-hidden': 'true' }, ['File', 'Edit', 'View', 'Insert', 'Format', 'Data', 'Tools', 'Help'].map((t) => h('span', {}, t))),
+        fx: h('div', { class: 'g-fx' }, h('span', { class: 'g-namebox' }, 'A1'), h('span', { class: 'g-fxl', 'aria-hidden': 'true' }, 'fx'), h('span', { class: 'g-fxt' }, '')),
+        cols: h('div', { class: 'g-cols', 'aria-hidden': 'true' }, h('span', { class: 'g-corner' }), Array.from({ length: 30 }, (_, i) => h('span', {}, String.fromCharCode(65 + (i % 26)) + (i >= 26 ? 'A' : '')))),
+        tabs: h('footer', { class: 'g-sheettabs', 'aria-hidden': 'true' }, h('span', { class: 'g-tab is-on' }, 'Sheet1'), h('span', { class: 'g-tab' }, 'Sheet2'), h('span', { class: 'g-ready' }, 'Ready')),
+      };
+      app.insertBefore(chrome.menu, appbar.nextSibling);
+      app.insertBefore(chrome.fx, chrome.menu.nextSibling);
+      app.insertBefore(chrome.cols, chrome.fx.nextSibling);
+      app.append(chrome.tabs);
+    } else if (!altView && chrome) {
+      Object.values(chrome).forEach((el) => el.remove());
+      chrome = null;
+    }
+    if (chrome) chrome.fx.querySelector('.g-fxt').textContent = fxText;
+  }
+
+  const fsSupported = () => !!(document.fullscreenEnabled && app && app.requestFullscreen);
+  function toggleFullscreen() {
+    if (document.fullscreenElement) void document.exitFullscreen();
+    else if (fsSupported()) app.requestFullscreen().catch(() => { /* refused: stay windowed */ });
+  }
+  const onFs = () => schedule();
+  if (full) document.addEventListener('fullscreenchange', onFs);
+
+  // a typed key sequence toggles the grid presentation
+  const gate = full ? createGate({ onMatch: () => { altView = !altView; rememberAltView(); applyTitle(); render(); } }) : null;
+  if (gate) gate.attach();
 
   const live = () => session && ['lobby', 'game'].includes(session.getState().status);
 
@@ -269,6 +412,33 @@ export function mount(root, opts = {}) {
     local.selected = new Set();
     session.act({ a: 'arrange', groups: toIds(next) });
     render();
+  }
+
+  // ---- the shared leaderboard (Google Sheet) with a fallback to this browser's own record ----
+  const lb = { tab: 'everyone', status: cloudEnabled() ? 'idle' : 'off', data: null, recent: null, hash: null, force: false, again: 0 };
+  function loadShared() {
+    if (lb.status !== 'idle') return;
+    lb.status = 'loading';
+    const force = lb.force;
+    lb.force = false;
+    Promise.all([fetchBoards(undefined, undefined, force), fetchRecent(8), pidHash(loadProfile().pid)])
+      .then(([data, recent, hash]) => {
+        if (dead) return;
+        Object.assign(lb, { data, recent, hash, status: 'ok' });
+        schedule();
+        // the host's result can reach the sheet a moment after we are back here: look once more shortly after a game
+        if (force && !lb.again) lb.again = setTimeout(() => { lb.again = 0; if (!dead && lb.status === 'ok') { lb.status = 'idle'; lb.force = true; schedule(); } }, 5000);
+      })
+      .catch(() => { if (dead) return; lb.status = 'error'; schedule(); });
+  }
+  function leaderboardPanel() {
+    if (!cloudEnabled()) return leaderboardEl();
+    loadShared();
+    const tabs = h('div', { class: 'g-tabs', role: 'tablist', 'aria-label': 'Leaderboard' },
+      [['everyone', 'Everyone'], ['browser', 'This browser']].map(([id, text]) =>
+        h('button', { type: 'button', role: 'tab', class: 'g-tabbtn', 'aria-selected': String(lb.tab === id), 'data-fk': 'lbtab-' + id, onclick: () => { lb.tab = id; render(); } }, text)));
+    const body = lb.tab === 'everyone' ? sharedBoardEl(lb) : h('div', {}, [...leaderboardEl().childNodes].slice(1));
+    return h('section', { class: 'g-panel', 'aria-label': 'Leaderboard' }, h('h2', {}, 'Leaderboard'), tabs, body);
   }
 
   // ---- screens ----
@@ -333,7 +503,7 @@ export function mount(root, opts = {}) {
           h('label', { class: 'g-label', for: 'g-code', style: 'margin-top:.75rem' }, 'Room code'), codeInput,
           h('div', { style: 'margin-top:1.25rem' }, joinBtn)),
         form.error && h('p', { class: 'g-alert g-span', role: 'alert', style: 'margin:0' }, form.error),
-        h('div', { class: 'g-span' }, leaderboardEl())),
+        h('div', { class: 'g-span' }, leaderboardPanel())),
       howToPlay());
     return wrap;
   }
@@ -416,9 +586,10 @@ export function mount(root, opts = {}) {
     const doDeclare = () => { const [card] = [...sel]; const groups = toIds(finishGroups); local.selected = new Set(); session.act({ a: 'declare', card, groups }); render(); };
     const toggle = (id) => { if (sel.has(id)) sel.delete(id); else sel.add(id); render(); };
 
-    const out = h('div', {});
+    fxText = status || 'Ready';
+    const out = h('div', { class: 'g-tv' });
     // players
-    out.append(h('div', { class: 'g-bar', role: 'group', 'aria-label': 'Players' },
+    out.append(h('div', { class: 'g-bar g-seats', role: 'group', 'aria-label': 'Players' },
       view.players.map((p) => h('div', { class: 'g-chip' + (p.id === view.turn && view.phase === 'playing' ? ' is-turn' : '') + (p.out ? ' is-out' : '') },
         h('span', { class: p.connected ? 'on' : 'off', title: p.connected ? 'Connected' : 'Disconnected' }),
         h('b', {}, p.name + (p.id === view.you ? ' (you)' : '')),
@@ -443,8 +614,10 @@ export function mount(root, opts = {}) {
       h('p', { class: 'g-status' + (myTurn ? ' is-me' : ''), role: 'status', 'aria-live': 'polite' }, status),
       absentTurn && h('p', { style: 'margin-top:.75rem' }, h('button', { class: 'btn btn-ghost g-btn', type: 'button', onclick: () => session.act({ a: 'dropAbsent' }) }, `Skip ${current.name} now`))));
 
+    out.append(h('details', { class: 'g-details' }, h('summary', {}, 'Table rules'), rulesSummary(view.rules)));
+    if (view.log.length && view.phase === 'playing') out.append(h('ul', { class: 'g-log', 'aria-label': 'Recent events' }, view.log.slice(-4).map((l) => h('li', {}, l))));
     // hand
-    if (me && !me.out && view.phase !== 'game-over') {
+    if (me && !me.out && view.phase === 'playing') {
       const summary = evaluation.complete
         ? (shapeAllowed(local.groups, view.rules) ? 'All groups valid' : `Groups valid, but this table needs ${shapeLabel}`)
         : `${evaluation.points} points if the round ended now`;
@@ -484,8 +657,6 @@ export function mount(root, opts = {}) {
           }, 'Drop'))));
     }
 
-    out.append(h('details', { class: 'g-details' }, h('summary', {}, 'Table rules'), rulesSummary(view.rules)));
-    if (view.log.length && view.phase === 'playing') out.append(h('ul', { class: 'g-log', 'aria-label': 'Recent events' }, view.log.slice(-4).map((l) => h('li', {}, l))));
     if (view.phase !== 'playing') out.append(resultsView(view));
     return out;
   }
@@ -545,14 +716,49 @@ export function mount(root, opts = {}) {
         h('p', {}, 'More popular card and board games are on the way, all playable with friends in the browser.')));
   }
 
+  // ---- the app bar ----
+  function paintBar(st) {
+    const inRoom = !!st && (st.status === 'lobby' || st.status === 'game');
+    const leaveLabel = session && session.isLocal ? 'Leave game' : session && session.isHost ? 'Close room' : 'Leave room';
+    const exit = h('button', {
+      class: 'g-barbtn', type: 'button', 'data-fk': 'exit',
+      onclick: () => {
+        if (!inRoom) { location.hash = '#/games'; return; }
+        if (st.status === 'lobby') { leaveRoom(); return; }
+        confirmDialog({
+          title: session.isLocal ? 'Leave this game?' : session.isHost ? 'Close this room?' : 'Leave this room?',
+          body: session.isHost && !session.isLocal ? 'The game ends for everyone and entry bets are returned.' : session.isLocal ? 'The game ends and nothing is saved.' : 'You leave the table and forfeit your entry bet.',
+          confirmLabel: leaveLabel,
+          onConfirm: () => leaveRoom(),
+        });
+      },
+    }, inRoom ? leaveLabel : '\u2190 All games');
+    const fs = fsSupported()
+      ? h('button', { class: 'g-barbtn', type: 'button', 'data-fk': 'fs', 'aria-pressed': String(!!document.fullscreenElement), onclick: toggleFullscreen }, document.fullscreenElement ? 'Exit full screen' : 'Full screen')
+      : null;
+    const meta = st && st.status === 'game'
+      ? `Round ${st.view.round} of ${st.view.totalRounds}${st.view.rules.bet > 0 ? ` \u00b7 Pot ${st.view.pot}` : ''}`
+      : st && st.status === 'lobby' ? (session && session.isLocal ? 'Against the computer' : `Room ${st.code}`) : '';
+    appbar.replaceChildren(
+      h('div', { class: 'g-brand' }, h('span', { class: 'g-mark', 'aria-hidden': 'true' }, 'TI'), h('b', {}, altView ? FILE_TITLE : 'Indian Rummy'), meta ? h('span', { class: 'g-bar-meta' }, meta) : null),
+      h('div', { class: 'g-barr' }, fs, exit));
+  }
+
   // ---- dispatcher ----
   let renderQueued = false;
+  let lastScreen = null;
   function render() {
     if (dead) return;
     const active = document.activeElement;
-    const fk = active && root.contains(active) ? active.getAttribute('data-fk') : null;
+    const fk = active && (host.contains(active) || (appbar && appbar.contains(active))) ? active.getAttribute('data-fk') : null;
     const scrollY = window.scrollY;
+    const bodyEl = full ? host.parentElement : null;
     const st = session ? session.getState() : null;
+    // a different screen (start, lobby, table) opens at the top; the same screen keeps its scroll position
+    const screenKey = st ? st.status : 'start';
+    const innerScroll = bodyEl && screenKey === lastScreen ? bodyEl.scrollTop : 0;
+    lastScreen = screenKey;
+    fxText = 'Ready';
 
     let view;
     if (sub !== 'rummy') view = hubView();
@@ -569,31 +775,17 @@ export function mount(root, opts = {}) {
         entryView());
     }
 
-    // A way out while a room or game is live (navigating away would keep it running in the background).
-    let topbar = null;
-    if (sub === 'rummy' && st && (st.status === 'lobby' || st.status === 'game')) {
-      const label = session.isLocal ? 'Leave game' : session.isHost ? 'Close room' : 'Leave room';
-      const doLeave = () => leaveRoom();
-      topbar = h('div', { class: 'g-topbar' }, h('button', {
-        class: 'btn btn-ghost g-btn', type: 'button', 'data-fk': 'leave',
-        onclick: () => (st.status === 'game'
-          ? confirmDialog({
-            title: session.isLocal ? 'Leave this game?' : session.isHost ? 'Close this room?' : 'Leave this room?',
-            body: session.isHost && !session.isLocal ? 'The game ends for everyone and entry bets are returned.' : session.isLocal ? 'The game ends and nothing is saved.' : 'You leave the table and forfeit your entry bet.',
-            confirmLabel: label,
-            onConfirm: doLeave,
-          })
-          : doLeave()),
-      }, label));
-    }
-    const wrap = h('div', {}, topbar, local.notice && h('p', { class: 'g-alert', role: 'alert' }, local.notice), view);
-    root.replaceChildren(wrap);
+    if (full) paintBar(st);
+    const wrap = h('div', { class: 'g-wrap' }, local.notice && h('p', { class: 'g-alert', role: 'alert' }, local.notice), view);
+    host.replaceChildren(wrap);
+    if (full) { setChrome(); applyTitle(); }
     document.body.classList.toggle('g-live', !!live());
     if (fk) {
-      const again = root.querySelector(`[data-fk="${fk}"]`);
+      const again = (app || root).querySelector(`[data-fk="${fk}"]`);
       if (again && !again.disabled) again.focus({ preventScroll: true });
     }
-    if (Math.abs(window.scrollY - scrollY) > 1) window.scrollTo(0, scrollY);
+    if (bodyEl) bodyEl.scrollTop = innerScroll;
+    else if (Math.abs(window.scrollY - scrollY) > 1) window.scrollTo(0, scrollY);
   }
   const schedule = () => {
     if (renderQueued) return;
@@ -602,6 +794,7 @@ export function mount(root, opts = {}) {
   };
 
   const stopWatch = watch((s) => {
+    if (!s && session && lb.status !== 'off') { lb.status = 'idle'; lb.force = true; } // back at the start screen: reload the shared board
     session = s;
     if (s) {
       const err = s.takeError();
@@ -624,8 +817,19 @@ export function mount(root, opts = {}) {
   return () => {
     dead = true;
     clearTimeout(local.noticeTimer);
+    clearTimeout(lb.again);
     stopWatch();
     stopProfile();
+    if (gate) gate.detach();
+    if (full) {
+      document.removeEventListener('fullscreenchange', onFs);
+      if (document.fullscreenElement) void document.exitFullscreen();
+      const was = altView;
+      altView = false; applyTitle(); altView = was; // put the tab title and icon back
+      app.remove();
+      inerted.forEach((el) => { el.inert = false; });
+      document.body.classList.remove('g-full');
+    }
     document.body.classList.remove('g-live');
     document.querySelectorAll('dialog.g-dlg').forEach((d) => d.remove());
   };
