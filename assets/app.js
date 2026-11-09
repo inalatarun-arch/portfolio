@@ -119,9 +119,10 @@ var ROUTES={
   contact:{m:'work',l:'Contact',f:function(){return pageContact('work')}},
   writings:{m:'personal',l:'Writings',f:pageWritings},
   photography:{m:'personal',l:'Photographs',f:pagePhotos},
+  games:{m:'personal',l:'Games',f:pageGames},
   hello:{m:'personal',l:'Say hello',f:function(){return pageContact('personal')}}
 };
-var MODES={work:['work','built','contact'],personal:['writings','photography','hello']};
+var MODES={work:['work','built','contact'],personal:['writings','photography','games','hello']};
 var FOOT={work:'Business analysis and product delivery. Clear requirements, shipped outcomes.',personal:'Writings and photographs, kept in one quiet place.'};
 var SHOW_OPEN=false; /* temporarily hides the "Open to ... roles" status pill and laptop status; set true to restore */
 var TITLES={welcome:'Tarun Inala – Senior Business Analyst, open to Product Owner roles'};
@@ -291,6 +292,18 @@ function pageWritings(){
     '<div data-r><p class="hero-sub">Poems, thoughts and journal pages, written over the years in English, Telugu and Hindi.</p><p class="hero-cue">'+ic('arrow-d')+'Scroll, then open a diary to read.</p></div></div></div></section>';
 }
 
+/* Games: #/games is the hub, #/games/rummy the table; an invite link adds ?room=CODE. The game itself is
+   mounted by assets/games.js (see enhance) so none of it loads on other pages. */
+function gamesRoute(){var p=location.hash.replace(/^#\/?/,'').split('?'),seg=p[0].split('/');return {sub:seg[1]==='rummy'?'rummy':'hub',params:new URLSearchParams(p[1]||'')}}
+function pageGames(){
+  var g=gamesRoute(),rummy=g.sub==='rummy';
+  return '<section class="wrap games"><div class="games-hero'+(rummy?' is-compact':'')+'">'+
+    (rummy?'<a class="games-back" href="#/games">'+ic('arrow-l')+'All games</a>':'')+
+    '<h1 data-hl>'+headline(rummy?'Indian <em>Rummy</em>':'Play <em>cards</em>.')+'</h1>'+
+    '<p class="lede" data-r>'+(rummy?'13-card Points Rummy for 3 to 6 players. Make two sequences, one of them pure, and group the rest.':'Pull up a chair. Open a room, share the code, and play with friends in your browser. No sign-up.')+'</p></div>'+
+    '<div class="games-root" id="gamesRoot"></div></section>';
+}
+
 function realPhotos(){return (SITE.photos||[]).filter(function(p){return !p.placeholder&&(p.src||p.img||p.file)})}
 function photoSrc(p){var file=p.src||p.img||p.file;return /^(https?:)?\/\//.test(file)||file.indexOf('/')>=0?file:'images/'+file}
 function pagePhotos(){
@@ -442,6 +455,8 @@ function mountPersonal(scope,rm){
 
 function enhance(scope){
   var rm=reduced();
+  var gr=$('#gamesRoot',scope);
+  if(gr&&window.Games){var gx=gamesRoute();cleanups.push(window.Games.mount(gr,{sub:gx.sub,params:gx.params,config:SITE.games||{}}))}
   mountSeq(scope,rm);
   mountPersonal(scope,rm);
   // headlines rise word by word, quickly (the whole line settles in about 0.7s)
