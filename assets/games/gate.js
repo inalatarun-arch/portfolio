@@ -2,9 +2,9 @@
  * Keyboard sequence detector. It watches for a short sequence typed quickly (outside of any text box) and calls back
  * when it matches. Only a salted SHA-256 of the sequence is stored here, never the sequence itself.
  */
-const SALT = '03370ac23a7c523d';
-const HASH = '6573742c47f7c3798211ac04a96ffe8bdfd38fa4ef8135d2245dfcf3c7c2f9c1';
-const LEN = 8;
+const SALT = '012711429eae90d8';
+const HASH = 'c9574b3448f0bda4473e4959ddec0242e677c3c10dffd911a070a73f8d2bbfcc';
+const LEN = 10;
 const GAP_MS = 1500; // a pause longer than this starts the sequence over
 
 export async function sha256Hex(text) {
