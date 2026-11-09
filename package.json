@@ -1,0 +1,9 @@
+{
+  "name": "portfolio",
+  "private": true,
+  "type": "module",
+  "description": "Static site. This file only enables `npm test` for the games logic; there are no dependencies and no build step.",
+  "scripts": {
+    "test": "node --test tests/*.test.js"
+  }
+}
