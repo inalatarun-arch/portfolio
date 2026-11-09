@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from './harness.js';
-import { RoomHost } from '../assets/games/host.js?v=2';
+import { RoomHost } from '../assets/games/host.js?v=4';
 function fake() {
     const got = [];
     let closed = false;

@@ -1,5 +1,5 @@
-import { arrangeBot, createMemory, levelInfo, observe, runBotTurn } from './bot.js?v=2';
-import { DEFAULT_RULES, MAX_PLAYERS, MIN_PLAYERS, arrangeHand, sanitizeRules, declare, discardCard, drawFromDiscard, drawFromStock, dropPlayer, handCards, newGame, nextRound, viewFor, } from './engine.js?v=2';
+import { arrangeBot, createMemory, levelInfo, observe, runBotTurn } from './bot.js?v=4';
+import { DEFAULT_RULES, MAX_PLAYERS, MIN_PLAYERS, arrangeHand, sanitizeRules, declare, discardCard, drawFromDiscard, drawFromStock, dropPlayer, handCards, newGame, nextRound, viewFor, } from './engine.js?v=4';
 export const DEFAULT_COINS = 1000;
 /** How long a disconnected player's turn is held before the host plays it for them. */
 export const ABSENT_TURN_MS = 30_000;

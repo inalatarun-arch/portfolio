@@ -30,6 +30,7 @@ function build(actual, negate) {
     },
     toBeNull: () => check(actual === null, `${show(actual)} to be null`),
     toBeDefined: () => check(actual !== undefined, `${show(actual)} to be defined`),
+    toBeUndefined: () => check(actual === undefined, `${show(actual)} to be undefined`),
     toBeGreaterThan: (n) => check(actual > n, `${show(actual)} > ${n}`),
     toBeLessThanOrEqual: (n) => check(actual <= n, `${show(actual)} <= ${n}`),
     toHaveLength: (n) => check(actual != null && actual.length === n, `length ${actual && actual.length} to be ${n}`),

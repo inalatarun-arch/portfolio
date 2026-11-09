@@ -3,10 +3,10 @@
    orange is a graphic or large-type colour only, never small text; small text is ink on ivory.
    Cards are physical objects, so they stay ivory paper with ink and orange in both themes.
    ========================================================================== */
-.games{padding-top:calc(var(--hdr) + clamp(1.5rem,6vh,4rem));padding-bottom:clamp(4rem,12vh,9rem);
-  --g-face:color-mix(in srgb,var(--ivory) 62%,#fff);--g-edge:color-mix(in srgb,var(--black) 24%,transparent);
+.games{padding-top:calc(var(--hdr) + clamp(1.5rem,6vh,4rem));padding-bottom:clamp(4rem,12vh,9rem)}
+.games,.g-app{--g-face:color-mix(in srgb,var(--ivory) 62%,#fff);--g-edge:color-mix(in srgb,var(--black) 24%,transparent);
   --g-ink:var(--black);--g-red:var(--orange);--cw:3.125rem;--ch:4.625rem}
-@media (min-width:40rem){.games{--cw:4.25rem;--ch:6.125rem}}
+@media (min-width:40rem){.games,.g-app{--cw:4.25rem;--ch:6.125rem}}
 .games-hero h1{font-size:clamp(2.75rem,8vw,6.5rem);letter-spacing:-.05em;line-height:.92;max-width:14ch}
 .games-hero .lede{margin-top:1.25rem;max-width:44rem;color:var(--muted);font-size:clamp(1.0625rem,2.2vw,1.3125rem);line-height:1.55}
 .games-hero.is-compact h1{font-size:clamp(2.25rem,5vw,3.75rem);max-width:none}
@@ -187,3 +187,201 @@ button.g-card:hover{transform:translateY(-.25rem)}
 .g-chip small+small::before{content:"·";margin-right:.5rem}
 
 .g-topbar{display:flex;justify-content:flex-end;margin-bottom:.75rem}
+
+/* ==========================================================================
+   Full window: the Rummy screens cover the whole page (an app bar and a body that scrolls on its own).
+   ========================================================================== */
+body.g-full{overflow:hidden}
+.g-app{position:fixed;inset:0;z-index:300;display:flex;flex-direction:column;background:var(--bg);color:var(--fg);font-family:var(--sans);line-height:1.6}
+.g-appbar{flex:none;display:flex;align-items:center;justify-content:space-between;gap:1rem;min-height:3.5rem;padding:.5rem max(1rem,env(safe-area-inset-right)) .5rem max(1rem,env(safe-area-inset-left));
+  border-bottom:.0625rem solid var(--line);background:color-mix(in srgb,var(--bg) 93%,var(--fg))}
+.g-brand{display:flex;align-items:center;gap:.75rem;min-width:0}
+.g-mark{flex:none;width:2rem;height:2rem;border-radius:50%;display:grid;place-items:center;background:var(--accent);color:var(--on-accent);font:800 .7rem/1 var(--sans)}
+.g-brand b{font-family:var(--serif);font-size:1.1875rem;font-weight:650;letter-spacing:-.02em;white-space:nowrap}
+.g-bar-meta{color:var(--muted);font-size:.875rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.g-barr{display:flex;gap:.5rem;flex:none}
+.g-barbtn{min-height:2.5rem;padding:0 1rem;border-radius:var(--pill);border:.09375rem solid var(--line-2);font-size:.875rem;font-weight:600;white-space:nowrap}
+.g-barbtn:hover{border-color:var(--fg)}
+@media (max-width:30rem){.g-bar-meta{display:none}.g-barbtn{padding:0 .75rem}}
+.g-appbody{flex:1;min-height:0;overflow:auto;position:relative;overscroll-behavior:contain}
+.g-rows{display:none}
+.g-content{width:min(100%,80rem);margin:0 auto;padding:1.25rem clamp(1rem,3vw,2rem) 2rem;min-height:100%}
+.g-content:has(.g-tv){width:min(100%,100rem);display:flex;flex-direction:column;padding-bottom:0}
+.g-app .g-grid.lobby,.g-app .g-grid.two{max-width:68rem;margin-inline:auto}
+.g-app .g-panel h2{font-size:1.375rem}
+
+/* the table fills the window: seats on top, piles in the middle, your hand docked at the bottom */
+.g-tv{display:flex;flex-direction:column;flex:1;min-height:0}
+.g-tv .g-seats{flex:none}
+.g-tv .g-felt{flex:1;display:flex;flex-direction:column;justify-content:center;min-height:11rem}
+.g-tv .g-hand{position:sticky;bottom:0;z-index:5;margin-inline:calc(clamp(1rem,3vw,2rem) * -1);margin-bottom:0;border-radius:var(--r-lg) var(--r-lg) 0 0;border-bottom:0;
+  padding-inline:clamp(1rem,3vw,2rem);padding-bottom:max(1rem,env(safe-area-inset-bottom));box-shadow:0 -.75rem 1.5rem -1rem color-mix(in srgb,var(--black) 30%,transparent)}
+.g-tv .g-hand .g-groups{max-height:34vh;overflow:auto;padding-bottom:.25rem}
+.g-tv>.g-details,.g-tv>.g-log{flex:none}
+.g-tv>.g-panel[aria-label^="Round"],.g-tv>.g-panel[aria-label="Final results"]{margin-bottom:1.5rem}
+.g-tabs{display:flex;gap:.25rem;margin:.75rem 0 1rem;border-bottom:.0625rem solid var(--line)}
+.g-tabbtn{min-height:2.5rem;padding:0 1rem;font-weight:600;font-size:.9375rem;color:var(--muted);border-bottom:.1875rem solid transparent;margin-bottom:-.0625rem}
+.g-tabbtn[aria-selected="true"]{color:var(--fg);border-bottom-color:var(--accent)}
+.g-recent{list-style:none;margin:.5rem 0 0;padding:0;display:grid;gap:.375rem;font-size:.9375rem}
+.g-muted{color:var(--muted)}
+
+/* ==========================================================================
+   Alternate view: a plain grid of cells and small text. Overrides the colour, type and shape tokens, so everything
+   inside the app follows without a second set of rules. Rows are 24px so lines of text sit in the grid rows.
+   ========================================================================== */
+.g-app.g-work{
+  --bg:#ffffff;--fg:#202124;--surface:#ffffff;--surface-2:#f8f9fa;--muted:#5f6368;--faint:#5f6368;
+  --line:#dadce0;--line-2:#bdc1c6;--accent:#1a73e8;--on-accent:#ffffff;--blk:#202124;--on-blk:#ffffff;--black:#202124;
+  --sans:Arial,Helvetica,sans-serif;--serif:Arial,Helvetica,sans-serif;--mono:Consolas,Menlo,monospace;
+  --r-lg:0;--r-md:0;--pill:2px;--shadow:none;--cw:3.5rem;--ch:1.5rem;color-scheme:light;
+  font-size:12px;line-height:24px;display:grid;grid-template-rows:auto auto auto auto minmax(0,1fr) auto;
+}
+.g-work .g-appbar{min-height:2.25rem;padding:0 .75rem;background:#fff;border-bottom:0}
+.g-work .g-mark{width:1.125rem;height:1.5rem;border-radius:2px;background:#188038;font-size:0;color:transparent}
+.g-work .g-brand{gap:.5rem}
+.g-work .g-brand b{font-size:15px;font-weight:400;letter-spacing:0;color:#202124}
+.g-work .g-bar-meta{display:none}
+.g-menu{display:flex;gap:1.125rem;padding:0 .75rem;color:#444746;font-size:13px;line-height:24px;background:#fff}
+.g-fx{display:flex;align-items:center;height:1.75rem;border-top:.0625rem solid #dadce0;border-bottom:.0625rem solid #dadce0;font-size:12px;line-height:1.75rem;background:#fff}
+.g-namebox{width:5rem;padding:0 .5rem;border-right:.0625rem solid #dadce0;color:#202124}
+.g-fxl{padding:0 .75rem;color:#80868b;font-style:italic}
+.g-fxt{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#202124}
+.g-cols{display:flex;height:1.5rem;overflow:hidden;background:#f8f9fa;border-bottom:.0625rem solid #dadce0}
+.g-cols span{flex:none;width:96px;text-align:center;font-size:11px;line-height:1.5rem;color:#5f6368;border-right:.0625rem solid #dadce0}
+.g-cols .g-corner{width:2.6rem;background:#f1f3f4}
+.g-work .g-appbody{background-color:#fff;background-image:linear-gradient(#e8eaed 1px,transparent 1px),linear-gradient(90deg,#e8eaed 1px,transparent 1px);
+  background-size:100% 24px,96px 100%;background-position:0 0,2.6rem 0;background-attachment:local}
+.g-work .g-rows{display:block;position:absolute;left:0;top:0;width:2.6rem;min-height:1920px;background:#f8f9fa;border-right:.0625rem solid #dadce0;z-index:1;pointer-events:none}
+.g-work .g-rows span{display:block;height:24px;line-height:24px;text-align:center;font-size:11px;color:#5f6368;border-bottom:.0625rem solid #dadce0}
+.g-work .g-content{width:auto;max-width:none;margin:0;padding:0 .75rem 3rem 3.35rem}
+.g-work .g-content:has(.g-tv){width:auto;padding-bottom:0}
+.g-sheettabs{display:flex;align-items:center;gap:.25rem;height:1.875rem;padding:0 .75rem;background:#f8f9fa;border-top:.0625rem solid #dadce0;font-size:12px}
+.g-tab{padding:0 1rem;line-height:1.875rem;color:#5f6368}
+.g-tab.is-on{background:#fff;color:#188038;font-weight:700;box-shadow:inset 0 -.125rem 0 #188038}
+.g-ready{margin-left:auto;color:#5f6368}
+
+/* text lines sit on the 24px rows */
+.g-work :is(p,li,h2,h3,summary,label,td,th,span,small,b,em,strong){line-height:24px}
+.g-work h2,.g-work h3{font-size:12px;font-weight:700;letter-spacing:0;text-transform:none;font-family:var(--sans);color:#202124;margin:0}
+.g-work p,.g-work .g-hint{margin:0;font-size:12px;color:#444746}
+.g-work .g-eyebrow{font-family:var(--sans);font-size:11px;letter-spacing:0;text-transform:none;color:#5f6368}
+.g-work .g-panel,.g-work .g-felt,.g-work .g-hand,.g-work .g-game{background:transparent;border:0;border-radius:0;box-shadow:none;padding:0;margin:0}
+.g-work .g-grid,.g-work .g-grid.two,.g-work .g-grid.lobby{display:block;max-width:none}
+.g-work .g-grid>*{margin:0 0 24px}
+.g-work .g-fields{display:grid;grid-template-columns:repeat(2,minmax(0,22rem));gap:0 1.5rem;margin-top:0}
+.g-work .g-choice{grid-template-columns:repeat(2,minmax(0,18rem));gap:0 .75rem}
+.g-work .g-felt{text-align:left;min-height:0;padding:24px 0}
+.g-work .g-tv .g-felt{justify-content:flex-start}
+.g-work .g-piles{justify-content:flex-start;gap:0 2.5rem}
+.g-work .g-pile h3{font-family:var(--sans);font-size:11px;font-weight:400;color:#5f6368;margin:0}
+.g-work .g-pile p{margin:0;font-size:11px}
+.g-work .g-pile .g-cell,.g-work .g-pile .g-card{margin-inline:0}
+.g-work .g-status{margin:0;font-weight:400}
+.g-work .g-status.is-me::before{display:none}
+.g-work .g-hand-head{gap:0 1rem}
+.g-work .g-hand-head h2{font-size:12px}
+.g-work .g-hand-head span{font-size:12px;color:#5f6368}
+.g-work .g-tv .g-hand{position:static;margin:0;box-shadow:none;padding:0;border:0}
+.g-work .g-tv .g-hand .g-groups{max-height:none;overflow:visible}
+.g-work .g-groups{gap:0 1.5rem;margin-top:0;padding-top:0}
+.g-work .g-grp-top{min-height:24px;margin:0;gap:.5rem}
+.g-work .g-kind,.g-work .g-kind.k-pure,.g-work .g-kind.k-sequence,.g-work .g-kind.k-set,.g-work .g-kind.k-invalid{border:0;padding:0;background:transparent;color:#80868b;font-size:11px;font-style:italic;font-weight:400}
+.g-work .g-add{border:0;padding:0;font-size:11px;color:#1a73e8;font-weight:400}
+.g-work .g-cards{padding-left:0}
+.g-work .g-cards .g-cell{margin-left:-1px}
+.g-work .g-actions{margin:0;padding:0;border:0;gap:6px;min-height:24px;align-items:center}
+.g-work .g-actions .push{margin-left:0}
+.g-cell{display:inline-block;flex:none;width:3.5rem;height:24px;text-align:center;font:12px/22px Arial,Helvetica,sans-serif;color:#202124;background:#fff;border:.0625rem solid #bdc1c6;border-radius:0;padding:0;box-shadow:none;vertical-align:top}
+button.g-cell{cursor:pointer}
+button.g-cell:hover{background:#f1f3f4}
+.g-cell.is-sel{position:relative;z-index:2;outline:.125rem solid #1a73e8;outline-offset:-1px;background:#e8f0fe}
+.g-cell.is-hot{background:#e8f0fe}
+.g-cell.is-blank{background:#f1f3f4}
+.g-cell.is-small{width:3rem}
+.g-work .g-seats{display:block}
+.g-work .g-chip{display:flex;gap:.75rem;min-height:24px;padding:0;border:0;background:transparent;border-radius:0;font-size:12px;box-shadow:none}
+.g-work .g-chip.is-turn{background:#e8f0fe;box-shadow:none}
+.g-work .g-chip.is-turn::before{display:none}
+.g-work .g-chip b,.g-work .g-chip small{font-size:12px;font-weight:400;color:#202124}
+.g-work .g-chip small{color:#5f6368}
+.g-work .g-chip small+small::before{display:none}
+.g-work .g-meta{display:none}
+.g-work .btn,.g-work .g-btn,.g-work .g-barbtn{min-height:24px;height:24px;padding:0 .75rem;font-size:12px;font-weight:400;border-radius:2px;border:.0625rem solid #bdc1c6;background:#fff;color:#202124;letter-spacing:0;line-height:22px;transform:none}
+.g-work .btn:hover,.g-work .g-btn:hover{background:#f1f3f4}
+.g-work .btn-primary{background:#f1f3f4}
+.g-work .btn[disabled],.g-work .g-btn[disabled]{opacity:.45}
+.g-work .g-btn.is-go{background:#fff;color:#1a73e8;border-color:#1a73e8}
+.g-work .g-barbtn{border:0;color:#5f6368}
+.g-work .g-barbtn:hover{background:#f1f3f4}
+.g-work .g-link{min-height:24px;padding:0 .5rem;font-size:12px;border-radius:2px;color:#1a73e8}
+.g-work .g-input,.g-work .g-select{min-height:24px;height:24px;padding:0 .5rem;font-size:12px;border-radius:0;border:.0625rem solid #bdc1c6;background-color:#fff}
+.g-work .g-select{padding-right:1.5rem;background-position:calc(100% - 12px) 50%,calc(100% - 8px) 50%;background-size:4px 4px}
+.g-work .g-code{letter-spacing:.15em}
+.g-work .g-label{margin:0;font-weight:700;font-size:12px}
+.g-work .g-opt{border:.0625rem solid #bdc1c6;padding:0 .625rem;line-height:24px}
+.g-work .g-opt b{font-family:var(--sans);font-size:12px}
+.g-work .g-opt span{display:inline;margin-left:.5rem;font-size:11px;line-height:24px}
+.g-work .g-opt[aria-checked="true"]{background:#e8f0fe;border-color:#1a73e8;box-shadow:none}
+.g-work .g-wallet{display:inline;padding:0;background:transparent;color:#202124;font-weight:400}
+.g-work .g-wallet i{display:none}
+.g-work .g-tag{border:0;padding:0;font-size:11px;color:#5f6368}
+.g-work .g-panel .g-codebig,.g-work .g-codebig{font:600 15px/24px Consolas,Menlo,monospace;letter-spacing:.1em;margin:0}
+.g-work .g-players li{min-height:24px;border-top:0;gap:.5rem}
+.g-work .g-players .nm{font-weight:400}
+.g-work .g-rules{gap:0}
+.g-work .g-rules li::before{width:4px;height:4px;margin-top:10px;background:#5f6368}
+.g-work .g-table{margin:0;font-size:12px}
+.g-work .g-table th,.g-work .g-table td{padding:0 .75rem 0 0;border:0;font:12px/24px Arial,Helvetica,sans-serif;letter-spacing:0;text-transform:none}
+.g-work .g-table th{background:transparent;color:#5f6368;font-weight:700}
+.g-work .g-table tr.is-me td{background:#e8f0fe}
+.g-work .g-win{display:block;background:transparent;color:#202124;padding:0;margin:0 0 24px}
+.g-work .g-win .ic{display:none}
+.g-work .g-win h2,.g-work .g-win p{color:#202124}
+.g-work .g-details>summary{min-height:24px;font-size:12px;font-weight:400;color:#5f6368}
+.g-work .g-alert{margin:0;padding:0;border:0;background:#fef7e0;font-weight:400;font-size:12px}
+.g-work .g-log{margin:0;font-size:11px;color:#5f6368}
+.g-work .g-reveal{margin:0;gap:0}
+.g-work .g-tabs{margin:0;border:0;gap:0}
+.g-work .g-tabbtn{min-height:24px;font-size:12px;padding:0 .75rem;border-bottom-width:2px;font-weight:400}
+.g-work .g-recent{margin:0;gap:0;font-size:12px}
+.g-work .g-scroll{overflow:visible}
+.g-work .g-fan,.g-work .ic{display:none}
+.g-work dialog.g-dlg{padding:1rem;border:.0625rem solid #bdc1c6;border-radius:2px;background:#fff;color:#202124;box-shadow:0 .25rem 1rem rgb(0 0 0/.2);width:min(24rem,calc(100vw - 2rem))}
+.g-work dialog.g-dlg h2{font-size:14px;line-height:24px}
+.g-work dialog.g-dlg p{line-height:20px;margin-top:.5rem}
+.g-work dialog.g-dlg .g-row{margin-top:1rem}
+
+/* no reserved scrollbar strip beside the full-window game */
+html:has(body.g-full){overflow:hidden;scrollbar-gutter:auto}
+.g-appbody{display:flex;flex-direction:column}
+.g-content{flex:1 0 auto;min-height:0;width:min(100%,80rem)}
+.g-content:has(.g-tv){width:min(100%,100rem)}
+.g-work .g-content,.g-work .g-content:has(.g-tv){width:auto}
+.g-content>.g-wrap{flex:1 0 auto;display:flex;flex-direction:column;min-height:0}
+.g-wrap>.g-tv{flex:1}
+.g-app.g-work .g-panel h2{font-size:12px}
+.g-work :focus-visible{outline:2px solid #1a73e8;outline-offset:-2px;border-radius:0}
+.g-work .g-tv .g-felt{flex:none}
+.g-work .g-tv>.g-details,.g-work .g-tv>.g-log{margin-top:0}
+
+/* ---------- phones: a tighter app bar and a lower hand dock so the table stays visible ---------- */
+.g-brand{flex:1;min-width:0}
+.g-brand b{overflow:hidden;text-overflow:ellipsis}
+@media (max-width:40rem){
+  .g-barbtn[data-fk="fs"]{display:none}
+  .g-appbar{min-height:3rem;gap:.5rem}
+  .g-barbtn{min-height:2.25rem;padding:0 .75rem}
+  .g-tv .g-felt{min-height:8.5rem;padding:.75rem}
+  .g-tv .g-felt .g-card{--cw:3rem;--ch:4.375rem}
+  .g-tv .g-hand{--cw:2.625rem;--ch:3.875rem;padding-top:.625rem}
+  .g-tv .g-hand .g-groups{max-height:26vh;gap:.625rem 1rem;margin-top:.5rem}
+  .g-tv .g-hand-head h2{font-size:1.125rem}
+  .g-tv .g-hand-head span{font-size:.75rem}
+  .g-tv .g-hand .g-card .rk{font-size:1.0625rem}
+  .g-tv .g-hand .g-card .pip{width:1.5rem;height:1.5rem}
+  .g-tv .g-actions{margin-top:.5rem;padding-top:.625rem;gap:.375rem}
+  .g-tv .g-actions .g-btn{min-height:2.25rem;padding:0 .75rem;font-size:.8125rem}
+  .g-tv .g-actions .push{margin-left:auto}
+  .g-tv .g-seats .g-chip{min-height:2.125rem;padding:.125rem .625rem;font-size:.8125rem}
+  .g-status{margin-top:.75rem;font-size:.9375rem}
+}

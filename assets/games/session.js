@@ -1,4 +1,4 @@
-import { RoomHost } from './host.js?v=2';
+import { RoomHost } from './host.js?v=4';
 const PREFIX = 'inalatarun-rummy-';
 // No 0/O/1/I so a code read aloud or typed from a phone is unambiguous.
 const ALPHABET = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';

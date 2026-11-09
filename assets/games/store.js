@@ -1,5 +1,6 @@
-import { GuestSession, HostSession, LocalSession, normalizeCode } from './session.js?v=2';
-import { loadProfile, refund, settle } from './profile.js?v=2';
+import { GuestSession, HostSession, LocalSession, normalizeCode } from './session.js?v=4';
+import { loadProfile, refund, settle } from './profile.js?v=4';
+import { buildSubmission, cloudEnabled, submitGame } from './cloud.js?v=4';
 
 /**
  * The one live room for this browser tab. It lives outside any page, so moving to another page of the site and
@@ -37,6 +38,7 @@ export function activeSession() {
  * site: the entry bet is taken when a game is first seen, winnings are paid when it ends, and the bet is returned
  * if the host's room dies before a result.
  */
+const sending = new Set();
 function trackMoney(session) {
   let last = null;
   return session.subscribe(() => {
@@ -44,6 +46,11 @@ function trackMoney(session) {
     if (st.status === 'game') {
       last = st.view;
       settle(st.view);
+      // The host (online) or the player (against the computer) sends the finished game to the shared sheet, once.
+      if (st.view.phase === 'game-over' && session.isHost && cloudEnabled() && !sending.has(st.view.gameId)) {
+        sending.add(st.view.gameId);
+        void submitGame(buildSubmission(st.view, { isLocal: !!session.isLocal })).finally(() => sending.delete(st.view.gameId));
+      }
     } else if (st.status === 'closed' && st.kind === 'host' && last && last.phase !== 'game-over') {
       refund(last.gameId, last.rules.bet);
       last = null;

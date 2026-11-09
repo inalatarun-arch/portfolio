@@ -1,5 +1,5 @@
 import { describe, expect, it } from './harness.js';
-import { DEFAULT_RULES, sanitizeRules, shapeOf, shapeAllowed, buildShoe, cardPoints, classifyGroup, declare, discardCard, drawFromDiscard, drawFromStock, dropPlayer, evaluateHand, handCards, newGame, nextRound, arrangeHand, viewFor, } from '../assets/games/engine.js?v=2';
+import { DEFAULT_RULES, sanitizeRules, shapeOf, shapeAllowed, buildShoe, cardPoints, classifyGroup, declare, discardCard, drawFromDiscard, drawFromStock, dropPlayer, evaluateHand, handCards, newGame, nextRound, arrangeHand, viewFor, } from '../assets/games/engine.js?v=4';
 let nextId = 1000;
 const c = (rank, suit = 'S') => ({ id: nextId++, rank, suit });
 const joker = () => c(0, null);

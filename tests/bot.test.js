@@ -1,6 +1,6 @@
 import { describe, expect, it } from './harness.js';
-import { DEFAULT_RULES, buildShoe, newGame, viewFor, shuffle, secureRandom } from '../assets/games/engine.js?v=2';
-import { LEVELS, chooseAction, createMemory, observe, runBotTurn } from '../assets/games/bot.js?v=2';
+import { DEFAULT_RULES, buildShoe, newGame, viewFor, shuffle, secureRandom } from '../assets/games/engine.js?v=4';
+import { LEVELS, chooseAction, createMemory, observe, runBotTurn } from '../assets/games/bot.js?v=4';
 import { playRound } from './sim.js';
 import { readFileSync } from 'node:fs';
 

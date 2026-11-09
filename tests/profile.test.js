@@ -1,6 +1,6 @@
 import { describe, expect, it } from './harness.js';
-import { DEFAULT_RULES } from '../assets/games/engine.js?v=2';
-import { loadBoard, loadVsComputer, loadProfile, profileSnapshot, subscribeProfile, rankBoard, refund, settle, topUp, START_COINS, REFILL_TO } from '../assets/games/profile.js?v=2';
+import { DEFAULT_RULES } from '../assets/games/engine.js?v=4';
+import { loadBoard, loadVsComputer, loadProfile, profileSnapshot, subscribeProfile, rankBoard, refund, settle, topUp, START_COINS, REFILL_TO } from '../assets/games/profile.js?v=4';
 const mem = () => {
     const m = new Map();
     return { getItem: (k) => m.get(k) ?? null, setItem: (k, v) => { m.set(k, v); } };
