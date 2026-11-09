@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from './harness.js';
-import { RoomHost } from '../assets/games/host.js?v=1';
+import { RoomHost } from '../assets/games/host.js?v=2';
 function fake() {
     const got = [];
     let closed = false;
@@ -193,4 +193,64 @@ describe('absent players', () => {
         expect(room.takeLocalError()).toBeNull();
         expect(room.localMessage().view.turn).toBe('p3');
     });
+});
+
+describe('computer players in a room', () => {
+  const instant = { botDelay: () => 0 };
+
+  it('are seated, count as connected, and need no connection to start', () => {
+    const room = new RoomHost(30000, { ...instant, noBets: true });
+    room.addLocal('me', 'Me', { pid: 'me', coins: 1000 });
+    room.addBot('hard', 'Aarav');
+    room.addBot('hard', 'Diya');
+    const m = room.localMessage();
+    if (m.t !== 'lobby') throw new Error('no lobby');
+    expect(m.lobby.players.map((p) => p.bot)).toEqual([false, true, true]);
+    expect(m.lobby.players.every((p) => p.connected)).toBe(true);
+    room.act('me', { a: 'start' });
+    expect(room.takeLocalError()).toBeNull();
+    const v = room.localMessage();
+    expect(v.t).toBe('view');
+  });
+
+  it('a game against the computer cannot carry a bet', () => {
+    const room = new RoomHost(30000, { ...instant, noBets: true });
+    room.addLocal('me', 'Me', { pid: 'me', coins: 1000 });
+    room.addBot('easy', 'A'); room.addBot('easy', 'B');
+    room.act('me', { a: 'rules', rules: { bet: 500, rounds: 2 } });
+    const m = room.localMessage();
+    if (m.t !== 'lobby') throw new Error('no lobby');
+    expect(m.lobby.rules.bet).toBe(0);
+    expect(m.lobby.rules.rounds).toBe(2);
+  });
+
+  it('play on their own after the human moves, and never see the human hand', () => {
+    vi.useFakeTimers();
+    try {
+      const room = new RoomHost(30000, { ...instant, noBets: true });
+      room.addLocal('me', 'Me', { pid: 'me', coins: 1000 });
+      room.addBot('medium', 'A'); room.addBot('pro', 'B');
+      room.act('me', { a: 'start' });
+      let v = room.localMessage().view;
+      const openingTop = v.discardTop[v.discardTop.length - 1].id;
+      // play until it is the human's turn, then take a turn, and let the computers answer
+      const settle = () => { for (let i = 0; i < 40; i++) vi.advanceTimersByTime(1); };
+      settle();
+      v = room.localMessage().view;
+      for (let turn = 0; turn < 3 && v.phase === 'playing'; turn++) {
+        if (v.turn === v.you) {
+          room.act('me', v.step === 'draw' ? { a: 'draw' } : { a: 'discard', card: v.myGroups.flat()[0].id });
+          if (v.step === 'draw') room.act('me', { a: 'discard', card: room.localMessage().view.myGroups.flat()[0].id });
+        }
+        settle();
+        v = room.localMessage().view;
+      }
+      expect(v.players.filter((p) => p.bot)).toHaveLength(2);
+      expect(v.players.find((p) => p.id === v.you).bot).toBe(false);
+      // the computers (and I) have played: the card showing on the discard pile is no longer the opening one
+      expect(v.discardTop[v.discardTop.length - 1].id === openingTop).toBe(false);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
 });

@@ -1,4 +1,4 @@
-import { RoomHost } from './host.js?v=1';
+import { RoomHost } from './host.js?v=2';
 const PREFIX = 'inalatarun-rummy-';
 // No 0/O/1/I so a code read aloud or typed from a phone is unambiguous.
 const ALPHABET = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
@@ -107,6 +107,7 @@ export class HostSession extends Base {
             const attempt = (left) => {
                 const code = makeCode();
                 const session = new HostSession(code, name, profile);
+                if (!window.Peer) { reject(new Error('Online play could not load. Check your connection and refresh. You can still play against the computer.')); return; }
                 const peer = new window.Peer(PREFIX + code, peerOptions());
                 const timeout = setTimeout(() => {
                     peer.destroy();
@@ -200,6 +201,7 @@ export class GuestSession extends Base {
     static join(code, name, profile) {
         const session = new GuestSession(code, name, profile);
         return new Promise((resolve, reject) => {
+            if (!window.Peer) { reject(new Error('Online play could not load. Check your connection and refresh. You can still play against the computer.')); return; }
             const peer = new window.Peer(peerOptions());
             session.peer = peer;
             const fail = (message) => {
@@ -234,5 +236,35 @@ export class GuestSession extends Base {
         this.conn?.close();
         this.peer?.destroy();
         this.set({ status: 'closed', message: 'You left the room.', kind: 'self' });
+    }
+}
+
+/** A game against computer players: the same room code and rules as an online game, with no network at all. */
+export class LocalSession extends Base {
+    isHost = true;
+    isLocal = true;
+    room;
+    key;
+    constructor(name, profile, level, opponents) {
+        super('LOCAL');
+        this.key = 'local-' + (globalThis.crypto?.randomUUID?.() ?? Math.random().toString(36).slice(2));
+        // content.json may set "games": { "botDelayMs": 900 } to change how long the computers pause before each move.
+        const pause = typeof settings.botDelayMs === 'number' ? () => settings.botDelayMs : undefined;
+        this.room = new RoomHost(30_000, { noBets: true, botDelay: pause });
+        this.room.addLocal(this.key, name, profile);
+        const names = ['Aarav', 'Diya', 'Kabir', 'Meera', 'Rohan'];
+        for (let i = 0; i < opponents; i++) this.room.addBot(level, names[i % names.length]);
+        this.room.subscribeLocal(() => this.refresh());
+        this.refresh();
+    }
+    refresh() {
+        const err = this.room.takeLocalError();
+        if (err) this.error = err;
+        this.apply(this.room.localMessage());
+    }
+    act(action) { this.room.act(this.key, action); }
+    leave() {
+        this.room.shutdown();
+        this.set({ status: 'closed', message: 'You left the game.', kind: 'self' });
     }
 }
