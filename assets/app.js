@@ -292,15 +292,18 @@ function pageWritings(){
     '<div data-r><p class="hero-sub">Poems, thoughts and journal pages, written over the years in English, Telugu and Hindi.</p><p class="hero-cue">'+ic('arrow-d')+'Scroll, then open a diary to read.</p></div></div></div></section>';
 }
 
-/* Games: #/games is the hub, #/games/rummy the table; an invite link adds ?room=CODE. The game itself is
+/* Games: #/games is the hub, #/games/rummy the table, #/games/jelly the puzzle; an invite link adds ?room=CODE. The game itself is
    mounted by assets/games.js (see enhance) so none of it loads on other pages. */
-function gamesRoute(){var p=location.hash.replace(/^#\/?/,'').split('?'),seg=p[0].split('/');return {sub:seg[1]==='rummy'?'rummy':'hub',params:new URLSearchParams(p[1]||'')}}
+function gamesRoute(){var p=location.hash.replace(/^#\/?/,'').split('?'),seg=p[0].split('/');return {sub:seg[1]==='rummy'||seg[1]==='jelly'?seg[1]:'hub',params:new URLSearchParams(p[1]||'')}}
 function pageGames(){
-  var g=gamesRoute(),rummy=g.sub==='rummy';
-  return '<section class="wrap games"><div class="games-hero'+(rummy?' is-compact':'')+'">'+
-    (rummy?'<a class="games-back" href="#/games">'+ic('arrow-l')+'All games</a>':'')+
-    '<h1 data-hl>'+headline(rummy?'Indian <em>Rummy</em>':'Play <em>cards</em>.')+'</h1>'+
-    '<p class="lede" data-r>'+(rummy?'13-card Points Rummy for 3 to 6 players, with friends online or against the computer. Make two sequences, one of them pure, and group the rest.':'Pull up a chair. Open a room, share the code, and play with friends in your browser. No sign-up.')+'</p></div>'+
+  var g=gamesRoute(),sub=g.sub,inGame=sub!=='hub';
+  var T={hub:['Play <em>games</em>.','Pull up a chair. Cards with friends in your browser, or a puzzle on your own. No sign-up.'],
+    rummy:['Indian <em>Rummy</em>','13-card Points Rummy for 3 to 6 players, with friends online or against the computer. Make two sequences, one of them pure, and group the rest.'],
+    jelly:['Sticky <em>Jelly</em>','Slide the orange jelly. Whatever it touches sticks for good. Cover every ring, in as few moves as you can.']}[sub];
+  return '<section class="wrap games"><div class="games-hero'+(inGame?' is-compact':'')+'">'+
+    (inGame?'<a class="games-back" href="#/games">'+ic('arrow-l')+'All games</a>':'')+
+    '<h1 data-hl>'+headline(T[0])+'</h1>'+
+    '<p class="lede" data-r>'+T[1]+'</p></div>'+
     '<div class="games-root" id="gamesRoot"></div></section>';
 }
 

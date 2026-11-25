@@ -710,10 +710,15 @@ export function mount(root, opts = {}) {
         h('span', { class: 'g-tag' }, '1 to 6 players · online or vs computer'),
         h('h2', {}, 'Indian Rummy'),
         h('p', {}, '13-card Points Rummy. Play friends online, or on your own against four levels of computer player. Open or closed joker, custom hand shapes, and coins to bet.')),
+      h('a', { class: 'g-game', href: '#/games/jelly' },
+        h('div', { class: 'j-art', 'aria-hidden': 'true' }, h('i', { class: 'a' }), h('i', { class: 'b' }), h('i', { class: 'c' })),
+        h('span', { class: 'g-tag' }, '1 player · 12 puzzles'),
+        h('h2', {}, 'Sticky Jelly'),
+        h('p', {}, 'Slide the orange jelly and whatever it touches sticks for good. Glue sleepy jellies together, push the slick ones, and cover every ring.')),
       h('div', { class: 'g-game is-soon', 'aria-disabled': 'true' },
         h('span', { class: 'g-tag' }, 'Coming soon'),
         h('h2', {}, 'More games'),
-        h('p', {}, 'More popular card and board games are on the way, all playable with friends in the browser.')));
+        h('p', {}, 'More card, board and puzzle games are on the way.')));
   }
 
   // ---- the app bar ----

@@ -385,3 +385,71 @@ html:has(body.g-full){overflow:hidden;scrollbar-gutter:auto}
   .g-tv .g-seats .g-chip{min-height:2.125rem;padding:.125rem .625rem;font-size:.8125rem}
   .g-status{margin-top:.75rem;font-size:.9375rem}
 }
+
+/* ---------- Sticky Jelly (#/games/jelly) ----------
+   Canvas game. The board itself reads the site theme in JS (jelly.js); everything around it uses the tokens above.
+   Jellies are the three site colours: burnt orange (you), ivory (asleep until touched), soft black (slick). */
+.j-app{max-width:44rem}
+.j-play[hidden],.j-levels[hidden],.j-win[hidden]{display:none}
+.j-chips{display:flex;flex-wrap:wrap;gap:.5rem}
+@media (max-width:30rem){.j-chips{gap:.375rem}.j-chips .g-chip{gap:.375rem;padding:.25rem .625rem;font-size:.8125rem}.j-of{display:none}}
+.j-caption{margin:.875rem 0 .75rem;color:var(--muted);font-size:.9375rem;line-height:1.5;min-height:3em}
+.j-caption b{margin-right:.375rem;color:var(--fg);font-family:var(--serif);font-size:1.0625rem;font-weight:650;letter-spacing:-.01em}
+.j-stage{display:flex;justify-content:center;align-items:center;min-height:12rem;border-radius:var(--r-lg);border:.0625rem solid var(--line);background:var(--surface);overflow:hidden}
+.j-canvas{display:block;max-width:none;touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;cursor:grab}
+.j-canvas:active{cursor:grabbing}
+.j-canvas:focus-visible{outline:.1875rem solid var(--fg);outline-offset:-.1875rem;border-radius:var(--r-md)}
+.j-note{min-height:1.75rem;margin-top:.625rem;color:var(--fg);font-size:.875rem;font-weight:600;text-align:center}
+.j-tools{display:flex;flex-wrap:wrap;justify-content:center;gap:.5rem;margin-top:.5rem}
+.j-win{margin-top:.5rem;padding:1.25rem 1.5rem 1.5rem;border-radius:var(--r-lg);border:.09375rem solid var(--fg);background:var(--bg);animation:j-rise .45s cubic-bezier(.16,1,.3,1)}
+.j-win h3{margin-top:.25rem;font-size:clamp(1.75rem,5vw,2.25rem);letter-spacing:-.03em}
+.j-win-meta{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem 1rem;margin-top:.75rem;font-size:.9375rem;font-variant-numeric:tabular-nums}
+.j-win-sub{margin-top:.5rem;color:var(--muted);font-size:.9375rem}
+.j-win-row{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1rem}
+.j-pips{display:inline-flex;gap:.3125rem;align-items:center}
+.j-pips i{display:block;width:.8125rem;height:.8125rem;border-radius:50%;border:.125rem solid var(--fg)}
+.j-pips i.on{background:var(--accent)}
+.j-pad{display:none;grid-template-columns:repeat(3,3.5rem);grid-template-areas:". up ." "left down right";gap:.5rem;justify-content:center;margin-top:1rem}
+@media (pointer:coarse){.j-pad{display:grid}}
+.j-pb{display:grid;place-items:center;width:3.5rem;height:3.5rem;border-radius:50%;border:.09375rem solid var(--line-2);background:var(--surface);font-size:1.5rem;line-height:1;transition:background-color .15s,transform .15s}
+.j-pb:active{background:var(--surface-2);transform:scale(.94)}
+.j-pb-up{grid-area:up}.j-pb-left{grid-area:left}.j-pb-down{grid-area:down}.j-pb-right{grid-area:right}
+@media (max-width:48rem){body.g-jelly .rv-pill{opacity:0;visibility:hidden;pointer-events:none}}
+
+.j-lv-head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.75rem}
+.j-lv-head h2{font-size:1.75rem;letter-spacing:-.025em}
+.j-lv-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(8.5rem,1fr));gap:.75rem;margin-top:1rem}
+.j-lv{display:flex;flex-direction:column;align-items:flex-start;gap:.375rem;min-height:6.5rem;padding:.875rem 1rem;border-radius:var(--r-md);border:.09375rem solid var(--line-2);background:var(--surface);text-align:left;transition:border-color .2s,transform .2s}
+.j-lv:hover{border-color:var(--fg);transform:translateY(-.125rem)}
+.j-lv .n{font-family:var(--serif);font-size:1.875rem;font-weight:650;line-height:1;letter-spacing:-.03em}
+.j-lv .nm{flex:1;color:var(--muted);font-size:.8125rem;line-height:1.35}
+.j-lv.is-done .n::after{content:"";display:inline-block;width:.5rem;height:.5rem;margin-left:.5rem;border-radius:50%;background:var(--accent);vertical-align:.25em}
+.j-lv.is-now{border-color:var(--fg);box-shadow:inset 0 0 0 .09375rem var(--fg)}
+.j-lv-foot{margin-top:1.25rem}
+
+.j-help{margin-top:clamp(1.5rem,4vh,2.5rem);padding-top:1.25rem;border-top:.0625rem solid var(--line)}
+.j-legend{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.875rem 1.5rem;color:var(--muted);font-size:.9375rem;line-height:1.45}
+@media (max-width:40rem){.j-legend{grid-template-columns:1fr}}
+.j-legend li{display:flex;gap:.75rem;align-items:flex-start}
+.j-legend b{color:var(--fg)}
+.j-sw{flex:none;width:1.5rem;height:1.5rem;margin-top:.0625rem;border-radius:.5rem;border:.125rem solid var(--black)}
+.j-sw.is-orange{background:var(--orange)}
+.j-sw.is-ivory{background:color-mix(in srgb,var(--ivory) 45%,#fff)}
+.j-sw.is-ink{background:var(--black);border-color:var(--fg)}
+.j-sw.is-ring{border-radius:50%;border:.125rem dashed var(--fg);background:radial-gradient(circle,var(--orange) 0 .1875rem,transparent .25rem)}
+@keyframes j-rise{from{opacity:0;transform:translateY(.75rem)}to{opacity:1;transform:none}}
+
+/* hub card art: two jellies stuck together and one slick one, in plain CSS */
+.g-game .j-art{display:flex;align-items:flex-end;gap:.25rem;height:5.5rem;margin-bottom:.5rem}
+.j-art i{position:relative;display:block;width:3.5rem;height:3.5rem;border:.125rem solid var(--black);transform-origin:50% 100%}
+.j-art .a{background:var(--orange);border-radius:1rem 0 0 1rem;margin-right:-.375rem}
+.j-art .b{background:color-mix(in srgb,var(--ivory) 45%,#fff);border-radius:0 1rem 1rem 0;margin-right:.875rem}
+.j-art .c{width:2.75rem;height:2.75rem;background:var(--black);border-color:var(--fg);border-radius:.875rem}
+.j-art .a::before{content:"";position:absolute;left:.75rem;top:1.0625rem;width:.5rem;height:.5rem;border-radius:50%;background:var(--black);box-shadow:1.125rem 0 0 var(--black)}
+.j-art .b::before{content:"";position:absolute;left:.875rem;top:1.25rem;width:.5rem;height:.25rem;border-bottom:.1875rem solid var(--black);border-radius:0 0 .5rem .5rem;box-shadow:1rem 0 0 -.0625rem var(--black)}
+@media (prefers-reduced-motion:no-preference){
+  .j-art i{animation:j-wob 2.8s ease-in-out infinite}
+  .j-art .b{animation-delay:.12s}.j-art .c{animation-delay:.5s}
+  a.g-game:hover .j-art i{animation-duration:.9s}
+}
+@keyframes j-wob{0%,100%{transform:scale(1,1)}50%{transform:scale(1.05,.94)}}
