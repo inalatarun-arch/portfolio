@@ -33,6 +33,8 @@ function build(actual, negate) {
     toBeUndefined: () => check(actual === undefined, `${show(actual)} to be undefined`),
     toBeGreaterThan: (n) => check(actual > n, `${show(actual)} > ${n}`),
     toBeLessThanOrEqual: (n) => check(actual <= n, `${show(actual)} <= ${n}`),
+    toBeGreaterThanOrEqual: (n) => check(actual >= n, `${show(actual)} >= ${n}`),
+    toBeLessThan: (n) => check(actual < n, `${show(actual)} < ${n}`),
     toHaveLength: (n) => check(actual != null && actual.length === n, `length ${actual && actual.length} to be ${n}`),
     toMatch: (re) => check(re.test(actual), `${show(actual)} to match ${re}`),
     toContain: (x) => check(actual != null && actual.includes(x), `${show(actual).slice(0, 200)} to contain ${show(x)}`),

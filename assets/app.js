@@ -240,7 +240,7 @@ function pageWelcome(){
     '<a class="pdoor pdoor-work" href="#/work" data-door="office"><span class="pdoor-in"><span class="pdoor-k"><span>Work</span><span class="door-arrow">'+ic('arrow-ur')+'</span></span>'+
       '<span class="pdoor-s">Case studies in Generative AI, payments platforms and ERP delivery.</span></span></a>'+
     '<a class="pdoor pdoor-pers" href="#/writings" data-door="park"><span class="pdoor-in"><span class="pdoor-k"><span>Personal</span><span class="door-arrow">'+ic('arrow-ur')+'</span></span>'+
-      '<span class="pdoor-s">Poems and journal pages in English, Telugu and Hindi, street photographs and an audiophile’s love of good sound.</span></span></a>'+
+      '<span class="pdoor-s">Poems and journal pages in English, Telugu and Hindi, street photographs, an audiophile’s love of good sound and a few games to play.</span></span></a>'+
   '</section>';
 }
 
@@ -287,9 +287,13 @@ function wCards(){
     return '<button type="button" class="wcard" data-feel data-w="'+esc(w.id)+'" lang="'+lg+'"><h3>'+esc(w.title)+'</h3><p class="ex">'+esc(ex)+'</p>'+
       '<div class="wmeta" lang="en"><span>'+kindLabel(w.kind)+' · '+esc(w.lang)+'</span>'+ic('arrow-r')+'</div></button>'}).join('')+'</div>';
 }
+/* a line on the Personal screens telling visitors there are games here */
+function gamesNudge(){
+  return '<a class="hero-games" href="#/games"><span class="hero-games-k">Play</span><span class="hero-games-t">There are games here too: cards with friends, and a jelly puzzle with 50+ levels.</span>'+ic('arrow-ur')+'</a>';
+}
 function pageWritings(){
   return '<section class="seq pseq" id="pseq"><div class="seq-scrim" aria-hidden="true"></div><div class="hero hero-scene hero-short"><div class="wrap hero-in"><h1 data-hl>'+headline('Writings')+'</h1>'+
-    '<div data-r><p class="hero-sub">Poems, thoughts and journal pages, written over the years in English, Telugu and Hindi.</p><p class="hero-cue">'+ic('arrow-d')+'Scroll, then open a diary to read.</p></div></div></div></section>';
+    '<div data-r><p class="hero-sub">Poems, thoughts and journal pages, written over the years in English, Telugu and Hindi.</p><p class="hero-cue">'+ic('arrow-d')+'Scroll, then open a diary to read.</p>'+gamesNudge()+'</div></div></div></section>';
 }
 
 /* Games: #/games is the hub, #/games/rummy the table, #/games/jelly the puzzle; an invite link adds ?room=CODE. The game itself is
@@ -311,7 +315,7 @@ function realPhotos(){return (SITE.photos||[]).filter(function(p){return !p.plac
 function photoSrc(p){var file=p.src||p.img||p.file;return /^(https?:)?\/\//.test(file)||file.indexOf('/')>=0?file:'images/'+file}
 function pagePhotos(){
   return '<section class="seq pseq" id="pseq"><div class="seq-scrim" aria-hidden="true"></div><div class="hero hero-scene hero-short"><div class="wrap hero-in"><h1 data-hl>'+headline('Photographs')+'</h1>'+
-    '<div data-r><p class="hero-sub">Streets, buildings and light, as I find them. Grouped by the colour that carries each frame.</p><p class="hero-cue">'+ic('arrow-d')+'Scroll, then pick up a camera to view photographs full screen.</p></div></div></div></section>';
+    '<div data-r><p class="hero-sub">Streets, buildings and light, as I find them. Grouped by the colour that carries each frame.</p><p class="hero-cue">'+ic('arrow-d')+'Scroll, then pick up a camera to view photographs full screen.</p>'+gamesNudge()+'</div></div></div></section>';
 }
 
 /* =====================================================================

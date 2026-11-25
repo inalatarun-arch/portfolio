@@ -8,7 +8,8 @@
  * Reduced motion: no overshoot, no wobble, no idle breathing, no confetti, and the loop stops when everything is still.
  */
 import { DIRS, KIND, bodies, bonds, covered, driven, isWon, parseLevel, solve, stars, step } from './jelly-engine.js?v=1';
-import { LEVELS } from './jelly-levels.js?v=1';
+import { LEVELS } from './jelly-levels.js?v=2';
+import { randomLevel } from './jelly-random.js?v=2';
 
 const SAVE_KEY = 'inala-jelly-v1';
 const IVORY = [230, 213, 189];
@@ -75,8 +76,9 @@ function rrPath(ctx, x, y, w, hh, tl, tr, br, bl) {
 function loadSave() {
   try {
     const s = JSON.parse(localStorage.getItem(SAVE_KEY) || '{}');
-    return { best: s && typeof s.best === 'object' && s.best ? s.best : {} };
-  } catch (e) { return { best: {} }; }
+    const seed = Number.isInteger(s && s.seed) ? s.seed : (Math.random() * 4294967296) >>> 0;
+    return { best: s && typeof s.best === 'object' && s.best ? s.best : {}, seed };
+  } catch (e) { return { best: {}, seed: (Math.random() * 4294967296) >>> 0 }; }
 }
 function persist(save) {
   try { localStorage.setItem(SAVE_KEY, JSON.stringify(save)); } catch (e) { /* private mode: progress lasts this visit only */ }
@@ -89,6 +91,7 @@ const pips = (n, total = 3) => Array.from({ length: total }, (_, i) => h('i', { 
 export function mount(root, opts = {}) {
   const save = loadSave();
   const params = opts.params || new URLSearchParams();
+  persist(save); // keeps this visitor's seed, so their shuffled levels are the same boards next time
   const reduced = reducedMotion();
   let dead = false;
 
@@ -100,7 +103,9 @@ export function mount(root, opts = {}) {
   let history = [];
   let moves = 0;
   let won = false;
-  let hint = null; // { dir, until }
+  let hint = null; // { dir, path } shown until the next move
+  let full = false; // false | 'native' | 'overlay'
+  let thinking = false;
   let flags = []; // per jelly: [left, right, up, down] bonded
   let anim = [];
   let particles = [];
@@ -115,33 +120,48 @@ export function mount(root, opts = {}) {
   let winTimer = 0;
   let noticeTimer = 0;
 
-  const first = LEVELS.findIndex((_, i) => save.best[i] === undefined);
-  li = first < 0 ? LEVELS.length - 1 : first;
+  // Levels 1..LEVELS.length are hand-ordered; after that each is picked at random from a checked pool (jelly-random.js),
+  // seeded per visitor so a level stays the same board when you come back. The list always has room to keep going.
+  const MIN_TOTAL = 60;
+  const made = new Map();
+  const levelData = (i) => {
+    if (i < LEVELS.length) return LEVELS[i];
+    if (!made.has(i)) made.set(i, randomLevel(i - LEVELS.length, save.seed));
+    return made.get(i);
+  };
+  const furthest = () => Object.keys(save.best).reduce((m, k) => Math.max(m, Number(k)), -1);
+  const total = () => Math.max(MIN_TOTAL, furthest() + 7);
+  let first = 0;
+  while (save.best[first] !== undefined) first++;
+  li = first;
   const fromUrl = parseInt(params.get('level') || '', 10);
-  if (fromUrl >= 1 && fromUrl <= LEVELS.length) li = fromUrl - 1;
+  if (fromUrl >= 1 && fromUrl <= 999) li = fromUrl - 1;
 
   // ---- DOM ----
   const live = h('p', { class: 'sr', role: 'status', 'aria-live': 'polite' });
   const canvas = h('canvas', { class: 'j-canvas', tabindex: '0', role: 'img', 'aria-label': 'Sticky Jelly board' });
   const ctx = canvas.getContext('2d');
   const stage = h('div', { class: 'j-stage' }, canvas);
+  const chipOf = h('small', { class: 'j-of' });
   const chipLevel = h('b'); const chipMoves = h('b'); const chipPar = h('small'); const chipRings = h('b');
   const chips = h('div', { class: 'j-chips' },
-    h('span', { class: 'g-chip' }, h('small', {}, 'Level'), chipLevel, h('small', { class: 'j-of' }, `of ${LEVELS.length}`)),
+    h('span', { class: 'g-chip' }, h('small', {}, 'Level'), chipLevel, chipOf),
     h('span', { class: 'g-chip' }, h('small', {}, 'Moves'), chipMoves, chipPar),
     h('span', { class: 'g-chip' }, h('small', {}, 'Rings'), chipRings));
   const caption = h('p', { class: 'j-caption' });
   const btn = (label, fn, cls = 'btn-ghost', extra = {}) => h('button', { class: `btn ${cls} g-btn`, type: 'button', onclick: fn, ...extra }, label);
   const undoBtn = btn('Undo', () => undo(), 'btn-ghost', { 'aria-keyshortcuts': 'Z' });
   const restartBtn = btn('Restart', () => restart(), 'btn-ghost', { 'aria-keyshortcuts': 'R' });
-  const hintBtn = btn('Hint', () => showHint(), 'btn-ghost', { 'aria-keyshortcuts': 'H' });
+  const hintBtn = btn('Hint', () => showHint(), 'btn-ghost', { 'aria-keyshortcuts': 'H', title: 'Show the next move (press again for the whole route)' });
+  const fullBtn = btn('Full screen', () => toggleFull(), 'btn-ghost', { 'aria-keyshortcuts': 'F', 'aria-pressed': 'false' });
   const levelsBtn = btn('Levels', () => openLevels(), 'btn-ghost');
-  const tools = h('div', { class: 'j-tools' }, undoBtn, restartBtn, hintBtn, levelsBtn);
+  const tools = h('div', { class: 'j-tools' }, undoBtn, restartBtn, hintBtn, levelsBtn, fullBtn);
   const padBtn = (dir, label, glyph) => h('button', { class: `j-pb j-pb-${dir}`, type: 'button', 'aria-label': label, onclick: () => move(dir) }, glyph);
   const pad = h('div', { class: 'j-pad' }, padBtn('up', 'Slide up', '↑'), padBtn('left', 'Slide left', '←'), padBtn('down', 'Slide down', '↓'), padBtn('right', 'Slide right', '→'));
   const note = h('p', { class: 'j-note', role: 'status' });
+  const route = h('p', { class: 'j-route', 'aria-hidden': 'true', hidden: true });
   const winCard = h('div', { class: 'j-win', role: 'dialog', 'aria-label': 'Level cleared', hidden: true });
-  const playView = h('div', { class: 'j-play' }, chips, caption, stage, note, winCard, pad, tools);
+  const playView = h('div', { class: 'j-play' }, chips, caption, stage, note, route, winCard, pad, tools);
   const levelsView = h('div', { class: 'j-levels', hidden: true });
   const legend = h('ul', { class: 'j-legend' },
     h('li', {}, h('span', { class: 'j-sw is-orange', 'aria-hidden': 'true' }), h('span', {}, h('b', {}, 'You. '), 'Every orange jelly slides each time you move.')),
@@ -150,20 +170,20 @@ export function mount(root, opts = {}) {
     h('li', {}, h('span', { class: 'j-sw is-ring', 'aria-hidden': 'true' }), h('span', {}, h('b', {}, 'Rings. '), 'Cover every one with any jelly.')));
   const help = h('div', { class: 'j-help' },
     legend,
-    h('p', { class: 'g-hint' }, 'Click the board, then use the arrow keys or WASD. Z undoes, R restarts, H gives a hint. On a phone, swipe on the board.'));
+    h('p', { class: 'g-hint' }, 'Arrow keys or WASD slide the jelly. Z undoes, R restarts, H gives a hint (press it twice for the whole route), F goes full screen. On a phone, swipe on the board.'));
   const app = h('div', { class: 'j-app' }, live, playView, levelsView, help);
   root.replaceChildren(app);
   document.body.classList.add('g-jelly'); // on small screens the floating review button would sit on the controls
 
   // ---- level loading ----
   function load(i, { silent = false } = {}) {
-    li = clamp(i, 0, LEVELS.length - 1);
-    lv = parseLevel(LEVELS[li].rows);
+    li = Math.max(0, i);
+    lv = parseLevel(levelData(li).rows);
     pos = lv.start;
     history = [];
     moves = 0;
     won = false;
-    hint = null;
+    clearHint();
     particles = [];
     clearTimeout(winTimer);
     winCard.hidden = true;
@@ -176,7 +196,7 @@ export function mount(root, opts = {}) {
     }));
     fit();
     paintHud();
-    if (!silent) say(`Level ${li + 1}: ${LEVELS[li].name}. ${LEVELS[li].tip}`);
+    if (!silent) say(`Level ${li + 1}: ${levelData(li).name}. ${levelData(li).tip}`);
     kick();
   }
   function recompute() {
@@ -210,7 +230,7 @@ export function mount(root, opts = {}) {
     history.push(pos);
     pos = r.pos;
     moves++;
-    hint = null;
+    clearHint();
     recompute();
     r.moved.forEach((i) => {
       const a = anim[i];
@@ -240,7 +260,7 @@ export function mount(root, opts = {}) {
     pos = history.pop();
     moves--;
     if (won) { won = false; winCard.hidden = true; clearTimeout(winTimer); particles = []; }
-    hint = null;
+    clearHint();
     recompute();
     anim.forEach((a) => { if (!reduced) { a.wvx += 1.2; a.wvy += 1.2; } });
     paintHud();
@@ -253,21 +273,84 @@ export function mount(root, opts = {}) {
     say(`Level ${li + 1} restarted.`);
     focusBoard();
   }
+  const ARROW = { up: '↑', down: '↓', left: '←', right: '→' };
+  function clearHint() {
+    hint = null;
+    thinking = false;
+    if (route && !route.hidden) { route.hidden = true; route.textContent = ''; if (full && lv) fit(); }
+  }
   function showHint() {
-    if (dead || view !== 'play' || won) return;
-    const r = solve(lv, pos, 150000);
-    if (!r.solved || !r.moves.length) {
-      tell('This one cannot be finished from here. Undo a few moves, or restart.', 4200);
-      say('This level cannot be finished from here. Undo or restart.');
+    if (dead || view !== 'play' || won || thinking) return;
+    if (hint) {
+      // second press: spell out the whole route
+      route.hidden = false;
+      route.textContent = hint.path.map((d) => ARROW[d]).join(' ');
+      if (full) fit();
+      tell(`The whole route: ${hint.path.length} ${hint.path.length === 1 ? 'move' : 'moves'}.`, 5000);
+      say(`Route: ${hint.path.join(', ')}.`);
       return;
     }
-    hint = { dir: r.moves[0], until: clock + 3.2 };
-    tell(`Hint: slide ${r.moves[0]}. ${r.moves.length} ${r.moves.length === 1 ? 'move' : 'moves'} to go at best.`, 3200);
-    kick();
+    thinking = true;
+    hintBtn.disabled = true;
+    tell('Thinking…', 4000);
+    const at = pos;
+    setTimeout(() => {
+      thinking = false;
+      if (dead) return;
+      hintBtn.disabled = won;
+      if (at !== pos || won || view !== 'play') return; // they moved while it was thinking
+      const r = solve(lv, pos, 150000);
+      if (!r.solved || !r.moves.length) {
+        tell('This one cannot be finished from here. Undo a few moves, or restart.', 4200);
+        say('This level cannot be finished from here. Undo or restart.');
+        return;
+      }
+      hint = { dir: r.moves[0], path: r.moves };
+      tell(`Hint: slide ${r.moves[0]}. ${r.moves.length} ${r.moves.length === 1 ? 'move' : 'moves'} to go at best. Press Hint again for the whole route.`, 6000);
+      say(`Hint: slide ${r.moves[0]}.`);
+      kick();
+    }, 30);
+  }
+
+  // ---- full screen ----
+  // The Fullscreen API where it exists (not on iPhone Safari); otherwise the game covers the page by itself.
+  function setFull(mode) {
+    full = mode;
+    app.classList.toggle('is-full', !!mode);
+    document.documentElement.classList.toggle('j-fs', mode === 'overlay');
+    fullBtn.textContent = mode ? 'Exit full screen' : 'Full screen';
+    fullBtn.setAttribute('aria-pressed', mode ? 'true' : 'false');
+    say(mode ? 'Full screen.' : 'Left full screen.');
+    fit();
+    if (mode) { window.scrollTo(0, 0); app.scrollTop = 0; }
+    focusBoard();
+  }
+  function toggleFull() {
+    if (dead) return;
+    if (full) { exitFull(); return; }
+    const req = app.requestFullscreen || app.webkitRequestFullscreen;
+    if (req) {
+      try {
+        const p = req.call(app);
+        if (p && p.catch) p.catch(() => setFull('overlay'));
+        return;
+      } catch (e) { /* fall through to the overlay */ }
+    }
+    setFull('overlay');
+  }
+  function exitFull() {
+    if (full === 'native') {
+      try { (document.exitFullscreen || document.webkitExitFullscreen).call(document); } catch (e) { setFull(false); }
+    } else if (full) setFull(false);
+  }
+  function onFullChange() {
+    const el = document.fullscreenElement || document.webkitFullscreenElement;
+    if (el === app && full !== 'native') setFull('native');
+    else if (el !== app && full === 'native') setFull(false);
   }
   function finish() {
     won = true;
-    const par = LEVELS[li].par;
+    const par = levelData(li).par;
     const s = stars(moves, par);
     const prev = save.best[li];
     const improved = prev !== undefined && moves < prev;
@@ -289,19 +372,17 @@ export function mount(root, opts = {}) {
   }
   function showWin(s, improved, par) {
     if (dead || !won) return;
-    const lastLevel = li === LEVELS.length - 1;
-    const allDone = LEVELS.every((_, i) => save.best[i] !== undefined);
+    const shuffleNext = li === LEVELS.length - 1;
     winCard.replaceChildren(...[
-      h('p', { class: 'g-eyebrow' }, lastLevel ? 'Last level' : `Level ${li + 1} cleared`),
+      h('p', { class: 'g-eyebrow' }, `Level ${li + 1} cleared`),
       h('h3', {}, s === 3 ? 'Perfectly sticky.' : s === 2 ? 'Nicely stuck.' : 'Stuck it out.'),
       h('p', { class: 'j-win-meta' }, h('span', { class: 'j-pips', role: 'img', 'aria-label': `${s} of 3` }, pips(s)),
         h('span', {}, `${moves} ${moves === 1 ? 'move' : 'moves'}`), h('span', {}, `par ${par}`), improved ? h('span', {}, 'new best') : null),
-      allDone && lastLevel ? h('p', { class: 'j-win-sub' }, 'That is every level. More are on the way.') : null,
+      shuffleNext ? h('p', { class: 'j-win-sub' }, 'That is the last of the hand-ordered levels. From here every board is shuffled just for you, and they keep coming.') : null,
       h('div', { class: 'j-win-row' },
-        lastLevel ? btn('All levels', () => openLevels(), 'btn-primary', { 'data-j-main': '' })
-          : btn('Next level', () => { load(li + 1); focusBoard(); }, 'btn-primary', { 'data-j-main': '' }),
+        btn('Next level', () => { load(li + 1); focusBoard(); }, 'btn-primary', { 'data-j-main': '' }),
         btn(moves > par ? 'Beat par' : 'Replay', () => { load(li, { silent: true }); focusBoard(); }, 'btn-ghost'),
-        lastLevel ? null : btn('Levels', () => openLevels(), 'btn-ghost')),
+        btn('Levels', () => openLevels(), 'btn-ghost')),
     ].filter(Boolean));
     winCard.hidden = false;
     const main = winCard.querySelector('[data-j-main]');
@@ -324,18 +405,19 @@ export function mount(root, opts = {}) {
     lastRings = c;
   }
   function paintHud() {
-    const par = LEVELS[li].par;
+    const par = levelData(li).par;
     const c = covered(lv, pos).length;
     chipLevel.textContent = String(li + 1);
+    chipOf.textContent = `of ${total()}`;
     chipMoves.textContent = String(moves);
     chipPar.textContent = `par ${par}`;
     chipRings.textContent = `${c}/${lv.goals.length}`;
-    caption.replaceChildren(h('b', {}, LEVELS[li].name), ` ${LEVELS[li].tip}`);
+    caption.replaceChildren(h('b', {}, levelData(li).name), ` ${levelData(li).tip}`);
     undoBtn.disabled = !history.length;
     restartBtn.disabled = !history.length && !won;
-    hintBtn.disabled = won;
+    hintBtn.disabled = won || thinking;
     lastRings = c;
-    canvas.setAttribute('aria-label', `Sticky Jelly board. Level ${li + 1}, ${LEVELS[li].name}. ${moves} ${moves === 1 ? 'move' : 'moves'}. ${c} of ${lv.goals.length} rings covered. Use the arrow keys to slide the orange jelly.`);
+    canvas.setAttribute('aria-label', `Sticky Jelly board. Level ${li + 1}, ${levelData(li).name}. ${moves} ${moves === 1 ? 'move' : 'moves'}. ${c} of ${lv.goals.length} rings covered. Use the arrow keys to slide the orange jelly.`);
   }
   function focusBoard() {
     try { canvas.focus({ preventScroll: true }); } catch (e) { /* ignore */ }
@@ -354,11 +436,12 @@ export function mount(root, opts = {}) {
     levelsView.replaceChildren(
       h('div', { class: 'j-lv-head' },
         h('h2', {}, 'Levels'),
-        h('span', { class: 'g-chip' }, h('b', {}, String(Object.keys(save.best).length)), h('small', {}, `of ${LEVELS.length} cleared`))),
-      h('div', { class: 'j-lv-grid' }, LEVELS.map((L, i) => {
+        h('span', { class: 'g-chip' }, h('b', {}, String(Object.keys(save.best).length)), h('small', {}, `of ${total()} cleared`))),
+      h('div', { class: 'j-lv-grid' }, Array.from({ length: total() }, (_, i) => {
+        const L = levelData(i);
         const b = save.best[i];
         const s = b === undefined ? 0 : stars(b, L.par);
-        return h('button', { class: `j-lv${i === li ? ' is-now' : ''}${b === undefined ? '' : ' is-done'}`, type: 'button', 'data-j-lv': String(i), onclick: () => { view = 'play'; levelsView.hidden = true; playView.hidden = false; load(i); focusBoard(); } },
+        return h('button', { class: `j-lv${L.random ? ' is-random' : ''}${i === li ? ' is-now' : ''}${b === undefined ? '' : ' is-done'}`, type: 'button', 'data-j-lv': String(i), onclick: () => { view = 'play'; levelsView.hidden = true; playView.hidden = false; load(i); focusBoard(); } },
           h('span', { class: 'n' }, String(i + 1)),
           h('span', { class: 'nm' }, L.name),
           h('span', { class: 'j-pips', role: 'img', 'aria-label': b === undefined ? 'not cleared' : `${s} of 3` }, pips(s)));
@@ -375,7 +458,7 @@ export function mount(root, opts = {}) {
     playView.hidden = false;
     fit();
     paintHud();
-    if (won && winCard.hidden) showWin(stars(moves, LEVELS[li].par), false, LEVELS[li].par);
+    if (won && winCard.hidden) showWin(stars(moves, levelData(li).par), false, levelData(li).par);
     focusBoard();
     kick();
   }
@@ -384,8 +467,15 @@ export function mount(root, opts = {}) {
   function fit() {
     if (!lv || !stage.isConnected) return;
     const availW = Math.max(220, stage.clientWidth || root.clientWidth || 320);
-    const availH = clamp(window.innerHeight - 300, 280, 640); // leaves room for the header, the chips and the buttons
-    cs = clamp(Math.floor(Math.min(availW / (lv.w + 0.7), availH / (lv.h + 0.7))), 30, 92);
+    let availH = clamp(window.innerHeight - 300, 280, 640); // leaves room for the header, the chips and the buttons
+    let top = 92;
+    if (full) {
+      // everything in the play view that is not the board, measured, so the board takes the rest of the screen
+      const chrome = playView.offsetHeight - stage.offsetHeight + 8;
+      availH = Math.max(220, window.innerHeight - chrome - 56);
+      top = 150;
+    }
+    cs = clamp(Math.floor(Math.min(availW / (lv.w + 0.7), availH / (lv.h + 0.7))), 30, top);
     mg = Math.round(cs * 0.35);
     dpr = Math.min(window.devicePixelRatio || 1, 3);
     const w = lv.w * cs + mg * 2;
@@ -433,7 +523,6 @@ export function mount(root, opts = {}) {
     }
     for (const p of particles) { p.age += dt; p.vy += 9 * dt; p.x += p.vx * dt; p.y += p.vy * dt; }
     particles = particles.filter((p) => p.age < p.life);
-    if (hint && clock > hint.until) hint = null;
   }
   function kick() {
     if (raf || dead || !visible) return;
@@ -646,20 +735,30 @@ export function mount(root, opts = {}) {
 
   // ---- input ----
   let heldAt = 0;
+  function boardInView() {
+    if (full) return true;
+    const r = stage.getBoundingClientRect();
+    return r.width > 0 && r.bottom > 0 && r.top < window.innerHeight;
+  }
+  // Listens on the document, not on the game: after a page change the site puts focus on <main>, which is outside the
+  // game, so a listener on the game alone never hears the first keys. Keys are only taken while the board is on screen.
   function onKey(e) {
-    if (dead || e.ctrlKey || e.metaKey || e.altKey) return;
+    if (dead || e.defaultPrevented || e.ctrlKey || e.metaKey || e.altKey) return;
     const t = e.target;
-    if (t && (t.tagName === 'INPUT' || t.tagName === 'SELECT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return;
+    if (t && t.nodeType === 1 && (t.tagName === 'INPUT' || t.tagName === 'SELECT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return;
+    if (document.querySelector('dialog[open]')) return;
     if (view === 'levels') {
-      if (e.key === 'Escape') { e.preventDefault(); closeLevels(); }
+      if (e.key === 'Escape' && app.isConnected) { e.preventDefault(); closeLevels(); }
       return;
     }
+    if (!boardInView()) return;
     const dir = KEYS[e.key];
     if (dir) {
       e.preventDefault();
       const now = performance.now();
       if (e.repeat && now - heldAt < 95) return;
       heldAt = now;
+      if (!full) { const r = stage.getBoundingClientRect(); if (r.bottom > window.innerHeight - 4 || r.top < 60) stage.scrollIntoView({ block: 'nearest' }); }
       move(dir);
       return;
     }
@@ -667,10 +766,14 @@ export function mount(root, opts = {}) {
     if (k === 'z' || k === 'u' || e.key === 'Backspace') { e.preventDefault(); undo(); }
     else if (k === 'r') { e.preventDefault(); restart(); }
     else if (k === 'h') { e.preventDefault(); showHint(); }
-    else if (k === 'l' || e.key === 'Escape') { e.preventDefault(); openLevels(); }
-    else if ((k === 'n') && won && li < LEVELS.length - 1) { e.preventDefault(); load(li + 1); focusBoard(); }
+    else if (k === 'f') { e.preventDefault(); toggleFull(); }
+    else if (e.key === 'Escape') { if (full === 'overlay') { e.preventDefault(); exitFull(); } else if (!full) { e.preventDefault(); openLevels(); } }
+    else if (k === 'l') { e.preventDefault(); openLevels(); }
+    else if ((k === 'n') && won) { e.preventDefault(); load(li + 1); focusBoard(); }
   }
-  app.addEventListener('keydown', onKey);
+  document.addEventListener('keydown', onKey);
+  document.addEventListener('fullscreenchange', onFullChange);
+  document.addEventListener('webkitfullscreenchange', onFullChange);
 
   let sx = 0; let sy = 0; let down = false;
   canvas.addEventListener('pointerdown', (e) => {
@@ -703,7 +806,7 @@ export function mount(root, opts = {}) {
 
   load(li, { silent: true });
   // the page is not scrolled or focused for the visitor: they click the board (or tab to it) to start
-  say(`Sticky Jelly, level ${li + 1} of ${LEVELS.length}.`);
+  say(`Sticky Jelly, level ${li + 1} of ${total()}.`);
 
   return () => {
     dead = true;
@@ -711,6 +814,11 @@ export function mount(root, opts = {}) {
     clearTimeout(winTimer);
     clearTimeout(noticeTimer);
     document.body.classList.remove('g-jelly');
+    document.documentElement.classList.remove('j-fs');
+    document.removeEventListener('keydown', onKey);
+    document.removeEventListener('fullscreenchange', onFullChange);
+    document.removeEventListener('webkitfullscreenchange', onFullChange);
+    try { if ((document.fullscreenElement || document.webkitFullscreenElement) === app) (document.exitFullscreen || document.webkitExitFullscreen).call(document); } catch (e) { /* ignore */ }
     if (ro) ro.disconnect();
     if (io) io.disconnect();
     window.removeEventListener('themechange', onTheme);

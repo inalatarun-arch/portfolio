@@ -20,7 +20,7 @@ window.Games={
     root.innerHTML='<p class="g-hint" role="status">Loading…</p>';
     /* Sticky Jelly is a single-player puzzle: no PeerJS, no card engine, just its own two modules. */
     var jelly=opts&&opts.sub==='jelly';
-    var load=jelly?import('./games/jelly.js?v=1'):Promise.all([loadPeer().catch(function(){}),import('./games/ui.js?v=5')]).then(function(r){return r[1]});
+    var load=jelly?import('./games/jelly.js?v=2'):Promise.all([loadPeer().catch(function(){}),import('./games/ui.js?v=5')]).then(function(r){return r[1]});
     load.then(function(m){
       if(!dead)stop=m.mount(root,opts);
     }).catch(function(){
